@@ -1,1 +1,41 @@
+/* Basic reset */
+* {
+  box-sizing: border-box;
+}
 
+/* Page body */
+body {
+  margin: 0;
+  padding: 40px;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f5f7fb;
+  color: #222;
+}
+
+/* Headings */
+h1 {
+  font-size: 42px;
+  margin-bottom: 10px;
+}
+
+p {
+  font-size: 18px;
+  max-width: 700px;
+}
+
+/* Buttons */
+a.btn,
+a.btn.primary {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 14px 22px;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+a.btn:hover {
+  background: #1e40af;
+}
