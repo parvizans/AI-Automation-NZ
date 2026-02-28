@@ -27,5 +27,15 @@ a.btn:hover {
     url("ai-bg.jpg");
   background-size: cover;
   background-position: center;
-}
+
+    .btn.primary{
+  background: linear-gradient(90deg, #35d6a6, #4aa3ff);
+  color: #08101f;
+  border: none;
+      .card{
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.08);
+   }
+  }
+ }
 }
