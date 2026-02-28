@@ -18,4 +18,14 @@ a.btn {
 
 a.btn:hover {
   background: #2563eb;
+
+  .hero {
+  background-image: linear-gradient(
+      rgba(11,18,32,0.85),
+      rgba(11,18,32,0.85)
+    ),
+    url("ai-bg.jpg");
+  background-size: cover;
+  background-position: center;
+}
 }
