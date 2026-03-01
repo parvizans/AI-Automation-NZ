@@ -68,7 +68,16 @@ a{color:inherit; text-decoration:none}
   font-weight:800;
   box-shadow: var(--shadow);
 }
-
+/* HERO background image */
+.hero{
+  background-image:
+    linear-gradient(rgba(11,18,32,0.78), rgba(11,18,32,0.78)),
+    url("assets/hero-ai.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 90px 0 60px;
+}
 /* HERO with strong background image */
 .hero{
   padding: 70px 0 30px;
