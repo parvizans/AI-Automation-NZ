@@ -4,6 +4,9 @@ body {
   background: #0b1220;
   color: #eaf0ff;
 }
+.hero {
+  background-image: ..., url("ai-bg.jpg");
+}
 
 .image-break{ padding: 50px 0; }
 .image-break-card{
