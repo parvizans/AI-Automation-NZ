@@ -261,3 +261,9 @@ footer{
   height: 260px;
   object-fit: cover;
   border-radius: 12px;
+.full-image {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  display: block;
+}
