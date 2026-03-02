@@ -29,7 +29,7 @@
 
   <main>
     <!-- HERO -->
-    <section class="hero">
+    <section class="hero" style="background-image: url('../assets/hero.jpg');">
       <div class="wrap hero-inner">
         <div class="hero-left">
           <h1>Automate bookings & enquiries for your small business — fast.</h1>
