@@ -12,6 +12,9 @@
   --pad:20px;
 }
 
+.image-break-text h3{ margin:0 0 8px; font-size:20px; }
+.image-break-text p{ margin:0; }
+
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
