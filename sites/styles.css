@@ -11,6 +11,11 @@ root{
   --max:1100px;
   --pad:20px;
 }
+.image-break-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
 
 .image-break-text h3{ margin:0 0 8px; font-size:20px; }
 .image-break-text p{ margin:0; }
