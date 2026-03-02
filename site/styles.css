@@ -239,3 +239,15 @@ footer{
   .service-grid{grid-template-columns: 1fr;}
   .links{display:none}
 }
+.hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.image-break-card img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 12px;
+}
