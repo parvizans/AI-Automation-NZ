@@ -11,6 +11,12 @@ root{
   --max:1100px;
   --pad:20px;
 }
+.image-break-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+}
 .image-break-card img {
   width: 100%;
   height: auto;
