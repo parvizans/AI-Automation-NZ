@@ -3,162 +3,118 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Silkroad – AI Automation for Small Businesses (NZ & AU)</title>
-  <meta name="description" content="Silkroad helps NZ & AU small businesses automate bookings and enquiries using AI tools, Google Forms, Sheets and simple workflows." />
+  <title>Milkroad – AI Automation & Career Services (NZ & AU)</title>
+  <meta name="description" content="Milkroad helps businesses automate operations and helps professionals win jobs with CV writing, cover letters and interview preparation." />
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body id="top">
+
+  <!-- HEADER -->
   <header class="site-header">
     <div class="wrap nav">
       <a class="brand" href="#top">
         <span class="logo"></span>
-        <span>Silkroad <span class="muted">AI Automation</span></span>
+        <span>Milkroad <span class="muted">AI & Career Services</span></span>
       </a>
 
       <nav class="links">
-        <a href="#services">Services</a>
-        <a href="#how">How it works</a>
+        <a href="#automation">Automation</a>
+        <a href="#career">Career</a>
         <a href="#pricing">Pricing</a>
         <a href="#contact">Contact</a>
-      </nav>
 
-      <a class="cta" href="#contact">Book a call →</a>
+        <!-- Language Dropdown -->
+        <select id="language-switcher" onchange="switchLang(this.value)">
+          <option value="en">English</option>
+          <option value="fa">فارسی</option>
+          <option value="zh">中文</option>
+          <option value="ar">العربية</option>
+          <option value="tr">Türkçe</option>
+          <option value="vi">Tiếng Việt</option>
+          <option value="ko">한국어</option>
+        </select>
+      </nav>
     </div>
   </header>
 
   <main>
+
     <!-- HERO -->
     <section class="hero">
       <div class="wrap hero-inner">
         <div class="hero-left">
-          <h1>Automate bookings & enquiries for your small business — fast.</h1>
-          <p class="sub">
-            Silkroad helps NZ & AU businesses capture leads, book appointments, and follow up automatically
-            using simple AI tools + Google Forms/Sheets + lightweight automation.
+          <h1 id="hero-title">
+            AI Automation & Career Acceleration — fast.
+          </h1>
+
+          <p class="sub" id="hero-sub">
+            Milkroad helps businesses automate bookings and helps professionals 
+            win jobs with powerful CVs, cover letters and interview preparation.
           </p>
 
           <div class="row">
             <a class="btn primary"
-              href="https://docs.google.com/forms/d/e/1FAIpQLSdKWv23mu7PzN_fKMw-kEQjHPXawEJR4-9eZOjCl8w_Z43GpQ/viewform?usp=header"
-              target="_blank" rel="noopener">Book a Visit</a>
-
-            <a class="btn"
-              href="https://wa.me/64220100700?text=Hi%20Silkroad%20%E2%80%94%20I%20want%20help%20automating%20bookings%20and%20enquiries."
-              target="_blank" rel="noopener">💬 WhatsApp</a>
-
-            <a class="btn"
-              href="mailto:parvizans@gmail.com?subject=AI%20Automation%20Enquiry&body=Hi%20Parviz%2C%20I%27d%20like%20help%20automating%20bookings%20and%20enquiries.%20My%20business%20is%3A%20___%20My%20website%20is%3A%20___"
-              target="_blank" rel="noopener">✉️ Email</a>
-          </div>
-
-          <div class="badges">
-            <span class="badge">Google Forms → Sheets</span>
-            <span class="badge blue">Auto follow-ups</span>
-            <span class="badge">Lead capture</span>
-            <span class="badge blue">Simple CRM setup</span>
-          </div>
-
-          <div class="kpis">
-            <div class="kpi"><strong>1–3 days</strong><span>Typical setup time</span></div>
-            <div class="kpi"><strong>Less missed calls</strong><span>Enquiries captured 24/7</span></div>
-            <div class="kpi"><strong>Follow-ups</strong><span>Auto reminders + messages</span></div>
+              href="https://wa.me/64220100700"
+              target="_blank">Book a Free Call</a>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="hero-right card">
-          <h2>Who this is for</h2>
-          <p class="muted">If you’re busy, get phone calls/messages all day, and miss enquiries — this is for you.</p>
-
-          <div class="three">
-            <div class="item">
-              <h3>Car dealers / yards</h3>
-              <p>Auto booking for test drives + follow-up to close deals.</p>
-            </div>
-            <div class="item">
-              <h3>Trades & services</h3>
-              <p>Quote requests → scheduling → reminders.</p>
-            </div>
-            <div class="item">
-              <h3>Cleaning / property</h3>
-              <p>Bookings + recurring jobs + simple client tracking.</p>
-            </div>
-          </div>
-
-          <p class="small muted" style="margin-top:12px;">
-            Based in NZ/AU, English + multilingual-friendly workflows if needed.
+    <!-- AUTOMATION -->
+    <section id="automation" class="section">
+      <div class="wrap">
+        <div class="card">
+          <h2>Business Automation</h2>
+          <p class="muted">
+            Smart workflows for car dealers, trades, hospitality & small businesses.
           </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ADD-ONS -->
-    <section class="section">
-      <div class="wrap">
-        <h2>More services (quick add-ons)</h2>
-        <p class="muted">Pick any add-ons below — we can bundle them into your Starter / Complete package.</p>
-
-        <div class="service-grid">
-          <div class="service-item">✅ AI chatbot for your website (FAQ + lead capture)</div>
-          <div class="service-item">✅ Automated quotes (form → Google Sheet → instant reply)</div>
-          <div class="service-item">✅ Appointment reminders (SMS/Email/WhatsApp)</div>
-          <div class="service-item">✅ Follow-up sequences (1 day / 3 days / 7 days)</div>
-          <div class="service-item">✅ Mini CRM dashboard in Google Sheets</div>
-          <div class="service-item">✅ Lead scoring + priority alerts</div>
-          <div class="service-item">✅ Payment links + invoice automation</div>
-          <div class="service-item">✅ Calendar integration (Google Calendar)</div>
-          <div class="service-item">✅ Missed-call text-back automation</div>
-          <div class="service-item">✅ Email templates + branding setup</div>
-          <div class="service-item">✅ Simple landing page improvements</div>
-          <div class="service-item">✅ Monthly reporting (leads, conversions, response time)</div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- IMAGE BREAK -->
-<section class="image-break">
-  <div class="wrap">
-    <img src="assets/mid.jpg" alt="AI automation" class="mid-image">
-  </div>
-</section>
-    <!-- SERVICES -->
-    <section id="services" class="section">
-      <div class="wrap">
-        <div class="card">
-          <h2>Services</h2>
-          <p class="muted">Practical automation you can use immediately — no complex systems needed.</p>
 
           <div class="three">
             <div class="item">
-              <h3>Booking system (Google Form)</h3>
-              <p>Customers pick a slot, you get notified instantly, all saved to a Sheet.</p>
+              <h3>Booking & Enquiry Systems</h3>
+              <p>Automated forms, instant notifications, CRM integration.</p>
             </div>
+
             <div class="item">
-              <h3>Enquiry capture + follow-up</h3>
-              <p>Auto email/SMS/WhatsApp templates to reply fast and look professional.</p>
+              <h3>Follow-up Automation</h3>
+              <p>Email, WhatsApp & SMS follow-ups that close deals faster.</p>
             </div>
+
             <div class="item">
-              <h3>Simple pipeline tracking</h3>
-              <p>Track leads: new → contacted → booked → closed (Google Sheets mini-CRM).</p>
+              <h3>AI Chatbots</h3>
+              <p>Lead capture bots for websites & social media.</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- HOW -->
-    <section id="how" class="section">
+    <!-- CAREER -->
+    <section id="career" class="section">
       <div class="wrap">
         <div class="card">
-          <h2>How it works</h2>
-          <p class="muted">Simple steps, fast results.</p>
+          <h2>Career Acceleration Services</h2>
+          <p class="muted">
+            Get hired faster. Stand out confidently.
+          </p>
 
-          <div class="steps">
-            <div class="item"><strong>1) Quick audit</strong><p class="muted">We review your website/socials and identify the fastest improvements.</p></div>
-            <div class="item"><strong>2) Build the workflow</strong><p class="muted">Form → Sheet → notification + follow-up templates.</p></div>
-            <div class="item"><strong>3) Add to your website</strong><p class="muted">A “Book now” button or embedded form in minutes.</p></div>
-            <div class="item"><strong>4) Improve weekly</strong><p class="muted">Tweak messages, slots, questions, and conversion.</p></div>
+          <div class="three">
+            <div class="item">
+              <h3>Professional CV Writing</h3>
+              <p>ATS-optimized, industry-tailored resumes.</p>
+            </div>
+
+            <div class="item">
+              <h3>Custom Cover Letters</h3>
+              <p>Job-matched letters aligned with job descriptions.</p>
+            </div>
+
+            <div class="item">
+              <h3>Interview & Screening Prep</h3>
+              <p>Mock Q&A, behavioural answers, first-call preparation.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -168,42 +124,41 @@
     <section id="pricing" class="section">
       <div class="wrap">
         <div class="card">
-          <h2>Pricing (simple)</h2>
-          <p class="muted">Start small. Upgrade later. No pressure.</p>
+          <h2>Pricing</h2>
 
           <div class="pricing">
+
             <div class="price">
-              <h3>Starter</h3>
+              <h3>Automation Starter</h3>
               <div class="amt">$300 NZD</div>
               <ul>
-                <li>Professional booking or enquiry form</li>
-                <li>Leads saved to Google Sheets</li>
-                <li>Instant email notifications</li>
-                <li>One-click website booking button</li>
+                <li>Booking or enquiry system</li>
+                <li>Google Sheets CRM</li>
+                <li>Email notifications</li>
               </ul>
             </div>
 
             <div class="price featured">
-              <h3>Complete</h3>
+              <h3>Automation Complete</h3>
               <div class="amt">$500 NZD</div>
               <ul>
-                <li>Booking + enquiry automation</li>
-                <li>Mini CRM in Sheets</li>
-                <li>Auto follow-ups (Email + WhatsApp)</li>
-                <li>Launch-ready within days</li>
+                <li>Full automation setup</li>
+                <li>Follow-up workflows</li>
+                <li>Dashboard & analytics</li>
               </ul>
             </div>
 
             <div class="price">
-              <h3>Retainer</h3>
-              <div class="amt">$99 / month</div>
+              <h3>Career Package</h3>
+              <div class="amt">$250 NZD</div>
               <ul>
-                <li>Ongoing improvements</li>
-                <li>New workflows as you grow</li>
-                <li>Monthly performance review</li>
-                <li>Priority support</li>
+                <li>Professional CV rewrite</li>
+                <li>Custom cover letter</li>
+                <li>Interview Q&A guide</li>
+                <li>30-min coaching call</li>
               </ul>
             </div>
+
           </div>
         </div>
       </div>
@@ -214,16 +169,15 @@
       <div class="wrap">
         <div class="card">
           <h2>Contact</h2>
-          <p class="muted">Want me to review your website and show what’s missing (free quick notes)?</p>
+          <p class="muted">Book a free consultation call today.</p>
 
           <div class="row">
             <a class="btn primary"
-              href="https://docs.google.com/forms/d/e/1FAIpQLSdKWv23mu7PzN_fKMw-kEQjHPXawEJR4-9eZOjCl8w_Z43GpQ/viewform?usp=header"
-              target="_blank" rel="noopener">Book a Visit</a>
+              href="https://wa.me/64220100700"
+              target="_blank">WhatsApp</a>
+
             <a class="btn"
-              href="https://wa.me/64220100700?text=Hi%20Silkroad%20%E2%80%94%20please%20review%20my%20website%20and%20suggest%20automation%20ideas."
-              target="_blank" rel="noopener">💬 WhatsApp</a>
-            <a class="btn" href="mailto:parvizans@gmail.com?subject=Silkroad%20Automation%20Enquiry">✉️ parvizans@gmail.com</a>
+              href="mailto:parvizans@gmail.com">Email</a>
           </div>
         </div>
       </div>
@@ -232,11 +186,19 @@
   </main>
 
   <footer class="footer">
-    <div class="wrap small muted">© <span id="y"></span> Silkroad — AI Automation (NZ & AU)</div>
+    <div class="wrap small muted">
+      © <span id="y"></span> Milkroad — AI Automation & Career Services
+    </div>
   </footer>
 
+  <!-- Language Script -->
   <script>
     document.getElementById("y").textContent = new Date().getFullYear();
+
+    function switchLang(lang) {
+      alert("Language support coming soon: " + lang);
+    }
   </script>
+
 </body>
 </html>
