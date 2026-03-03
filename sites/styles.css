@@ -26,7 +26,7 @@ root{
 
 .full-image {
   width: 100%;
-  height: auto;
+  max-height: 400px;
   border-radius: 16px;
   display: block;
 }
