@@ -227,8 +227,8 @@ h2{
 .mid-image{
   width:100%;
   max-width:1100px;
-  height:340px;
-  object-fit:cover;
+  height:auto;        /* remove fixed height */
+  object-fit:contain; /* show full image */
   display:block;
   margin:50px auto;
   border-radius:22px;
