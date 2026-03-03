@@ -213,15 +213,26 @@ h2{
   background: rgba(255,255,255,.04);
 }
 
+.image-break {
+  padding: 60px 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0),
+    rgba(10,20,40,.6),
+    rgba(0,0,0,0)
+  );
+}
+
 /* MID IMAGE – Balanced Width */
 .mid-image{
   width:100%;
-  max-width:900px;
-  height:320px;
+  max-width:1100px;
+  height:340px;
   object-fit:cover;
   display:block;
-  margin:40px auto;
-  border-radius:18px;
+  margin:50px auto;
+  border-radius:22px;
+  box-shadow: 0 25px 60px rgba(0,0,0,.45);
 }
 
 /* Pricing */
