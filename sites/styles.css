@@ -223,14 +223,14 @@ h2{
   );
 }
 
-/* MID IMAGE – Balanced Width */
+/* MID IMAGE – Balanced Width (narrower) */
 .mid-image{
-  width:100%;
-  max-width:850px;   /* narrower */
-  height:auto;       /* keep full image */
-  display:block;
-  margin:40px auto 60px;
-  border-radius:18px;
+  width: 100%;
+  max-width: 600px;   /* narrower than 850px */
+  height: auto;
+  display: block;
+  margin: 40px auto 60px;
+  border-radius: 18px;
   box-shadow: 0 18px 45px rgba(0,0,0,.35);
 }
 
