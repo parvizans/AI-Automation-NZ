@@ -62,7 +62,26 @@
       </div>
     </section>
 
-  
+  <section id="ran-lab">
+
+<h2>RAN Performance Diagnostic Tool</h2>
+
+<p>Simple LTE / 5G KPI analysis demo</p>
+
+<label>SINR (dB)</label>
+<input id="sinr" type="number">
+
+<label>PRB Utilisation (%)</label>
+<input id="prb" type="number">
+
+<label>Throughput (Mbps)</label>
+<input id="tp" type="number">
+
+<button onclick="analyze()">Analyze</button>
+
+<p id="result"></p>
+
+</section>
 
     <!-- AUTOMATION -->
     <section id="automation" class="section">
@@ -208,6 +227,38 @@
       alert("Language support coming soon: " + lang);
     }
   </script>
+
+  <script>
+
+function analyze(){
+
+let sinr = document.getElementById("sinr").value;
+let prb = document.getElementById("prb").value;
+let tp = document.getElementById("tp").value;
+
+let result="";
+
+if(sinr < 3){
+result="Low throughput likely caused by interference or poor SINR";
+}
+
+else if(prb > 85){
+result="High PRB usage indicates cell congestion";
+}
+
+else if(prb < 60 && sinr > 10){
+result="Resources available – check scheduler or control channel";
+}
+
+else{
+result="Further analysis required (check CQI, BLER, neighbor cells)";
+}
+
+document.getElementById("result").innerHTML=result;
+
+}
+
+</script>
 
 </body>
 </html>
