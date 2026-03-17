@@ -432,6 +432,34 @@ flex:1;
 display:flex;
 justify-content:center;
 }
+.logo{
+display:flex;
+align-items:center;
+justify-content:center; /* 👈 centers horizontally */
+
+min-width:200px;
+height:50px; /* 👈 control box height */
+
+padding:0 20px;
+
+border-radius:14px;
+
+background:linear-gradient(135deg, #32d296, #5aa7ff);
+}
+
+.brand-text{
+display:flex;
+align-items:center;
+justify-content:center;
+
+width:100%;
+height:100%;
+
+font-size:20px;
+font-weight:700;
+color:#ffffff;
+}
+
 
 
 
