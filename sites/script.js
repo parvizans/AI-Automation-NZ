@@ -39,17 +39,21 @@ function animate(){
 
 animate();
 
-  function calculateThroughput(){
+function calculate5G(){
 
   let bw = document.getElementById("bw").value;
-  let se = document.getElementById("se").value;
   let layers = document.getElementById("layers").value;
+  let modulation = document.getElementById("modulation").value;
+  let coderate = document.getElementById("coderate").value;
   let overhead = document.getElementById("overhead").value;
 
-  let throughput = bw * se * layers * (1 - overhead/100);
+  let bwHz = bw * 1e6;
+  let bits = modulation;
+
+  let throughput = bwHz * bits * coderate * layers * (1 - overhead/100);
+
+  throughput = throughput / 1e6;
 
   document.getElementById("result").innerText =
     "Result: " + throughput.toFixed(2) + " Mbps";
-}
-
 }
