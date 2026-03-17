@@ -419,5 +419,19 @@ font-weight:700;
 color:#ffffff;
 letter-spacing:0.5px;
 }
+.nav-container{
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:14px 40px;
+gap:40px;
+}
+
+.menu{
+flex:1;
+display:flex;
+justify-content:center;
+}
+
 
 
