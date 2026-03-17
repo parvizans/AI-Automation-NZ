@@ -540,25 +540,25 @@ html{
 
 #stars{
   position: absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  z-index:0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;   /* important */
 }
 
 /* 👇 THIS IS THE MAGIC PART */
 .hero-content{
   position: relative;
-  z-index:2;
-  text-align:center;
-  max-width:800px;
+  z-index: 2;   /* must be above canvas */
+  text-align: center;
+  max-width: 800px;
 
-  /* subtle glass effect */
-  background: rgba(10,20,40,0.35);
-  backdrop-filter: blur(6px);
+  background: transparent;   /* 🔥 REMOVE blue box completely */
+  backdrop-filter: none;
 
   padding: 30px;
+}
   border-radius: 16px;
 }
 .hero-content{
