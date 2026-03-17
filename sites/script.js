@@ -39,4 +39,17 @@ function animate(){
 
 animate();
 
+  function calculateThroughput(){
+
+  let bw = document.getElementById("bw").value;
+  let se = document.getElementById("se").value;
+  let layers = document.getElementById("layers").value;
+  let overhead = document.getElementById("overhead").value;
+
+  let throughput = bw * se * layers * (1 - overhead/100);
+
+  document.getElementById("result").innerText =
+    "Result: " + throughput.toFixed(2) + " Mbps";
+}
+
 }
