@@ -580,4 +580,11 @@ html{
   background: #0b1220;
   color: white;
 }
+select{
+  padding: 8px;
+  border-radius: 8px;
+  background: #0b1220;
+  color: white;
+  border: none;
+}
 
