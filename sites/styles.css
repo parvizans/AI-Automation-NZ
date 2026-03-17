@@ -407,4 +407,17 @@ white-space:nowrap;
 .menu ul{
 gap:28px; /* slightly smaller than before */
 }
+.logo{
+display:flex;
+align-items:center;
+min-width:200px;
+}
+
+.brand-text{
+font-size:22px;
+font-weight:700;
+color:#ffffff;
+letter-spacing:0.5px;
+}
+
 
