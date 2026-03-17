@@ -322,10 +322,11 @@ box-shadow:0 4px 20px rgba(0,0,0,0.4);
 }
 
 .nav-container{
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:14px 60px;
+display;
+align-items;
+justify-content;
+padding:14px 40px;
+gap:30px;
 }
 
 .logo{
@@ -339,6 +340,12 @@ font-weight:600;
 
 .logo img{
 height:40px;
+}
+
+.menu{
+flex:1;
+display;
+justify-content;
 }
 
 .menu ul{
@@ -380,4 +387,22 @@ padding-top:80px;
 .nav-container{
   gap:40px;
 }
+.logo{
+display:flex;
+align-items:center;
+gap:12px;
+min-width:180px; /* keeps space stable */
+}
+
+.logo img{
+height:38px;
+}
+
+.logo span{
+font-size:18px;
+font-weight:600;
+color:#fff;
+white-space:nowrap;
+}
+
 
