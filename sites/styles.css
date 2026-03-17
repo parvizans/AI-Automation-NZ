@@ -375,4 +375,7 @@ transition:0.3s;
 body{
 padding-top:80px;
 }
+.nav-container{
+  gap:40px;
+}
 
