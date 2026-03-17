@@ -557,5 +557,27 @@ html{
   transform: translateY(40px);
 }
 
+.tool-card{
+  background: rgba(16,26,51,.7);
+  padding: 25px;
+  border-radius: 16px;
+  max-width: 500px;
+  margin-top: 20px;
+  border: 1px solid rgba(255,255,255,.1);
+}
 
+.tool-grid{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.tool-grid input{
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+  background: #0b1220;
+  color: white;
+}
 
