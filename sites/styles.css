@@ -404,5 +404,7 @@ font-weight:600;
 color:#fff;
 white-space:nowrap;
 }
-
+.menu ul{
+gap:28px; /* slightly smaller than before */
+}
 
