@@ -46,3 +46,13 @@ window.onload = function(){
 
   drawStars();
 };
+
+ctx.fillStyle = "rgba(50,210,150," + Math.random() + ")";
+
+if(Math.random() < 0.002){
+  ctx.beginPath();
+  ctx.moveTo(star.x, star.y);
+  ctx.lineTo(star.x + 20, star.y + 5);
+  ctx.strokeStyle = "#32d296";
+  ctx.stroke();
+}
