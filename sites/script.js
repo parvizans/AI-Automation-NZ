@@ -28,18 +28,30 @@ window.onload = function(){
 
     ctx.fillStyle = "#32d296";
 
-    stars.forEach(star => {
-      ctx.beginPath();
-      ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-      ctx.fill();
+   stars.forEach(star => {
+  ctx.beginPath();
+  ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+  ctx.fill();
 
-      star.y += star.speed;
+  // ⭐ Twinkle effect
+  ctx.fillStyle = "rgba(50,210,150," + Math.random() + ")";
 
-      if(star.y > canvas.height){
-        star.y = 0;
-        star.x = Math.random() * canvas.width;
-      }
-    });
+  // ⭐ Shooting star
+  if(Math.random() < 0.002){
+    ctx.beginPath();
+    ctx.moveTo(star.x, star.y);
+    ctx.lineTo(star.x + 20, star.y + 5);
+    ctx.strokeStyle = "#32d296";
+    ctx.stroke();
+  }
+
+  star.y += star.speed;
+
+  if(star.y > canvas.height){
+    star.y = 0;
+    star.x = Math.random() * canvas.width;
+  }
+});
 
     requestAnimationFrame(drawStars);
   }
