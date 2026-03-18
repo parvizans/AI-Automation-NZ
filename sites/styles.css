@@ -139,14 +139,12 @@ color:#fff;
 
 /* HERO – Brighter + Slightly Shorter */
 .hero{
-  padding:70px 0 40px;
-  background:
-    linear-gradient(rgba(11,18,32,.45), rgba(11,18,32,.55)),
-    url("assets/hero.jpg");
-  background-size:cover;
-  background-position:center;
-  background-repeat:no-repeat;
-  border-bottom:1px solid rgba(255,255,255,.06);
+  position: relative;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .hero-inner{
@@ -547,18 +545,7 @@ html{
   z-index: 1;   /* important */
 }
 
-/* 👇 THIS IS THE MAGIC PART */
-.hero-content{
-  position: relative;
-  z-index: 2;   /* must be above canvas */
-  text-align: center;
-  max-width: 800px;
 
-  background: transparent;   /* 🔥 REMOVE blue box completely */
-  backdrop-filter: none;
-
-  padding: 30px;
-}
   border-radius: 16px;
 }
 .hero-content{
