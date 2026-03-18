@@ -29,28 +29,22 @@ window.onload = function(){
     ctx.fillStyle = "#32d296";
 
     stars.forEach(star => {
-       // Move stars (FASTER)
-  star.y += star.speed;
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+      ctx.fill();
 
-  if(star.y > canvas.height){
-    star.y = 0;
-    star.x = Math.random() * canvas.width;
+      star.y += star.speed;
+
+      if(star.y > canvas.height){
+        star.y = 0;
+        star.x = Math.random() * canvas.width;
+      }
+    });
+
+    requestAnimationFrame(drawStars);
   }
 
-  // ✨ SHINING EFFECT (pulse)
-  const opacity = 0.3 + Math.random() * 0.7;
-
-  ctx.beginPath();
-  ctx.arc(star.x, star.y, 1.5, 0, Math.PI * 2);
-  ctx.fillStyle = "rgba(50,210,150," + opacity + ")";
-  ctx.fill();
-
-  // 🚀 SHOOTING STAR (VISIBLE)
-  if(Math.random() < 0.01){   // 🔥 increased chance
-    ctx.beginPath();
-    ctx.moveTo(star.x, star.y);
-    ctx.lineTo(star.x + 30, star.y + 10);
-    ctx.strokeStyle = "rgba(50,
+  drawStars();
 };
 
 ctx.fillStyle = "rgba(50,210,150," + Math.random() + ")";
