@@ -56,3 +56,40 @@ if(Math.random() < 0.002){
   ctx.strokeStyle = "#32d296";
   ctx.stroke();
 }
+.nvidia-section{
+  padding: 60px 0;
+}
+
+.nvidia-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.nvidia-img img{
+  width: 100%;
+  max-width: 450px;
+  border-radius: 10px;
+}
+
+.nvidia-text{
+  max-width: 500px;
+}
+
+.nvidia-text h3{
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.nvidia-text p{
+  color: #b8c3e6;
+  margin-bottom: 10px;
+}
+
+.nvidia-text a{
+  color: #32d296;
+  text-decoration: none;
+}
