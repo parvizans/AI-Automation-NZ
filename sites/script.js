@@ -1,59 +1,48 @@
-const canvas = document.getElementById("networkCanvas");
+window.onload = function(){
 
-if(canvas){
+  const canvas = document.getElementById("stars");
 
-const ctx = canvas.getContext("2d");
+  if(!canvas){
+    console.log("Canvas not found");
+    return;
+  }
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+  const ctx = canvas.getContext("2d");
 
-let nodes = [];
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 
-for(let i=0;i<60;i++){
-  nodes.push({
-    x:Math.random()*canvas.width,
-    y:Math.random()*canvas.height,
-    vx:(Math.random()-0.5)*0.5,
-    vy:(Math.random()-0.5)*0.5
-  });
-}
+  let stars = [];
 
-function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let i = 0; i < 120; i++){
+    stars.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      size: Math.random() * 2,
+      speed: Math.random() * 0.5
+    });
+  }
 
-  nodes.forEach(n=>{
-    n.x+=n.vx;
-    n.y+=n.vy;
+  function drawStars(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if(n.x<0||n.x>canvas.width) n.vx*=-1;
-    if(n.y<0||n.y>canvas.height) n.vy*=-1;
+    ctx.fillStyle = "#32d296";
 
-    ctx.beginPath();
-    ctx.arc(n.x,n.y,2,0,Math.PI*2);
-    ctx.fillStyle="#32d296";
-    ctx.fill();
-  });
+    stars.forEach(star => {
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+      ctx.fill();
 
-  requestAnimationFrame(animate);
-}
+      star.y += star.speed;
 
-animate();
+      if(star.y > canvas.height){
+        star.y = 0;
+        star.x = Math.random() * canvas.width;
+      }
+    });
 
-function calculate5G(){
+    requestAnimationFrame(drawStars);
+  }
 
-  let bw = document.getElementById("bw").value;
-  let layers = document.getElementById("layers").value;
-  let modulation = document.getElementById("modulation").value;
-  let coderate = document.getElementById("coderate").value;
-  let overhead = document.getElementById("overhead").value;
-
-  let bwHz = bw * 1e6;
-  let bits = modulation;
-
-  let throughput = bwHz * bits * coderate * layers * (1 - overhead/100);
-
-  throughput = throughput / 1e6;
-
-  document.getElementById("result").innerText =
-    "Result: " + throughput.toFixed(2) + " Mbps";
-}
+  drawStars();
+};
