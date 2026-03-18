@@ -14,7 +14,7 @@ window.onload = function(){
 
   let stars = [];
 
-  for(let i = 0; i < 120; i++){
+  for(let i = 0; i < 220; i++){
     stars.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
