@@ -1155,6 +1155,13 @@ select{
   background:linear-gradient(90deg, transparent, #32d296, transparent);
   opacity:0.6;
 }
+.section-dark{
+  background:#0b1220;
+}
+
+.section-light{
+  background:rgba(255,255,255,0.02);
+}
 
 
 
