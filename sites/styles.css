@@ -1160,3 +1160,35 @@ select{
   flex:1;
   max-width:500px;
 }
+.nvidia-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:60px;
+}
+
+.nvidia-text{
+  flex:1;
+}
+
+.nvidia-img{
+  flex:1;
+  display:flex;
+  justify-content:flex-end;
+}
+
+.nvidia-img img{
+  width:100%;
+  max-width:500px;
+  border-radius:16px;
+}
+@media(max-width:900px){
+  .tools-layout,
+  .nvidia-row{
+    flex-direction:column;
+  }
+
+  .nvidia-img{
+    justify-content:center;
+  }
+}
