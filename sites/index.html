@@ -87,100 +87,44 @@ Subscribe
 </div>
 
 <section id="tools" class="section">
-  <div class="wrap">
+  <h2>Tools</h2>
+<div class="tool-card">
 
-    <h2>Tools</h2>
-    <p class="muted">
-      Telecom engineering tools designed for performance analysis and optimization.
-    </p>
+  <h3>5G Throughput Calculator (Advanced)</h3>
 
-    <div class="tool-card">
-      
-      <!-- your calculator stays here -->
+  <div class="tool-grid">
 
-        <h3>5G Throughput Calculator (Advanced)</h3>
+    <label>Bandwidth (MHz)</label>
+    <input type="number" id="bw" value="100">
 
-        <div class="tool-grid">
+    <label>MIMO Layers</label>
+    <input type="number" id="layers" value="4">
 
-          <label>Bandwidth (MHz)</label>
-          <input type="number" id="bw" value="100">
-
-          <label>MIMO Layers</label>
-          <input type="number" id="layers" value="4">
-
-          <label>Modulation</label>
-          <select id="modulation">
-            <option value="2">QPSK</option>
-            <option value="4">16QAM</option>
-            <option value="6">64QAM</option>
-            <option value="8" selected>256QAM</option>
-          </select>
-
-          <label>Code Rate</label>
-          <input type="number" id="coderate" value="0.9" step="0.1">
-
-          <label>Overhead (%)</label>
-          <input type="number" id="overhead" value="20">
-
-        </div>
-
-        <button onclick="calculate5G()" class="btn primary">
-          Calculate
-        </button>
-
-        <h2 id="result">Result: -- Mbps</h2>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-    
+    <label>Modulation</label>
+    <select id="modulation">
+      <option value="2">QPSK</option>
+      <option value="4">16QAM</option>
+      <option value="6">64QAM</option>
+      <option value="8" selected>256QAM</option>
+    </select>
 <!-- 🔥 ADD THIS NEW SECTION BELOW -->
-<section class="feature-section">
-  <div class="wrap">
+<section class="nvidia-section">
+  <div class="nvidia-row">
 
-    <div class="feature-row">
+    <div class="nvidia-img">
+      <img src="assets/5g-ran.jpg" alt="5G Network">
+    </div>
 
-      <div class="feature-img">
-        <img src="assets/5g-ran.jpg">
-      </div>
-
-      <div class="feature-text">
-        <h3>5G Network Optimization</h3>
-        <p>
-          AI-driven RAN optimization improving throughput, latency and network efficiency.
-        </p>
-      </div>
-
+    <div class="nvidia-text">
+      <h3>5G Network Optimization</h3>
+      <p>
+        Advanced AI-driven optimization for RAN performance, throughput, and latency improvements.
+      </p>
+      <a href="#">Explore More →</a>
     </div>
 
   </div>
 </section>
-    <section class="feature-section">
-  <div class="wrap">
-
-    <div class="feature-row reverse">
-
-      <div class="feature-img">
-        <img src="assets/ai-analytics.jpg">
-      </div>
-
-      <div class="feature-text">
-        <h3>AI Performance Analytics</h3>
-        <p>
-          Real-time KPI analysis with automated insights and anomaly detection.
-        </p>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-    
     <label>Code Rate</label>
     <input type="number" id="coderate" value="0.9" step="0.1">
 
