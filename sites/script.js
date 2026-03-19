@@ -68,3 +68,6 @@ if(Math.random() < 0.002){
   ctx.strokeStyle = "#32d296";
   ctx.stroke();
 }
+function calculate5G(){
+  alert("Working"); // test first
+}
