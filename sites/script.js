@@ -69,5 +69,26 @@ if(Math.random() < 0.002){
   ctx.stroke();
 }
 function calculate5G(){
-  alert("Working"); // test first
+
+  const bandwidth = parseFloat(document.querySelector('input[placeholder="Bandwidth"]').value) || 0;
+  const mimo = parseFloat(document.querySelector('input[placeholder="MIMO"]').value) || 1;
+  const modulation = document.querySelector('select').value;
+  const codeRate = parseFloat(document.querySelector('input[placeholder="Code Rate"]').value) || 1;
+  const overhead = parseFloat(document.querySelector('input[placeholder="Overhead"]').value) || 0;
+
+  // Modulation bits per symbol
+  let bitsPerSymbol = 0;
+  if(modulation === "QPSK") bitsPerSymbol = 2;
+  if(modulation === "16QAM") bitsPerSymbol = 4;
+  if(modulation === "64QAM") bitsPerSymbol = 6;
+  if(modulation === "256QAM") bitsPerSymbol = 8;
+
+  // SIMPLE throughput formula
+  let throughput = bandwidth * bitsPerSymbol * mimo * codeRate * (1 - overhead/100);
+
+  // Convert to Mbps (rough scaling)
+  throughput = throughput * 0.8;
+
+  document.getElementById("result").innerText = 
+    "Result: " + throughput.toFixed(2) + " Mbps";
 }
