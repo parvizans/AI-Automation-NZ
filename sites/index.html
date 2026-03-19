@@ -80,7 +80,31 @@ Subscribe
   <h2>Tools</h2>
 <div class="tool-card">
 
-  <h3>5G Throughput Calculator (Advanced)</h3>
+ <h3>5G Throughput Calculator (Advanced)</h3>
+
+<label>Bandwidth (MHz)</label>
+<input id="bandwidth" value="100">
+
+<label>MIMO Layers</label>
+<input id="mimo" value="4">
+
+<label>Modulation</label>
+<select id="modulation">
+  <option>QPSK</option>
+  <option>16QAM</option>
+  <option>64QAM</option>
+  <option selected>256QAM</option>
+</select>
+
+<label>Code Rate</label>
+<input id="codeRate" value="0.9">
+
+<label>Overhead (%)</label>
+<input id="overhead" value="20">
+
+<button onclick="calculate5G()" class="btn primary">Calculate</button>
+
+<p id="result">Result: -- Mbps</p>
 
   <div class="tool-grid">
 
@@ -122,6 +146,7 @@ Subscribe
   <button onclick="calculate5G()" class="btn primary">
     Calculate
   </button>
+  <p id="result">Result: -- Mbps</p>
 
   <h2 id="result">Result: -- Mbps</h2>
 
