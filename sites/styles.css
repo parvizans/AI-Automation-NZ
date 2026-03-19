@@ -293,11 +293,12 @@ footer{
 }
 
 /* Mobile */
-@media (max-width:900px){
-  .hero-inner{grid-template-columns:1fr;}
-  .three, .pricing{grid-template-columns:1fr;}
-  .service-grid{grid-template-columns:1fr;}
-  .links{display:none;}
+@media(max-width:900px){
+  .feature-row,
+  .feature-row.reverse{
+    flex-direction:column;
+    text-align:center;
+  }
 }
 
 /* ===== NEW NAVBAR (AutomationPark) ===== */
@@ -1191,4 +1192,28 @@ select{
   .nvidia-img{
     justify-content:center;
   }
+}
+.feature-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:60px;
+}
+
+.feature-row.reverse{
+  flex-direction:row-reverse;
+}
+
+.feature-img{
+  flex:1;
+}
+
+.feature-img img{
+  width:100%;
+  max-width:520px;
+  border-radius:16px;
+}
+
+.feature-text{
+  flex:1;
 }
