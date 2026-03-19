@@ -1144,3 +1144,19 @@ select{
 .hero{
   border-bottom:1px solid rgba(255,255,255,0.08);
 }
+.tools-layout{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:60px;
+}
+
+.tools-text{
+  flex:1;
+  max-width:500px;
+}
+
+.tool-card{
+  flex:1;
+  max-width:500px;
+}
