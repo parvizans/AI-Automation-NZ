@@ -75,16 +75,18 @@ function calculate5G(){
   
 let freqFactor = 1;   // ✅ MUST be here (outside if)
 
+let freqFactor = 1;
+
 if (freq < 1000) {
-  freqFactor = 0.6;
+  freqFactor = 0.4;   // was 0.6
 } else if (freq < 3000) {
-  freqFactor = 0.8;
+  freqFactor = 0.7;   // was 0.8
 } else if (freq < 6000) {
-  freqFactor = 1.0;
+  freqFactor = 1.2;   // was 1.0
 } else {
-  freqFactor = 1.5;
+  freqFactor = 2.0;   // was 1.5
 }
-  console.log("Freq:", freq);
+
 
   
 
