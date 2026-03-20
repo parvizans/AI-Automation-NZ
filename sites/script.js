@@ -71,6 +71,9 @@ function calculate5G(){
   const overhead = parseFloat(document.getElementById("overhead").value);
   const duplex = parseFloat(document.getElementById("duplex").value);
   const bler = parseFloat(document.getElementById("bler").value);
+  const freq = parseFloat(document.getElementById("freqBand").value);
+
+  
 
   // SINR → CQI mapping
   const sinrToCqi = [
@@ -89,6 +92,18 @@ function calculate5G(){
       }
     }
     mcs = Math.min(27, Math.floor(cqi * 1.7));
+    // 📡 Frequency Band Impact
+let freqFactor = 1;
+
+if (freq < 1000) {
+  freqFactor = 0.6;   // Low band (coverage focused)
+} else if (freq < 3000) {
+  freqFactor = 0.8;   // Mid band LTE/NR
+} else if (freq < 6000) {
+  freqFactor = 1.0;   // C-band (optimal 5G)
+} else {
+  freqFactor = 1.5;   // mmWave (high capacity)
+}
   }
 
   const specEff = [
@@ -100,10 +115,13 @@ function calculate5G(){
 
   let efficiency = specEff[mcs] || 1;
 
-  let throughput =
-    bandwidth * efficiency * mimo * duplex *
-    (1 - overhead/100) *
-    (1 - bler/100);
+let throughput = 
+  bandwidth * efficiency * mimo * duplex *
+  (1 - overhead/100) *
+  (1 - bler/100);
+
+// 📡 Apply frequency impact
+throughput = throughput * freqFactor;
 
   throughput = throughput * 10;
 
