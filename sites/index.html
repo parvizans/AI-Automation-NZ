@@ -82,45 +82,73 @@ Subscribe
 
   <h3>5G Throughput Calculator (Pro)</h3>
 
-  <label>Mode</label>
-  <select id="mode">
-    <option value="auto">Auto (SINR → CQI → MCS)</option>
-    <option value="manual">Manual (MCS Input)</option>
-  </select>
+  <!-- Criteria 1 -->
+  <div class="form-row">
+    <input id="sinr" value="20">
+    <label>SINR (dB)</label>
+  </div>
 
-  <label>SINR (dB)</label>
-  <input id="sinr" value="20">
+  <!-- Criteria 2 -->
+  <div class="form-row">
+    <input id="mcs" value="27">
+    <label>MCS Index (0–27)</label>
+  </div>
 
-  <label>MCS Index (0–27)</label>
-  <input id="mcs" value="27">
+  <!-- Criteria 3 -->
+  <div class="form-row">
+    <input id="bandwidth" value="100">
+    <label>Bandwidth (MHz)</label>
+  </div>
 
-  <label>Bandwidth (MHz)</label>
-  <input id="bandwidth" value="100">
+  <!-- Criteria 4 -->
+  <div class="form-row">
+    <input id="mimo" value="4">
+    <label>MIMO Layers</label>
+  </div>
 
-  <label>MIMO Layers</label>
-  <input id="mimo" value="4">
+  <!-- Criteria 5 -->
+  <div class="form-row">
+    <select id="scs">
+      <option>15</option>
+      <option selected>30</option>
+      <option>60</option>
+    </select>
+    <label>Subcarrier Spacing (kHz)</label>
+  </div>
 
-  <label>Subcarrier Spacing (kHz)</label>
-  <select id="scs">
-    <option>15</option>
-    <option selected>30</option>
-    <option>60</option>
-  </select>
+  <!-- Criteria 6 -->
+  <div class="form-row">
+    <select id="duplex">
+      <option value="1">FDD</option>
+      <option value="0.75">TDD (4DL:1UL)</option>
+      <option value="0.6">TDD (3DL:2UL)</option>
+    </select>
+    <label>Duplex Mode</label>
+  </div>
 
-  <label>Duplex Mode</label>
-  <select id="duplex">
-    <option value="1">FDD</option>
-    <option value="0.75">TDD (4DL:1UL)</option>
-    <option value="0.6">TDD (3DL:2UL)</option>
-  </select>
+  <!-- Criteria 7 -->
+  <div class="form-row">
+    <input id="bler" value="10">
+    <label>BLER (%)</label>
+  </div>
 
-  <label>BLER Target (%)</label>
-  <input id="bler" value="10">
+  <!-- Criteria 8 -->
+  <div class="form-row">
+    <input id="overhead" value="15">
+    <label>Overhead (%)</label>
+  </div>
 
-  <label>Overhead (%)</label>
-  <input id="overhead" value="15">
+  <!-- Criteria 9 -->
+  <div class="form-row">
+    <select id="mode">
+      <option value="auto">Auto Mode</option>
+      <option value="manual">Manual Mode</option>
+    </select>
+    <label>Calculation Mode</label>
+  </div>
 
-  <button onclick="calculate5G()" class="btn primary">
+  <!-- BUTTON AT THE END -->
+  <button onclick="calculate5G()" class="btn primary big-btn">
     Calculate
   </button>
 
