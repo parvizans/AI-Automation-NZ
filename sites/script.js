@@ -72,6 +72,7 @@ function calculate5G(){
   const duplex = parseFloat(document.getElementById("duplex").value);
   const bler = parseFloat(document.getElementById("bler").value);
   const freq = parseFloat(document.getElementById("freqBand").value);
+  console.log("Freq:", freq);
 
   
 
