@@ -122,3 +122,16 @@ function calculate5G(){
     `Result: ${throughput.toFixed(2)} Mbps 
      (CQI: ${cqi}, MCS: ${mcs})`;
 }
+function toggleMode(){
+  const mode = document.getElementById("mode").value;
+  const mcsInput = document.getElementById("mcs");
+  const sinrInput = document.getElementById("sinr");
+
+  if(mode === "auto"){
+    mcsInput.disabled = true;
+    sinrInput.disabled = false;
+  } else {
+    mcsInput.disabled = false;
+    sinrInput.disabled = true;
+  }
+}
