@@ -72,6 +72,18 @@ function calculate5G(){
   const duplex = parseFloat(document.getElementById("duplex").value);
   const bler = parseFloat(document.getElementById("bler").value);
  const freq = 2600;
+  
+let freqFactor = 1;   // ✅ MUST be here (outside if)
+
+if (freq < 1000) {
+  freqFactor = 0.6;
+} else if (freq < 3000) {
+  freqFactor = 0.8;
+} else if (freq < 6000) {
+  freqFactor = 1.0;
+} else {
+  freqFactor = 1.5;
+}
   console.log("Freq:", freq);
 
   
