@@ -1,3 +1,4 @@
+// ⭐ STARS BACKGROUND
 window.onload = function(){
 
   const canvas = document.getElementById("stars");
@@ -26,32 +27,30 @@ window.onload = function(){
   function drawStars(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.fillStyle = "#32d296";
+    stars.forEach(star => {
 
-   stars.forEach(star => {
-  ctx.beginPath();
-  ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-  ctx.fill();
+      // ⭐ star
+      ctx.fillStyle = "rgba(50,210,150," + Math.random() + ")";
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+      ctx.fill();
 
-  // ⭐ Twinkle effect
-  ctx.fillStyle = "rgba(50,210,150," + Math.random() + ")";
+      // ⭐ shooting star
+      if(Math.random() < 0.002){
+        ctx.beginPath();
+        ctx.moveTo(star.x, star.y);
+        ctx.lineTo(star.x + 20, star.y + 5);
+        ctx.strokeStyle = "#32d296";
+        ctx.stroke();
+      }
 
-  // ⭐ Shooting star
-  if(Math.random() < 0.002){
-    ctx.beginPath();
-    ctx.moveTo(star.x, star.y);
-    ctx.lineTo(star.x + 20, star.y + 5);
-    ctx.strokeStyle = "#32d296";
-    ctx.stroke();
-  }
+      star.y += star.speed;
 
-  star.y += star.speed;
-
-  if(star.y > canvas.height){
-    star.y = 0;
-    star.x = Math.random() * canvas.width;
-  }
-});
+      if(star.y > canvas.height){
+        star.y = 0;
+        star.x = Math.random() * canvas.width;
+      }
+    });
 
     requestAnimationFrame(drawStars);
   }
@@ -59,15 +58,8 @@ window.onload = function(){
   drawStars();
 };
 
-ctx.fillStyle = "rgba(50,210,150," + Math.random() + ")";
 
-if(Math.random() < 0.002){
-  ctx.beginPath();
-  ctx.moveTo(star.x, star.y);
-  ctx.lineTo(star.x + 20, star.y + 5);
-  ctx.strokeStyle = "#32d296";
-  ctx.stroke();
-}
+// 🚀 CALCULATOR
 function calculate5G(){
 
   const mode = document.getElementById("mode").value;
@@ -80,7 +72,7 @@ function calculate5G(){
   const duplex = parseFloat(document.getElementById("duplex").value);
   const bler = parseFloat(document.getElementById("bler").value);
 
-  // SINR → CQI mapping (approx real-world)
+  // SINR → CQI mapping
   const sinrToCqi = [
     {sinr:-5, cqi:0},{sinr:-2, cqi:1},{sinr:0, cqi:2},{sinr:2, cqi:3},
     {sinr:4, cqi:4},{sinr:6, cqi:5},{sinr:8, cqi:6},{sinr:10, cqi:7},
@@ -90,17 +82,15 @@ function calculate5G(){
 
   let cqi = 0;
 
-if(mode === "auto"){
-  label.innerText = "MCS (Auto Calculated)";
-} else {
-  label.innerText = "MCS (Manual Input)";
+  if(mode === "auto"){
+    for(let i=0;i<sinrToCqi.length;i++){
+      if(sinr >= sinrToCqi[i].sinr){
+        cqi = sinrToCqi[i].cqi;
       }
     }
-    // CQI → MCS approximation
     mcs = Math.min(27, Math.floor(cqi * 1.7));
   }
 
-  // Spectral efficiency (3GPP approx)
   const specEff = [
     0.2344,0.377,0.6016,0.877,1.1758,1.4766,1.6953,1.9141,
     2.1602,2.4063,2.5703,2.7305,3.0293,3.3223,3.6094,
@@ -110,7 +100,6 @@ if(mode === "auto"){
 
   let efficiency = specEff[mcs] || 1;
 
-  // FINAL THROUGHPUT
   let throughput =
     bandwidth * efficiency * mimo * duplex *
     (1 - overhead/100) *
@@ -119,8 +108,5 @@ if(mode === "auto"){
   throughput = throughput * 10;
 
   document.getElementById("result").innerText =
-    `Result: ${throughput.toFixed(2)} Mbps 
-     (CQI: ${cqi}, MCS: ${mcs})`;
+    `Result: ${throughput.toFixed(2)} Mbps (CQI: ${cqi}, MCS: ${mcs})`;
 }
-
-
