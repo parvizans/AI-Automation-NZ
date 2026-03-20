@@ -64,7 +64,7 @@ function calculate5G(){
 
   const mode = document.getElementById("mode").value;
   let sinr = parseFloat(document.getElementById("sinr").value);
-  let mcs = parseInt(document.getElementById("mcs").value);
+  let mcs = 0;
 
   const bandwidth = parseFloat(document.getElementById("bandwidth").value);
   const mimo = parseFloat(document.getElementById("mimo").value);
