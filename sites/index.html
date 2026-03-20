@@ -90,6 +90,25 @@ Subscribe
 
     <label>MCS Index (0–27)</label>
     <input id="mcs" value="27">
+    <label>Subcarrier Spacing (kHz)</label>
+<select id="scs">
+  <option value="15">15 kHz</option>
+  <option value="30" selected>30 kHz</option>
+  <option value="60">60 kHz</option>
+</select>
+
+<label>Duplex Mode</label>
+<select id="duplex">
+  <option value="1">FDD</option>
+  <option value="0.75">TDD (4DL:1UL)</option>
+  <option value="0.6">TDD (3DL:2UL)</option>
+</select>
+
+<label>Radio Type</label>
+<select id="radio">
+  <option value="1">Macro (MRFU)</option>
+  <option value="0.85">Massive MIMO (MMU)</option>
+</select>
 
     <label>Overhead (%)</label>
     <input id="overhead" value="20">
