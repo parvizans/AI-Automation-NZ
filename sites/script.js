@@ -135,4 +135,4 @@ function toggleMode(){
     sinrInput.disabled = true;
   }
 }
-window.onload = toggleMode;
+
