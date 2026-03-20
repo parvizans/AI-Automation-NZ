@@ -70,12 +70,35 @@ if(Math.random() < 0.002){
 }
 function calculate5G(){
 
+  const mode = document.getElementById("mode").value;
+  let sinr = parseFloat(document.getElementById("sinr").value);
+  let mcs = parseInt(document.getElementById("mcs").value);
+
   const bandwidth = parseFloat(document.getElementById("bandwidth").value);
   const mimo = parseFloat(document.getElementById("mimo").value);
-  const mcs = parseInt(document.getElementById("mcs").value);
   const overhead = parseFloat(document.getElementById("overhead").value);
   const duplex = parseFloat(document.getElementById("duplex").value);
-  const radio = parseFloat(document.getElementById("radio").value);
+  const bler = parseFloat(document.getElementById("bler").value);
+
+  // SINR → CQI mapping (approx real-world)
+  const sinrToCqi = [
+    {sinr:-5, cqi:0},{sinr:-2, cqi:1},{sinr:0, cqi:2},{sinr:2, cqi:3},
+    {sinr:4, cqi:4},{sinr:6, cqi:5},{sinr:8, cqi:6},{sinr:10, cqi:7},
+    {sinr:12, cqi:8},{sinr:14, cqi:9},{sinr:16, cqi:10},
+    {sinr:18, cqi:11},{sinr:20, cqi:12},{sinr:22, cqi:13},{sinr:24, cqi:14},{sinr:26, cqi:15}
+  ];
+
+  let cqi = 0;
+
+  if(mode === "auto"){
+    for(let i=0;i<sinrToCqi.length;i++){
+      if(sinr >= sinrToCqi[i].sinr){
+        cqi = sinrToCqi[i].cqi;
+      }
+    }
+    // CQI → MCS approximation
+    mcs = Math.min(27, Math.floor(cqi * 1.7));
+  }
 
   // Spectral efficiency (3GPP approx)
   const specEff = [
@@ -87,13 +110,15 @@ function calculate5G(){
 
   let efficiency = specEff[mcs] || 1;
 
-  // REALISTIC throughput formula
+  // FINAL THROUGHPUT
   let throughput =
-    bandwidth * efficiency * mimo * duplex * radio * (1 - overhead/100);
+    bandwidth * efficiency * mimo * duplex *
+    (1 - overhead/100) *
+    (1 - bler/100);
 
-  // Convert MHz → Mbps scaling
   throughput = throughput * 10;
 
   document.getElementById("result").innerText =
-    "Result: " + throughput.toFixed(2) + " Mbps";
+    `Result: ${throughput.toFixed(2)} Mbps 
+     (CQI: ${cqi}, MCS: ${mcs})`;
 }
