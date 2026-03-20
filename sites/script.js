@@ -74,6 +74,9 @@ function calculate5G(){
   const mimo = parseFloat(document.getElementById("mimo").value);
   const mcs = parseInt(document.getElementById("mcs").value);
   const overhead = parseFloat(document.getElementById("overhead").value);
+  const scs = parseFloat(document.getElementById("scs").value);
+  const duplex = parseFloat(document.getElementById("duplex").value);
+  const radio = parseFloat(document.getElementById("radio").value);
 
   const specEff = [
     0.2344,0.377,0.6016,0.877,1.1758,1.4766,1.6953,1.9141,
@@ -84,9 +87,13 @@ function calculate5G(){
 
   let efficiency = specEff[mcs] || 1;
 
-  let prb = (bandwidth * 1000) / (30 * 12);
+  // PRB depends on SCS
+  let prb = (bandwidth * 1000) / (scs * 12);
 
-  let throughput = prb * 12 * 14 * efficiency * mimo * (1 - overhead/100);
+  let throughput =
+    prb * 12 * 14 * efficiency * mimo *
+    duplex * radio *
+    (1 - overhead/100);
 
   throughput = throughput / 1000;
 
