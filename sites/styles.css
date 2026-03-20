@@ -1234,3 +1234,11 @@ select{
 #stars{
   pointer-events: none;
 }
+.tool-card button{
+  margin-top: 15px;
+}
+
+.tool-card input,
+.tool-card select{
+  margin-bottom: 10px;
+}
