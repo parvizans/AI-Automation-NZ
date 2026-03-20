@@ -71,7 +71,7 @@ function calculate5G(){
   const overhead = parseFloat(document.getElementById("overhead").value);
   const duplex = parseFloat(document.getElementById("duplex").value);
   const bler = parseFloat(document.getElementById("bler").value);
- const freq = 2600;
+  const freq = parseFloat(document.getElementById("freqBand").value);
   
 let freqFactor = 1;   // ✅ MUST be here (outside if)
 
