@@ -90,10 +90,10 @@ function calculate5G(){
 
   let cqi = 0;
 
-  if(mode === "auto"){
-    for(let i=0;i<sinrToCqi.length;i++){
-      if(sinr >= sinrToCqi[i].sinr){
-        cqi = sinrToCqi[i].cqi;
+if(mode === "auto"){
+  label.innerText = "MCS (Auto Calculated)";
+} else {
+  label.innerText = "MCS (Manual Input)";
       }
     }
     // CQI → MCS approximation
