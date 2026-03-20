@@ -1242,3 +1242,31 @@ select{
 .tool-card select{
   margin-bottom: 10px;
 }
+.form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.form-row input,
+.form-row select {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+}
+
+.form-row label {
+  flex: 1;
+  font-size: 14px;
+  color: #b8c3e6;
+}
+
+.big-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  font-size: 16px;
+}
