@@ -122,9 +122,5 @@ if(mode === "auto"){
     `Result: ${throughput.toFixed(2)} Mbps 
      (CQI: ${cqi}, MCS: ${mcs})`;
 }
-function toggleMode(){
-  const mode = document.getElementById("mode").value;
-  const mcsInput = document.getElementById("mcs");
-  const sinrInput = document.getElementById("sinr");
-}
+
 
