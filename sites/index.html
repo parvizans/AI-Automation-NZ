@@ -78,49 +78,55 @@ Subscribe
     <section id="tools" class="section">
   <h2>Tools</h2>
 
-  <div class="tool-card">
+ <div class="tool-card">
 
-    <h3>5G Throughput Calculator (Advanced)</h3>
+  <h3>5G Throughput Calculator (Pro)</h3>
 
-    <label>Bandwidth (MHz)</label>
-    <input id="bandwidth" value="100">
+  <label>Mode</label>
+  <select id="mode">
+    <option value="auto">Auto (SINR → CQI → MCS)</option>
+    <option value="manual">Manual (MCS Input)</option>
+  </select>
 
-    <label>MIMO Layers</label>
-    <input id="mimo" value="4">
+  <label>SINR (dB)</label>
+  <input id="sinr" value="20">
 
-    <label>MCS Index (0–27)</label>
-    <input id="mcs" value="27">
-    <label>Subcarrier Spacing (kHz)</label>
-<select id="scs">
-  <option value="15">15 kHz</option>
-  <option value="30" selected>30 kHz</option>
-  <option value="60">60 kHz</option>
-</select>
+  <label>MCS Index (0–27)</label>
+  <input id="mcs" value="27">
 
-<label>Duplex Mode</label>
-<select id="duplex">
-  <option value="1">FDD</option>
-  <option value="0.75">TDD (4DL:1UL)</option>
-  <option value="0.6">TDD (3DL:2UL)</option>
-</select>
+  <label>Bandwidth (MHz)</label>
+  <input id="bandwidth" value="100">
 
-<label>Radio Type</label>
-<select id="radio">
-  <option value="1">Macro (MRFU)</option>
-  <option value="0.85">Massive MIMO (MMU)</option>
-</select>
+  <label>MIMO Layers</label>
+  <input id="mimo" value="4">
 
-    <label>Overhead (%)</label>
-    <input id="overhead" value="20">
+  <label>Subcarrier Spacing (kHz)</label>
+  <select id="scs">
+    <option>15</option>
+    <option selected>30</option>
+    <option>60</option>
+  </select>
 
-    <button onclick="calculate5G()" class="btn primary">
-      Calculate
-    </button>
+  <label>Duplex Mode</label>
+  <select id="duplex">
+    <option value="1">FDD</option>
+    <option value="0.75">TDD (4DL:1UL)</option>
+    <option value="0.6">TDD (3DL:2UL)</option>
+  </select>
 
-    <p id="result">Result: -- Mbps</p>
+  <label>BLER Target (%)</label>
+  <input id="bler" value="10">
 
-  </div>
+  <label>Overhead (%)</label>
+  <input id="overhead" value="15">
 
+  <button onclick="calculate5G()" class="btn primary">
+    Calculate
+  </button>
+
+  <p id="result">Result: -- Mbps</p>
+
+</div>
 </section>
 
 
