@@ -70,25 +70,26 @@ if(Math.random() < 0.002){
 }
 function calculate5G(){
 
-  const bandwidth = parseFloat(document.querySelector('input[placeholder="Bandwidth"]').value) || 0;
-  const mimo = parseFloat(document.querySelector('input[placeholder="MIMO"]').value) || 1;
-  const modulation = document.querySelector('select').value;
-  const codeRate = parseFloat(document.querySelector('input[placeholder="Code Rate"]').value) || 1;
-  const overhead = parseFloat(document.querySelector('input[placeholder="Overhead"]').value) || 0;
+  const bandwidth = parseFloat(document.getElementById("bandwidth").value);
+  const mimo = parseFloat(document.getElementById("mimo").value);
+  const mcs = parseInt(document.getElementById("mcs").value);
+  const overhead = parseFloat(document.getElementById("overhead").value);
 
-  // Modulation bits per symbol
-  let bitsPerSymbol = 0;
-  if(modulation === "QPSK") bitsPerSymbol = 2;
-  if(modulation === "16QAM") bitsPerSymbol = 4;
-  if(modulation === "64QAM") bitsPerSymbol = 6;
-  if(modulation === "256QAM") bitsPerSymbol = 8;
+  const specEff = [
+    0.2344,0.377,0.6016,0.877,1.1758,1.4766,1.6953,1.9141,
+    2.1602,2.4063,2.5703,2.7305,3.0293,3.3223,3.6094,
+    3.9023,4.2129,4.5234,4.8164,5.1152,5.332,5.5547,
+    6.2266,6.9141,7.4063
+  ];
 
-  // SIMPLE throughput formula
-  let throughput = bandwidth * bitsPerSymbol * mimo * codeRate * (1 - overhead/100);
+  let efficiency = specEff[mcs] || 1;
 
-  // Convert to Mbps (rough scaling)
-  throughput = throughput * 0.8;
+  let prb = (bandwidth * 1000) / (30 * 12);
 
-  document.getElementById("result").innerText = 
+  let throughput = prb * 12 * 14 * efficiency * mimo * (1 - overhead/100);
+
+  throughput = throughput / 1000;
+
+  document.getElementById("result").innerText =
     "Result: " + throughput.toFixed(2) + " Mbps";
 }
