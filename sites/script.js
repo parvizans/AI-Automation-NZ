@@ -74,9 +74,6 @@ function calculate5G(){
   const freq = parseFloat(document.getElementById("freqBand").value);
   
 let freqFactor = 1;   // ✅ MUST be here (outside if)
-
-let freqFactor = 1;
-
 if (freq < 1000) {
   freqFactor = 0.4;   // was 0.6
 } else if (freq < 3000) {
