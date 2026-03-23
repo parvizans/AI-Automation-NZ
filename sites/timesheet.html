@@ -68,14 +68,21 @@
   <thead>
     <tr>
       <th>Date</th>
-      <th>Hours</th>
-      <th>OT</th>
+     <th>Day</th>
+     <th>Hours</th>
+     <th>OT</th>
+     <th>Action</th>
     </tr>
   </thead>
   <tbody id="table"></tbody>
 </table>
-
+  <h3 id="summary"></h3>
 <script>
+
+function getToday() {
+  let today = new Date().toISOString().split("T")[0];
+  document.getElementById("date").value = today;
+}
 
 function calculate(timeout) {
   let timeIn = new Date("2024-01-01T08:00:00");
@@ -95,6 +102,7 @@ function saveEntry() {
 
   let entry = {
     date,
+    day: new Date(date).toLocaleDateString("en-US", { weekday: 'short' }),
     hours: calc.hours.toFixed(2),
     ot: calc.ot.toFixed(2)
   };
@@ -105,6 +113,15 @@ function saveEntry() {
   localStorage.setItem("timesheet", JSON.stringify(data));
 
   render();
+
+  alert("Saved ✅ Hours: " + entry.hours + " | OT: " + entry.ot);
+}
+
+function deleteEntry(index) {
+  let data = JSON.parse(localStorage.getItem("timesheet"));
+  data.splice(index, 1);
+  localStorage.setItem("timesheet", JSON.stringify(data));
+  render();
 }
 
 function render() {
@@ -113,17 +130,33 @@ function render() {
 
   table.innerHTML = "";
 
-  data.forEach(e => {
+  let totalHours = 0;
+  let totalOT = 0;
+
+  data.forEach((e, i) => {
+
+    totalHours += parseFloat(e.hours);
+    totalOT += parseFloat(e.ot);
+
+    let rowColor = e.ot > 0 ? "#2a1a1a" : "";
+
     table.innerHTML += `
-      <tr>
+      <tr style="background:${rowColor}">
         <td>${e.date}</td>
+        <td>${e.day}</td>
         <td>${e.hours}</td>
         <td>${e.ot}</td>
+        <td><button onclick="deleteEntry(${i})">❌</button></td>
       </tr>
     `;
   });
+
+  document.getElementById("summary").innerText =
+    "Total Hours: " + totalHours.toFixed(1) +
+    " | Total OT: " + totalOT.toFixed(1);
 }
 
+getToday();
 render();
 
 </script>
