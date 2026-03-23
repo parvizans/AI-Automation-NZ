@@ -1,1 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smart Timesheet</title>
 
+  <style>
+    body {
+      font-family: Arial;
+      background: #0b1220;
+      color: white;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #32d296;
+    }
+
+    .card {
+      background: #1c2541;
+      padding: 20px;
+      border-radius: 15px;
+      max-width: 400px;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    button {
+      background: #32d296;
+      cursor: pointer;
+    }
+
+    table {
+      margin-top: 20px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    td, th {
+      padding: 10px;
+      border-bottom: 1px solid #444;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>🚀 Smart Timesheet</h2>
+
+<div class="card">
+
+  <label>Date</label>
+  <input type="date" id="date">
+
+  <label>Time-Out</label>
+  <input type="time" id="timeout" value="18:00">
+
+  <button onclick="saveEntry()">Save</button>
+
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Hours</th>
+      <th>OT</th>
+    </tr>
+  </thead>
+  <tbody id="table"></tbody>
+</table>
+
+<script>
+
+function calculate(timeout) {
+  let timeIn = new Date("2024-01-01T08:00:00");
+  let timeOut = new Date("2024-01-01T" + timeout + ":00");
+
+  let hours = (timeOut - timeIn) / (1000 * 60 * 60);
+  let ot = hours > 10 ? hours - 10 : 0;
+
+  return { hours, ot };
+}
+
+function saveEntry() {
+  let date = document.getElementById("date").value;
+  let timeout = document.getElementById("timeout").value;
+
+  let calc = calculate(timeout);
+
+  let entry = {
+    date,
+    hours: calc.hours.toFixed(2),
+    ot: calc.ot.toFixed(2)
+  };
+
+  let data = JSON.parse(localStorage.getItem("timesheet")) || [];
+  data.push(entry);
+
+  localStorage.setItem("timesheet", JSON.stringify(data));
+
+  render();
+}
+
+function render() {
+  let data = JSON.parse(localStorage.getItem("timesheet")) || [];
+  let table = document.getElementById("table");
+
+  table.innerHTML = "";
+
+  data.forEach(e => {
+    table.innerHTML += `
+      <tr>
+        <td>${e.date}</td>
+        <td>${e.hours}</td>
+        <td>${e.ot}</td>
+      </tr>
+    `;
+  });
+}
+
+render();
+
+</script>
+
+</body>
+</html>
