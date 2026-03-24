@@ -140,42 +140,71 @@ throughput = throughput * freqFactor;
   document.getElementById("result").innerText =
     `Result: ${throughput.toFixed(2)} Mbps (CQI: ${cqi}, MCS: ${mcs})`;
 }
+document.getElementById("calcBtn").addEventListener("click", calculate);
+
+function getValue(id) {
+  let val = parseFloat(document.getElementById(id).value);
+  return isNaN(val) ? 0 : val;
+}
 function calculate() {
 
-  // GET VALUES
-  let power = parseFloat(document.getElementById("power").value);
-  let bodyLoss = parseFloat(document.getElementById("bodyLoss").value);
-  let buildingLoss = parseFloat(document.getElementById("buildingLoss").value);
-  let interference = parseFloat(document.getElementById("interference").value);
-  let model = parseFloat(document.getElementById("model").value);
-  let vegetation = parseFloat(document.getElementById("vegetation").value);
-  let antennaGain = parseFloat(document.getElementById("antennaGain").value);
-  let frequency = parseFloat(document.getElementById("frequency").value);
-  let cableLoss = parseFloat(document.getElementById("cableLoss").value);
-  let fading = parseFloat(document.getElementById("fading").value);
-  let radio = parseFloat(document.getElementById("radio").value);
+  try {
 
-  // CONVERT POWER TO dBm
-  let powerDbm = 10 * Math.log10(power * 1000);
+    // INPUTS
+    let power = getValue("power");
+    let bodyLoss = getValue("bodyLoss");
+    let buildingLoss = getValue("buildingLoss");
+    let interference = getValue("interference");
+    let vegetation = getValue("vegetation");
+    let antennaGain = getValue("antennaGain");
+    let frequency = getValue("frequency");
+    let cableLoss = getValue("cableLoss");
+    let fading = getValue("fading");
+    let radio = getValue("radio");
+    let model = getValue("model");
 
-  // LINK BUDGET
-  let totalLoss = bodyLoss + buildingLoss + interference + vegetation + fading + cableLoss;
+    if (power <= 0 || frequency <= 0) {
+      throw "Invalid input values";
+    }
 
-  let linkBudget = powerDbm + antennaGain + radio - totalLoss;
+    // POWER CONVERSION
+    let powerDbm = 10 * Math.log10(power * 1000);
 
-  // PATH LOSS MODEL (simplified)
-  let pathLoss = model + 20 * Math.log10(frequency);
+    // TOTAL LOSS
+    let totalLoss =
+      bodyLoss +
+      buildingLoss +
+      interference +
+      vegetation +
+      fading +
+      cableLoss;
 
-  // DISTANCE ESTIMATION
-  let distance = Math.pow(10, (linkBudget - pathLoss) / 20) * 1000;
+    // LINK BUDGET
+    let linkBudget = powerDbm + antennaGain + radio - totalLoss;
 
-  // OUTPUT
-  document.getElementById("distance").innerText =
-    "Cell Edge Distance: " + distance.toFixed(0) + " meters";
+    // PATH LOSS MODEL
+    let pathLoss = model + 20 * Math.log10(frequency);
 
-  document.getElementById("pathloss").innerText =
-    "Path Loss: " + pathLoss.toFixed(2) + " dB";
+    // DISTANCE (ESTIMATION)
+    let distance = Math.pow(10, (linkBudget - pathLoss) / 20) * 1000;
 
-  document.getElementById("summary").innerText =
-    "Link Budget: " + linkBudget.toFixed(2) + " dBm";
+    // OUTPUT
+    document.getElementById("distance").innerText =
+      "Cell Edge Distance: " + distance.toFixed(0) + " meters";
+
+    document.getElementById("pathloss").innerText =
+      "Path Loss: " + pathLoss.toFixed(2) + " dB";
+
+    document.getElementById("linkbudget").innerText =
+      "Link Budget: " + linkBudget.toFixed(2) + " dBm";
+
+    document.getElementById("status").innerText =
+      "Status: ✅ Calculation Successful";
+
+  } catch (error) {
+
+    document.getElementById("status").innerText =
+      "Status: ❌ Error - " + error;
+
+  }
 }
