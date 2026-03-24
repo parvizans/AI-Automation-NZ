@@ -175,20 +175,61 @@ function calculateLinkBudget(){
   let linkBudget = eirp - totalLoss;
 
   // 🔥 Path Loss (simple model)
- // ✅ FREE SPACE PATH LOSS (BETTER)
-  // ✅ FREE SPACE PATH LOSS (FSPL)
 
- // 🔥 Solve distance directly (RF formula rearranged)
-let distance = Math.pow(10, (linkBudget - 32.45 - 20*Math.log10(freq)) / 20) * 1000;
+// ===============================
+// 📡 ADD NEW INPUTS
+// ===============================
+let edgeThroughput = parseFloat(document.getElementById("lb_throughput").value);
+let area = parseFloat(document.getElementById("lb_area").value);
+
+// ===============================
+// 📡 Throughput → SINR
+// ===============================
+let sinr;
+
+if(edgeThroughput <= 5) sinr = -2;
+else if(edgeThroughput <= 10) sinr = 2;
+else if(edgeThroughput <= 20) sinr = 6;
+else if(edgeThroughput <= 30) sinr = 10;
+else sinr = 15;
+
+// ===============================
+// 📡 Adjust Link Budget
+// ===============================
+let requiredRxPower = -100 + sinr;
+let effectiveBudget = linkBudget - Math.abs(requiredRxPower);
+
+// ===============================
+// 📡 Distance Calculation
+// ===============================
+let distance = Math.pow(
+  10,
+  (effectiveBudget - 32.45 - 20 * Math.log10(freq)) / 20
+) * 1000;
+
+// ===============================
+// 📡 Path Loss
+// ===============================
 let pathLoss = 32.45 + 20 * Math.log10(freq) + 20 * Math.log10(distance / 1000);
 
-  // OUTPUT
-  document.getElementById("lb_distance").innerText =
-    "Distance: " + distance.toFixed(0) + " meters";
+// ===============================
+// 📡 Sites Calculation
+// ===============================
+let radiusKm = distance / 1000;
+let cellArea = Math.PI * radiusKm * radiusKm;
+let sites = area / cellArea;
 
-  document.getElementById("lb_pathloss").innerText =
-    "Path Loss: " + pathLoss.toFixed(2) + " dB";
+// ===============================
+// 📡 OUTPUT
+// ===============================
+document.getElementById("lb_distance").innerText =
+  "Distance: " + distance.toFixed(0) + " meters";
 
-  document.getElementById("lb_budget").innerText =
-    "Link Budget: " + linkBudget.toFixed(2) + " dBm";
-}
+document.getElementById("lb_pathloss").innerText =
+  "Path Loss: " + pathLoss.toFixed(2) + " dB";
+
+document.getElementById("lb_budget").innerText =
+  "Link Budget: " + linkBudget.toFixed(2) + " dBm";
+
+document.getElementById("lb_sites").innerText =
+  "Sites Required: " + Math.ceil(sites);
