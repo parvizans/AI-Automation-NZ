@@ -1270,3 +1270,6 @@ select{
   padding: 12px;
   font-size: 16px;
 }
+#linkBudget {
+  margin-top: 60px;
+}
