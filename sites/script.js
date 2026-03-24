@@ -140,3 +140,53 @@ throughput = throughput * freqFactor;
   document.getElementById("result").innerText =
     `Result: ${throughput.toFixed(2)} Mbps (CQI: ${cqi}, MCS: ${mcs})`;
 }
+// ===============================
+// 📡 LINK BUDGET ENGINE (v1 CLEAN)
+// ===============================
+function calculateLinkBudget(){
+
+  let power = parseFloat(document.getElementById("lb_power").value);
+  let freq = parseFloat(document.getElementById("lb_freq").value);
+  let gain = parseFloat(document.getElementById("lb_gain").value);
+  let cable = parseFloat(document.getElementById("lb_cable").value);
+
+  let body = parseFloat(document.getElementById("lb_body").value);
+  let building = parseFloat(document.getElementById("lb_building").value);
+  let interference = parseFloat(document.getElementById("lb_interference").value);
+  let fading = parseFloat(document.getElementById("lb_fading").value);
+
+  let model = parseFloat(document.getElementById("lb_model").value);
+
+  if(isNaN(power) || power <= 0){
+    alert("Invalid Power input");
+    return;
+  }
+
+  // 🔥 Convert W → dBm
+  let powerDbm = 10 * Math.log10(power * 1000);
+
+  // 🔥 EIRP
+  let eirp = powerDbm + gain - cable;
+
+  // 🔥 Total Loss
+  let totalLoss = body + building + interference + fading;
+
+  // 🔥 Link Budget
+  let linkBudget = eirp - totalLoss;
+
+  // 🔥 Path Loss (simple model)
+  let pathLoss = model + 20 * Math.log10(freq);
+
+  // 🔥 Distance estimation
+  let distance = Math.pow(10, (linkBudget - pathLoss)/20) * 1000;
+
+  // OUTPUT
+  document.getElementById("lb_distance").innerText =
+    "Distance: " + distance.toFixed(0) + " meters";
+
+  document.getElementById("lb_pathloss").innerText =
+    "Path Loss: " + pathLoss.toFixed(2) + " dB";
+
+  document.getElementById("lb_budget").innerText =
+    "Link Budget: " + linkBudget.toFixed(2) + " dBm";
+}
