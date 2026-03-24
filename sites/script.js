@@ -149,30 +149,44 @@ function calculateLinkBudget(){
   const txGain = parseFloat(document.getElementById("txGain").value);
   const rxGain = parseFloat(document.getElementById("rxGain").value);
   const losses = parseFloat(document.getElementById("losses").value);
+  const area = parseFloat(document.getElementById("area").value);
 
-// Free Space Path Loss (FSPL)
- const fspl = 32.44 + 20 * Math.log10(freq) + 20 * Math.log10(distance);
+  // 📡 Free Space Path Loss
+  const fspl = 32.44 + 20 * Math.log10(freq) + 20 * Math.log10(distance);
 
-// 1. Calculate rxPower
-const rxPower = txPower + txGain + rxGain - fspl - losses;
-  
-// 2. ADD THIS
-let quality = "";
-if (rxPower > -80) quality = "Excellent";
-else if (rxPower > -95) quality = "Good";
-else if (rxPower > -105) quality = "Fair";
-else quality = "Poor";
+  // 📡 Received Power
+  const rxPower = txPower + txGain + rxGain - fspl - losses;
 
-// 3. THEN UPDATE OUTPUT
+  // 📡 Link Quality
+  let quality = "";
+  if (rxPower > -80) quality = "Excellent";
+  else if (rxPower > -95) quality = "Good";
+  else if (rxPower > -105) quality = "Fair";
+  else quality = "Poor";
+
+  // 📡 Estimate radius based on signal
+  let radius;
+  if (rxPower > -80) radius = 1.5;
+  else if (rxPower > -90) radius = 1.0;
+  else if (rxPower > -100) radius = 0.6;
+  else radius = 0.3;
+
+  // 📡 Area per cell
+  const cellArea = Math.PI * radius * radius;
+
+  // 📡 Number of sites
+  const sites = area / cellArea;
+
+  // ✅ SHOW LINK BUDGET RESULT
   document.getElementById("lbResult").innerHTML = `
-  <h3>Path Loss: ${fspl.toFixed(2)} dB</h3>
-  <h3>Received Power: ${rxPower.toFixed(2)} dBm</h3>
-  <h3>Link Quality: ${quality}</h3>
-`;
-}
-let quality = "";
+    <h3>Path Loss: ${fspl.toFixed(2)} dB</h3>
+    <h3>Received Power: ${rxPower.toFixed(2)} dBm</h3>
+    <h3>Link Quality: ${quality}</h3>
+  `;
 
-if (rxPower > -80) quality = "Excellent";
-else if (rxPower > -95) quality = "Good";
-else if (rxPower > -105) quality = "Fair";
-else quality = "Poor";
+  // ✅ SHOW COVERAGE RESULT
+  document.getElementById("coverageResult").innerHTML = `
+    <h3>Estimated Cell Radius: ${(radius * 1000).toFixed(0)} meters</h3>
+    <h3>Number of Sites Required: ${Math.ceil(sites)}</h3>
+  `;
+}
