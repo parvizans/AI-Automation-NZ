@@ -165,8 +165,59 @@ Subscribe
 
   <p id="result">Result: -- Mbps</p>
 
+</div>     <!-- END throughput tool -->
+<!-- ✅ ADD LINK BUDGET HERE -->
+<div class="tool-card">
+
+  <h3>📡 5G Link Budget Calculator</h3>
+
+  <div class="tool-grid">
+
+    <label>Tx Power (W)</label>
+    <input type="number" id="lb_power" value="100">
+
+    <label>Frequency (MHz)</label>
+    <input type="number" id="lb_freq" value="3500">
+
+    <label>BS Antenna Gain (dBi)</label>
+    <input type="number" id="lb_gain" value="17">
+
+    <label>Cable Loss (dB)</label>
+    <input type="number" id="lb_cable" value="0">
+
+    <label>Body Loss (dB)</label>
+    <input type="number" id="lb_body" value="3">
+
+    <label>Building Loss (dB)</label>
+    <input type="number" id="lb_building" value="12">
+
+    <label>Interference Margin (dB)</label>
+    <input type="number" id="lb_interference" value="2">
+
+    <label>Fading Margin (dB)</label>
+    <input type="number" id="lb_fading" value="8">
+
+    <label>Propagation Model</label>
+    <select id="lb_model">
+      <option value="120">Rural</option>
+      <option value="135">Suburban</option>
+      <option value="150">Urban</option>
+    </select>
+
+  </div>
+
+  <button onclick="calculateLinkBudget()" class="btn primary">
+    Calculate
+  </button>
+
+  <h2 id="lb_distance">Distance: --</h2>
+  <h3 id="lb_pathloss">Path Loss: --</h3>
+  <h3 id="lb_budget">Link Budget: --</h3>
+
 </div>
-</section>
+
+
+</section>   <!-- CLOSE Tools section -->
 
 
 
