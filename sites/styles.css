@@ -1288,3 +1288,9 @@ select{
   font-weight: bold;
   cursor: pointer;
 }
+.result-box {
+  background: rgba(255,255,255,0.1);
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 20px;
+}
