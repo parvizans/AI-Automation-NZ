@@ -582,3 +582,6 @@ select{
   color: white;
   border: none;
 }
+button, .btn {
+  cursor: pointer;
+}
