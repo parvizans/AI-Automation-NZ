@@ -176,49 +176,53 @@ Subscribe
  <div class="card">
 
   <div class="form-row">
-    <input type="number" id="freqLB" value="3500">
-    <label>Frequency (MHz)</label>
-  </div>
+  <input type="number" id="losses" value="10">
+  <label>Losses (dB)</label>
+</div>
 
-  <div class="form-row">
-    <input type="number" id="distance" value="5">
-    <label>Distance (km)</label>
-  </div>
+<div class="form-row">
+  <input type="number" id="bodyLoss" value="3">
+  <label>Body Loss (dB)</label>
+</div>
 
-  <div class="form-row">
-    <input type="number" id="txPower" value="43">
-    <label>Tx Power (dBm)</label>
-  </div>
+<div class="form-row">
+  <input type="number" id="vegLoss" value="5">
+  <label>Vegetation Loss (dB)</label>
+</div>
 
-  <div class="form-row">
-    <input type="number" id="txGain" value="15">
-    <label>Tx Gain (dBi)</label>
-  </div>
+<div class="form-row">
+  <select id="propModel">
+    <option value="urban" selected>Urban</option>
+    <option value="suburban">Suburban</option>
+    <option value="rural">Rural</option>
+  </select>
+  <label>Propagation Model</label>
+</div>
 
-  <div class="form-row">
-    <input type="number" id="rxGain" value="0">
-    <label>Rx Gain (dBi)</label>
-  </div>
+<div class="form-row">
+  <input type="number" id="cellTHP" value="25">
+  <label>Cell Edge Throughput (Mbps)</label>
+</div>
 
-  <div class="form-row">
-    <input type="number" id="losses" value="10">
-    <label>Losses (dB)</label>
-  </div>
-    <!-- ✅ ADD IT RIGHT HERE -->
-  <div class="form-row">
-    <input type="number" id="area" value="50">
-    <label>Area (sqkm)</label>
-  </div>
-   
-  <!-- button stays last -->
-  <button onclick="calculateLinkBudget()">Calculate</button>
+<div class="form-row">
+  <input type="number" id="area" value="50">
+  <label>Area (sqkm)</label>
+</div>
+
+<!-- BUTTON -->
+<button onclick="calculateLinkBudget()">Calculate</button>
 
 </div>
 
-   <!-- results -->
-  <div id="lbResult"></div>
-  <div id="coverageResult"></div>
-  <div id="coverageResult" class="result-box"></div>   
+<!-- ✅ RESULTS SECTION -->
+<div class="results-container">
+
+  <div id="lbResult" class="result-box"></div>
+
+  <div id="coverageResult" class="result-box"></div>
+
+</div>
+      
 </section>
 
 
