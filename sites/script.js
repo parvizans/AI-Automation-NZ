@@ -143,69 +143,76 @@ throughput = throughput * freqFactor;
 
 function calculateLinkBudget(){
 
+  // 📥 INPUTS
   const freq = parseFloat(document.getElementById("freqLB").value);
   const distance = parseFloat(document.getElementById("distance").value);
   const txPower = parseFloat(document.getElementById("txPower").value);
   const txGain = parseFloat(document.getElementById("txGain").value);
   const rxGain = parseFloat(document.getElementById("rxGain").value);
   const losses = parseFloat(document.getElementById("losses").value);
+  const bodyLoss = parseFloat(document.getElementById("bodyLoss").value);
+  const vegLoss = parseFloat(document.getElementById("vegLoss").value);
   const area = parseFloat(document.getElementById("area").value);
   const cellThroughput = parseFloat(document.getElementById("cellTHP").value);
+  const propModel = document.getElementById("propModel").value;
 
-  // 📡 Free Space Path Loss
+  // 📡 PROPAGATION MODEL LOSS
+  let modelLoss = 0;
+  if (propModel === "urban") modelLoss = 20;
+  else if (propModel === "suburban") modelLoss = 10;
+  else if (propModel === "rural") modelLoss = 5;
+
+  // 📡 FREE SPACE PATH LOSS
   const fspl = 32.44 + 20 * Math.log10(freq) + 20 * Math.log10(distance);
 
-  // 📡 Received Power
-  const rxPower = txPower + txGain + rxGain - fspl - losses;
+  // 📡 TOTAL LOSS
+  const totalLoss = losses + bodyLoss + vegLoss + modelLoss;
 
-  // 📡 Link Quality
+  // 📡 RECEIVED POWER
+  const rxPower = txPower + txGain + rxGain - fspl - totalLoss;
+
+  // 📡 LINK QUALITY
   let quality = "";
   if (rxPower > -80) quality = "Excellent";
   else if (rxPower > -95) quality = "Good";
   else if (rxPower > -105) quality = "Fair";
   else quality = "Poor";
 
-  // 📡 Estimate radius based on signal
- 
-let radius;
-if (rxPower >= requiredRSRP) {
-  radius = 1.2;  // good coverage
-} else if (rxPower >= requiredRSRP - 10) {
-  radius = 0.8;
-} else {
-  radius = 0.4;
-}
-  
-let requiredRSRP;
-if (cellThroughput <= 5) requiredRSRP = -105;
-else if (cellThroughput <= 20) requiredRSRP = -95;
-else if (cellThroughput <= 50) requiredRSRP = -85;
-else requiredRSRP = -75;
-  <h3>Required RSRP: ${requiredRSRP} dBm</h3>
-<h3>Cell Edge Throughput Target: ${cellThroughput} Mbps</h3>
-  
-  // 📡 Area per cell
-  const cellArea = Math.PI * radius * radius;
+  // 📡 REQUIRED RSRP (BASED ON THROUGHPUT)
   let requiredRSRP;
+  if (cellThroughput <= 5) requiredRSRP = -105;
+  else if (cellThroughput <= 20) requiredRSRP = -95;
+  else if (cellThroughput <= 50) requiredRSRP = -85;
+  else requiredRSRP = -75;
 
-// Based on throughput requirement
-if (cellThroughput <= 5) requiredRSRP = -105;
-else if (cellThroughput <= 20) requiredRSRP = -95;
-else if (cellThroughput <= 50) requiredRSRP = -85;
-else requiredRSRP = -75;
+  // 📡 CELL RADIUS ESTIMATION
+  let radius;
+  if (rxPower >= requiredRSRP) {
+    radius = 1.2;
+  } else if (rxPower >= requiredRSRP - 10) {
+    radius = 0.8;
+  } else {
+    radius = 0.4;
+  }
 
-  // 📡 Number of sites
+  // 📡 CELL AREA
+  const cellArea = Math.PI * radius * radius;
+
+  // 📡 NUMBER OF SITES
   const sites = area / cellArea;
 
-  // ✅ SHOW LINK BUDGET RESULT
+  // 📊 RESULT 1 (LINK)
   document.getElementById("lbResult").innerHTML = `
     <h3>Path Loss: ${fspl.toFixed(2)} dB</h3>
+    <h3>Total Loss: ${totalLoss.toFixed(2)} dB</h3>
     <h3>Received Power: ${rxPower.toFixed(2)} dBm</h3>
     <h3>Link Quality: ${quality}</h3>
   `;
 
-  // ✅ SHOW COVERAGE RESULT
+  // 📊 RESULT 2 (COVERAGE)
   document.getElementById("coverageResult").innerHTML = `
+    <h3>Required RSRP: ${requiredRSRP} dBm</h3>
+    <h3>Cell Edge Throughput: ${cellThroughput} Mbps</h3>
     <h3>Estimated Cell Radius: ${(radius * 1000).toFixed(0)} meters</h3>
     <h3>Number of Sites Required: ${Math.ceil(sites)}</h3>
   `;
