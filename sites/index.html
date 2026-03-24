@@ -51,133 +51,125 @@ Subscribe
 
 <!-- 👉 NEW HERO GOES HERE -->
 
-    <section id="home" class="hero">
+    <section class="hero">
 
-<canvas id="networkCanvas"></canvas>
+  <canvas id="stars"></canvas>   <!-- 👈 ADD THIS LINE HERE -->
 
   <div class="hero-content">
+    <h1>Telecom AI & Automation Platform</h1>
+    <p>
+      Build, analyze and optimize networks with AI-powered tools, insights and engineering intelligence.
+    </p>
 
-```
-<h1>Telecom AI & Automation Platform</h1>
-
-<p>
-  Build, analyze and optimize networks with AI-powered tools,
-  insights and engineering intelligence.
-</p>
-
-<div class="hero-buttons">
-  <a href="#tools" class="btn-primary">Explore Tools</a>
-  <a href="#insights" class="btn-secondary">Read Insights</a>
-</div>
-```
-
+    <div class="hero-buttons">
+      <a href="#tools" class="btn primary">Explore Tools</a>
+      <a href="#insights" class="btn secondary">Read Insights</a>
+    </div>
   </div>
 
 </section>
     <section id="insights" class="section">
-  <h2>Insights</h2>
-  <p>Telecom engineering insights, optimization strategies and deep dives.</p>
 </section>
+    
 
-<section id="tools" class="section">
+
+<!-✅ YOU ADD Tools section here-->
+
+    <section id="tools" class="section">
   <h2>Tools</h2>
-<div class="tool-card">
 
-  <h3>5G Throughput Calculator (Advanced)</h3>
+ <div class="tool-card">
 
-  <div class="tool-grid">
+  <h3>5G Throughput Calculator (Pro)</h3>
 
-    <label>Bandwidth (MHz)</label>
-    <input type="number" id="bw" value="100">
-
-    <label>MIMO Layers</label>
-    <input type="number" id="layers" value="4">
-
-    <label>Modulation</label>
-    <select id="modulation">
-      <option value="2">QPSK</option>
-      <option value="4">16QAM</option>
-      <option value="6">64QAM</option>
-      <option value="8" selected>256QAM</option>
-    </select>
-
-    <label>Code Rate</label>
-    <input type="number" id="coderate" value="0.9" step="0.1">
-
-    <label>Overhead (%)</label>
-    <input type="number" id="overhead" value="20">
-
+  <!-- Criteria 1 -->
+  <div class="form-row">
+    <input id="sinr" value="20">
+    <label>SINR (dB)</label>
   </div>
 
-  <button onclick="calculate5G()" class="btn primary">
+  <!-- Criteria 3 -->
+  <div class="form-row">
+    <input id="bandwidth" value="100">
+    <label>Bandwidth (MHz)</label>
+  </div>
+
+  <!-- Criteria 4 -->
+  <div class="form-row">
+    <input id="mimo" value="4">
+    <label>MIMO Layers</label>
+  </div>
+
+ 
+
+  <!-- Criteria 7 -->
+  <div class="form-row">
+    <input id="bler" value="10">
+    <label>BLER (%)</label>
+  </div>
+
+  <!-- Criteria 8 -->
+  <div class="form-row">
+    <input id="overhead" value="15">
+    <label>Overhead (%)</label>
+  </div>
+
+  <!-- Criteria 9 -->
+  <div class="form-row">
+  <select id="mode">
+      <option value="auto">Auto Mode</option>
+      <option value="manual">Manual Mode</option>
+    </select>
+    <label>Calculation Mode</label>
+  </div>
+    <!-- Criteria 5 -->
+  <div class="form-row">
+    <select id="scs">
+      <option>15</option>
+      <option selected>30</option>
+      <option>60</option>
+    </select>
+    <label>Subcarrier Spacing (kHz)</label>
+  </div>
+   
+ <!-- Criteria 2 -->
+<div class="form-row">
+  <select id="freqBand">
+    <option value="700">700 MHz (n28)</option>
+    <option value="850">850 MHz</option>
+    <option value="900">900 MHz</option>
+    <option value="1800">1800 MHz (n3)</option>
+    <option value="2100">2100 MHz (n1)</option>
+    <option value="2600" selected>2600 MHz (n7)</option>
+    <option value="3500">3500 MHz (n78)</option>
+    <option value="24000">24 GHz</option>
+    <option value="28000">28 GHz</option>
+  </select>
+ <label>Frequency Band</label>
+</div>
+   
+  <!-- Criteria 6 -->
+  <div class="form-row">
+    <select id="duplex">
+      <option value="1">FDD</option>
+      <option value="0.75">TDD (4DL:1UL)</option>
+      <option value="0.6">TDD (3DL:2UL)</option>
+    </select>
+    <label>Duplex Mode</label>
+  </div>
+
+  <!-- BUTTON AT THE END -->
+  <button onclick="calculate5G()" class="btn primary big-btn">
     Calculate
   </button>
 
-  <h2 id="result">Result: -- Mbps</h2>
+  <p id="result">Result: -- Mbps</p>
 
 </div>
 </section>
 
-    <title>5G Link Budget Calculator</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
 
-<div class="container">
-  <h1>📡 5G Link Budget Calculator</h1>
 
-  <div class="grid">
-
-    <input id="power" type="number" placeholder="Sector Power (W)" value="100">
-
-    <select id="tdd">
-      <option value="4">4DL_1UL</option>
-      <option value="3">3DL_2UL</option>
-    </select>
-
-    <input id="bodyLoss" type="number" placeholder="Body Loss (dB)" value="3">
-    <input id="buildingLoss" type="number" placeholder="Building Loss (dB)" value="12">
-    <input id="interference" type="number" placeholder="Interference Margin (dB)" value="2">
-
-    <select id="model">
-      <option value="120">Rural</option>
-      <option value="135">Suburban</option>
-      <option value="150">Urban</option>
-    </select>
-
-    <input id="vegetation" type="number" placeholder="Vegetation Loss (dB)" value="0">
-    <input id="antennaGain" type="number" placeholder="BS Antenna Gain (dBi)" value="17">
-    <input id="frequency" type="number" placeholder="Frequency (MHz)" value="3500">
-    <input id="bandwidth" type="number" placeholder="Bandwidth (MHz)" value="100">
-    <input id="cableLoss" type="number" placeholder="Cable Loss (dB)" value="0">
-
-    <select id="numerology">
-      <option value="1">15 kHz</option>
-      <option value="2" selected>30 kHz</option>
-      <option value="3">60 kHz</option>
-    </select>
-
-    <input id="fading" type="number" placeholder="Fading Margin (dB)" value="8">
-
-    <select id="radio">
-      <option value="2">RRU</option>
-      <option value="3">MMU</option>
-      <option value="4">MRFU</option>
-    </select>
-
-    <input id="area" type="number" placeholder="Area (sqkm)" value="50">
-
-  </div>
-
-  <button onclick="calculate()">⚡ Calculate</button>
-
-  <div class="result">
-    <h2>📊 Results</h2>
-    <p id="distance">Cell Edge Distance: -</p>
-    <p id="pathloss">Path Loss: -</p>
-    <p id="summary">Summary: -</p>
-  </div>
-</div>
 
 <section id="knowledge" class="section">
   <h2>Knowledge Base</h2>
