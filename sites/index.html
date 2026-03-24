@@ -51,128 +51,74 @@ Subscribe
 
 <!-- 👉 NEW HERO GOES HERE -->
 
-    <section class="hero">
+    <section id="home" class="hero">
 
-  <canvas id="stars"></canvas>   <!-- 👈 ADD THIS LINE HERE -->
+<canvas id="networkCanvas"></canvas>
 
   <div class="hero-content">
-    <h1>Telecom AI & Automation Platform</h1>
-    <p>
-      Build, analyze and optimize networks with AI-powered tools, insights and engineering intelligence.
-    </p>
 
-    <div class="hero-buttons">
-      <a href="#tools" class="btn primary">Explore Tools</a>
-      <a href="#insights" class="btn secondary">Read Insights</a>
-    </div>
+```
+<h1>Telecom AI & Automation Platform</h1>
+
+<p>
+  Build, analyze and optimize networks with AI-powered tools,
+  insights and engineering intelligence.
+</p>
+
+<div class="hero-buttons">
+  <a href="#tools" class="btn-primary">Explore Tools</a>
+  <a href="#insights" class="btn-secondary">Read Insights</a>
+</div>
+```
+
   </div>
 
 </section>
     <section id="insights" class="section">
+  <h2>Insights</h2>
+  <p>Telecom engineering insights, optimization strategies and deep dives.</p>
 </section>
-    
 
-
-<!-✅ YOU ADD Tools section here-->
-
-    <section id="tools" class="section">
+<section id="tools" class="section">
   <h2>Tools</h2>
+<div class="tool-card">
 
- <div class="tool-card">
+  <h3>5G Throughput Calculator (Advanced)</h3>
 
-  <h3>5G Throughput Calculator (Pro)</h3>
+  <div class="tool-grid">
 
-  <!-- Criteria 1 -->
-  <div class="form-row">
-    <input id="sinr" value="20">
-    <label>SINR (dB)</label>
-  </div>
-
-  <!-- Criteria 3 -->
-  <div class="form-row">
-    <input id="bandwidth" value="100">
     <label>Bandwidth (MHz)</label>
-  </div>
+    <input type="number" id="bw" value="100">
 
-  <!-- Criteria 4 -->
-  <div class="form-row">
-    <input id="mimo" value="4">
     <label>MIMO Layers</label>
-  </div>
+    <input type="number" id="layers" value="4">
 
- 
+    <label>Modulation</label>
+    <select id="modulation">
+      <option value="2">QPSK</option>
+      <option value="4">16QAM</option>
+      <option value="6">64QAM</option>
+      <option value="8" selected>256QAM</option>
+    </select>
 
-  <!-- Criteria 7 -->
-  <div class="form-row">
-    <input id="bler" value="10">
-    <label>BLER (%)</label>
-  </div>
+    <label>Code Rate</label>
+    <input type="number" id="coderate" value="0.9" step="0.1">
 
-  <!-- Criteria 8 -->
-  <div class="form-row">
-    <input id="overhead" value="15">
     <label>Overhead (%)</label>
+    <input type="number" id="overhead" value="20">
+
   </div>
 
-  <!-- Criteria 9 -->
-  <div class="form-row">
-  <select id="mode">
-      <option value="auto">Auto Mode</option>
-      <option value="manual">Manual Mode</option>
-    </select>
-    <label>Calculation Mode</label>
-  </div>
-    <!-- Criteria 5 -->
-  <div class="form-row">
-    <select id="scs">
-      <option>15</option>
-      <option selected>30</option>
-      <option>60</option>
-    </select>
-    <label>Subcarrier Spacing (kHz)</label>
-  </div>
-   
- <!-- Criteria 2 -->
-<div class="form-row">
-  <select id="freqBand">
-    <option value="700">700 MHz (n28)</option>
-    <option value="850">850 MHz</option>
-    <option value="900">900 MHz</option>
-    <option value="1800">1800 MHz (n3)</option>
-    <option value="2100">2100 MHz (n1)</option>
-    <option value="2600" selected>2600 MHz (n7)</option>
-    <option value="3500">3500 MHz (n78)</option>
-    <option value="24000">24 GHz</option>
-    <option value="28000">28 GHz</option>
-  </select>
- <label>Frequency Band</label>
-</div>
-   
-  <!-- Criteria 6 -->
-  <div class="form-row">
-    <select id="duplex">
-      <option value="1">FDD</option>
-      <option value="0.75">TDD (4DL:1UL)</option>
-      <option value="0.6">TDD (3DL:2UL)</option>
-    </select>
-    <label>Duplex Mode</label>
-  </div>
-
-  <!-- BUTTON AT THE END -->
-  <button onclick="calculate5G()" class="btn primary big-btn">
+  <button onclick="calculate5G()" class="btn primary">
     Calculate
   </button>
 
-  <p id="result">Result: -- Mbps</p>
+  <h2 id="result">Result: -- Mbps</h2>
 
 </div>
 </section>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>5G Link Budget Calculator</title>
+    <title>5G Link Budget Calculator</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -232,8 +178,6 @@ Subscribe
     <p id="summary">Summary: -</p>
   </div>
 </div>
-
-
 
 <section id="knowledge" class="section">
   <h2>Knowledge Base</h2>
