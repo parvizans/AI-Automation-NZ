@@ -140,3 +140,24 @@ throughput = throughput * freqFactor;
   document.getElementById("result").innerText =
     `Result: ${throughput.toFixed(2)} Mbps (CQI: ${cqi}, MCS: ${mcs})`;
 }
+
+function calculateLinkBudget(){
+
+  const freq = parseFloat(document.getElementById("freqLB").value);
+  const distance = parseFloat(document.getElementById("distance").value);
+  const txPower = parseFloat(document.getElementById("txPower").value);
+  const txGain = parseFloat(document.getElementById("txGain").value);
+  const rxGain = parseFloat(document.getElementById("rxGain").value);
+  const losses = parseFloat(document.getElementById("losses").value);
+
+  // Free Space Path Loss (FSPL)
+  const fspl = 32.44 + 20 * Math.log10(freq) + 20 * Math.log10(distance);
+
+  // Received Power
+  const rxPower = txPower + txGain + rxGain - fspl - losses;
+
+  document.getElementById("lbResult").innerHTML = `
+    <h3>Path Loss: ${fspl.toFixed(2)} dB</h3>
+    <h3>Received Power: ${rxPower.toFixed(2)} dBm</h3>
+  `;
+}
