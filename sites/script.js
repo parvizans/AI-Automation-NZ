@@ -175,10 +175,12 @@ function calculateLinkBudget(){
   let linkBudget = eirp - totalLoss;
 
   // 🔥 Path Loss (simple model)
-  let pathLoss = model + 20 * Math.log10(freq);
+ // ✅ FREE SPACE PATH LOSS (BETTER)
+  // ✅ FREE SPACE PATH LOSS (FSPL)
 
-  // 🔥 Distance estimation
-  let distance = Math.pow(10, (linkBudget - pathLoss)/20) * 1000;
+ // 🔥 Solve distance directly (RF formula rearranged)
+let distance = Math.pow(10, (linkBudget - 32.45 - 20*Math.log10(freq)) / 20) * 1000;
+let pathLoss = 32.45 + 20 * Math.log10(freq) + 20 * Math.log10(distance / 1000);
 
   // OUTPUT
   document.getElementById("lb_distance").innerText =
