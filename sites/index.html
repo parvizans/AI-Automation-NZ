@@ -204,12 +204,21 @@ Subscribe
     <input type="number" id="losses" value="10">
     <label>Losses (dB)</label>
   </div>
-
+    <!-- ✅ ADD IT RIGHT HERE -->
+  <div class="form-row">
+    <input type="number" id="area" value="50">
+    <label>Area (sqkm)</label>
+  </div>
+   
+  <!-- button stays last -->
   <button onclick="calculateLinkBudget()">Calculate</button>
 
 </div>
 
+   <!-- results -->
   <div id="lbResult"></div>
+  <div id="coverageResult"></div>
+  <div id="coverageResult" class="result-box"></div>   
 </section>
 
 
