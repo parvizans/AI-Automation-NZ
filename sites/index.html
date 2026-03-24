@@ -173,29 +173,41 @@ Subscribe
     <section id="linkBudget">
   <h2>📡 Link Budget Calculator</h2>
 
-  <div class="card">
+ <div class="card">
 
-    <label>Frequency (MHz)</label>
+  <div class="form-row">
     <input type="number" id="freqLB" value="3500">
-
-    <label>Distance (km)</label>
-    <input type="number" id="distance" value="1">
-
-    <label>Tx Power (dBm)</label>
-    <input type="number" id="txPower" value="43">
-
-    <label>Tx Gain (dBi)</label>
-    <input type="number" id="txGain" value="15">
-
-    <label>Rx Gain (dBi)</label>
-    <input type="number" id="rxGain" value="0">
-
-    <label>Losses (dB)</label>
-    <input type="number" id="losses" value="10">
-
-    <button onclick="calculateLinkBudget()">Calculate</button>
-
+    <label>Frequency (MHz)</label>
   </div>
+
+  <div class="form-row">
+    <input type="number" id="distance" value="5">
+    <label>Distance (km)</label>
+  </div>
+
+  <div class="form-row">
+    <input type="number" id="txPower" value="43">
+    <label>Tx Power (dBm)</label>
+  </div>
+
+  <div class="form-row">
+    <input type="number" id="txGain" value="15">
+    <label>Tx Gain (dBi)</label>
+  </div>
+
+  <div class="form-row">
+    <input type="number" id="rxGain" value="0">
+    <label>Rx Gain (dBi)</label>
+  </div>
+
+  <div class="form-row">
+    <input type="number" id="losses" value="10">
+    <label>Losses (dB)</label>
+  </div>
+
+  <button onclick="calculateLinkBudget()">Calculate</button>
+
+</div>
 
   <div id="lbResult"></div>
 </section>
