@@ -150,14 +150,29 @@ function calculateLinkBudget(){
   const rxGain = parseFloat(document.getElementById("rxGain").value);
   const losses = parseFloat(document.getElementById("losses").value);
 
-  // Free Space Path Loss (FSPL)
-  const fspl = 32.44 + 20 * Math.log10(freq) + 20 * Math.log10(distance);
+// Free Space Path Loss (FSPL)
+ const fspl = 32.44 + 20 * Math.log10(freq) + 20 * Math.log10(distance);
 
-  // Received Power
-  const rxPower = txPower + txGain + rxGain - fspl - losses;
+// 1. Calculate rxPower
+const rxPower = txPower + txGain + rxGain - fspl - losses;
+  
+// 2. ADD THIS
+let quality = "";
+if (rxPower > -80) quality = "Excellent";
+else if (rxPower > -95) quality = "Good";
+else if (rxPower > -105) quality = "Fair";
+else quality = "Poor";
 
+// 3. THEN UPDATE OUTPUT
   document.getElementById("lbResult").innerHTML = `
-    <h3>Path Loss: ${fspl.toFixed(2)} dB</h3>
-    <h3>Received Power: ${rxPower.toFixed(2)} dBm</h3>
-  `;
+  <h3>Path Loss: ${fspl.toFixed(2)} dB</h3>
+  <h3>Received Power: ${rxPower.toFixed(2)} dBm</h3>
+  <h3>Link Quality: ${quality}</h3>
+`;
 }
+let quality = "";
+
+if (rxPower > -80) quality = "Excellent";
+else if (rxPower > -95) quality = "Good";
+else if (rxPower > -105) quality = "Fair";
+else quality = "Poor";
