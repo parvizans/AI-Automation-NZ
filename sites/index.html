@@ -198,10 +198,18 @@ Subscribe
     <input type="number" id="lb_fading" value="8">
 
     <label>Propagation Model</label>
-    <select id="lb_model">
+    <select id="lb_model
+      
+     <label>Cell Edge Throughput (Mbps)</label>
+     <input type="number" id="lb_throughput" value="25">
+
+     <label>Total Area (sqkm)</label>
+     <input type="number" id="lb_area" value="50">
+      
       <option value="120">Rural</option>
       <option value="135">Suburban</option>
       <option value="150">Urban</option>
+      
     </select>
 
   </div>
@@ -214,6 +222,7 @@ Subscribe
   <h2 id="lb_distance">Distance: --</h2>
   <h3 id="lb_pathloss">Path Loss: --</h3>
   <h3 id="lb_budget">Link Budget: --</h3>
+  <h3 id="lb_sites">Sites Required: --</h3>
 
 </div>
 
