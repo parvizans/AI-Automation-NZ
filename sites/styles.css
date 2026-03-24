@@ -1273,3 +1273,18 @@ select{
 #linkBudget {
   margin-top: 60px;
 }
+#linkBudget .card {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+#linkBudget button {
+  grid-column: span 2;
+  padding: 12px;
+  background: linear-gradient(90deg,#32d296,#5aa7ff);
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
