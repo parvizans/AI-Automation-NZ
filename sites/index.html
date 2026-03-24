@@ -1,398 +1,68 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AutomationPark | Telecom AI & Automation & IOT Platform</title>
- <meta name="description" content="AutomationPark is a telecom AI platform providing RAN insights, automation tools, RCA analyzer, and engineering knowledge base & IOT Platform For Smart Cities." />
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <title>5G Link Budget Calculator</title>
+  <link rel="stylesheet" href="style.css">
 </head>
+<body>
 
-<body id="top">
+<div class="container">
+  <h1>📡 5G Link Budget Calculator</h1>
 
- <header class="navbar">
+  <div class="grid">
 
-<div class="nav-container">
+    <input id="power" type="number" placeholder="Sector Power (W)" value="100">
 
-<div class="logo">
-  <span class="brand-text">AutomationPark</span>
-</div>
-
-<nav class="menu">
-
-<ul>
-
-<li><a href="#home">Home</a></li>
-
-<li><a href="#insights">Insights</a></li>
-
-<li><a href="#tools">Tools</a></li>
-
-<li><a href="#knowledge">Knowledge Base</a></li>
-
-<li><a href="#rca">RCA Analyzer</a></li>
-
-<li><a href="#Our Producs">Our Products</a></li>  
-
-<li><a href="#contact">Contact</a></li>
-
-</ul>
-
-</nav>
-
-<a href="#subscribe" class="subscribe-btn">
-Subscribe
-</a>
-
-</div>
-
-</header>
-  <main>
-
- <!-- HERO removed -->
-
-<!-- 👉 NEW HERO GOES HERE -->
-
-    <section class="hero">
-
-  <canvas id="stars"></canvas>   <!-- 👈 ADD THIS LINE HERE -->
-
-  <div class="hero-content">
-    <h1>Telecom AI Automation & IOT Platform</h1>
-    <p>
-      Build, analyze and optimize networks with AI-powered tools, insights and engineering intelligence & IOT Platform For Smart Cities.
-    </p>
-
-    <div class="hero-buttons">
-      <a href="#tools" class="btn primary">Explore Tools</a>
-      <a href="#insights" class="btn secondary">Read Insights</a>
-    </div>
-  </div>
-
-</section>
-    <section id="insights" class="section">
-</section>
-    
-
-
-<!-✅ YOU ADD Tools section here-->
-
-    <section id="tools" class="section">
-  <h2>Tools</h2>
-
- <div class="tool-card">
-
-  <h3>5G Throughput Calculator (Pro)</h3>
-
-  <!-- Criteria 1 -->
-  <div class="form-row">
-    <input id="sinr" value="20">
-    <label>SINR (dB)</label>
-  </div>
-
-  <!-- Criteria 3 -->
-  <div class="form-row">
-    <input id="bandwidth" value="100">
-    <label>Bandwidth (MHz)</label>
-  </div>
-
-  <!-- Criteria 4 -->
-  <div class="form-row">
-    <input id="mimo" value="4">
-    <label>MIMO Layers</label>
-  </div>
-
- 
-
-  <!-- Criteria 7 -->
-  <div class="form-row">
-    <input id="bler" value="10">
-    <label>BLER (%)</label>
-  </div>
-
-  <!-- Criteria 8 -->
-  <div class="form-row">
-    <input id="overhead" value="15">
-    <label>Overhead (%)</label>
-  </div>
-
-  <!-- Criteria 9 -->
-  <div class="form-row">
-  <select id="mode">
-      <option value="auto">Auto Mode</option>
-      <option value="manual">Manual Mode</option>
+    <select id="tdd">
+      <option value="4">4DL_1UL</option>
+      <option value="3">3DL_2UL</option>
     </select>
-    <label>Calculation Mode</label>
-  </div>
-    <!-- Criteria 5 -->
-  <div class="form-row">
-    <select id="scs">
-      <option>15</option>
-      <option selected>30</option>
-      <option>60</option>
+
+    <input id="bodyLoss" type="number" placeholder="Body Loss (dB)" value="3">
+    <input id="buildingLoss" type="number" placeholder="Building Loss (dB)" value="12">
+    <input id="interference" type="number" placeholder="Interference Margin (dB)" value="2">
+
+    <select id="model">
+      <option value="120">Rural</option>
+      <option value="135">Suburban</option>
+      <option value="150">Urban</option>
     </select>
-    <label>Subcarrier Spacing (kHz)</label>
-  </div>
-   
- <!-- Criteria 2 -->
-<div class="form-row">
-  <select id="freqBand">
-    <option value="700">700 MHz (n28)</option>
-    <option value="850">850 MHz</option>
-    <option value="900">900 MHz</option>
-    <option value="1800">1800 MHz (n3)</option>
-    <option value="2100">2100 MHz (n1)</option>
-    <option value="2600" selected>2600 MHz (n7)</option>
-    <option value="3500">3500 MHz (n78)</option>
-    <option value="24000">24 GHz</option>
-    <option value="28000">28 GHz</option>
-  </select>
- <label>Frequency Band</label>
-</div>
-   
-  <!-- Criteria 6 -->
-  <div class="form-row">
-    <select id="duplex">
-      <option value="1">FDD</option>
-      <option value="0.75">TDD (4DL:1UL)</option>
-      <option value="0.6">TDD (3DL:2UL)</option>
+
+    <input id="vegetation" type="number" placeholder="Vegetation Loss (dB)" value="0">
+    <input id="antennaGain" type="number" placeholder="BS Antenna Gain (dBi)" value="17">
+    <input id="frequency" type="number" placeholder="Frequency (MHz)" value="3500">
+    <input id="bandwidth" type="number" placeholder="Bandwidth (MHz)" value="100">
+    <input id="cableLoss" type="number" placeholder="Cable Loss (dB)" value="0">
+
+    <select id="numerology">
+      <option value="1">15 kHz</option>
+      <option value="2" selected>30 kHz</option>
+      <option value="3">60 kHz</option>
     </select>
-    <label>Duplex Mode</label>
+
+    <input id="fading" type="number" placeholder="Fading Margin (dB)" value="8">
+
+    <select id="radio">
+      <option value="2">RRU</option>
+      <option value="3">MMU</option>
+      <option value="4">MRFU</option>
+    </select>
+
+    <input id="area" type="number" placeholder="Area (sqkm)" value="50">
+
   </div>
 
-  <!-- BUTTON AT THE END -->
-  <button onclick="calculate5G()" class="btn primary big-btn">
-    Calculate
-  </button>
+  <button onclick="calculate()">⚡ Calculate</button>
 
-  <p id="result">Result: -- Mbps</p>
-
-</div>
-</section>
-
-    <section id="linkBudget">
-  <h2>📡 Link Budget Calculator</h2>
-
- <div class="card">
-
-  <div class="form-row">
-  <input type="number" id="losses" value="10">
-  <label>Losses (dB)</label>
-</div>
-
-<div class="form-row">
-  <input type="number" id="bodyLoss" value="3">
-  <label>Body Loss (dB)</label>
-</div>
-
-<div class="form-row">
-  <input type="number" id="vegLoss" value="5">
-  <label>Vegetation Loss (dB)</label>
-</div>
-
-<div class="form-row">
-  <select id="propModel">
-    <option value="urban" selected>Urban</option>
-    <option value="suburban">Suburban</option>
-    <option value="rural">Rural</option>
-  </select>
-  <label>Propagation Model</label>
-</div>
-
-<div class="form-row">
-  <input type="number" id="cellTHP" value="25">
-  <label>Cell Edge Throughput (Mbps)</label>
-</div>
-
-<div class="form-row">
-  <input type="number" id="area" value="50">
-  <label>Area (sqkm)</label>
-</div>
-
-<!-- BUTTON -->
-<button onclick="calculateLinkBudget()">Calculate</button>
-
-</div>
-
-<!-- ✅ RESULTS SECTION -->
-<div class="results-container">
-
-  <div id="lbResult" class="result-box"></div>
-
-  <div id="coverageResult" class="result-box"></div>
-
-</div>
-      
-</section>
-
-
-
-
-<section id="knowledge" class="section">
-  <h2>Knowledge Base</h2>
-  <p>Structured telecom learning and engineering references.</p>
-</section>
-
-<section id="rca" class="section">
-  <h2>RCA Analyzer</h2>
-  <p>AI-powered root cause analysis for network performance issues.</p>
-</section>
-
-<section id="contact" class="section">
-  <h2>Contact</h2>
-  <p>Get in touch for collaboration or consulting.</p>
-</section>
-
-<section id="subscribe" class="section">
-  <h2>Subscribe</h2>
-  <p>Stay updated with latest telecom insights and tools.</p>
-</section>
-
-
-    <!-- AUTOMATION -->
-    <section id="automation" class="section">
-      <div class="wrap">
-        <div class="card">
-          <h2>Business Automation</h2>
-          <p class="muted">
-            Smart workflows for car dealers, trades, hospitality & small businesses.
-          </p>
-
-          <div class="three">
-            <div class="item">
-              <h3>Booking & Enquiry Systems</h3>
-              <p>Automated forms, instant notifications, CRM integration.</p>
-            </div>
-
-            <div class="item">
-              <h3>Follow-up Automation</h3>
-              <p>Email, WhatsApp & SMS follow-ups that close deals faster.</p>
-            </div>
-
-            <div class="item">
-              <h3>AI Chatbots</h3>
-              <p>Lead capture bots for websites & social media.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CAREER -->
-    <section id="career" class="section">
-      <div class="wrap">
-        <div class="card">
-          <h2>Career Acceleration Services</h2>
-          <p class="muted">
-            Get hired faster. Stand out confidently.
-          </p>
-
-          <div class="three">
-            <div class="item">
-              <h3>Professional CV Writing</h3>
-              <p>ATS-optimized, industry-tailored resumes.</p>
-            </div>
-
-            <div class="item">
-              <h3>Custom Cover Letters</h3>
-              <p>Job-matched letters aligned with job descriptions.</p>
-            </div>
-
-            <div class="item">
-              <h3>Interview & Screening Prep</h3>
-              <p>Mock Q&A, behavioural answers, first-call preparation.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-      <!-- MID IMAGE -->
-<section class="image-break">
-  <div class="wrap">
-    <img src="assets/mid.jpg" alt="Milkroad Services" class="mid-image">
+  <div class="result">
+    <h2>📊 Results</h2>
+    <p id="distance">Cell Edge Distance: -</p>
+    <p id="pathloss">Path Loss: -</p>
+    <p id="summary">Summary: -</p>
   </div>
-</section>
+</div>
 
-    <!-- PRICING -->
-    <section id="pricing" class="section">
-      <div class="wrap">
-        <div class="card">
-          <h2>Pricing</h2>
-
-          <div class="pricing">
-
-            <div class="price">
-              <h3>Automation Starter</h3>
-              <div class="amt">$300 NZD</div>
-              <ul>
-                <li>Booking or enquiry system</li>
-                <li>Google Sheets CRM</li>
-                <li>Email notifications</li>
-              </ul>
-            </div>
-
-            <div class="price featured">
-              <h3>Automation Complete To Pro-MultiPage</h3>
-              <div class="amt">$500-$1000 NZD</div>
-              <ul>
-                <li>Full automation setup</li>
-                <li>Follow-up workflows</li>
-                <li>Dashboard & analytics</li>
-              </ul>
-            </div>
-
-            <div class="price">
-              <h3>Career Package</h3>
-              <div class="amt">$250 NZD</div>
-              <ul>
-                <li>Professional CV rewrite</li>
-                <li>Custom cover letter</li>
-                <li>Interview Q&A guide</li>
-                <li>30-min coaching call</li>
-              </ul>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="section">
-      <div class="wrap">
-        <div class="card">
-          <h2>Contact</h2>
-          <p class="muted">Book a free consultation call today.</p>
-
-          <div class="row">
-            <a class="btn primary"
-              href="https://wa.me/64220100700"
-              target="_blank">WhatsApp</a>
-
-            <a class="btn"
-              href="mailto:parvizans@gmail.com">Email</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer class="footer">
-    <div class="wrap small muted">
-      © <span id="y"></span> Milkroad — AI Automation & Career Services
-    </div>
-  </footer>
-
-  <!-- Language Script -->
-  <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
-
-    function switchLang(lang) {
-      alert("Language support coming soon: " + lang);
-    }
-  </script>
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
