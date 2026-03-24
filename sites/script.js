@@ -150,6 +150,7 @@ function calculateLinkBudget(){
   const rxGain = parseFloat(document.getElementById("rxGain").value);
   const losses = parseFloat(document.getElementById("losses").value);
   const area = parseFloat(document.getElementById("area").value);
+  const cellThroughput = parseFloat(document.getElementById("cellTHP").value);
 
   // 📡 Free Space Path Loss
   const fspl = 32.44 + 20 * Math.log10(freq) + 20 * Math.log10(distance);
@@ -165,14 +166,33 @@ function calculateLinkBudget(){
   else quality = "Poor";
 
   // 📡 Estimate radius based on signal
-  let radius;
-  if (rxPower > -80) radius = 1.5;
-  else if (rxPower > -90) radius = 1.0;
-  else if (rxPower > -100) radius = 0.6;
-  else radius = 0.3;
-
+ 
+let radius;
+if (rxPower >= requiredRSRP) {
+  radius = 1.2;  // good coverage
+} else if (rxPower >= requiredRSRP - 10) {
+  radius = 0.8;
+} else {
+  radius = 0.4;
+}
+  
+let requiredRSRP;
+if (cellThroughput <= 5) requiredRSRP = -105;
+else if (cellThroughput <= 20) requiredRSRP = -95;
+else if (cellThroughput <= 50) requiredRSRP = -85;
+else requiredRSRP = -75;
+  <h3>Required RSRP: ${requiredRSRP} dBm</h3>
+<h3>Cell Edge Throughput Target: ${cellThroughput} Mbps</h3>
+  
   // 📡 Area per cell
   const cellArea = Math.PI * radius * radius;
+  let requiredRSRP;
+
+// Based on throughput requirement
+if (cellThroughput <= 5) requiredRSRP = -105;
+else if (cellThroughput <= 20) requiredRSRP = -95;
+else if (cellThroughput <= 50) requiredRSRP = -85;
+else requiredRSRP = -75;
 
   // 📡 Number of sites
   const sites = area / cellArea;
