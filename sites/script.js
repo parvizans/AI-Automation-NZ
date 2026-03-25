@@ -1,6 +1,5 @@
 // ==========================
-// ⭐ STARS BACKGROUND
-// ==========================
+// ⭐ STARS BACKGROUND (UPGRADED)
 window.addEventListener("load", function(){
 
   const canvas = document.getElementById("stars");
@@ -17,9 +16,47 @@ window.addEventListener("load", function(){
     stars.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      size: Math.random() * 2,
-      speed: Math.random() * 1 + 0.2
+      size: Math.random() * 3 + 1,
+      speed: Math.random() * 1.5 + 0.3
     });
+  }
+
+  function drawStars(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    stars.forEach(star => {
+
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = "#32d296";
+
+      ctx.fillStyle = "#32d296";
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+      ctx.fill();
+
+      // shooting star
+      if(Math.random() < 0.004){
+        ctx.beginPath();
+        ctx.moveTo(star.x, star.y);
+        ctx.lineTo(star.x + 60, star.y + 10);
+        ctx.strokeStyle = "#32d296";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      star.y += star.speed;
+
+      if(star.y > canvas.height){
+        star.y = 0;
+        star.x = Math.random() * canvas.width;
+      }
+    });
+
+    requestAnimationFrame(drawStars);
+  }
+
+  drawStars();
+});
   }
 
   function drawStars(){
