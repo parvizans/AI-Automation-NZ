@@ -585,3 +585,51 @@ select{
 button, .btn {
   cursor: pointer;
 }
+/* =========================
+   🚀 TOOL UI UPGRADE
+========================= */
+
+.tool-card {
+  padding: 30px;
+  max-width: 1100px;
+  margin: 40px auto;
+}
+
+/* Make inputs bigger */
+.tool-grid input,
+.tool-grid select {
+  padding: 14px;
+  font-size: 15px;
+  border-radius: 12px;
+}
+
+/* More spacing */
+.tool-grid {
+  gap: 18px;
+}
+
+/* Labels breathing */
+.tool-grid label {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Bigger result text */
+#lb_distance,
+#lb_pathloss,
+#lb_budget,
+#lb_sites {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+/* BUTTON */
+button {
+  padding: 14px 28px;
+  font-size: 16px;
+}
+.tool-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
