@@ -121,6 +121,12 @@ button {
 button.submit {
   background: #5aa7ff;
 }
+  .time-in {
+  background: #2a355f;
+  color: #ffffff;
+  font-weight: bold;
+  text-align: center;
+}
 </style>
 
 </head>
@@ -134,9 +140,25 @@ button.submit {
   <!-- CONTROL PANEL -->
   <div class="control-panel">
     <select>
-      <option>Employee</option>
-      <option>Parviz</option>
-    </select>
+<select id="engineer">
+  <option value="">Select Engineer</option>
+  <option value="abhignya.reddy@linkquestglobal.com">Abhignya Reddy</option>
+  <option value="parviz.ansari@linkquestglobal.com">Parviz Ansari (Work)</option>
+  <option value="parvizans@gmail.com">Parviz Ansari (Personal)</option>
+  <option value="pavinee.suwanta@linkquestglobal.com">Pavinee Suwanta</option>
+  <option value="abhishek.ahirrao@linkquestglobal.com">Abhishek Ahirrao</option>
+  <option value="sanjay.nampally@linkquestglobal.com">Sanjay Nampally</option>
+  <option value="manish.redekar@linkquestglobal.com">Manish Redekar</option>
+  <option value="shivtejgasti@gmail.com">Shivtej Gasti</option>
+  <option value="skofficial8991@gmail.com">Shreekant Kadam</option>
+  <option value="ergaganverma@gmail.com">Gagan Verma</option>
+
+  <select id="pm">
+  <option value="">Select Project Manager</option>
+  <option value="dani.ray.salcedo@accenture.com">Dani Ray Salcedo</option>
+  <option value="Alyanna.Moje@accenture.com">Alyanna Moje</option>
+  <option value="neil.coomar@linkquestglobal.com">Neil Coomar</option>
+  </select>
 
     <select>
       <option>Project</option>
@@ -185,7 +207,7 @@ button.submit {
   <div class="actions">
     <button onclick="saveData()">Save</button>
     <button onclick="exportData()">Export</button>
-    <button class="submit">Submit</button>
+    <button class="submit" onclick="submitTimesheet()">Submit</button>
   </div>
 
 </div>
@@ -204,7 +226,7 @@ function generateMonth(days = 31) {
     row.innerHTML = `
       <td>${i}</td>
       <td><input type="date"></td>
-      <td><input type="time" value="08:00" disabled></td>
+      <td><input type="time" value="08:00" readonly class="time-in"></td>
       <td><input type="time" class="time-out"></td>
       <td><input type="number" value="0" class="break"></td>
       <td class="total">0</td>
@@ -276,7 +298,44 @@ function exportData() {
 
 /* INIT */
 generateMonth();
+  /* ✅ ADD THIS FUNCTION BELOW */
+function submitTimesheet() {
 
+  const engineer = document.getElementById("engineer").value;
+  const pm = document.getElementById("pm").value;
+
+  if (!engineer || !pm) {
+    alert("Please select Engineer and Project Manager");
+    return;
+  }
+
+  const cc = [
+    "neil.coomar@linkquestglobal.com",
+    "sudhir.singh@atlantisintel.com"
+  ].join(",");
+
+  const subject = "Timesheet Submission";
+
+  const totalHours = document.getElementById("total-hours").innerText;
+  const totalOT = document.getElementById("total-ot").innerText;
+
+  const body = `
+Hello,
+
+Please find my timesheet submission.
+
+Total Hours: ${totalHours}
+Overtime: ${totalOT}
+
+Regards,
+${engineer}
+`;
+
+  const mailto = `mailto:${pm}?cc=${cc}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+  window.location.href = mailto;
+}
+  
 </script>
 
 </body>
