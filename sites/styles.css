@@ -139,7 +139,7 @@ color:#fff;
 
 /* HERO – Brighter + Slightly Shorter */
 .hero{
-  position: relative;
+  ;
   height: 90vh;
   display: flex;
   align-items: center;
@@ -478,7 +478,7 @@ z-index:0;
 }
 
 .hero-content{
-  position: relative;
+  ;
   z-index:2;
   text-align:center;
   max-width:800px;
@@ -528,7 +528,7 @@ html{
   scroll-behavior:smooth;
 }
 .hero{
-  position: relative;
+  ;
   height: 90vh;
   display: flex;
   align-items: center;
@@ -648,7 +648,7 @@ button {
 
 #tools {
   position: relative;
-  background: url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=1920') center/cover no-repeat;
+  background: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1920') center/cover no-repeat;
 }
 
 #tools::before {
