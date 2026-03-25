@@ -761,3 +761,7 @@ button {
   position: relative;
   z-index: 2;
 }
+.capacity-tool h3 {
+  color: #32d296;
+  text-shadow: 0 0 10px rgba(50,210,150,0.6);
+}
