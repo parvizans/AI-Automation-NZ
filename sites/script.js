@@ -1,5 +1,4 @@
 console.log("START JS");
-
 // ==========================
 // ⭐ STARS BACKGROUND
 // ==========================
@@ -28,23 +27,10 @@ window.addEventListener("load", function(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     stars.forEach(star => {
-
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = "#32d296";
-
       ctx.fillStyle = "#32d296";
       ctx.beginPath();
       ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
       ctx.fill();
-
-      if(Math.random() < 0.004){
-        ctx.beginPath();
-        ctx.moveTo(star.x, star.y);
-        ctx.lineTo(star.x + 60, star.y + 10);
-        ctx.strokeStyle = "#32d296";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-      }
 
       star.y += star.speed;
 
@@ -59,34 +45,6 @@ window.addEventListener("load", function(){
 
   drawStars();
 });
-  
-
-  function drawStars(){
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    stars.forEach(star => {
-      ctx.fillStyle = "#32d296";
-      ctx.beginPath();
-      ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-      ctx.fill();
-
-      star.y += star.speed;
-
-      if(star.y > canvas.height){
-        star.y = 0;
-        star.x = Math.random() * canvas.width;
-       }
-
-});
-
-requestAnimationFrame(drawStars);
-
-} 
-
-drawStars();
-
-}); 
-
 // ==========================
 // 🚀 5G THROUGHPUT
 // ==========================
