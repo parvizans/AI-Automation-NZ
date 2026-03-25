@@ -1,5 +1,5 @@
 // ⭐ STARS BACKGROUND
-window.onload = function(){
+window.addEventListener("load", function(){
 
   const canvas = document.getElementById("stars");
 
