@@ -104,6 +104,7 @@ function calculateLinkBudget(){
 
   let throughput = parseFloat(document.getElementById("lb_throughput").value);
   let area = parseFloat(document.getElementById("lb_area").value);
+  let model = document.getElementById("lb_model").value;
 
   if(isNaN(power) || power <= 0){
     alert("Invalid Power");
@@ -128,6 +129,19 @@ function calculateLinkBudget(){
              throughput <=30 ? 10 : 15;
 
   let effectiveBudget = linkBudget - (-100 + sinr);
+  
+  // 📡 Propagation model impact
+let modelLoss;
+
+if(model == "120"){        // Rural
+  modelLoss = 20;
+}
+else if(model == "135"){   // Suburban
+  modelLoss = 30;
+}
+else{                      // Urban
+  modelLoss = 45;
+}
 
   // Distance
   // 📡 Environment loss correction
