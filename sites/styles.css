@@ -184,7 +184,7 @@ color:#fff;
   padding:10px 14px;
   border-radius:999px;
   border:1px solid var(--border);
-  background: rgba(255,255,255,.04);
+  background: rgba(20, 30, 60, 0.25);
 }
 
 .btn.primary{
@@ -646,26 +646,40 @@ button {
    🌌 TELECOM BACKGROUND
 ========================= */
 
-#tools {
-  position: relative;
-  background: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1920') center/cover no-repeat;
-}
 
-#tools::before {
+/* =========================
+   🎯 TOOL CARD BACKGROUND
+========================= */
+
+.tool-card {
+  position: relative;
+  overflow: hidden;
+
+  padding: 30px;
+  max-width: 1100px;
+  margin: 40px auto;
+
+  border-radius: 20px;
+
+  background: rgba(20,30,60,0.2); /* IMPORTANT: not solid */
+}
+.tool-card::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(5, 15, 30, 0.85); /* dark overlay */
-  backdrop-filter: blur(6px);
-}
 
-#tools > * {
-  position: relative;
-  z-index: 1;
+  background: url('https://images.unsplash.com/photo-1509395176047-4a66953fd231?q=80&w=1920') center/cover no-repeat;
+
+  opacity: 0.6;
 }
-.tool-guide {
-  color: #b8c3e6;
-  font-size: 14px;
-  margin-bottom: 15px;
-  line-height: 1.5;
+.tool-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: rgba(10, 20, 40, 0.5);
+}
+.tool-card > * {
+  position: relative;
+  z-index: 2;
 }
