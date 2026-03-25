@@ -171,6 +171,7 @@ Simulate real-world 5G throughput based on SINR, bandwidth, and radio conditions
   <p id="result">Result: -- Mbps</p>
 
 </div>     <!-- END throughput tool -->
+      
 <!-- ✅ ADD LINK BUDGET HERE -->
 <!-- ✅ LINK BUDGET TOOL (FIXED CLEAN) -->
 <div class="tool-card lb-card">
@@ -230,6 +231,39 @@ Estimate coverage and required sites based on RF parameters and deployment scena
   <h3 id="lb_pathloss">Path Loss: --</h3>
   <h3 id="lb_budget">Link Budget: --</h3>
   <h3 id="lb_sites">Sites Required: --</h3>
+
+</div>
+
+      <div class="tool-card">
+
+  <h3>📊 5G Coverage & Capacity Planner</h3>
+
+  <div class="tool-grid">
+
+    <label>Total Area (sqkm)</label>
+    <input type="number" id="cc_area" value="50">
+
+    <label>Bandwidth (MHz)</label>
+    <input type="number" id="cc_bw" value="100">
+
+    <label>MIMO Layers</label>
+    <input type="number" id="cc_mimo" value="4">
+
+    <label>Users in Area</label>
+    <input type="number" id="cc_users" value="500">
+
+    <label>Target Throughput per User (Mbps)</label>
+    <input type="number" id="cc_user_tput" value="10">
+
+  </div>
+
+  <button onclick="calculateCoverage()" class="btn primary">
+    Calculate
+  </button>
+
+  <h3 id="cc_sites">Sites Required: --</h3>
+  <h3 id="cc_capacity">Capacity per Site: --</h3>
+  <h3 id="cc_risk">Congestion Risk: --</h3>
 
 </div>
 
