@@ -75,14 +75,17 @@ window.addEventListener("load", function(){
       if(star.y > canvas.height){
         star.y = 0;
         star.x = Math.random() * canvas.width;
-      }
-    });
+       }
 
-    requestAnimationFrame(drawStars);
-  }
+}); // ✅ closes forEach
 
-  drawStars();
-});
+requestAnimationFrame(drawStars);
+
+} // ✅ closes drawStars()
+
+drawStars();
+
+}); // ✅ closes window.addEventListener
 
 
 // ==========================
