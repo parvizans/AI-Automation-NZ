@@ -58,6 +58,12 @@
   border-radius: 8px;
   border: none;
 }
+      input[disabled] {
+  background: #2f3b5f;
+  color: #ffffff;
+  font-weight: bold;
+  opacity: 1;
+}
   </style>
 </head>
 
@@ -66,14 +72,6 @@
 <h2>🚀 Smart Timesheet</h2>
 
 <div class="card">
-
-<label>Time-In</label>
-input[disabled] {
-  background: #2f3b5f;
-  color: #ffffff;
-  font-weight: bold;
-  opacity: 1;
-}
 
   <label>Engineer</label>
 <select id="engineer">
@@ -100,16 +98,20 @@ input[disabled] {
   <thead>
     <tr>
       <th>Date</th>
-<th>Day</th>
-<th>Engineer</th>
-<th>Project</th>
-<th>Hours</th>
-<th>OT</th>
-<th>Action</th>
+      <th>Day</th>
+      <th>Engineer</th>
+      <th>Project</th>
+      <th>Hours</th>
+      <th>OT</th>
+      <th>Action</th>
     </tr>
   </thead>
+
   <tbody id="table"></tbody>
-  <table>
+</table>
+
+<h3 id="summary"></h3>
+  
   <thead>
     ...
   </thead>
