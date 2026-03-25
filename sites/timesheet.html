@@ -45,6 +45,13 @@
       padding: 10px;
       border-bottom: 1px solid #444;
     }
+    select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: none;
+}
   </style>
 </head>
 
@@ -57,10 +64,24 @@
   <label>Date</label>
   <input type="date" id="date">
 
-  <label>Time-Out</label>
-  <input type="time" id="timeout" value="18:00">
+  <label>Engineer</label>
+<select id="engineer">
+  <option>Parviz</option>
+  <option>Engineer1</option>
+  <option>Engineer2</option>
+</select>
 
-  <button onclick="saveEntry()">Save</button>
+<label>Project</label>
+<select id="project">
+  <option>Drive Test</option>
+  <option>Optimization</option>
+  <option>Integration</option>
+</select>
+
+<label>Time-Out</label>
+<input type="time" id="timeout" value="18:00">
+
+<button onclick="saveEntry()">Save</button>
 
 </div>
 
@@ -68,10 +89,12 @@
   <thead>
     <tr>
       <th>Date</th>
-     <th>Day</th>
-     <th>Hours</th>
-     <th>OT</th>
-     <th>Action</th>
+<th>Day</th>
+<th>Engineer</th>
+<th>Project</th>
+<th>Hours</th>
+<th>OT</th>
+<th>Action</th>
     </tr>
   </thead>
   <tbody id="table"></tbody>
@@ -95,18 +118,21 @@ function calculate(timeout) {
 }
 
 function saveEntry() {
-  let date = document.getElementById("date").value;
-  let timeout = document.getElementById("timeout").value;
+ let date = document.getElementById("date").value;
+let timeout = document.getElementById("timeout").value;
+let engineer = document.getElementById("engineer").value;
+let project = document.getElementById("project").value;
 
   let calc = calculate(timeout);
 
-  let entry = {
-    date,
-    day: new Date(date).toLocaleDateString("en-US", { weekday: 'short' }),
-    hours: calc.hours.toFixed(2),
-    ot: calc.ot.toFixed(2)
-  };
-
+ let entry = {
+  date,
+  day: new Date(date).toLocaleDateString("en-US", { weekday: 'short' }),
+  engineer,
+  project,
+  hours: calc.hours.toFixed(2),
+  ot: calc.ot.toFixed(2)
+};
   let data = JSON.parse(localStorage.getItem("timesheet")) || [];
   data.push(entry);
 
@@ -142,11 +168,13 @@ function render() {
 
     table.innerHTML += `
       <tr style="background:${rowColor}">
-        <td>${e.date}</td>
-        <td>${e.day}</td>
-        <td>${e.hours}</td>
-        <td>${e.ot}</td>
-        <td><button onclick="deleteEntry(${i})">❌</button></td>
+       <td>${e.date}</td>
+       <td>${e.day}</td>
+       <td>${e.engineer}</td>
+       <td>${e.project}</td>
+       <td>${e.hours}</td>
+       <td>${e.ot}</td>
+       <td><button onclick="deleteEntry(${i})">❌</button></td>
       </tr>
     `;
   });
