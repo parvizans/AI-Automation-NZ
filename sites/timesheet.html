@@ -140,6 +140,21 @@ button.submit {
   <!-- CONTROL PANEL -->
   <div class="control-panel">
     <select>
+      <select id="month">
+  <option value="">Select Month</option>
+  <option value="0">January</option>
+  <option value="1">February</option>
+  <option value="2">March</option>
+  <option value="3">April</option>
+  <option value="4">May</option>
+  <option value="5">June</option>
+  <option value="6">July</option>
+  <option value="7">August</option>
+  <option value="8">September</option>
+  <option value="9">October</option>
+  <option value="10">November</option>
+  <option value="11">December</option>
+</select>
 <select id="engineer">
   <option value="">Select Engineer</option>
   <option value="abhignya.reddy@linkquestglobal.com">Abhignya Reddy</option>
@@ -217,15 +232,28 @@ button.submit {
 /* GENERATE TABLE */
 const tableBody = document.getElementById("timesheet-body");
 
-function generateMonth(days = 31) {
+function generateMonthBySelection() {
+
+  const tableBody = document.getElementById("timesheet-body");
+  const month = document.getElementById("month").value;
+  const year = new Date().getFullYear();
+
+  if (month === "") return;
+
+  const daysInMonth = new Date(year, parseInt(month) + 1, 0).getDate();
+
   tableBody.innerHTML = "";
 
-  for (let i = 1; i <= days; i++) {
+  for (let i = 1; i <= daysInMonth; i++) {
+
+    const date = new Date(year, month, i);
+    const formattedDate = date.toISOString().split('T')[0];
+
     const row = document.createElement("tr");
 
     row.innerHTML = `
       <td>${i}</td>
-      <td><input type="date"></td>
+      <td><input type="date" value="${formattedDate}"></td>
       <td><input type="time" value="08:00" readonly class="time-in"></td>
       <td><input type="time" class="time-out"></td>
       <td><input type="number" value="0" class="break"></td>
@@ -261,7 +289,6 @@ tableBody.addEventListener("input", (e) => {
   updateSummary();
 });
 
-/* SUMMARY */
 function updateSummary() {
   let totalHours = 0;
   let totalOT = 0;
@@ -296,8 +323,7 @@ function exportData() {
   alert("Export feature coming next 🚀");
 }
 
-/* INIT */
-generateMonth();
+
   /* ✅ ADD THIS FUNCTION BELOW */
 function submitTimesheet() {
 
@@ -335,6 +361,13 @@ ${engineer}
 
   window.location.href = mailto;
 }
+  document.addEventListener("DOMContentLoaded", () => {
+  const monthSelect = document.getElementById("month");
+
+  if (monthSelect) {
+    monthSelect.addEventListener("change", generateMonthBySelection);
+  }
+});
   
 </script>
 
