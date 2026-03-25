@@ -233,3 +233,4 @@ document.getElementById("lb_budget").innerText =
 
 document.getElementById("lb_sites").innerText =
   "Sites Required: " + Math.ceil(sites);
+  }  
