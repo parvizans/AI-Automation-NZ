@@ -35,7 +35,6 @@ window.addEventListener("load", function(){
       ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
       ctx.fill();
 
-      // shooting star
       if(Math.random() < 0.004){
         ctx.beginPath();
         ctx.moveTo(star.x, star.y);
