@@ -1,217 +1,281 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Smart Timesheet</title>
+<meta charset="UTF-8">
+<title>Timesheet_Pro_2</title>
 
-  <style>
-    body {
-      font-family: Arial;
-      background: #0b1220;
-      color: white;
-      padding: 20px;
-    }
+<style>
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    h2 {
-      color: #32d296;
-    }
-    
-    <label>Date</label>
-    <input type="date" id="date">
+/* BODY */
+body {
+  font-family: Arial, sans-serif;
+  background: #0b1220;
+  color: #fff;
+  padding: 20px;
+}
 
-   .card {
-  background: #1c2541;
-  padding: 25px;
-  border-radius: 15px;
-  max-width: 400px;
+/* CONTAINER */
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* HEADER */
+h1 {
+  margin-bottom: 20px;
+  color: #32d296;
+}
+
+/* CONTROL PANEL */
+.control-panel {
   display: flex;
-  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.control-panel select {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  background: #1c2541;
+  color: #fff;
+}
+
+/* TABLE */
+.table-container {
+  overflow-x: auto;
+  background: #1c2541;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* HEADER */
+thead {
+  background: #111a33;
+}
+
+th {
+  position: sticky;
+  top: 0;
+  background: #111a33;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* ZEBRA */
+tbody tr:nth-child(even) {
+  background: rgba(255,255,255,0.03);
+}
+
+/* INPUTS */
+input {
+  width: 100%;
+  padding: 5px;
+  border: none;
+  border-radius: 4px;
+}
+
+/* SUMMARY */
+.summary {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  background: #1c2541;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+/* BUTTONS */
+.actions {
+  margin-top: 20px;
+  display: flex;
   gap: 10px;
 }
 
-label {
-  font-size: 14px;
-  margin-top: 5px;
-}
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 8px;
-      border: none;
-    }
-
-    button {
-      background: #32d296;
-      cursor: pointer;
-    }
-
-    table {
-      margin-top: 20px;
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    td, th {
-      padding: 10px;
-      border-bottom: 1px solid #444;
-    }
-    select {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border-radius: 8px;
+button {
+  padding: 10px 20px;
   border: none;
-}
-      input[disabled] {
-  background: #2f3b5f;
-  color: #ffffff;
+  border-radius: 6px;
+  background: #32d296;
+  color: #000;
+  cursor: pointer;
   font-weight: bold;
-  opacity: 1;
 }
-  </style>
+
+button.submit {
+  background: #5aa7ff;
+}
+</style>
+
 </head>
 
 <body>
 
-<h2>🚀 Smart Timesheet</h2>
+<div class="container">
 
-<div class="card">
+  <h1>⏱ Timesheet_Pro_2</h1>
 
-  <label>Engineer</label>
-<select id="engineer">
-  <option>Parviz</option>
-  <option>Engineer1</option>
-  <option>Engineer2</option>
-</select>
+  <!-- CONTROL PANEL -->
+  <div class="control-panel">
+    <select>
+      <option>Employee</option>
+      <option>Parviz</option>
+    </select>
 
-<label>Project</label>
-<select id="project">
-  <option>Drive Test</option>
-  <option>Optimization</option>
-  <option>Integration</option>
-</select>
+    <select>
+      <option>Project</option>
+      <option>Telecom</option>
+    </select>
 
-<label>Time-Out</label>
-<input type="time" id="timeout" value="18:00">
+    <select>
+      <option>Month</option>
+      <option>January</option>
+      <option>February</option>
+    </select>
 
-<button onclick="saveEntry()">Save</button>
+    <select>
+      <option>Status</option>
+      <option>Draft</option>
+      <option>Submitted</option>
+    </select>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Day</th>
+          <th>Date</th>
+          <th>Time In</th>
+          <th>Time Out</th>
+          <th>Break</th>
+          <th>Total</th>
+          <th>OT</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody id="timesheet-body"></tbody>
+    </table>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary">
+    <div>Total Hours: <span id="total-hours">0</span></div>
+    <div>Total OT: <span id="total-ot">0</span></div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="actions">
+    <button onclick="saveData()">Save</button>
+    <button onclick="exportData()">Export</button>
+    <button class="submit">Submit</button>
+  </div>
 
 </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Day</th>
-      <th>Engineer</th>
-      <th>Project</th>
-      <th>Hours</th>
-      <th>OT</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-
-  <tbody id="table"></tbody>
-</table>
-
-<h3 id="summary"></h3>
-  
-  <thead>
-    ...
-  </thead>
-
-  <tbody id="table"></tbody>
-
-</table>
-  
-  <h3 id="summary"></h3>
 <script>
 
-function getToday() {
-  let today = new Date().toISOString().split("T")[0];
-  document.getElementById("date").value = today;
+/* GENERATE TABLE */
+const tableBody = document.getElementById("timesheet-body");
+
+function generateMonth(days = 31) {
+  tableBody.innerHTML = "";
+
+  for (let i = 1; i <= days; i++) {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${i}</td>
+      <td><input type="date"></td>
+      <td><input type="time" value="08:00" disabled></td>
+      <td><input type="time" class="time-out"></td>
+      <td><input type="number" value="0" class="break"></td>
+      <td class="total">0</td>
+      <td class="ot">0</td>
+      <td><input type="text"></td>
+    `;
+
+    tableBody.appendChild(row);
+  }
 }
 
-function calculate(timeout) {
-  let timeIn = new Date("2024-01-01T08:00:00");
-  let timeOut = new Date("2024-01-01T" + timeout + ":00");
+/* CALCULATION */
+tableBody.addEventListener("input", (e) => {
+  const row = e.target.closest("tr");
 
-  let hours = (timeOut - timeIn) / (1000 * 60 * 60);
-  let ot = hours > 10 ? hours - 10 : 0;
+  const timeOut = row.querySelector(".time-out").value;
+  const breakTime = parseFloat(row.querySelector(".break").value) || 0;
 
-  return { hours, ot };
-}
+  if (!timeOut) return;
 
-function saveEntry() {
- let date = document.getElementById("date").value;
-let timeout = document.getElementById("timeout").value;
-let engineer = document.getElementById("engineer").value;
-let project = document.getElementById("project").value;
+  const start = new Date(`1970-01-01T08:00:00`);
+  const end = new Date(`1970-01-01T${timeOut}:00`);
 
-  let calc = calculate(timeout);
+  let total = (end - start) / (1000 * 60 * 60) - breakTime;
+  if (total < 0) total = 0;
 
- let entry = {
-  date,
-  day: new Date(date).toLocaleDateString("en-US", { weekday: 'short' }),
-  engineer,
-  project,
-  hours: calc.hours.toFixed(2),
-  ot: calc.ot.toFixed(2)
-};
-  let data = JSON.parse(localStorage.getItem("timesheet")) || [];
-  data.push(entry);
+  const ot = total > 10 ? total - 10 : 0;
 
-  localStorage.setItem("timesheet", JSON.stringify(data));
+  row.querySelector(".total").innerText = total.toFixed(2);
+  row.querySelector(".ot").innerText = ot.toFixed(2);
 
-  render();
+  updateSummary();
+});
 
-  alert("Saved ✅ Hours: " + entry.hours + " | OT: " + entry.ot);
-}
-
-function deleteEntry(index) {
-  let data = JSON.parse(localStorage.getItem("timesheet"));
-  data.splice(index, 1);
-  localStorage.setItem("timesheet", JSON.stringify(data));
-  render();
-}
-
-function render() {
-  let data = JSON.parse(localStorage.getItem("timesheet")) || [];
-  let table = document.getElementById("table");
-if (!table) return;
-
-  table.innerHTML = "";
-
+/* SUMMARY */
+function updateSummary() {
   let totalHours = 0;
   let totalOT = 0;
 
-  data.forEach((e, i) => {
-
-    totalHours += parseFloat(e.hours);
-    totalOT += parseFloat(e.ot);
-
-    let rowColor = e.ot > 0 ? "#2a1a1a" : "";
-
-    table.innerHTML += `
-      <tr style="background:${rowColor}">
-       <td>${e.date}</td>
-       <td>${e.day}</td>
-       <td>${e.engineer}</td>
-       <td>${e.project}</td>
-       <td>${e.hours}</td>
-       <td>${e.ot}</td>
-       <td><button onclick="deleteEntry(${i})">❌</button></td>
-      </tr>
-    `;
+  document.querySelectorAll("tbody tr").forEach(row => {
+    totalHours += parseFloat(row.querySelector(".total").innerText) || 0;
+    totalOT += parseFloat(row.querySelector(".ot").innerText) || 0;
   });
 
-  document.getElementById("summary").innerText =
-    "Total Hours: " + totalHours.toFixed(1) +
-    " | Total OT: " + totalOT.toFixed(1);
+  document.getElementById("total-hours").innerText = totalHours.toFixed(2);
+  document.getElementById("total-ot").innerText = totalOT.toFixed(2);
 }
 
-getToday();
-render();
+/* SAVE (LOCAL STORAGE) */
+function saveData() {
+  const data = [];
+  document.querySelectorAll("tbody tr").forEach(row => {
+    data.push({
+      date: row.querySelector("input[type=date]").value,
+      timeout: row.querySelector(".time-out").value,
+      break: row.querySelector(".break").value,
+      notes: row.querySelector("input[type=text]").value
+    });
+  });
+
+  localStorage.setItem("timesheet", JSON.stringify(data));
+  alert("Saved!");
+}
+
+/* EXPORT */
+function exportData() {
+  alert("Export feature coming next 🚀");
+}
+
+/* INIT */
+generateMonth();
 
 </script>
 
