@@ -668,14 +668,6 @@ button {
   position: absolute;
   inset: 0;
 
-.tool-card:nth-of-type(1)::before {
-  background: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1920') center/cover no-repeat;
-}
-
-.tool-card:nth-of-type(2)::before {
-  background: url('https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?q=80&w=1920') center/cover no-repeat;
-}
-
   opacity: 0.6;
 }
 .tool-card::after {
@@ -688,4 +680,17 @@ button {
 .tool-card > * {
   position: relative;
   z-index: 2;
+}
+/* =========================
+   🎯 DIFFERENT BACKGROUND PER TOOL
+========================= */
+
+/* 🔹 Throughput Tool */
+#tools .tool-card:nth-child(1)::before {
+  background: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1920') center/cover no-repeat;
+}
+
+/* 🔹 Link Budget Tool */
+#tools .tool-card:nth-child(2)::before {
+  background: url('https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?q=80&w=1920') center/cover no-repeat;
 }
