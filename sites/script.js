@@ -1,12 +1,10 @@
+// ==========================
 // ⭐ STARS BACKGROUND
+// ==========================
 window.addEventListener("load", function(){
 
   const canvas = document.getElementById("stars");
-
-  if(!canvas){
-    console.log("Canvas not found");
-    return;
-  }
+  if(!canvas) return;
 
   const ctx = canvas.getContext("2d");
 
@@ -15,12 +13,12 @@ window.addEventListener("load", function(){
 
   let stars = [];
 
-  for(let i = 0; i < 620; i++){
+  for(let i = 0; i < 400; i++){
     stars.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       size: Math.random() * 2,
-      speed: Math.random() * 2.5 + 0.5
+      speed: Math.random() * 1 + 0.2
     });
   }
 
@@ -28,21 +26,10 @@ window.addEventListener("load", function(){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     stars.forEach(star => {
-
-      // ⭐ star
-      ctx.fillStyle = "rgba(50,210,150," + Math.random() + ")";
+      ctx.fillStyle = "#32d296";
       ctx.beginPath();
       ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
       ctx.fill();
-
-      // ⭐ shooting star
-      if(Math.random() < 0.002){
-        ctx.beginPath();
-        ctx.moveTo(star.x, star.y);
-        ctx.lineTo(star.x + 20, star.y + 5);
-        ctx.strokeStyle = "#32d296";
-        ctx.stroke();
-      }
 
       star.y += star.speed;
 
@@ -56,93 +43,53 @@ window.addEventListener("load", function(){
   }
 
   drawStars();
-};
+});
 
 
-// 🚀 CALCULATOR
+// ==========================
+// 🚀 5G THROUGHPUT
+// ==========================
 function calculate5G(){
 
-  const mode = document.getElementById("mode").value;
   let sinr = parseFloat(document.getElementById("sinr").value);
-  let mcs = 0;
+  let bandwidth = parseFloat(document.getElementById("bandwidth").value);
+  let mimo = parseFloat(document.getElementById("mimo").value);
+  let bler = parseFloat(document.getElementById("bler").value);
+  let overhead = parseFloat(document.getElementById("overhead").value);
+  let duplex = parseFloat(document.getElementById("duplex").value);
+  let freq = parseFloat(document.getElementById("freqBand").value);
 
-  const bandwidth = parseFloat(document.getElementById("bandwidth").value);
-  const mimo = parseFloat(document.getElementById("mimo").value);
-  const overhead = parseFloat(document.getElementById("overhead").value);
-  const duplex = parseFloat(document.getElementById("duplex").value);
-  const bler = parseFloat(document.getElementById("bler").value);
-  const freq = parseFloat(document.getElementById("freqBand").value);
-  
-let freqFactor = 1;   // ✅ MUST be here (outside if)
-if (freq < 1000) {
-  freqFactor = 0.4;   // was 0.6
-} else if (freq < 3000) {
-  freqFactor = 0.7;   // was 0.8
-} else if (freq < 6000) {
-  freqFactor = 1.2;   // was 1.0
-} else {
-  freqFactor = 2.0;   // was 1.5
-}
-
-
-  
-
-  // SINR → CQI mapping
-  const sinrToCqi = [
-    {sinr:-5, cqi:0},{sinr:-2, cqi:1},{sinr:0, cqi:2},{sinr:2, cqi:3},
-    {sinr:4, cqi:4},{sinr:6, cqi:5},{sinr:8, cqi:6},{sinr:10, cqi:7},
-    {sinr:12, cqi:8},{sinr:14, cqi:9},{sinr:16, cqi:10},
-    {sinr:18, cqi:11},{sinr:20, cqi:12},{sinr:22, cqi:13},{sinr:24, cqi:14},{sinr:26, cqi:15}
-  ];
-
-  let cqi = 0;
-
-  if(mode === "auto"){
-    for(let i=0;i<sinrToCqi.length;i++){
-      if(sinr >= sinrToCqi[i].sinr){
-        cqi = sinrToCqi[i].cqi;
-      }
-    }
-    mcs = Math.min(27, Math.floor(cqi * 1.7));
-    // 📡 Frequency Band Impact
-let freqFactor = 1;
-
-if (freq < 1000) {
-  freqFactor = 0.6;   // Low band (coverage focused)
-} else if (freq < 3000) {
-  freqFactor = 0.8;   // Mid band LTE/NR
-} else if (freq < 6000) {
-  freqFactor = 1.0;   // C-band (optimal 5G)
-} else {
-  freqFactor = 1.5;   // mmWave (high capacity)
-}
+  if(isNaN(sinr) || isNaN(bandwidth)){
+    alert("Invalid input");
+    return;
   }
 
-  const specEff = [
-    0.2344,0.377,0.6016,0.877,1.1758,1.4766,1.6953,1.9141,
-    2.1602,2.4063,2.5703,2.7305,3.0293,3.3223,3.6094,
-    3.9023,4.2129,4.5234,4.8164,5.1152,5.332,5.5547,
-    6.2266,6.9141,7.4063
-  ];
+  let efficiency = Math.max(0.2, sinr / 10);
 
-  let efficiency = specEff[mcs] || 1;
+  let throughput =
+    bandwidth *
+    mimo *
+    efficiency *
+    duplex *
+    (1 - overhead/100) *
+    (1 - bler/100);
 
-let throughput = 
-  bandwidth * efficiency * mimo * duplex *
-  (1 - overhead/100) *
-  (1 - bler/100);
+  // Frequency factor
+  if(freq < 1000) throughput *= 0.5;
+  else if(freq < 3000) throughput *= 0.8;
+  else if(freq < 6000) throughput *= 1.2;
+  else throughput *= 1.8;
 
-// 📡 Apply frequency impact
-throughput = throughput * freqFactor;
-
-  throughput = throughput * 10;
+  throughput *= 10;
 
   document.getElementById("result").innerText =
-    `Result: ${throughput.toFixed(2)} Mbps (CQI: ${cqi}, MCS: ${mcs})`;
+    "Result: " + throughput.toFixed(2) + " Mbps";
 }
-// ===============================
-// 📡 LINK BUDGET ENGINE (v1 CLEAN)
-// ===============================
+
+
+// ==========================
+// 📡 LINK BUDGET
+// ==========================
 function calculateLinkBudget(){
 
   let power = parseFloat(document.getElementById("lb_power").value);
@@ -155,82 +102,59 @@ function calculateLinkBudget(){
   let interference = parseFloat(document.getElementById("lb_interference").value);
   let fading = parseFloat(document.getElementById("lb_fading").value);
 
-  let model = parseFloat(document.getElementById("lb_model").value);
+  let throughput = parseFloat(document.getElementById("lb_throughput").value);
+  let area = parseFloat(document.getElementById("lb_area").value);
 
   if(isNaN(power) || power <= 0){
-    alert("Invalid Power input");
+    alert("Invalid Power");
     return;
   }
 
-  // 🔥 Convert W → dBm
+  // Power → dBm
   let powerDbm = 10 * Math.log10(power * 1000);
 
-  // 🔥 EIRP
-  let eirp = powerDbm + gain - cable;
+  let linkBudget =
+    powerDbm +
+    gain -
+    cable -
+    body -
+    building -
+    interference -
+    fading;
 
-  // 🔥 Total Loss
-  let totalLoss = body + building + interference + fading;
+  // Throughput → SINR
+  let sinr = throughput <=10 ? 2 :
+             throughput <=20 ? 6 :
+             throughput <=30 ? 10 : 15;
 
-  // 🔥 Link Budget
-  let linkBudget = eirp - totalLoss;
+  let effectiveBudget = linkBudget - (-100 + sinr);
 
-  // 🔥 Path Loss (simple model)
+  // Distance
+  let distance = Math.pow(
+    10,
+    (effectiveBudget - 32.45 - 20*Math.log10(freq)) / 20
+  ) * 1000;
 
-// ===============================
-// 📡 ADD NEW INPUTS
-// ===============================
-let edgeThroughput = parseFloat(document.getElementById("lb_throughput").value);
-let area = parseFloat(document.getElementById("lb_area").value);
+  // Path Loss
+  let pathLoss =
+    32.45 +
+    20*Math.log10(freq) +
+    20*Math.log10(distance / 1000);
 
-// ===============================
-// 📡 Throughput → SINR
-// ===============================
-let sinr;
+  // Sites
+  let radiusKm = distance / 1000;
+  let sites = area / (Math.PI * radiusKm * radiusKm);
 
-if(edgeThroughput <= 5) sinr = -2;
-else if(edgeThroughput <= 10) sinr = 2;
-else if(edgeThroughput <= 20) sinr = 6;
-else if(edgeThroughput <= 30) sinr = 10;
-else sinr = 15;
+  // OUTPUT
+  document.getElementById("lb_distance").innerText =
+    "Distance: " + distance.toFixed(0) + " meters";
 
-// ===============================
-// 📡 Adjust Link Budget
-// ===============================
-let requiredRxPower = -100 + sinr;
-let effectiveBudget = linkBudget - Math.abs(requiredRxPower);
+  document.getElementById("lb_pathloss").innerText =
+    "Path Loss: " + pathLoss.toFixed(2) + " dB";
 
-// ===============================
-// 📡 Distance Calculation
-// ===============================
-let distance = Math.pow(
-  10,
-  (effectiveBudget - 32.45 - 20 * Math.log10(freq)) / 20
-) * 1000;
+  document.getElementById("lb_budget").innerText =
+    "Link Budget: " + linkBudget.toFixed(2) + " dBm";
 
-// ===============================
-// 📡 Path Loss
-// ===============================
-let pathLoss = 32.45 + 20 * Math.log10(freq) + 20 * Math.log10(distance / 1000);
-
-// ===============================
-// 📡 Sites Calculation
-// ===============================
-let radiusKm = distance / 1000;
-let cellArea = Math.PI * radiusKm * radiusKm;
-let sites = area / cellArea;
-
-// ===============================
-// 📡 OUTPUT
-// ===============================
-document.getElementById("lb_distance").innerText =
-  "Distance: " + distance.toFixed(0) + " meters";
-
-document.getElementById("lb_pathloss").innerText =
-  "Path Loss: " + pathLoss.toFixed(2) + " dB";
-
-document.getElementById("lb_budget").innerText =
-  "Link Budget: " + linkBudget.toFixed(2) + " dBm";
-
-document.getElementById("lb_sites").innerText =
-  "Sites Required: " + Math.ceil(sites);
-  }  
+  document.getElementById("lb_sites").innerText =
+    "Sites Required: " + Math.ceil(sites);
+}
