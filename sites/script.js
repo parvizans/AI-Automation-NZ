@@ -130,10 +130,18 @@ function calculateLinkBudget(){
   let effectiveBudget = linkBudget - (-100 + sinr);
 
   // Distance
-  let distance = Math.pow(
-    10,
-    (effectiveBudget - 32.45 - 20*Math.log10(freq)) / 20
-  ) * 1000;
+  // 📡 Environment loss correction
+let envLoss;
+
+if(freq < 1000) envLoss = 20;
+else if(freq < 3000) envLoss = 30;
+else envLoss = 40;  // 3.5 GHz penalty
+
+// 📡 NEW realistic distance
+let distance = Math.pow(
+  10,
+  (effectiveBudget - 32.45 - 20*Math.log10(freq) - envLoss) / 20
+) * 1000;
 
   // Path Loss
   let pathLoss =
