@@ -16,12 +16,18 @@
     }
 
     .card {
-      background: #1c2541;
-      padding: 20px;
-      border-radius: 15px;
-      max-width: 400px;
-    }
+  background: #1c2541;
+  padding: 25px;
+  border-radius: 15px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 
+    label {
+  font-size: 14px;
+  margin-top: 5px;
+}
     input, button {
       width: 100%;
       padding: 10px;
@@ -61,8 +67,8 @@
 
 <div class="card">
 
-  <label>Date</label>
-  <input type="date" id="date">
+<label>Time-In</label>
+<input type="time" value="08:00" disabled>
 
   <label>Engineer</label>
 <select id="engineer">
