@@ -77,16 +77,15 @@ window.addEventListener("load", function(){
         star.x = Math.random() * canvas.width;
        }
 
-}); // ✅ closes forEach
+});
 
 requestAnimationFrame(drawStars);
 
-} // ✅ closes drawStars()
+} 
 
 drawStars();
 
-}); // ✅ closes window.addEventListener
-
+}); 
 
 // ==========================
 // 🚀 5G THROUGHPUT
