@@ -685,12 +685,11 @@ button {
    🎯 DIFFERENT BACKGROUND PER TOOL
 ========================= */
 
-/* 🔹 Throughput Tool */
-#tools .tool-card:nth-child(1)::before {
-background: url('https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=1920') center/cover no-repeat;
-}
-
-/* 🔹 Link Budget Tool */
+/* 🔹 5g THP Tool */
 #tools .tool-card:nth-child(2)::before {
   background: url('https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?q=80&w=1920') center/cover no-repeat;
+}
+/* 🎯 LINK BUDGET BACKGROUND (AI DATA FLOW) */
+.lb-card::before {
+ background: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1920') center/cover no-repeat;
 }
