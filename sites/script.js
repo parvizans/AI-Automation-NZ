@@ -138,6 +138,14 @@ else if(freq < 3000) envLoss = 30;
 else envLoss = 40;  // 3.5 GHz penalty
 
 // 📡 NEW realistic distance
+// 📡 Environment loss correction
+let envLoss;
+
+if(freq < 1000) envLoss = 20;
+else if(freq < 3000) envLoss = 30;
+else envLoss = 40;  // 3.5 GHz penalty
+
+// 📡 NEW realistic distance
 let distance = Math.pow(
   10,
   (effectiveBudget - 32.45 - 20*Math.log10(freq) - envLoss) / 20
