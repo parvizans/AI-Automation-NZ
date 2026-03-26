@@ -23,6 +23,7 @@ h1 { margin-bottom:20px; color:#32d296; }
   flex-wrap:wrap;
   gap:15px;
   margin-bottom:20px;
+  align-items:flex-end;
 }
 
 .field { display:flex; flex-direction:column; }
@@ -40,6 +41,15 @@ select, input.top-input {
   color:#fff;
   border:none;
   min-width:200px;
+}
+
+/* GREEN BOX */
+.expected-box {
+  background:#32d296;
+  color:#000;
+  padding:10px 20px;
+  border-radius:8px;
+  font-weight:bold;
 }
 
 /* TABLE */
@@ -120,31 +130,17 @@ input {
 <label>Engineer</label>
 <select id="engineer">
 <option value="">Select</option>
-
-<option value="abhignya.reddy@linkquestglobal.com" data-phone="">Abhignya Reddy</option>
-<option value="pavinee.suwanta@linkquestglobal.com" data-phone="">Pavinee Suwanta</option>
-<option value="parviz.ansari@linkquestglobal.com" data-phone="04220100700">Parviz Ansari (Work)</option>
-<option value="parvizans@gmail.com" data-phone="04220100700">Parviz Ansari (Personal)</option>
-<option value="parthk0804@gmail.com" data-phone="">Parth Kumbhare</option>
-<option value="abhishek.ahirrao@linkquestglobal.com" data-phone="">Abhishek Ahirrao</option>
-<option value="sanjay.nampally@linkquestglobal.com" data-phone="">Sanjay Nampally</option>
-<option value="saidinesh.mogili@linkquestglobal.com" data-phone="">Sai Dinesh Mogili</option>
-<option value="manish.redekar@linkquestglobal.com" data-phone="">Manish Redekar</option>
-<option value="shivtejgasti@gmail.com" data-phone="">Shivtej Gasti</option>
-<option value="skofficial8991@gmail.com" data-phone="">Shreekant Kadam</option>
-<option value="ergaganverma@gmail.com" data-phone="">Gagan Verma</option>
-
+<option value="abhignya.reddy@linkquestglobal.com">Abhignya Reddy</option>
+<option value="parviz.ansari@linkquestglobal.com">Parviz Ansari</option>
+<option value="pavinee.suwanta@linkquestglobal.com">Pavinee Suwanta</option>
+<option value="abhishek.ahirrao@linkquestglobal.com">Abhishek Ahirrao</option>
+<option value="sanjay.nampally@linkquestglobal.com">Sanjay Nampally</option>
+<option value="saidinesh.mogili@linkquestglobal.com">Sai Dinesh Mogili</option>
+<option value="manish.redekar@linkquestglobal.com">Manish Redekar</option>
+<option value="shivtejgasti@gmail.com">Shivtej Gasti</option>
+<option value="skofficial8991@gmail.com">Shreekant Kadam</option>
+<option value="ergaganverma@gmail.com">Gagan Verma</option>
 </select>
-</div>
-
-<div class="field">
-<label>Email</label>
-<input id="eng-email" class="top-input" readonly>
-</div>
-
-<div class="field">
-<label>Phone</label>
-<input id="eng-phone" class="top-input" readonly>
 </div>
 
 <div class="field">
@@ -153,6 +149,11 @@ input {
 <option value="sydney">Sydney</option>
 <option value="outside">Outside Sydney</option>
 </select>
+</div>
+
+<!-- ✅ NEW GREEN BOX -->
+<div class="expected-box">
+Expected: 8h/day
 </div>
 
 </div>
@@ -184,13 +185,6 @@ input {
 <script>
 
 const tableBody = document.getElementById("timesheet-body");
-
-/* ENGINEER AUTO-FILL */
-document.getElementById("engineer").addEventListener("change", function(){
-  const selected = this.options[this.selectedIndex];
-  document.getElementById("eng-email").value = selected.value || "";
-  document.getElementById("eng-phone").value = selected.dataset.phone || "";
-});
 
 /* GENERATE */
 function generateMonth() {
@@ -232,7 +226,8 @@ function calculateRow(row){
   let total = (end-start)/(1000*60*60);
   if(total<0) total=0;
 
-  const ot = total>10 ? total-10 : 0;
+  // ✅ OT BASED ON 8 HOURS
+  const ot = total > 8 ? total - 8 : 0;
 
   row.querySelector(".total").innerText = total.toFixed(2);
   row.querySelector(".ot").innerText = ot.toFixed(2);
