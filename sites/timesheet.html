@@ -18,7 +18,6 @@ body {
 
 h1 { margin-bottom:20px; color:#32d296; }
 
-/* CONTROL PANEL */
 .control-panel {
   display:flex;
   flex-wrap:wrap;
@@ -40,7 +39,7 @@ select, input.top-input {
   background:#1c2541;
   color:#fff;
   border:none;
-  min-width:180px;
+  min-width:200px;
 }
 
 /* TABLE */
@@ -80,7 +79,6 @@ input {
   font-weight:bold;
 }
 
-/* SUMMARY */
 .summary {
   display:flex;
   justify-content:space-between;
@@ -90,7 +88,6 @@ input {
   border-radius:10px;
 }
 
-/* BUTTONS */
 .actions {
   margin-top:20px;
   display:flex;
@@ -111,7 +108,6 @@ button.submit { background:#5aa7ff; }
 
 .food-yes { color:#32d296; font-weight:bold; }
 .food-no { color:#ff6b6b; font-weight:bold; }
-
 </style>
 </head>
 
@@ -146,9 +142,8 @@ button.submit { background:#5aa7ff; }
 <label>Engineer</label>
 <select id="engineer">
 <option value="">Select</option>
-<option value="abhignya.reddy@linkquestglobal.com" data-phone="0422421555">Abhignya</option>
-<option value="parviz.ansari@linkquestglobal.com" data-phone="0422010000">Parviz</option>
-<option value="pavinee.suwanta@linkquestglobal.com" data-phone="0400000000">Pavinee</option>
+<option value="abhignya.reddy@linkquestglobal.com" data-phone="0422421555">Abhignya Reddy</option>
+<option value="parviz.ansari@linkquestglobal.com" data-phone="04220100700">Parviz Ansari</option>
 </select>
 </div>
 
@@ -215,7 +210,7 @@ button.submit { background:#5aa7ff; }
 
 const tableBody = document.getElementById("timesheet-body");
 
-/* ENGINEER AUTO FILL */
+/* ENGINEER AUTO-FILL */
 document.getElementById("engineer").addEventListener("change", function(){
   const selected = this.options[this.selectedIndex];
   document.getElementById("eng-email").value = selected.value || "";
@@ -241,7 +236,7 @@ function generateMonth() {
       <td>${i}</td>
       <td><input type="date" value="${date}"></td>
       <td><input type="time" value="08:00" readonly class="time-in"></td>
-      <td><input type="text" class="time-out" placeholder="18:00"></td>
+      <td><input type="time" class="time-out"></td>
       <td class="total">0</td>
       <td class="ot">0</td>
       <td class="food">-</td>
@@ -258,11 +253,10 @@ tableBody.addEventListener("input", e=>{
   if(!row) return;
 
   const timeOut = row.querySelector(".time-out").value;
-  if(!timeOut.includes(":")) return;
+  if(!timeOut) return;
 
-  const [h,m] = timeOut.split(":");
-  const end = new Date(1970,0,1,h,m);
-  const start = new Date(1970,0,1,8,0);
+  const start = new Date("1970-01-01T08:00:00");
+  const end = new Date(`1970-01-01T${timeOut}:00`);
 
   let total = (end-start)/(1000*60*60);
   if(total<0) total=0;
@@ -275,7 +269,7 @@ tableBody.addEventListener("input", e=>{
   const location = document.getElementById("location").value;
   const foodCell = row.querySelector(".food");
 
-  if(location==="outside" && timeOut){
+  if(location==="outside"){
     foodCell.innerText = "$50";
     foodCell.className = "food food-yes";
   } else {
