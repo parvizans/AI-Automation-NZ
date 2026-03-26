@@ -62,10 +62,6 @@ thead { background:#111a33; }
 
 th { position:sticky; top:0; }
 
-tbody tr:nth-child(even) {
-  background:rgba(255,255,255,0.03);
-}
-
 input {
   width:100%;
   padding:5px;
@@ -79,6 +75,9 @@ input {
   font-weight:bold;
 }
 
+.food-yes { color:#32d296; font-weight:bold; }
+.food-no { color:#ff6b6b; font-weight:bold; }
+
 .summary {
   display:flex;
   justify-content:space-between;
@@ -87,27 +86,6 @@ input {
   padding:15px;
   border-radius:10px;
 }
-
-.actions {
-  margin-top:20px;
-  display:flex;
-  gap:10px;
-}
-
-button {
-  padding:10px 20px;
-  border:none;
-  border-radius:6px;
-  background:#32d296;
-  color:#000;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-button.submit { background:#5aa7ff; }
-
-.food-yes { color:#32d296; font-weight:bold; }
-.food-no { color:#ff6b6b; font-weight:bold; }
 </style>
 </head>
 
@@ -142,8 +120,20 @@ button.submit { background:#5aa7ff; }
 <label>Engineer</label>
 <select id="engineer">
 <option value="">Select</option>
-<option value="abhignya.reddy@linkquestglobal.com" data-phone="0422421555">Abhignya Reddy</option>
-<option value="parviz.ansari@linkquestglobal.com" data-phone="04220100700">Parviz Ansari</option>
+
+<option value="abhignya.reddy@linkquestglobal.com" data-phone="">Abhignya Reddy</option>
+<option value="pavinee.suwanta@linkquestglobal.com" data-phone="">Pavinee Suwanta</option>
+<option value="parviz.ansari@linkquestglobal.com" data-phone="04220100700">Parviz Ansari (Work)</option>
+<option value="parvizans@gmail.com" data-phone="04220100700">Parviz Ansari (Personal)</option>
+<option value="parthk0804@gmail.com" data-phone="">Parth Kumbhare</option>
+<option value="abhishek.ahirrao@linkquestglobal.com" data-phone="">Abhishek Ahirrao</option>
+<option value="sanjay.nampally@linkquestglobal.com" data-phone="">Sanjay Nampally</option>
+<option value="saidinesh.mogili@linkquestglobal.com" data-phone="">Sai Dinesh Mogili</option>
+<option value="manish.redekar@linkquestglobal.com" data-phone="">Manish Redekar</option>
+<option value="shivtejgasti@gmail.com" data-phone="">Shivtej Gasti</option>
+<option value="skofficial8991@gmail.com" data-phone="">Shreekant Kadam</option>
+<option value="ergaganverma@gmail.com" data-phone="">Gagan Verma</option>
+
 </select>
 </div>
 
@@ -165,16 +155,6 @@ button.submit { background:#5aa7ff; }
 </select>
 </div>
 
-<div class="field">
-<label>Project Manager</label>
-<select id="pm">
-<option value="">Select</option>
-<option value="dani.ray.salcedo@accenture.com">Dani</option>
-<option value="Alyanna.Moje@accenture.com">Alyanna</option>
-<option value="neil.coomar@linkquestglobal.com">Neil</option>
-</select>
-</div>
-
 </div>
 
 <div class="table-container">
@@ -188,7 +168,6 @@ button.submit { background:#5aa7ff; }
 <th>Total</th>
 <th>OT</th>
 <th>Food</th>
-<th>Notes</th>
 </tr>
 </thead>
 <tbody id="timesheet-body"></tbody>
@@ -198,10 +177,6 @@ button.submit { background:#5aa7ff; }
 <div class="summary">
 <div>Total Hours: <span id="total-hours">0</span></div>
 <div>Total OT: <span id="total-ot">0</span></div>
-</div>
-
-<div class="actions">
-<button onclick="submitTimesheet()">Submit</button>
 </div>
 
 </div>
@@ -240,7 +215,6 @@ function generateMonth() {
       <td class="total">0</td>
       <td class="ot">0</td>
       <td class="food">-</td>
-      <td><input type="text"></td>
     `;
 
     tableBody.appendChild(row);
@@ -248,10 +222,7 @@ function generateMonth() {
 }
 
 /* CALCULATION */
-tableBody.addEventListener("input", e=>{
-  const row = e.target.closest("tr");
-  if(!row) return;
-
+function calculateRow(row){
   const timeOut = row.querySelector(".time-out").value;
   if(!timeOut) return;
 
@@ -278,6 +249,17 @@ tableBody.addEventListener("input", e=>{
   }
 
   updateSummary();
+}
+
+/* EVENTS */
+tableBody.addEventListener("change", e=>{
+  const row = e.target.closest("tr");
+  if(row) calculateRow(row);
+});
+
+tableBody.addEventListener("input", e=>{
+  const row = e.target.closest("tr");
+  if(row) calculateRow(row);
 });
 
 /* SUMMARY */
@@ -291,15 +273,6 @@ function updateSummary(){
 
   document.getElementById("total-hours").innerText = total.toFixed(2);
   document.getElementById("total-ot").innerText = ot.toFixed(2);
-}
-
-/* EMAIL */
-function submitTimesheet(){
-  const pm = document.getElementById("pm").value;
-  if(!pm) return alert("Select PM");
-
-  window.location.href =
-  `mailto:${pm}?cc=neil.coomar@linkquestglobal.com,sudhir.singh@atlantisintel.com&subject=Timesheet`;
 }
 
 /* INIT */
