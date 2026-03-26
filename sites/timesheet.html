@@ -18,20 +18,38 @@ body {
 
 h1 { margin-bottom:20px; color:#32d296; }
 
+/* CONTROL PANEL GRID */
 .control-panel {
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
   margin-bottom:20px;
-  align-items:flex-end;
 }
 
-select {
+.field { display:flex; flex-direction:column; }
+
+label {
+  font-size:12px;
+  color:#b8c3e6;
+  margin-bottom:5px;
+}
+
+select, input {
   padding:8px;
   border-radius:6px;
   background:#1c2541;
   color:#fff;
   border:none;
+}
+
+/* GREEN BOX */
+.expected-box {
+  background:#32d296;
+  color:#000;
+  padding:10px;
+  border-radius:8px;
+  font-weight:bold;
+  text-align:center;
 }
 
 /* TABLE */
@@ -53,33 +71,30 @@ thead { background:#111a33; }
 
 .time-in {
   background:#2a355f;
-  color:#fff;
   font-weight:bold;
 }
 
 .food-yes { color:#32d296; font-weight:bold; }
-.food-no { color:#ff6b6b; font-weight:bold; }
+.food-no { color:#ff6b6b; }
 
-.expected-box {
-  background:#32d296;
-  color:#000;
-  padding:10px 18px;
-  border-radius:8px;
-  font-weight:bold;
-}
-
+/* SUMMARY */
 .summary-grid {
   display:grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns:repeat(2,1fr);
   gap:15px;
   margin-top:20px;
 }
 
-.card { padding:15px; border-radius:10px; font-weight:bold; }
+.card {
+  padding:15px;
+  border-radius:10px;
+  font-weight:bold;
+}
 
 .weekday { background:#1c2541; }
 .weekend { background:#2a1c1c; }
 
+/* BUTTONS */
 .actions {
   margin-top:20px;
   display:flex;
@@ -91,6 +106,7 @@ button {
   border:none;
   border-radius:6px;
   font-weight:bold;
+  cursor:pointer;
 }
 
 .save { background:#32d296; }
@@ -108,8 +124,10 @@ button {
 
 <div class="control-panel">
 
+<div class="field">
+<label>Month</label>
 <select id="month">
-<option value="">Month</option>
+<option value="">Select</option>
 <option value="0">January</option>
 <option value="1">February</option>
 <option value="2">March</option>
@@ -123,11 +141,67 @@ button {
 <option value="10">November</option>
 <option value="11">December</option>
 </select>
+</div>
 
+<div class="field">
+<label>Engineer</label>
+<select id="engineer">
+<option value="">Select</option>
+<option value="abhignya.reddy@linkquestglobal.com" data-phone="">Abhignya Reddy</option>
+<option value="parviz.ansari@linkquestglobal.com" data-phone="04220100700">Parviz Ansari</option>
+<option value="pavinee.suwanta@linkquestglobal.com">Pavinee Suwanta</option>
+<option value="abhishek.ahirrao@linkquestglobal.com">Abhishek Ahirrao</option>
+<option value="sanjay.nampally@linkquestglobal.com">Sanjay Nampally</option>
+<option value="saidinesh.mogili@linkquestglobal.com">Sai Dinesh Mogili</option>
+<option value="manish.redekar@linkquestglobal.com">Manish Redekar</option>
+<option value="shivtejgasti@gmail.com">Shivtej Gasti</option>
+<option value="skofficial8991@gmail.com">Shreekant Kadam</option>
+<option value="ergaganverma@gmail.com">Gagan Verma</option>
+</select>
+</div>
+
+<div class="field">
+<label>Email</label>
+<input id="eng-email" readonly>
+</div>
+
+<div class="field">
+<label>Phone</label>
+<input id="eng-phone" readonly>
+</div>
+
+<div class="field">
+<label>Project</label>
+<select id="project">
+<option>Select</option>
+<option>Telecom PRJ001</option>
+<option>5G PRJ002</option>
+<option>Drive Test PRJ003</option>
+</select>
+</div>
+
+<div class="field">
+<label>Project Manager</label>
+<select id="pm">
+<option value="">Select</option>
+<option value="dani.ray.salcedo@accenture.com">Dani Ray</option>
+<option value="Alyanna.Moje@accenture.com">Alyanna Moje</option>
+<option value="neil.coomar@linkquestglobal.com">Neil Coomar</option>
+</select>
+</div>
+
+<div class="field">
+<label>PM Email</label>
+<input id="pm-email" readonly>
+</div>
+
+<div class="field">
+<label>Location</label>
 <select id="location">
 <option value="sydney">Sydney</option>
 <option value="outside">Outside Sydney</option>
 </select>
+</div>
 
 <div class="expected-box">Expected: 8h/day</div>
 
@@ -152,17 +226,14 @@ button {
 </div>
 
 <div class="summary-grid">
-
 <div class="card weekday">
 Weekdays Days: <span id="wd-days">0</span><br>
 Weekdays Hours: <span id="wd-hours">0</span>
 </div>
-
 <div class="card weekend">
 Weekend Days: <span id="we-days">0</span><br>
 Weekend OT: <span id="we-ot">0</span>
 </div>
-
 </div>
 
 <div class="actions">
@@ -175,9 +246,18 @@ Weekend OT: <span id="we-ot">0</span>
 
 <script>
 
-const tableBody = document.getElementById("timesheet-body");
+/* AUTO FILL */
+document.getElementById("engineer").addEventListener("change", function(){
+  const s = this.options[this.selectedIndex];
+  document.getElementById("eng-email").value = s.value;
+  document.getElementById("eng-phone").value = s.dataset.phone || "";
+});
 
-/* WEEKDAY NAME */
+document.getElementById("pm").addEventListener("change", function(){
+  document.getElementById("pm-email").value = this.value;
+});
+
+/* DAY NAME */
 function getDayName(date){
   return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][date.getDay()];
 }
@@ -190,29 +270,27 @@ function generateMonth(){
   const year = new Date().getFullYear();
   const days = new Date(year, parseInt(month)+1, 0).getDate();
 
-  tableBody.innerHTML="";
+  const tbody = document.getElementById("timesheet-body");
+  tbody.innerHTML="";
 
   for(let i=1;i<=days;i++){
-    const dateObj = new Date(year, month, i);
-    const date = dateObj.toISOString().split('T')[0];
-    const dayName = getDayName(dateObj);
+    const d = new Date(year, month, i);
+    const date = d.toISOString().split('T')[0];
 
     const row = document.createElement("tr");
 
     row.innerHTML = `
       <td>${i}</td>
       <td><input type="date" value="${date}"></td>
-      <td>${dayName}</td>
+      <td>${getDayName(d)}</td>
       <td><input type="time" value="08:00" readonly class="time-in"></td>
-      <td>
-        <input type="time" class="time-out" step="900">
-      </td>
+      <td><input type="time" step="900" class="time-out"></td>
       <td class="total">0</td>
       <td class="ot">0</td>
       <td class="food">-</td>
     `;
 
-    tableBody.appendChild(row);
+    tbody.appendChild(row);
   }
 }
 
@@ -230,20 +308,20 @@ function calculateRow(row){
   let total = (end-start)/(1000*60*60);
   if(total<0) total=0;
 
-  const ot = total > 8 ? total - 8 : 0;
+  const ot = total>8 ? total-8 : 0;
 
   row.querySelector(".total").innerText = total.toFixed(2);
   row.querySelector(".ot").innerText = ot.toFixed(2);
 
-  const location = document.getElementById("location").value;
-  const foodCell = row.querySelector(".food");
+  const loc = document.getElementById("location").value;
+  const food = row.querySelector(".food");
 
-  if(location==="outside"){
-    foodCell.innerText = "$50";
-    foodCell.className = "food food-yes";
+  if(loc==="outside"){
+    food.innerText="$50";
+    food.className="food food-yes";
   } else {
-    foodCell.innerText = "-";
-    foodCell.className = "food food-no";
+    food.innerText="-";
+    food.className="food food-no";
   }
 
   updateSummary();
@@ -251,7 +329,6 @@ function calculateRow(row){
 
 /* SUMMARY */
 function updateSummary(){
-
   let wdDays=0, wdHours=0, weDays=0, weOT=0;
 
   document.querySelectorAll("tbody tr").forEach(row=>{
@@ -263,10 +340,10 @@ function updateSummary(){
 
     if(day===0 || day===6){
       if(total>0) weDays++;
-      weOT += ot;
+      weOT+=ot;
     } else {
       if(total>0) wdDays++;
-      wdHours += total;
+      wdHours+=total;
     }
   });
 
@@ -276,12 +353,13 @@ function updateSummary(){
   document.getElementById("we-ot").innerText = weOT.toFixed(2);
 }
 
-tableBody.addEventListener("change", e=>{
+/* EVENTS */
+document.getElementById("month").addEventListener("change", generateMonth);
+
+document.addEventListener("change", e=>{
   const row = e.target.closest("tr");
   if(row) calculateRow(row);
 });
-
-document.getElementById("month").addEventListener("change", generateMonth);
 
 </script>
 
