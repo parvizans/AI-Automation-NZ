@@ -26,30 +26,12 @@ h1 { margin-bottom:20px; color:#32d296; }
   align-items:flex-end;
 }
 
-.field { display:flex; flex-direction:column; }
-
-label {
-  font-size:12px;
-  color:#b8c3e6;
-  margin-bottom:5px;
-}
-
 select {
   padding:8px;
   border-radius:6px;
   background:#1c2541;
   color:#fff;
   border:none;
-  min-width:160px;
-}
-
-/* GREEN BOX */
-.expected-box {
-  background:#32d296;
-  color:#000;
-  padding:10px 18px;
-  border-radius:8px;
-  font-weight:bold;
 }
 
 /* TABLE */
@@ -78,7 +60,14 @@ thead { background:#111a33; }
 .food-yes { color:#32d296; font-weight:bold; }
 .food-no { color:#ff6b6b; font-weight:bold; }
 
-/* SUMMARY BLOCKS */
+.expected-box {
+  background:#32d296;
+  color:#000;
+  padding:10px 18px;
+  border-radius:8px;
+  font-weight:bold;
+}
+
 .summary-grid {
   display:grid;
   grid-template-columns: repeat(2, 1fr);
@@ -86,20 +75,11 @@ thead { background:#111a33; }
   margin-top:20px;
 }
 
-.card {
-  padding:15px;
-  border-radius:10px;
-  font-weight:bold;
-}
+.card { padding:15px; border-radius:10px; font-weight:bold; }
 
 .weekday { background:#1c2541; }
 .weekend { background:#2a1c1c; }
 
-.card span {
-  color:#32d296;
-}
-
-/* BUTTONS */
 .actions {
   margin-top:20px;
   display:flex;
@@ -111,7 +91,6 @@ button {
   border:none;
   border-radius:6px;
   font-weight:bold;
-  cursor:pointer;
 }
 
 .save { background:#32d296; }
@@ -130,7 +109,7 @@ button {
 <div class="control-panel">
 
 <select id="month">
-<option value="">Select Month</option>
+<option value="">Month</option>
 <option value="0">January</option>
 <option value="1">February</option>
 <option value="2">March</option>
@@ -160,6 +139,7 @@ button {
 <tr>
 <th>Day</th>
 <th>Date</th>
+<th>Weekday</th>
 <th>Time In</th>
 <th>Time Out</th>
 <th>Total</th>
@@ -171,7 +151,6 @@ button {
 </table>
 </div>
 
-<!-- ✅ SUMMARY -->
 <div class="summary-grid">
 
 <div class="card weekday">
@@ -186,7 +165,6 @@ Weekend OT: <span id="we-ot">0</span>
 
 </div>
 
-<!-- ✅ BUTTONS -->
 <div class="actions">
 <button class="save">Save</button>
 <button class="export">Export</button>
@@ -199,8 +177,13 @@ Weekend OT: <span id="we-ot">0</span>
 
 const tableBody = document.getElementById("timesheet-body");
 
+/* WEEKDAY NAME */
+function getDayName(date){
+  return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][date.getDay()];
+}
+
 /* GENERATE */
-function generateMonth() {
+function generateMonth(){
   const month = document.getElementById("month").value;
   if(month==="") return;
 
@@ -212,14 +195,18 @@ function generateMonth() {
   for(let i=1;i<=days;i++){
     const dateObj = new Date(year, month, i);
     const date = dateObj.toISOString().split('T')[0];
+    const dayName = getDayName(dateObj);
 
     const row = document.createElement("tr");
 
     row.innerHTML = `
       <td>${i}</td>
       <td><input type="date" value="${date}"></td>
+      <td>${dayName}</td>
       <td><input type="time" value="08:00" readonly class="time-in"></td>
-      <td><input type="time" class="time-out"></td>
+      <td>
+        <input type="time" class="time-out" step="900">
+      </td>
       <td class="total">0</td>
       <td class="ot">0</td>
       <td class="food">-</td>
@@ -229,13 +216,13 @@ function generateMonth() {
   }
 }
 
-/* CALCULATION */
+/* CALC */
 function calculateRow(row){
   const timeOut = row.querySelector(".time-out").value;
   if(!timeOut) return;
 
   const dateVal = row.querySelector("input[type=date]").value;
-  const day = new Date(dateVal).getDay(); // 0 Sun, 6 Sat
+  const day = new Date(dateVal).getDay();
 
   const start = new Date("1970-01-01T08:00:00");
   const end = new Date(`1970-01-01T${timeOut}:00`);
@@ -289,13 +276,11 @@ function updateSummary(){
   document.getElementById("we-ot").innerText = weOT.toFixed(2);
 }
 
-/* EVENTS */
 tableBody.addEventListener("change", e=>{
   const row = e.target.closest("tr");
   if(row) calculateRow(row);
 });
 
-/* INIT */
 document.getElementById("month").addEventListener("change", generateMonth);
 
 </script>
