@@ -107,6 +107,7 @@ input {
 
 <div class="control-panel">
 
+<!-- MONTH -->
 <div class="field">
 <label>Month</label>
 <select id="month">
@@ -126,6 +127,7 @@ input {
 </select>
 </div>
 
+<!-- ENGINEER -->
 <div class="field">
 <label>Engineer</label>
 <select id="engineer">
@@ -143,6 +145,15 @@ input {
 </select>
 </div>
 
+<!-- ✅ NEW: ENGINEER EMAIL DROPDOWN -->
+<div class="field">
+<label>Engineer Email</label>
+<select id="eng-email">
+<option value="">Auto-filled</option>
+</select>
+</div>
+
+<!-- LOCATION -->
 <div class="field">
 <label>Location</label>
 <select id="location">
@@ -151,7 +162,18 @@ input {
 </select>
 </div>
 
-<!-- ✅ NEW GREEN BOX -->
+<!-- ✅ NEW: PROJECT MANAGER -->
+<div class="field">
+<label>Project Manager</label>
+<select id="pm">
+<option value="">Select</option>
+<option value="dani.ray.salcedo@accenture.com">Dani Ray</option>
+<option value="Alyanna.Moje@accenture.com">Alyanna Moje</option>
+<option value="neil.coomar@linkquestglobal.com">Neil Coomar</option>
+</select>
+</div>
+
+<!-- GREEN BOX -->
 <div class="expected-box">
 Expected: 8h/day
 </div>
@@ -185,6 +207,14 @@ Expected: 8h/day
 <script>
 
 const tableBody = document.getElementById("timesheet-body");
+
+/* ENGINEER → EMAIL SYNC */
+document.getElementById("engineer").addEventListener("change", function(){
+  const email = this.value;
+  const emailDropdown = document.getElementById("eng-email");
+
+  emailDropdown.innerHTML = `<option>${email}</option>`;
+});
 
 /* GENERATE */
 function generateMonth() {
@@ -226,7 +256,6 @@ function calculateRow(row){
   let total = (end-start)/(1000*60*60);
   if(total<0) total=0;
 
-  // ✅ OT BASED ON 8 HOURS
   const ot = total > 8 ? total - 8 : 0;
 
   row.querySelector(".total").innerText = total.toFixed(2);
@@ -248,11 +277,6 @@ function calculateRow(row){
 
 /* EVENTS */
 tableBody.addEventListener("change", e=>{
-  const row = e.target.closest("tr");
-  if(row) calculateRow(row);
-});
-
-tableBody.addEventListener("input", e=>{
   const row = e.target.closest("tr");
   if(row) calculateRow(row);
 });
