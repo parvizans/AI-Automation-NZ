@@ -14,15 +14,9 @@ body {
   padding:20px;
 }
 
-.container {
-  max-width:1200px;
-  margin:auto;
-}
+.container { max-width:1400px; margin:auto; }
 
-h1 {
-  margin-bottom:20px;
-  color:#32d296;
-}
+h1 { margin-bottom:20px; color:#32d296; }
 
 /* CONTROL PANEL */
 .control-panel {
@@ -32,10 +26,7 @@ h1 {
   margin-bottom:20px;
 }
 
-.field {
-  display:flex;
-  flex-direction:column;
-}
+.field { display:flex; flex-direction:column; }
 
 label {
   font-size:12px;
@@ -60,10 +51,7 @@ select {
   overflow-x:auto;
 }
 
-table {
-  width:100%;
-  border-collapse:collapse;
-}
+table { width:100%; border-collapse:collapse; }
 
 th, td {
   padding:10px;
@@ -71,14 +59,9 @@ th, td {
   border:1px solid rgba(255,255,255,0.1);
 }
 
-thead {
-  background:#111a33;
-}
+thead { background:#111a33; }
 
-th {
-  position:sticky;
-  top:0;
-}
+th { position:sticky; top:0; }
 
 tbody tr:nth-child(even) {
   background:rgba(255,255,255,0.03);
@@ -124,9 +107,12 @@ button {
   cursor:pointer;
 }
 
-button.submit {
-  background:#5aa7ff;
-}
+button.submit { background:#5aa7ff; }
+
+/* FOOD STYLE */
+.food-yes { color:#32d296; font-weight:bold; }
+.food-no { color:#ff6b6b; font-weight:bold; }
+
 </style>
 </head>
 
@@ -138,71 +124,67 @@ button.submit {
 
 <div class="control-panel">
 
-  <!-- MONTH -->
-  <select id="month">
-    <option value="">Select Month</option>
-    <option value="0">January</option>
-    <option value="1">February</option>
-    <option value="2">March</option>
-    <option value="3">April</option>
-    <option value="4">May</option>
-    <option value="5">June</option>
-    <option value="6">July</option>
-    <option value="7">August</option>
-    <option value="8">September</option>
-    <option value="9">October</option>
-    <option value="10">November</option>
-    <option value="11">December</option>
-  </select>
+<div class="field">
+<label>Month</label>
+<select id="month">
+<option value="">Select</option>
+<option value="0">January</option>
+<option value="1">February</option>
+<option value="2">March</option>
+<option value="3">April</option>
+<option value="4">May</option>
+<option value="5">June</option>
+<option value="6">July</option>
+<option value="7">August</option>
+<option value="8">September</option>
+<option value="9">October</option>
+<option value="10">November</option>
+<option value="11">December</option>
+</select>
+</div>
 
-  <!-- ENGINEER -->
-  <select id="engineer">
-    <option value="">Select Engineer</option>
-    <option value="abhignya.reddy@linkquestglobal.com">Abhignya Reddy</option>
-    <option value="parviz.ansari@linkquestglobal.com">Parviz Ansari (Work)</option>
-    <option value="parvizans@gmail.com">Parviz Ansari (Personal)</option>
-    <option value="pavinee.suwanta@linkquestglobal.com">Pavinee Suwanta</option>
-    <option value="abhishek.ahirrao@linkquestglobal.com">Abhishek Ahirrao</option>
-    <option value="sanjay.nampally@linkquestglobal.com">Sanjay Nampally</option>
-    <option value="manish.redekar@linkquestglobal.com">Manish Redekar</option>
-    <option value="shivtejgasti@gmail.com">Shivtej Gasti</option>
-    <option value="skofficial8991@gmail.com">Shreekant Kadam</option>
-    <option value="ergaganverma@gmail.com">Gagan Verma</option>
-  </select>
+<div class="field">
+<label>Engineer</label>
+<select id="engineer">
+<option value="">Select</option>
+<option value="abhignya.reddy@linkquestglobal.com">Abhignya</option>
+<option value="parviz.ansari@linkquestglobal.com">Parviz</option>
+</select>
+</div>
 
-  <!-- PROJECT MANAGER -->
-  <select id="pm">
-    <option value="">Select Project Manager</option>
-    <option value="dani.ray.salcedo@accenture.com">Dani Ray Salcedo</option>
-    <option value="Alyanna.Moje@accenture.com">Alyanna Moje</option>
-    <option value="neil.coomar@linkquestglobal.com">Neil Coomar</option>
-  </select>
+<div class="field">
+<label>Location</label>
+<select id="location">
+<option value="sydney">Sydney</option>
+<option value="outside">Outside Sydney</option>
+</select>
+</div>
 
-  <!-- PROJECT -->
-  <select>
-    <option>Project</option>
-    <option>Telecom</option>
-  </select>
-
-  <!-- STATUS -->
-  <select>
-    <option>Status</option>
-    <option>Draft</option>
-    <option>Submitted</option>
-  </select>
+<div class="field">
+<label>Project Manager</label>
+<select id="pm">
+<option value="">Select</option>
+<option value="dani.ray.salcedo@accenture.com">Dani</option>
+<option value="Alyanna.Moje@accenture.com">Alyanna</option>
+<option value="neil.coomar@linkquestglobal.com">Neil</option>
+</select>
+</div>
 
 </div>
+
 <div class="table-container">
 <table>
 <thead>
 <tr>
 <th>Day</th>
 <th>Date</th>
+<th>Email</th>
+<th>Phone</th>
 <th>Time In</th>
 <th>Time Out</th>
-<th>Break</th>
 <th>Total</th>
 <th>OT</th>
+<th>Food</th>
 <th>Notes</th>
 </tr>
 </thead>
@@ -216,9 +198,7 @@ button.submit {
 </div>
 
 <div class="actions">
-<button onclick="saveData()">Save</button>
-<button onclick="exportData()">Export</button>
-<button class="submit" onclick="submitTimesheet()">Submit</button>
+<button onclick="submitTimesheet()">Submit</button>
 </div>
 
 </div>
@@ -227,7 +207,7 @@ button.submit {
 
 const tableBody = document.getElementById("timesheet-body");
 
-/* GENERATE MONTH */
+/* GENERATE */
 function generateMonth() {
   const month = document.getElementById("month").value;
   if(month==="") return;
@@ -245,16 +225,20 @@ function generateMonth() {
     row.innerHTML = `
       <td>${i}</td>
       <td><input type="date" value="${date}"></td>
+      <td><input type="email" placeholder="email"></td>
+      <td><input type="text" placeholder="phone"></td>
       <td><input type="time" value="08:00" readonly class="time-in"></td>
-      <td><input type="time" class="time-out"></td>
-      <td><input type="number" value="0" class="break"></td>
-      <td class="total">0</td>
-      <td class="ot">0</td>
+      <td><input type="text" class="time-out" value="18:00"></td>
+      <td class="total">10.00</td>
+      <td class="ot">0.00</td>
+      <td class="food">-</td>
       <td><input type="text"></td>
     `;
 
     tableBody.appendChild(row);
   }
+
+  updateSummary();
 }
 
 /* CALCULATION */
@@ -263,20 +247,32 @@ tableBody.addEventListener("input", e=>{
   if(!row) return;
 
   const timeOut = row.querySelector(".time-out").value;
-  const breakTime = parseFloat(row.querySelector(".break").value)||0;
 
   if(!timeOut) return;
 
-  const start = new Date("1970-01-01T08:00:00");
-  const end = new Date(`1970-01-01T${timeOut}:00`);
+  const [h,m] = timeOut.split(":");
+  const end = new Date(1970,0,1,h,m);
+  const start = new Date(1970,0,1,8,0);
 
-  let total = (end-start)/(1000*60*60)-breakTime;
+  let total = (end-start)/(1000*60*60);
   if(total<0) total=0;
 
   const ot = total>10 ? total-10 : 0;
 
   row.querySelector(".total").innerText = total.toFixed(2);
   row.querySelector(".ot").innerText = ot.toFixed(2);
+
+  /* FOOD */
+  const location = document.getElementById("location").value;
+  const foodCell = row.querySelector(".food");
+
+  if(location==="outside"){
+    foodCell.innerText = "$50";
+    foodCell.className = "food food-yes";
+  } else {
+    foodCell.innerText = "-";
+    foodCell.className = "food food-no";
+  }
 
   updateSummary();
 });
@@ -296,18 +292,11 @@ function updateSummary(){
 
 /* EMAIL */
 function submitTimesheet(){
-  const eng = document.getElementById("engineer").value;
   const pm = document.getElementById("pm").value;
-
-  if(!eng || !pm){
-    alert("Select Engineer & PM");
-    return;
-  }
-
-  const cc = "neil.coomar@linkquestglobal.com,sudhir.singh@atlantisintel.com";
+  if(!pm) return alert("Select PM");
 
   window.location.href =
-  `mailto:${pm}?cc=${cc}&subject=Timesheet Submission`;
+  `mailto:${pm}?cc=neil.coomar@linkquestglobal.com,sudhir.singh@atlantisintel.com&subject=Timesheet`;
 }
 
 /* INIT */
