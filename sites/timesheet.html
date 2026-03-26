@@ -284,7 +284,20 @@ function generateMonth(){
       <td><input type="date" value="${date}"></td>
       <td>${getDayName(d)}</td>
       <td><input type="time" value="08:00" readonly class="time-in"></td>
-      <td><input type="time" step="900" class="time-out"></td>
+     <td>
+  <select class="time-hour">
+    ${Array.from({length: 24}, (_, i) =>
+      `<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`
+    ).join("")}
+  </select>
+
+  <select class="time-minute">
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+  </select>
+</td>
       <td class="total">0</td>
       <td class="ot">0</td>
       <td class="food">-</td>
@@ -296,7 +309,10 @@ function generateMonth(){
 
 /* CALC */
 function calculateRow(row){
-  const timeOut = row.querySelector(".time-out").value;
+const hour = row.querySelector(".time-hour").value;
+const minute = row.querySelector(".time-minute").value;
+
+const timeOut = `${hour}:${minute}`;
   if(!timeOut) return;
 
   const dateVal = row.querySelector("input[type=date]").value;
