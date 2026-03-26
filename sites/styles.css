@@ -1,767 +1,367 @@
-:root{
-  --bg:#0b1220;
-  --card: rgba(16,26,51,.72);
-  --text:#eaf0ff;
-  --muted:#b8c3e6;
-  --brand:#32d296;
-  --brand2:#5aa7ff;
-  --border:rgba(255,255,255,.12);
-  --shadow: 0 12px 40px rgba(0,0,0,.35);
-  --radius:18px;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Timesheet_Pro_2</title>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: Arial;
+  background:#0b1220;
+  color:#fff;
+  padding:20px;
 }
 
-/* Reset */
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
+.container { max-width:1400px; margin:auto; }
 
-body{
-  margin:0;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(900px 500px at 20% 10%, rgba(90,167,255,.20), transparent 60%),
-    radial-gradient(900px 500px at 80% 20%, rgba(50,210,150,.16), transparent 60%),
-    var(--bg);
-  line-height:1.55;
-}
+h1 { margin-bottom:20px; color:#32d296; }
 
-a{color:inherit; text-decoration:none}
-
-.wrap{
-  width:100%;
-  max-width:1200px;
-  margin:0 auto;
-  padding:0 20px;
-}
-
-.muted{color:var(--muted)}
-.small{font-size:13px}
-
-/* Header */
-.site-header{
-  position:sticky;
-  top:0;
-  z-index:50;
-  backdrop-filter: blur(10px);
-  background: rgba(11,18,32,.70);
-  border-bottom:1px solid var(--border);
-}
-
-.nav-container{
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:14px 60px;
-gap:40px;
-}
-
-
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-weight:800;
-}
-
-.logo{
-  width:38px;
-  height:38px;
-  border-radius:12px;
-  background: linear-gradient(135deg, var(--brand), var(--brand2));
-  box-shadow: var(--shadow);
-}
-.logo span{
-max-width:220px;
-white-space;
-overflow;
-text-overflow;
-font-weight:600;
-color:#fff;
-}
-
-.links{
-  display:flex;
-  gap:14px;
-  flex-wrap:wrap;
-}
-
-.links a{
-  padding:8px 12px;
-  border:1px solid var(--border);
-  border-radius:999px;
-  color:var(--muted);
-}
-
-.links a:hover{
-  border-color:rgba(255,255,255,.25);
-  color:var(--text);
-}
-/* ===== NEW MENU SYSTEM ===== */
-
-.menu{
-  flex:1;
-  display:flex;
-  justify-content:center;
-}
-
-.menu ul{
-  display:flex;
-  gap:35px;
-  list-style:none;
-  margin:0;
-  padding:0;
-  flex-wrap:nowrap;
-}
-
-.menu li{
-  display:inline-block;
-}
-
-.menu a{
-  text-decoration:none;
-  color:#d9e6ff;
-  font-size:16px;
-  transition:0.3s;
-}
-
-.menu a:hover{
-  color:#4db3ff;
-}
-
-.cta{
-  background: linear-gradient(135deg, var(--brand), #2fd1ff);
-  color:#061018;
-  border-radius:999px;
-  padding:10px 14px;
-  font-weight:800;
-}
-
-/* HERO – Brighter + Slightly Shorter */
-.hero{
-  ;
-  height: 90vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.hero-inner{
+/* CONTROL PANEL GRID */
+.control-panel {
   display:grid;
-  grid-template-columns: 1.15fr .85fr;
-  gap:18px;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin-bottom:20px;
 }
 
-.hero h1{
-  color:#ffffff;
-  font-size: clamp(30px, 3.8vw, 50px);
-  line-height:1.08;
-  margin:0 0 12px;
+.field { display:flex; flex-direction:column; }
+
+label {
+  font-size:12px;
+  color:#b8c3e6;
+  margin-bottom:5px;
 }
 
-.hero .sub{
-  color:rgba(255,255,255,.85);
-}
-
-/* Cards */
-.card{
-  background: var(--card);
-  border:1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding:18px;
-}
-
-.row{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:12px;
-}
-
-.btn{
-  padding:10px 14px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background: rgba(20, 30, 60, 0.25);
-}
-
-.btn.primary{
-  background:linear-gradient(135deg, var(--brand), #2fd1ff);
-  color:#061018;
+select, input {
+  padding:8px;
+  border-radius:6px;
+  background:#1c2541;
+  color:#fff;
   border:none;
-  font-weight:900;
 }
 
-/* Badges */
-.badges{
+/* GREEN BOX */
+.expected-box {
+  background:#32d296;
+  color:#000;
+  padding:10px;
+  border-radius:8px;
+  font-weight:bold;
+  text-align:center;
+}
+
+/* TABLE */
+.table-container {
+  background:#1c2541;
+  padding:10px;
+  border-radius:10px;
+}
+
+table { width:100%; border-collapse:collapse; }
+
+th, td {
+  padding:10px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,0.1);
+}
+
+thead { background:#111a33; }
+
+.time-in {
+  background:#2a355f;
+  font-weight:bold;
+}
+
+.food-yes { color:#32d296; font-weight:bold; }
+.food-no { color:#ff6b6b; }
+
+/* SUMMARY */
+.summary-grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  margin-top:20px;
+}
+
+.card {
+  padding:15px;
+  border-radius:10px;
+  font-weight:bold;
+}
+
+.weekday { background:#1c2541; }
+.weekend { background:#2a1c1c; }
+
+/* BUTTONS */
+.actions {
+  margin-top:20px;
   display:flex;
   gap:10px;
-  flex-wrap:wrap;
-  margin-top:14px;
 }
 
-.badge{
-  font-size:13px;
-  border:1px solid rgba(50,210,150,.4);
-  background: rgba(50,210,150,.12);
-  padding:6px 10px;
-  border-radius:999px;
-}
-
-/* Sections */
-.section{padding:26px 0}
-
-h2{
-  margin:0 0 10px;
-  font-size:22px;
-}
-
-.three{
-  display:grid;
-  grid-template-columns: repeat(3,1fr);
-  gap:12px;
-  margin-top:12px;
-}
-
-.item{
-  padding:14px;
-  border-radius:14px;
-  border:1px solid var(--border);
-  background: rgba(255,255,255,.04);
-}
-
-.item p{
-  color:var(--muted);
-  font-size:14px;
-}
-
-/* Services Grid */
-.service-grid{
-  display:grid;
-  grid-template-columns: repeat(2,1fr);
-  gap:10px;
-  margin-top:12px;
-}
-
-.service-item{
-  padding:12px 14px;
-  border:1px solid var(--border);
-  border-radius:14px;
-  background: rgba(255,255,255,.04);
-}
-
-.image-break {
- padding:40px 0 10px;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0),
-    rgba(10,20,40,.6),
-    rgba(0,0,0,0)
-  );
-}
-
-/* MID IMAGE – Balanced Width (narrower) */
-.mid-image{
-  width: 100%;
-  max-width: 600px;   /* narrower than 850px */
-  height: auto;
-  display: block;
-  margin: 40px auto 60px;
-  border-radius: 18px;
-  box-shadow: 0 18px 45px rgba(0,0,0,.35);
-}
-
-/* Pricing */
-.pricing{
-  display:grid;
-  grid-template-columns: repeat(3,1fr);
-  gap:12px;
-  margin-top:12px;
-}
-
-.price{
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:16px;
-  background: rgba(255,255,255,.04);
-}
-
-.price.featured{
-  border-color: rgba(50,210,150,.55);
-  background: rgba(50,210,150,.08);
-}
-
-/* Footer */
-footer{
-  padding:18px 0 28px;
-  border-top:1px solid var(--border);
-  margin-top:18px;
-}
-
-/* Mobile */
-@media (max-width:900px){
-  .hero-inner{grid-template-columns:1fr;}
-  .three, .pricing{grid-template-columns:1fr;}
-  .service-grid{grid-template-columns:1fr;}
-  .links{display:none;}
-}
-
-/* ===== NEW NAVBAR (AutomationPark) ===== */
-
-.navbar{
-position:fixed;
-top:0;
-width:100%;
-background:#0b2a4a;
-z-index:1000;
-box-shadow:0 4px 20px rgba(0,0,0,0.4);
-}
-
-.nav-container{
-display;
-align-items;
-justify-content;
-padding:14px 40px;
-gap:30px;
-}
-
-.logo{
-display:flex;
-align-items:center;
-gap:10px;
-color:white;
-font-size:20px;
-font-weight:600;
-}
-
-.logo img{
-height:40px;
-}
-
-.menu{
-flex:1;
-display;
-justify-content;
-}
-
-.menu ul{
-display:flex;
-gap:35px;
-list-style:none;
-margin:0;
-padding:0;
-}
-
-.menu li{
-display:inline-block;
-}
-
-.menu a{
-text-decoration:none;
-color:#d9e6ff;
-font-size:16px;
-transition:0.3s;
-}
-
-.menu a:hover
-
-.subscribe-btn{
-border:1px solid #4db3ff;
-padding:8px 18px;
-border-radius:10px;
-color:white;
-text-decoration:none;
-transition:0.3s;
-}
-
-.subscribe-btn:hover
-
-/* Fix content under navbar */
-body{
-padding-top:80px;
-}
-.nav-container{
-  gap:40px;
-}
-.logo{
-display:flex;
-align-items:center;
-gap:12px;
-min-width:180px; /* keeps space stable */
-}
-
-.logo img{
-height:38px;
-}
-
-.logo span{
-font-size:18px;
-font-weight:600;
-color:#fff;
-white-space:nowrap;
-}
-.menu ul{
-gap:28px; /* slightly smaller than before */
-}
-.logo{
-display:flex;
-align-items:center;
-min-width:200px;
-}
-
-.brand-text{
-font-size:22px;
-font-weight:700;
-color:#ffffff;
-letter-spacing:0.5px;
-}
-.nav-container{
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:14px 40px;
-gap:40px;
-}
-
-.menu{
-flex:1;
-display:flex;
-justify-content:center;
-}
-.logo{
-display:flex;
-align-items:center;
-justify-content:center; /* 👈 centers horizontally */
-
-min-width:200px;
-height:50px; /* 👈 control box height */
-
-padding:0 20px;
-
-border-radius:14px;
-
-background:linear-gradient(135deg, #32d296, #5aa7ff);
-}
-
-.brand-text{
-display:flex;
-align-items:center;
-justify-content:center;
-
-width:100%;
-height:100%;
-
-font-size:20px;
-font-weight:700;
-color:#ffffff;
-}
-.hero{
-position:relative;
-height:90vh;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-overflow:hidden;
-background:linear-gradient(135deg,#081029,#0b2a4a);
-}
-
-#networkCanvas{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-z-index:0;
-}
-
-.hero-content{
-  ;
-  z-index:2;
-  text-align:center;
-  max-width:800px;
-
-  /* 🔥 lighter glass effect */
-  background: rgba(10,20,40,0.15);
-  backdrop-filter: blur(4px);
-
-  padding: 30px;
-  border-radius: 16px;
-}
-
-.hero h1{
-font-size:48px;
-margin-bottom:20px;
-}
-
-.hero p{
-font-size:18px;
-opacity:0.8;
-margin-bottom:30px;
-}
-
-.hero-buttons{
-display:flex;
-gap:20px;
-justify-content:center;
-}
-
-.btn-primary{
-background:#32d296;
-padding:12px 24px;
-border-radius:8px;
-color:#000;
-text-decoration:none;
-font-weight:600;
-}
-
-.btn-secondary{
-border:1px solid #5aa7ff;
-padding:12px 24px;
-border-radius:8px;
-color:#fff;
-text-decoration:none;
-}
-html{
-  scroll-behavior:smooth;
-}
-.hero{
-  ;
-  height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-#stars{
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;   /* important */
-}
-
-
-  border-radius: 16px;
-}
-.hero-content{
-  transform: translateY(40px);
-}
-
-.tool-card {
-  padding: 30px;
-  max-width: 1100px;
-  margin: 40px auto;
-
-  background: rgba(20, 30, 60, 0.6);
-  backdrop-filter: blur(12px);
-  border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.1);
-
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  transition: 0.3s;
-}
-.tool-card:hover {
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 30px 80px rgba(0,0,0,0.7);
-}
-
-.tool-grid{
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.tool-grid input{
-  padding: 8px;
-  border-radius: 8px;
-  border: none;
-  background: #0b1220;
-  color: white;
-}
-select{
-  padding: 8px;
-  border-radius: 8px;
-  background: #0b1220;
-  color: white;
-  border: none;
-}
-button, .btn {
-  cursor: pointer;
-}
-/* =========================
-   🚀 TOOL UI UPGRADE
-========================= */
-
-.tool-card {
-  padding: 30px;
-  max-width: 1100px;
-  margin: 40px auto;
-}
-
-/* Make inputs bigger */
-.tool-grid input,
-.tool-grid select {
-  padding: 14px;
-  font-size: 15px;
-  border-radius: 12px;
-}
-
-/* More spacing */
-.tool-grid {
-  gap: 18px;
-}
-
-/* Labels breathing */
-.tool-grid label {
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-/* Bigger result text */
-#lb_distance,
-#lb_pathloss,
-#lb_budget,
-#lb_sites {
-  font-size: 18px;
-  margin-top: 10px;
-}
-
-/* BUTTON */
 button {
-  padding: 14px 28px;
-  font-size: 16px;
-}
-.tool-grid-2 {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-/* =========================
-   🌌 TELECOM BACKGROUND
-========================= */
-
-
-/* =========================
-   🎯 TOOL CARD BACKGROUND
-========================= */
-
-.tool-card {
-  position: relative;
-  overflow: hidden;
-
-  padding: 30px;
-  max-width: 1100px;
-  margin: 40px auto;
-
-  border-radius: 20px;
-
-  background: rgba(20,30,60,0.2); /* IMPORTANT: not solid */
-}
-.tool-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  opacity: 0.6;
-}
-.tool-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background: rgba(10, 20, 40, 0.5);
-}
-.tool-card > * {
-  position: relative;
-  z-index: 2;
-}
-/* =========================
-   🎯 DIFFERENT BACKGROUND PER TOOL
-========================= */
-
-/* 🔹 5g THP Tool */
-#tools .tool-card:nth-child(2)::before {
-  background: url('https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?q=80&w=1920') center/cover no-repeat;
-}
-/* 🎯 LINK BUDGET BACKGROUND (AI DATA FLOW) */
-.lb-card::before {
- background: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1920') center/cover no-repeat;
-}
-#vision {
-  text-align: center;
+  padding:10px 20px;
+  border:none;
+  border-radius:6px;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.vision-text {
-  font-size: 18px;
-  margin-bottom: 10px;
+.save { background:#32d296; }
+.export { background:#5aa7ff; }
+.submit { background:#ffcc00; }
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>⏱ Timesheet_Pro_2</h1>
+
+<div class="control-panel">
+
+<div class="field">
+<label>Month</label>
+<select id="month">
+<option value="">Select</option>
+<option value="0">January</option>
+<option value="1">February</option>
+<option value="2">March</option>
+<option value="3">April</option>
+<option value="4">May</option>
+<option value="5">June</option>
+<option value="6">July</option>
+<option value="7">August</option>
+<option value="8">September</option>
+<option value="9">October</option>
+<option value="10">November</option>
+<option value="11">December</option>
+</select>
+</div>
+
+<div class="field">
+<label>Engineer</label>
+<select id="engineer">
+<option value="">Select</option>
+<option value="abhignya.reddy@linkquestglobal.com" data-phone="">Abhignya Reddy</option>
+<option value="parviz.ansari@linkquestglobal.com" data-phone="04220100700">Parviz Ansari</option>
+<option value="pavinee.suwanta@linkquestglobal.com">Pavinee Suwanta</option>
+<option value="abhishek.ahirrao@linkquestglobal.com">Abhishek Ahirrao</option>
+<option value="sanjay.nampally@linkquestglobal.com">Sanjay Nampally</option>
+<option value="saidinesh.mogili@linkquestglobal.com">Sai Dinesh Mogili</option>
+<option value="manish.redekar@linkquestglobal.com">Manish Redekar</option>
+<option value="shivtejgasti@gmail.com">Shivtej Gasti</option>
+<option value="skofficial8991@gmail.com">Shreekant Kadam</option>
+<option value="ergaganverma@gmail.com">Gagan Verma</option>
+</select>
+</div>
+
+<div class="field">
+<label>Email</label>
+<input id="eng-email" readonly>
+</div>
+
+<div class="field">
+<label>Phone</label>
+<input id="eng-phone" readonly>
+</div>
+
+<div class="field">
+<label>Project</label>
+<select id="project">
+<option>Select</option>
+<option>Telecom PRJ001</option>
+<option>5G PRJ002</option>
+<option>Drive Test PRJ003</option>
+</select>
+</div>
+
+<div class="field">
+<label>Project Manager</label>
+<select id="pm">
+<option value="">Select</option>
+<option value="dani.ray.salcedo@accenture.com">Dani Ray</option>
+<option value="Alyanna.Moje@accenture.com">Alyanna Moje</option>
+<option value="neil.coomar@linkquestglobal.com">Neil Coomar</option>
+</select>
+</div>
+
+<div class="field">
+<label>PM Email</label>
+<input id="pm-email" readonly>
+</div>
+
+<div class="field">
+<label>Location</label>
+<select id="location">
+<option value="sydney">Sydney</option>
+<option value="outside">Outside Sydney</option>
+</select>
+</div>
+
+<div class="expected-box">Expected: 8h/day</div>
+
+</div>
+
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Day</th>
+<th>Date</th>
+<th>Weekday</th>
+<th>Time In</th>
+<th>Time Out</th>
+<th>Total</th>
+<th>OT</th>
+<th>Food</th>
+</tr>
+</thead>
+<tbody id="timesheet-body"></tbody>
+</table>
+</div>
+
+<div class="summary-grid">
+<div class="card weekday">
+Weekdays Days: <span id="wd-days">0</span><br>
+Weekdays Hours: <span id="wd-hours">0</span>
+</div>
+<div class="card weekend">
+Weekend Days: <span id="we-days">0</span><br>
+Weekend OT: <span id="we-ot">0</span>
+</div>
+</div>
+
+<div class="actions">
+<button class="save">Save</button>
+<button class="export">Export</button>
+<button class="submit">Submit</button>
+</div>
+
+</div>
+
+<script>
+
+/* AUTO FILL */
+document.getElementById("engineer").addEventListener("change", function(){
+  const s = this.options[this.selectedIndex];
+  document.getElementById("eng-email").value = s.value;
+  document.getElementById("eng-phone").value = s.dataset.phone || "";
+});
+
+document.getElementById("pm").addEventListener("change", function(){
+  document.getElementById("pm-email").value = this.value;
+});
+
+/* DAY NAME */
+function getDayName(date){
+  return ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][date.getDay()];
 }
 
-.vision-sub {
-  color: #b8c3e6;
-  max-width: 700px;
-  margin: 0 auto 20px;
+/* GENERATE */
+function generateMonth(){
+  const month = document.getElementById("month").value;
+  if(month==="") return;
+
+  const year = new Date().getFullYear();
+  const days = new Date(year, parseInt(month)+1, 0).getDate();
+
+  const tbody = document.getElementById("timesheet-body");
+  tbody.innerHTML="";
+
+  for(let i=1;i<=days;i++){
+    const d = new Date(year, month, i);
+    const date = d.toISOString().split('T')[0];
+
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+      <td>${i}</td>
+      <td><input type="date" value="${date}"></td>
+      <td>${getDayName(d)}</td>
+      <td><input type="time" value="08:00" readonly class="time-in"></td>
+      <td><input type="time" step="900" class="time-out"></td>
+      <td class="total">0</td>
+      <td class="ot">0</td>
+      <td class="food">-</td>
+    `;
+
+    tbody.appendChild(row);
+  }
 }
 
-.vision-highlight {
-  color: #32d296;
-  margin-bottom: 30px;
+/* CALC */
+function calculateRow(row){
+  const timeOut = row.querySelector(".time-out").value;
+  if(!timeOut) return;
+
+  const dateVal = row.querySelector("input[type=date]").value;
+  const day = new Date(dateVal).getDay();
+
+  const start = new Date("1970-01-01T08:00:00");
+  const end = new Date(`1970-01-01T${timeOut}:00`);
+
+  let total = (end-start)/(1000*60*60);
+  if(total<0) total=0;
+
+  const ot = total>8 ? total-8 : 0;
+
+  row.querySelector(".total").innerText = total.toFixed(2);
+  row.querySelector(".ot").innerText = ot.toFixed(2);
+
+  const loc = document.getElementById("location").value;
+  const food = row.querySelector(".food");
+
+  if(loc==="outside"){
+    food.innerText="$50";
+    food.className="food food-yes";
+  } else {
+    food.innerText="-";
+    food.className="food food-no";
+  }
+
+  updateSummary();
 }
 
-.vision-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
+/* SUMMARY */
+function updateSummary(){
+  let wdDays=0, wdHours=0, weDays=0, weOT=0;
+
+  document.querySelectorAll("tbody tr").forEach(row=>{
+    const dateVal = row.querySelector("input[type=date]").value;
+    const day = new Date(dateVal).getDay();
+
+    const total = parseFloat(row.querySelector(".total").innerText)||0;
+    const ot = parseFloat(row.querySelector(".ot").innerText)||0;
+
+    if(day===0 || day===6){
+      if(total>0) weDays++;
+      weOT+=ot;
+    } else {
+      if(total>0) wdDays++;
+      wdHours+=total;
+    }
+  });
+
+  document.getElementById("wd-days").innerText = wdDays;
+  document.getElementById("wd-hours").innerText = wdHours.toFixed(2);
+  document.getElementById("we-days").innerText = weDays;
+  document.getElementById("we-ot").innerText = weOT.toFixed(2);
 }
 
-.vision-card {
-  padding: 20px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-}
-/* =========================
-   📊 CAPACITY TOOL BACKGROUND
-========================= */
+/* EVENTS */
+document.getElementById("month").addEventListener("change", generateMonth);
 
-.capacity-tool {
-  position: relative;
-  overflow: hidden;
+document.addEventListener("change", e=>{
+  const row = e.target.closest("tr");
+  if(row) calculateRow(row);
+});
 
-  background: rgba(20,30,60,0.2);
-}
+</script>
 
-/* IMAGE */
-.capacity-tool::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1920') center/cover no-repeat;
-
-  opacity: 0.35;
-}
-
-/* DARK OVERLAY */
-.capacity-tool::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background: rgba(5, 15, 30, 0.65);
-}
-
-/* CONTENT ABOVE */
-.capacity-tool > * {
-  position: relative;
-  z-index: 2;
-}
-.capacity-tool h3 {
-  color: #32d296;
-  text-shadow: 0 0 10px rgba(50,210,150,0.6);
-}
+</body>
+</html>
