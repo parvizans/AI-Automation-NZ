@@ -138,8 +138,19 @@ color:#fff;
 }
 
 /* HERO – Brighter + Slightly Shorter */
+
 .hero{
-  ;
+  position: relative;
+
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  background: url('https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=1920') center/cover no-repeat;
+}
+.hero{
   height: 90vh;
   display: flex;
   align-items: center;
@@ -147,6 +158,11 @@ color:#fff;
   overflow: hidden;
 }
 
+.hero-inner{
+  display:grid;
+  grid-template-columns: 1.15fr .85fr;
+  gap:18px;
+}
 .hero-inner{
   display:grid;
   grid-template-columns: 1.15fr .85fr;
