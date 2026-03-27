@@ -770,25 +770,3 @@ button {
   border: 3px solid red;
 }
 
-====
-/* =========================
-   🎯 TOOL BACKGROUNDS CLEAN
-========================= */
-
-/* =========================
-   🎯 FINAL TOOL BACKGROUNDS-1
-========================= */
-
-/* Throughput */
-.tool-card:nth-of-type(1)::before {
-  background: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1920') center/cover no-repeat;
-}
-
-/* Link Budget (AI network city) */
-.tool-card:nth-of-type(2)::before {
-  background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1920') center/cover no-repeat;
-}
-
-/* Capacity Tool (Smart City IoT style) */
-.tool-card:nth-of-type(3)::before {
-  background: url('https://images.unsplash.com/photo-1465447142348-e9952c393450?q=80&w=1920') center/cover no-repeat;
