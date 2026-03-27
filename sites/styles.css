@@ -782,12 +782,24 @@ button {
   color: #32d296;
   text-shadow: 0 0 10px rgba(50,210,150,0.6);
 
-.tool-card:nth-of-type(1)::before {
-  background: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1920') center/cover no-repeat;
+/* =========================
+   🎯 TOOL BACKGROUNDS CLEAN
+========================= */
 
-.tool-card:nth-of-type(2)::before {
-  background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1920') center/cover no-repeat;
+/* 🔵 Throughput (Blue Tech) */
+.thp-card::before {
+  background: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1920') center/cover no-repeat;
+  opacity: 0.35;
 }
-  .tool-card:nth-of-type(3)::before {
-  background: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1920') center/cover no-repeat;
+
+/* 🟢 Link Budget (RF / Signal Style) */
+.lb-card::before {
+  background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1920') center/cover no-repeat;
+  opacity: 0.35;
+}
+
+/* 🟣 Capacity (AI / Smart City Style) */
+.cap-card::before {
+  background: url('https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1920') center/cover no-repeat;
+  opacity: 0.35;
 }
