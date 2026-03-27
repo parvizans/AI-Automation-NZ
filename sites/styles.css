@@ -769,4 +769,26 @@ button {
 .tool-card:nth-of-type(3) {
   border: 3px solid red;
 }
+/* =========================
+   🚀 NEW HERO IMAGE
+========================= */
 
+.hero {
+  position: relative;
+  background: url('assets/hero.jpg') center/cover no-repeat;
+}
+
+/* DARK OVERLAY (IMPORTANT for readability) */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 20, 40, 0.65);
+  z-index: 1;
+}
+
+/* KEEP TEXT ABOVE IMAGE */
+.hero-inner {
+  position: relative;
+  z-index: 2;
+}
