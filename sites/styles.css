@@ -725,3 +725,39 @@ button {
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.08);
 }
+/* =========================
+   📊 CAPACITY TOOL BACKGROUND
+========================= */
+
+.capacity-tool {
+  position: relative;
+  overflow: hidden;
+
+  background: rgba(20,30,60,0.2);
+}
+
+/* IMAGE */
+.capacity-tool::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1920') center/cover no-repeat;
+
+  opacity: 0.35;
+}
+
+/* DARK OVERLAY */
+.capacity-tool::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: rgba(5, 15, 30, 0.65);
+}
+
+/* CONTENT ABOVE */
+.capacity-tool > * {
+  position: relative;
+  z-index: 2;
+}
