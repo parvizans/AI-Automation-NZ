@@ -777,7 +777,45 @@ button {
   position: relative;
   z-index: 2;
 }
+
 .capacity-tool h3 {
   color: #32d296;
   text-shadow: 0 0 10px rgba(50,210,150,0.6);
+
+.tool-card:nth-of-type(1)::before {
+  background: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1920') center/cover no-repeat;
+
+.tool-card:nth-of-type(2)::before {
+  background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1920') center/cover no-repeat;
+}
+  .tool-card:nth-of-type(3)::before {
+  background: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1920') center/cover no-repeat;
+}
+/* =========================
+   FINAL TOOL BACKGROUNDS
+========================= */
+
+.tool-card {
+  position: relative;
+  overflow: hidden;
+  background: rgba(20,30,60,0.2);
+}
+
+.tool-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+}
+
+.tool-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(10,20,40,0.5);
+}
+
+.tool-card > * {
+  position: relative;
+  z-index: 2;
 }
