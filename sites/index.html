@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>AutomationPark |Telecom AI Automation & IOT Platform</title>
+  <title>AutomationPark | Telecom AI & Automation Platform</title>
  <meta name="description" content="AutomationPark is a telecom AI platform providing RAN insights, automation tools, RCA analyzer, and engineering knowledge base." />
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -51,265 +51,71 @@ Subscribe
 
 <!-- 👉 NEW HERO GOES HERE -->
 
-    <section class="hero">
+    <section id="home" class="hero">
 
-  <canvas id="stars"></canvas>   <!-- 👈 ADD THIS LINE HERE -->
+<canvas id="networkCanvas"></canvas>
 
   <div class="hero-content">
-    
-    <h1>Telecom AI Automation & IOT Platform</h1>
-    <p>
-      Build, analyze and optimize networks with AI-powered tools, insights and engineering intelligence.
-    </p>
 
-    <div class="hero-buttons">
-      <a href="#tools" class="btn primary">Explore Tools</a>
-      <a href="#insights" class="btn secondary">Read Insights</a>
-    </div>
+```
+<h1>Telecom AI & Automation Platform</h1>
+
+<p>
+  Build, analyze and optimize networks with AI-powered tools,
+  insights and engineering intelligence.
+</p>
+
+<div class="hero-buttons">
+  <a href="#tools" class="btn-primary">Explore Tools</a>
+  <a href="#insights" class="btn-secondary">Read Insights</a>
+</div>
+```
+
   </div>
 
 </section>
     <section id="insights" class="section">
+  <h2>Insights</h2>
+  <p>Telecom engineering insights, optimization strategies and deep dives.</p>
 </section>
-    
 
-
-<!-✅ YOU ADD Tools section here-->
-
-    <section id="tools" class="section">
+<section id="tools" class="section">
   <h2>Tools</h2>
+<div class="tool-card">
 
- <<div class="tool-card thp-card">
-
-  <h3>5G Throughput Calculator (Pro)</h3>
-   
-   <p class="tool-guide">
-Simulate real-world 5G throughput based on SINR, bandwidth, and radio conditions.
-</p>
-
-  <!-- Criteria 1 -->
-  <div class="form-row">
-    <input id="sinr" value="20">
-    <label>SINR (dB)</label>
-  </div>
-
-  <!-- Criteria 3 -->
-  <div class="form-row">
-    <input id="bandwidth" value="100">
-    <label>Bandwidth (MHz)</label>
-  </div>
-
-  <!-- Criteria 4 -->
-  <div class="form-row">
-    <input id="mimo" value="4">
-    <label>MIMO Layers</label>
-  </div>
-
- 
-
-  <!-- Criteria 7 -->
-  <div class="form-row">
-    <input id="bler" value="10">
-    <label>BLER (%)</label>
-  </div>
-
-  <!-- Criteria 8 -->
-  <div class="form-row">
-    <input id="overhead" value="15">
-    <label>Overhead (%)</label>
-  </div>
-
-  <!-- Criteria 9 -->
-  <div class="form-row">
-  <select id="mode">
-      <option value="auto">Auto Mode</option>
-      <option value="manual">Manual Mode</option>
-    </select>
-    <label>Calculation Mode</label>
-  </div>
-    <!-- Criteria 5 -->
-  <div class="form-row">
-    <select id="scs">
-      <option>15</option>
-      <option selected>30</option>
-      <option>60</option>
-    </select>
-    <label>Subcarrier Spacing (kHz)</label>
-  </div>
-   
- <!-- Criteria 2 -->
-<div class="form-row">
-  <select id="freqBand">
-    <option value="700">700 MHz (n28)</option>
-    <option value="850">850 MHz</option>
-    <option value="900">900 MHz</option>
-    <option value="1800">1800 MHz (n3)</option>
-    <option value="2100">2100 MHz (n1)</option>
-    <option value="2600" selected>2600 MHz (n7)</option>
-    <option value="3500">3500 MHz (n78)</option>
-    <option value="24000">24 GHz</option>
-    <option value="28000">28 GHz</option>
-  </select>
- <label>Frequency Band</label>
-</div>
-   
-  <!-- Criteria 6 -->
-  <div class="form-row">
-    <select id="duplex">
-      <option value="1">FDD</option>
-      <option value="0.75">TDD (4DL:1UL)</option>
-      <option value="0.6">TDD (3DL:2UL)</option>
-    </select>
-    <label>Duplex Mode</label>
-  </div>
-
-  <!-- BUTTON AT THE END -->
-  <button onclick="calculate5G()" class="btn primary big-btn">
-    Calculate
-  </button>
-
-  <p id="result">Result: -- Mbps</p>
-
-</div>     <!-- END throughput tool -->
-      
-<!-- ✅ ADD LINK BUDGET HERE -->
-<!-- ✅ LINK BUDGET TOOL (FIXED CLEAN) -->
-<div class="tool-card lb-card">
-
-  <h3>📡 5G Link Budget Calculator</h3>
-
-  <p class="tool-guide">
-Estimate coverage and required sites based on RF parameters and deployment scenario.
-</p>
-
- <div class="tool-grid-2">
-
-    <label>Tx Power (W)</label>
-    <input type="number" id="lb_power" value="100">
-
-    <label>Frequency (MHz)</label>
-    <input type="number" id="lb_freq" value="3500">
-
-    <label>BS Antenna Gain (dBi)</label>
-    <input type="number" id="lb_gain" value="17">
-
-    <label>Cable Loss (dB)</label>
-    <input type="number" id="lb_cable" value="0">
-
-    <label>Body Loss (dB)</label>
-    <input type="number" id="lb_body" value="3">
-
-    <label>Building Loss (dB)</label>
-    <input type="number" id="lb_building" value="12">
-
-    <label>Interference Margin (dB)</label>
-    <input type="number" id="lb_interference" value="2">
-
-    <label>Fading Margin (dB)</label>
-    <input type="number" id="lb_fading" value="8">
-
-    <label>Propagation Model</label>
-    <select id="lb_model">
-      <option value="120">Rural</option>
-      <option value="135">Suburban</option>
-      <option value="150">Urban</option>
-    </select>
-
-    <label>Cell Edge Throughput (Mbps)</label>
-    <input type="number" id="lb_throughput" value="25">
-
-    <label>Total Area (sqkm)</label>
-    <input type="number" id="lb_area" value="50">
-
-  </div>
-
-  <button onclick="calculateLinkBudget()" class="btn primary">
-    Calculate
-  </button>
-
-  <h2 id="lb_distance">Distance: --</h2>
-  <h3 id="lb_pathloss">Path Loss: --</h3>
-  <h3 id="lb_budget">Link Budget: --</h3>
-  <h3 id="lb_sites">Sites Required: --</h3>
-
-</div>
-
-<div class="tool-card cap-card">
-
-  <h3>📊 5G Coverage & Capacity Planner</h3>
+  <h3>5G Throughput Calculator (Advanced)</h3>
 
   <div class="tool-grid">
 
-    <label>Total Area (sqkm)</label>
-    <input type="number" id="cc_area" value="50">
-
     <label>Bandwidth (MHz)</label>
-    <input type="number" id="cc_bw" value="100">
+    <input type="number" id="bw" value="100">
 
     <label>MIMO Layers</label>
-    <input type="number" id="cc_mimo" value="4">
+    <input type="number" id="layers" value="4">
 
-    <label>Users in Area</label>
-    <input type="number" id="cc_users" value="500">
+    <label>Modulation</label>
+    <select id="modulation">
+      <option value="2">QPSK</option>
+      <option value="4">16QAM</option>
+      <option value="6">64QAM</option>
+      <option value="8" selected>256QAM</option>
+    </select>
 
-    <label>Target Throughput per User (Mbps)</label>
-    <input type="number" id="cc_user_tput" value="10">
+    <label>Code Rate</label>
+    <input type="number" id="coderate" value="0.9" step="0.1">
+
+    <label>Overhead (%)</label>
+    <input type="number" id="overhead" value="20">
 
   </div>
 
-  <button onclick="calculateCoverage()" class="btn primary">
+  <button onclick="calculate5G()" class="btn primary">
     Calculate
   </button>
 
-  <h3 id="cc_sites">Sites Required: --</h3>
-  <h3 id="cc_capacity">Capacity per Site: --</h3>
-  <h3 id="cc_risk">Congestion Risk: --</h3>
+  <h2 id="result">Result: -- Mbps</h2>
 
 </div>
-
-      <section id="vision" class="section">
-  <h2>🚀 Platform Vision</h2>
-
-  <p class="vision-text">
-    We simplify telecom engineering, project delivery, and change management through intelligent automation.
-  </p>
-
-  <p class="vision-sub">
-    AutomationPark brings all critical tools into one platform — enabling engineers, project managers, and decision-makers to design, optimize, and deliver with confidence.
-  </p>
-
-  <h3 class="vision-highlight">
-    One platform. Smarter decisions. Faster execution.
-  </h3>
-
-  <div class="vision-grid">
-
-    <div class="vision-card">
-      <h4>📡 Telecom Engineering</h4>
-      <p>Planning, optimization, and performance analysis tools.</p>
-    </div>
-
-    <div class="vision-card">
-      <h4>🧠 AI & Automation</h4>
-      <p>Smart recommendations and intelligent RCA engines.</p>
-    </div>
-
-    <div class="vision-card">
-      <h4>📊 Project Management</h4>
-      <p>Resource planning, budgeting, and delivery optimization.</p>
-    </div>
-
-    <div class="vision-card">
-      <h4>🔁 Change Management</h4>
-      <p>Risk analysis, pre-check tools, and CAB automation.</p>
-    </div>
-
-    <div class="vision-card">
-      <h4>🌐 IoT Platform (Future)</h4>
-      <p>Scalable tools for connected devices and smart networks.</p>
-    </div>
-
-  </div>
 </section>
 
 <section id="knowledge" class="section">
