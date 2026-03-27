@@ -138,19 +138,8 @@ color:#fff;
 }
 
 /* HERO – Brighter + Slightly Shorter */
-
 .hero{
-  position: relative;
-
-  height: 90vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-
-  background: url('https://images.unsplash.com/photo-1535223289827-42f1e9919769?q=80&w=1920') center/cover no-repeat;
-}
-.hero{
+  ;
   height: 90vh;
   display: flex;
   align-items: center;
@@ -158,11 +147,6 @@ color:#fff;
   overflow: hidden;
 }
 
-.hero-inner{
-  display:grid;
-  grid-template-columns: 1.15fr .85fr;
-  gap:18px;
-}
 .hero-inner{
   display:grid;
   grid-template-columns: 1.15fr .85fr;
@@ -709,76 +693,3 @@ button {
 .lb-card::before {
  background: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1920') center/cover no-repeat;
 }
-#vision {
-  text-align: center;
-}
-
-.vision-text {
-  font-size: 18px;
-  margin-bottom: 10px;
-}
-
-.vision-sub {
-  color: #b8c3e6;
-  max-width: 700px;
-  margin: 0 auto 20px;
-}
-
-.vision-highlight {
-  color: #32d296;
-  margin-bottom: 30px;
-}
-
-.vision-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
-
-.vision-card {
-  padding: 20px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-}
-/* =========================
-   📊 CAPACITY TOOL BACKGROUND
-========================= */
-
-.capacity-tool {
-  position: relative;
-  overflow: hidden;
-
-  background: rgba(20,30,60,0.2);
-}
-
-/* IMAGE */
-.capacity-tool::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1920') center/cover no-repeat;
-
-  opacity: 0.35;
-}
-
-/* DARK OVERLAY */
-.capacity-tool::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-
-  background: rgba(5, 15, 30, 0.65);
-}
-
-/* CONTENT ABOVE */
-.capacity-tool > * {
-  position: relative;
-  z-index: 2;
-}
-
-.capacity-tool h3 {
-  color: #32d296;
-  text-shadow: 0 0 10px rgba(50,210,150,0.6);
-
