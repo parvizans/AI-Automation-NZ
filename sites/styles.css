@@ -775,20 +775,20 @@ button {
    🎯 TOOL BACKGROUNDS CLEAN
 ========================= */
 
-/* 🔵 Throughput (Blue Tech) */
-.thp-card::before {
+/* =========================
+   🎯 FINAL TOOL BACKGROUNDS-1
+========================= */
+
+/* Throughput */
+.tool-card:nth-of-type(1)::before {
   background: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1920') center/cover no-repeat;
-  opacity: 0.35;
 }
 
-/* 🟢 Link Budget (RF / Signal Style) */
-.lb-card::before {
+/* Link Budget (AI network city) */
+.tool-card:nth-of-type(2)::before {
   background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1920') center/cover no-repeat;
-  opacity: 0.35;
 }
 
-/* 🟣 Capacity (AI / Smart City Style) */
-.cap-card::before {
-  background: url('https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1920') center/cover no-repeat;
-  opacity: 0.35;
-}
+/* Capacity Tool (Smart City IoT style) */
+.tool-card:nth-of-type(3)::before {
+  background: url('https://images.unsplash.com/photo-1465447142348-e9952c393450?q=80&w=1920') center/cover no-repeat;
