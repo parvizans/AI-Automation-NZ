@@ -769,3 +769,26 @@ button {
 .tool-card:nth-of-type(3) {
   border: 3px solid red;
 }
+
+====
+/* =========================
+   🎯 TOOL BACKGROUNDS CLEAN
+========================= */
+
+/* 🔵 Throughput (Blue Tech) */
+.thp-card::before {
+  background: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1920') center/cover no-repeat;
+  opacity: 0.35;
+}
+
+/* 🟢 Link Budget (RF / Signal Style) */
+.lb-card::before {
+  background: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1920') center/cover no-repeat;
+  opacity: 0.35;
+}
+
+/* 🟣 Capacity (AI / Smart City Style) */
+.cap-card::before {
+  background: url('https://images.unsplash.com/photo-1518779578993-ec3579fee39f?q=80&w=1920') center/cover no-repeat;
+  opacity: 0.35;
+}
