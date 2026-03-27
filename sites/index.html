@@ -18,19 +18,24 @@
   <span class="brand-text">AutomationPark</span>
 </div>
 
-<nav>
-  <a href="#home">Home</a>
-  <a href="#insights">Insights</a>
-  <a href="#tools">Tools</a>
+<nav class="menu">
 
-  <a href="#products">Products</a> 
+<ul>
 
-  <a href="#knowledge">Knowledge Base</a>
-  <a href="#rca">RCA Analyzer</a>
+<li><a href="#home">Home</a></li>
 
-  <a href="troubleshooting.html">Troubleshooting</a> <!-- ADD THIS -->
+<li><a href="#insights">Insights</a></li>
 
-  <a href="#contact">Contact</a>
+<li><a href="#tools">Tools</a></li>
+
+<li><a href="#knowledge">Knowledge Base</a></li>
+
+<li><a href="#rca">RCA Analyzer</a></li>
+
+<li><a href="#contact">Contact</a></li>
+
+</ul>
+
 </nav>
 
 <a href="#subscribe" class="subscribe-btn">
@@ -48,7 +53,7 @@ Subscribe
 
     <section class="hero">
 
-    <!-- 👈 ADD THIS LINE HERE -->
+  <canvas id="stars"></canvas>   <!-- 👈 ADD THIS LINE HERE -->
 
   <div class="hero-content">
     
@@ -67,15 +72,14 @@ Subscribe
     <section id="insights" class="section">
 </section>
     
-<section id="products" class="products">
-  
+
 
 <!-✅ YOU ADD Tools section here-->
 
     <section id="tools" class="section">
   <h2>Tools</h2>
 
-<div class="tool-card thp-card">
+ <div class="tool-card">
 
   <h3>5G Throughput Calculator (Pro)</h3>
    
@@ -167,7 +171,6 @@ Simulate real-world 5G throughput based on SINR, bandwidth, and radio conditions
   <p id="result">Result: -- Mbps</p>
 
 </div>     <!-- END throughput tool -->
-      
 <!-- ✅ ADD LINK BUDGET HERE -->
 <!-- ✅ LINK BUDGET TOOL (FIXED CLEAN) -->
 <div class="tool-card lb-card">
@@ -230,83 +233,6 @@ Estimate coverage and required sites based on RF parameters and deployment scena
 
 </div>
 
-<div class="tool-card">
-
-  <h3>📊 5G Coverage & Capacity Planner</h3>
-
-  <div class="tool-grid">
-
-    <label>Total Area (sqkm)</label>
-    <input type="number" id="cc_area" value="50">
-
-    <label>Bandwidth (MHz)</label>
-    <input type="number" id="cc_bw" value="100">
-
-    <label>MIMO Layers</label>
-    <input type="number" id="cc_mimo" value="4">
-
-    <label>Users in Area</label>
-    <input type="number" id="cc_users" value="500">
-
-    <label>Target Throughput per User (Mbps)</label>
-    <input type="number" id="cc_user_tput" value="10">
-
-  </div>
-
-  <button onclick="calculateCoverage()" class="btn primary">
-    Calculate
-  </button>
-
-  <h3 id="cc_sites">Sites Required: --</h3>
-  <h3 id="cc_capacity">Capacity per Site: --</h3>
-  <h3 id="cc_risk">Congestion Risk: --</h3>
-
-</div>
-      <section id="vision" class="section">
-  <h2>🚀 Platform Vision</h2>
-
-  <p class="vision-text">
-    We simplify telecom engineering, project delivery, and change management through intelligent automation.
-  </p>
-
-  <p class="vision-sub">
-    AutomationPark brings all critical tools into one platform — enabling engineers, project managers, and decision-makers to design, optimize, and deliver with confidence.
-  </p>
-
-  <h3 class="vision-highlight">
-    One platform. Smarter decisions. Faster execution.
-  </h3>
-
-  <div class="vision-grid">
-
-    <div class="vision-card">
-      <h4>📡 Telecom Engineering</h4>
-      <p>Planning, optimization, and performance analysis tools.</p>
-    </div>
-
-    <div class="vision-card">
-      <h4>🧠 AI & Automation</h4>
-      <p>Smart recommendations and intelligent RCA engines.</p>
-    </div>
-
-    <div class="vision-card">
-      <h4>📊 Project Management</h4>
-      <p>Resource planning, budgeting, and delivery optimization.</p>
-    </div>
-
-    <div class="vision-card">
-      <h4>🔁 Change Management</h4>
-      <p>Risk analysis, pre-check tools, and CAB automation.</p>
-    </div>
-
-    <div class="vision-card">
-      <h4>🌐 IoT Platform (Future)</h4>
-      <p>Scalable tools for connected devices and smart networks.</p>
-    </div>
-
-  </div>
-</section>
-
 <section id="knowledge" class="section">
   <h2>Knowledge Base</h2>
   <p>Structured telecom learning and engineering references.</p>
@@ -325,40 +251,7 @@ Estimate coverage and required sites based on RF parameters and deployment scena
 <section id="subscribe" class="section">
   <h2>Subscribe</h2>
   <p>Stay updated with latest telecom insights and tools.</p>
-</section
-
-<div class="tool-card capacity-tool">
-
-  <h3>📊 5G Coverage & Capacity Planner</h3>
-
-  <div class="tool-grid">
-
-    <label>Total Area (sqkm)</label>
-    <input type="number" id="cc_area" value="50">
-
-    <label>Bandwidth (MHz)</label>
-    <input type="number" id="cc_bw" value="100">
-
-    <label>MIMO Layers</label>
-    <input type="number" id="cc_mimo" value="4">
-
-    <label>Users in Area</label>
-    <input type="number" id="cc_users" value="500">
-
-    <label>Target Throughput per User (Mbps)</label>
-    <input type="number" id="cc_user_tput" value="10">
-
-  </div>
-
-  <button onclick="calculateCoverage()" class="btn primary">
-    Calculate
-  </button>
-
-  <h3 id="cc_sites">Sites Required: --</h3>
-  <h3 id="cc_capacity">Capacity per Site: --</h3>
-  <h3 id="cc_risk">Congestion Risk: --</h3>
-
-</div>
+</section>
 
 
     <!-- AUTOMATION -->
