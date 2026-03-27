@@ -693,3 +693,35 @@ button {
 .lb-card::before {
  background: url('https://images.unsplash.com/photo-1555949963-aa79dcee981c?q=80&w=1920') center/cover no-repeat;
 }
+#vision {
+  text-align: center;
+}
+
+.vision-text {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.vision-sub {
+  color: #b8c3e6;
+  max-width: 700px;
+  margin: 0 auto 20px;
+}
+
+.vision-highlight {
+  color: #32d296;
+  margin-bottom: 30px;
+}
+
+.vision-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.vision-card {
+  padding: 20px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+}
