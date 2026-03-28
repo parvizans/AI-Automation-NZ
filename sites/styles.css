@@ -852,3 +852,27 @@ button {
   }
 
 }
+/* NAV CONTAINER ALIGNMENT */
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* PUSH HAMBURGER LEFT (closer to logo) */
+.menu-toggle {
+  margin-left: 10px;
+}
+
+/* OPTIONAL: tighten spacing on mobile */
+@media (max-width: 768px) {
+
+  .nav-container {
+    padding: 0 10px;
+  }
+
+  .menu-toggle {
+    margin-right: 10px;
+  }
+
+}
