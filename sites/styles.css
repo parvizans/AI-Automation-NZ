@@ -895,3 +895,33 @@ button {
   }
 
 }
+@media (max-width: 768px) {
+
+  /* container spacing */
+  .nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+  }
+
+  /* 🔥 FIX LOGO SIZE */
+  .logo {
+    flex: 0 1 auto;
+    max-width: 65%;
+  }
+
+  .brand-text {
+    font-size: 13px;
+    padding: 6px 10px;
+    white-space: nowrap;
+  }
+
+  /* 🔥 FORCE HAMBURGER POSITION */
+  .menu-toggle {
+    flex: 0 0 auto;
+    margin-left: auto;
+    font-size: 22px;
+  }
+
+}
