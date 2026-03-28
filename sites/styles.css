@@ -876,3 +876,22 @@ button {
   }
 
 }
+@media (max-width: 768px) {
+
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    flex: 1;
+  }
+
+  .menu-toggle {
+    flex: 0;
+    margin-left: auto;
+    margin-right: 10px;
+  }
+
+}
