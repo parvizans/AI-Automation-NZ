@@ -792,3 +792,28 @@ button {
   position: relative;
   z-index: 2;
 }
+.product-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap:25px;
+  margin-top:40px;
+}
+
+.product-card {
+  background:#0f1b35;
+  border-radius:15px;
+  overflow:hidden;
+  text-decoration:none;
+  color:white;
+  transition:0.3s;
+}
+
+.product-card:hover {
+  transform:translateY(-5px);
+}
+
+.product-img {
+  height:150px;
+  background-size:cover;
+  background-position:center;
+}
