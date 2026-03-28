@@ -925,3 +925,32 @@ button {
   }
 
 }
+/* FIX LOGO WIDTH WITHOUT BREAKING LAYOUT */
+.logo {
+  display: inline-block;
+}
+
+.brand-text {
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+/* MOBILE FIX */
+@media (max-width: 768px) {
+
+  .nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: inline-block;
+  }
+
+  .menu-toggle {
+    margin-left: auto;
+  }
+
+}
