@@ -817,3 +817,38 @@ button {
   background-size:cover;
   background-position:center;
 }
+/* HAMBURGER ICON */
+.menu-toggle {
+  display: none;
+  font-size: 26px;
+  cursor: pointer;
+  color: white;
+}
+
+/* MOBILE FIX */
+@media (max-width: 768px) {
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .menu {
+    display: none;
+    width: 100%;
+  }
+
+  .menu ul {
+    flex-direction: column;
+    text-align: center;
+    padding: 0;
+  }
+
+  .menu.active {
+    display: block;
+  }
+
+  .subscribe-btn {
+    display: none; /* optional */
+  }
+
+}
