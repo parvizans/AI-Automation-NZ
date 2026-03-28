@@ -238,6 +238,11 @@ function calculateCoverage(){
   document.getElementById("cc_risk").innerText =
     "Congestion Risk: " + risk;
 }
+const toggle = document.getElementById("menu-toggle");
+const menu = document.getElementById("nav-menu");
 
+toggle.addEventListener("click", () => {
+  menu.classList.toggle("active");
+});
 
   
