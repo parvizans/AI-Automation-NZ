@@ -1,6 +1,6 @@
 :root{
   --bg:#0b1220;
-  --card: rgba(16,26,51,.72);
+  --card: rgba(16,26,51,.72);.logo {
   --text:#eaf0ff;
   --muted:#b8c3e6;
   --brand:#32d296;
@@ -826,7 +826,7 @@ button {
 }
 
 /* MOBILE FIX */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {   ... } */
 
   .menu-toggle {
     display: block;
@@ -865,7 +865,7 @@ button {
 }
 
 /* OPTIONAL: tighten spacing on mobile */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {   ... } */
 
   .nav-container {
     padding: 0 10px;
@@ -876,7 +876,7 @@ button {
   }
 
 }
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {   ... } */
 
   .nav-container {
     display: flex;
@@ -895,7 +895,7 @@ button {
   }
 
 }
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {   ... } */
 
   /* container spacing */
   .nav-container {
@@ -937,7 +937,7 @@ button {
 }
 
 /* MOBILE FIX */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {   ... } */
 
   .nav-container {
     display: flex;
@@ -950,6 +950,35 @@ button {
   }
 
   .menu-toggle {
+    margin-left: auto;
+  }
+
+}
+/* ===== CLEAN MOBILE NAV (FINAL) ===== */
+@media (max-width: 768px) {
+
+  .nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 15px;
+  }
+
+  .logo {
+    background: none;   /* 🔥 remove blue box effect */
+    padding: 0;
+    border-radius: 0;
+    font-size: 16px;
+    white-space: nowrap;
+  }
+
+  .brand-text {
+    font-size: 16px;
+    padding: 0;
+  }
+
+  .menu-toggle {
+    font-size: 22px;
     margin-left: auto;
   }
 
