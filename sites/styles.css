@@ -310,38 +310,30 @@ footer{
 
 /* ===== NEW NAVBAR (AutomationPark) ===== */
 
-/* NAVBAR BASE */
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background: #111a33;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+.navbar{
+position:fixed;
+top:0;
+width:100%;
+background:#0b2a4a;
+z-index:1000;
+box-shadow:0 4px 20px rgba(0,0,0,0.4);
 }
 
-/* LOGO */
-.logo {
-  font-size: 20px;
-  font-weight: bold;
-  background: linear-gradient(45deg, #32d296, #5aa7ff);
-  padding: 8px 14px;
-  border-radius: 10px;
-  white-space: nowrap;
+.nav-container{
+display;
+align-items;
+justify-content;
+padding:14px 40px;
+gap:30px;
 }
 
-/* NAV LINKS */
-.navbar nav {
-  display: flex;
-  gap: 20px;
-}
-
-.navbar a {
-  color: #5aa7ff;
-  text-decoration: none;
-  font-size: 16px;
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+color:white;
+font-size:20px;
+font-weight:600;
 }
 
 .logo img{
@@ -799,53 +791,4 @@ button {
 .hero-inner {
   position: relative;
   z-index: 2;
-}
-.product-grid {
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
-  gap:25px;
-  margin-top:40px;
-}
-
-.product-card {
-  background:#0f1b35;
-  border-radius:15px;
-  overflow:hidden;
-  text-decoration:none;
-  color:white;
-  transition:0.3s;
-}
-
-.product-card:hover {
-  transform:translateY(-5px);
-}
-
-.product-img {
-  height:150px;
-  background-size:cover;
-  background-position:center;
-}
-/* MOBILE NAV FIX */
-@media (max-width: 768px) {
-
-  .navbar {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .logo {
-    font-size: 18px;
-    padding: 8px 16px;
-    margin-bottom: 10px;
-  }
-
-  .navbar nav {
-    display: flex;
-    gap: 15px;
-  }
-
-  .navbar a {
-    font-size: 14px;
-  }
-
 }
