@@ -1,129 +1,249 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0b1220">
 <meta charset="UTF-8">
-<title>Timesheet_Pro_2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timesheet Pro 3</title>
 
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 
 body {
   font-family: Arial;
-  background: 
-    linear-gradient(rgba(11,18,32,0.9), rgba(11,18,32,0.9)),
-    url('https://images.unsplash.com/photo-1551288049-bebda4e38f71');
+  background: linear-gradient(rgba(11,18,32,0.95), rgba(11,18,32,0.95)),
+              url('https://images.unsplash.com/photo-1551288049-bebda4e38f71');
   background-size: cover;
-  background-attachment: fixed;
-  color:#fff;
-  padding:20px;
+  color: #fff;
 }
 
-.container { max-width:1400px; margin:auto; }
-
-h1 { margin-bottom:20px; color:#32d296; }
-
-/* CONTROL PANEL GRID */
-.control-panel {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-  margin-bottom:20px;
+/* HEADER */
+header {
+  padding: 20px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  background: rgba(0,0,0,0.5);
 }
 
-.field { display:flex; flex-direction:column; }
-
-label {
-  font-size:12px;
-  color:#b8c3e6;
-  margin-bottom:5px;
+/* MAIN CONTAINER */
+.container {
+  width: 95%;
+  max-width: 1200px;
+  margin: 30px auto;
 }
 
-select, input {
-  padding:8px;
-  border-radius:6px;
-  background:#1c2541;
-  color:#fff;
-  border:none;
+/* CARD */
+.card {
+  background: rgba(255,255,255,0.05);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
 }
 
-/* GREEN BOX */
-.expected-box {
-  background:#32d296;
-  color:#000;
-  padding:10px;
-  border-radius:8px;
-  font-weight:bold;
-  text-align:center;
+/* INPUTS */
+input, select {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+}
+
+/* BUTTONS */
+button {
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: #32d296;
+  color: #000;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #28b383;
 }
 
 /* TABLE */
-.table-container {
-  background:#1c2541;
-  padding:10px;
-  border-radius:10px;
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
 }
-
-table { width:100%; border-collapse:collapse; }
 
 th, td {
-  padding:10px;
-  text-align:center;
-  border:1px solid rgba(255,255,255,0.1);
+  padding: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  text-align: center;
 }
 
-thead { background:#111a33; }
-
-.time-in {
-  background:#2a355f;
-  font-weight:bold;
+/* TOTAL */
+.total-box {
+  margin-top: 20px;
+  font-size: 18px;
+  text-align: right;
 }
-
-.food-yes { color:#32d296; font-weight:bold; }
-.food-no { color:#ff6b6b; }
-
-/* SUMMARY */
-.summary-grid {
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:15px;
-  margin-top:20px;
-}
-
-.card {
-  padding:15px;
-  border-radius:10px;
-  font-weight:bold;
-}
-
-.weekday { background:#1c2541; }
-.weekend { background:#2a1c1c; }
-
-/* BUTTONS */
-.actions {
-  margin-top:20px;
-  display:flex;
-  gap:10px;
-}
-
-button {
-  padding:10px 20px;
-  border:none;
-  border-radius:6px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.save { background:#32d296; }
-.export { background:#5aa7ff; }
-.submit { background:#ffcc00; }
-
 </style>
 </head>
 
 <body>
 
+<header>
+  Timesheet Pro 3 – Smart Automation
+</header>
+
+<div class="container">
+
+  <!-- INPUT SECTION -->
+  <div class="card">
+    <h2>Add Entry</h2>
+
+    <select id="engineer">
+      <option>Select Engineer</option>
+      <option>Ali</option>
+      <option>Reza</option>
+      <option>John</option>
+      <option>Mike</option>
+    </select>
+
+    <input type="date" id="date">
+
+    <!-- FIXED TIME-IN -->
+    <input type="time" id="timeIn" value="08:00" readonly>
+
+    <!-- USER EDIT ONLY THIS -->
+    <input type="time" id="timeOut">
+
+    <select id="location">
+      <option>Sydney</option>
+      <option>Out of Sydney</option>
+    </select>
+
+    <button onclick="addEntry()">Add</button>
+  </div>
+
+  <!-- TABLE SECTION -->
+  <div class="card">
+    <h2>Timesheet</h2>
+
+    <table id="table">
+      <thead>
+        <tr>
+          <th>Engineer</th>
+          <th>Date</th>
+          <th>Time In</th>
+          <th>Time Out</th>
+          <th>Hours</th>
+          <th>OT</th>
+          <th>Location</th>
+          <th>Allowance</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="total-box" id="total"></div>
+
+    <!-- ACTION BUTTONS -->
+    <button onclick="generateInvoice()">Generate Invoice</button>
+    <button onclick="clearTable()">Clear</button>
+  </div>
+
+</div>
+
+<script>
+
+/* ADD ENTRY */
+function addEntry() {
+
+  let eng = document.getElementById("engineer").value;
+  let date = document.getElementById("date").value;
+  let timeIn = document.getElementById("timeIn").value;
+  let timeOut = document.getElementById("timeOut").value;
+  let location = document.getElementById("location").value;
+
+  if (!timeOut) {
+    alert("Please enter Time Out");
+    return;
+  }
+
+  let inTime = new Date(`2023-01-01T${timeIn}`);
+  let outTime = new Date(`2023-01-01T${timeOut}`);
+
+  let hours = (outTime - inTime) / (1000 * 60 * 60);
+
+  let ot = hours > 10 ? (hours - 10).toFixed(2) : 0;
+
+  let allowance = location === "Out of Sydney" ? 50 : 0;
+
+  let table = document.querySelector("#table tbody");
+
+  let row = table.insertRow();
+
+  row.innerHTML = `
+    <td>${eng}</td>
+    <td>${date}</td>
+    <td>${timeIn}</td>
+    <td>${timeOut}</td>
+    <td>${hours.toFixed(2)}</td>
+    <td>${ot}</td>
+    <td>${location}</td>
+    <td>$${allowance}</td>
+  `;
+
+  updateTotal();
+}
+
+/* TOTAL */
+function updateTotal() {
+  let rows = document.querySelectorAll("#table tbody tr");
+
+  let totalHours = 0;
+  let totalAllowance = 0;
+
+  rows.forEach(row => {
+    totalHours += parseFloat(row.cells[4].innerText);
+    totalAllowance += parseFloat(row.cells[7].innerText.replace('$',''));
+  });
+
+  document.getElementById("total").innerHTML =
+    `Total Hours: ${totalHours.toFixed(2)} | Allowance: $${totalAllowance}`;
+}
+
+/* CLEAR */
+function clearTable() {
+  document.querySelector("#table tbody").innerHTML = "";
+  updateTotal();
+}
+
+/* INVOICE LINK */
+function generateInvoice() {
+
+  let rows = document.querySelectorAll("#table tbody tr");
+
+  let data = [];
+
+  rows.forEach(row => {
+    data.push({
+      engineer: row.cells[0].innerText,
+      date: row.cells[1].innerText,
+      hours: row.cells[4].innerText,
+      ot: row.cells[5].innerText,
+      allowance: row.cells[7].innerText
+    });
+  });
+
+  localStorage.setItem("invoiceData", JSON.stringify(data));
+
+  window.open("invoice.html", "_blank");
+}
+
+</script>
+
+</body>
+</html>
 <div class="container">
 
 <h1>⏱ Timesheet_Pro_2</h1>
