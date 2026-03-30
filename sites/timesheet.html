@@ -407,6 +407,42 @@ function goInvoice(){
   exportToInvoice();
   window.location.href = "invoice.html";
 }
+  /* =========================
+   ADD THESE FUNCTIONS BELOW
+========================= */
+
+function goHome(){
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+function goExpenses(){
+  window.location.href = "expenses.html";
+}
+
+
+/* =========================
+   EXPORT DATA TO INVOICE
+========================= */
+
+function exportToInvoice(){
+
+  const wdDays = document.getElementById("wd-days")?.innerText || 0;
+  const wdHours = document.getElementById("wd-hours")?.innerText || 0;
+  const weDays = document.getElementById("we-days")?.innerText || 0;
+  const weOT = document.getElementById("we-ot")?.innerText || 0;
+
+  const data = {
+    wdDays: wdDays,
+    wdHours: wdHours,
+    weDays: weDays,
+    weOT: weOT
+  };
+
+  localStorage.setItem("invoiceData", JSON.stringify(data));
+}
 
 function goExpenses(){
   window.location.href = "expenses.html";
