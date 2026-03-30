@@ -129,6 +129,12 @@ ACCENTURE WALKTEST & DRIVE TEST PROJECT
 <button onclick="calculate()">Calculate</button>
 <button onclick="window.print()">Print / Save PDF</button>
 
+
+</div>
+  
+  <div style="margin-top:30px;">
+  <button onclick="goHome()">🏠 Home / Timesheet</button>
+    
 </div>
 
 <script>
@@ -184,7 +190,9 @@ function calculate(){
   document.getElementById("final").innerText =
   "$" + (total - cash).toFixed(2);
 }
-
+function goHome(){  
+  window.location.href = "timesheet.html";  
+}
 </script>
 
 </body>
