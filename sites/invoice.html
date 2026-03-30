@@ -7,19 +7,15 @@
 <style>
 body {
   font-family: Arial;
-  background:#fff;
+  background:
+    linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)),
+    url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40');
+  background-size: cover;
   color:#000;
   padding:20px;
 }
 
-.container {
-  max-width:1000px;
-  margin:auto;
-}
-
-h2 {
-  text-align:right;
-}
+.container { max-width:1000px; margin:auto; }
 
 .header {
   display:flex;
@@ -43,13 +39,9 @@ th, td {
   padding:10px;
 }
 
-th {
-  background:#ddd;
-}
+th { background:#ddd; }
 
-.total-row {
-  font-weight:bold;
-}
+.total-row { font-weight:bold; }
 
 .final {
   background:yellow;
@@ -60,6 +52,7 @@ th {
 button {
   margin-top:20px;
   padding:10px 20px;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -69,7 +62,6 @@ button {
 <div class="container">
 
 <div class="header">
-
 <div>
 <b>Parviz Ansari</b><br>
 Street Address: East Killara<br>
@@ -80,7 +72,6 @@ Phone: +64220100700
 <b>INVOICE #008</b><br>
 Date: <span id="today"></span>
 </div>
-
 </div>
 
 <div class="box">
@@ -95,7 +86,6 @@ ACCENTURE WALKTEST & DRIVE TEST PROJECT
 </div>
 
 <table>
-
 <thead>
 <tr>
 <th>Description</th>
@@ -114,6 +104,11 @@ ACCENTURE WALKTEST & DRIVE TEST PROJECT
 </tr>
 
 <tr>
+<td colspan="3">Expenses</td>
+<td><input id="expenses" value="0"></td>
+</tr>
+
+<tr>
 <td colspan="3">Cash Advance</td>
 <td><input id="cash" value="1000"></td>
 </tr>
@@ -123,69 +118,63 @@ ACCENTURE WALKTEST & DRIVE TEST PROJECT
 <td id="final"></td>
 </tr>
 </tfoot>
-
 </table>
 
 <button onclick="calculate()">Calculate</button>
 <button onclick="window.print()">Print / Save PDF</button>
 
 <div style="margin-top:30px;">
-  <button onclick="goHome()" style="
-    background:#32d296;
-    color:#000;
-    padding:10px 20px;
-    border:none;
-    border-radius:6px;
-    font-weight:bold;
-    cursor:pointer;
-  ">
-    🏠 Back to Timesheet
-  </button>
+<button onclick="goHome()" style="
+  background:#32d296;
+  color:#000;
+  padding:10px 20px;
+  border:none;
+  border-radius:6px;
+  font-weight:bold;
+">
+🏠 Back to Timesheet
+</button>
 </div>
 
+</div>
 
 <script>
-
-  function goHome(){
-  window.location.href = "timesheet.html";
-}
 
 /* DATE */
 document.getElementById("today").innerText =
 new Date().toLocaleDateString();
 
-/* LOAD FROM TIMESHEET */
-const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
+/* NAVIGATION */
+function goHome(){
+  window.location.href = "timesheet.html";
+}
+
+/* CALCULATE */
 function calculate(){
 
   const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
 
   const wdDays = +data.wdDays || 0;
   const weDays = +data.weDays || 0;
-
   const wdOT = +data.wdOT || 0;
   const weOT = +data.weOT || 0;
 
   const foodDays = wdDays + weDays;
 
-  // Rates
   const wdRate = 240;
   const weRate = 280;
   const wdOTRate = 30;
   const weOTRate = 35;
   const foodRate = 50;
 
-  // NEW inputs
-  const cash = +document.getElementById("cash").value || 0;
   const expenses = +document.getElementById("expenses").value || 0;
+  const cash = +document.getElementById("cash").value || 0;
 
   const rows = [
     ["Weekdays", wdDays, wdRate, wdDays * wdRate],
     ["Weekend Days", weDays, weRate, weDays * weRate],
-
-    ["Weekday OT Hours", wdOT, wdOTRate, wdOT * wdOTRate],
-    ["Weekend OT Hours", weOT, weOTRate, weOT * weOTRate],
-
+    ["Weekday OT (Hours)", wdOT, wdOTRate, wdOT * wdOTRate],
+    ["Weekend OT (Hours)", weOT, weOTRate, weOT * weOTRate],
     ["Food Allowance", foodDays, foodRate, foodDays * foodRate]
   ];
 
@@ -196,7 +185,6 @@ function calculate(){
 
   rows.forEach(r=>{
     total += r[3];
-
     tbody.innerHTML += `
       <tr>
         <td>${r[0]}</td>
@@ -207,103 +195,13 @@ function calculate(){
     `;
   });
 
-  // ADD EXPENSES
   total += expenses;
 
-  document.getElementById("total").innerText = "$" + total.toFixed(2);
-
-  // FINAL PAYABLE
-  const final = total - cash;
+  document.getElementById("total").innerText =
+    "$" + total.toFixed(2);
 
   document.getElementById("final").innerText =
-    "$" + final.toFixed(2);
-}
-🧱 STEP 2 — ADD EXPENSE INPUT (VERY IMPORTANT)
-
-👉 Find this section:
-
-Cash Advance
-🔥 ADD THIS BELOW IT:
-<tr>
-  <td colspan="3">Expenses</td>
-  <td><input id="expenses" value="0"></td>
-</tr>
-💥 RESULT
-
-Now your invoice supports:
-
-✔ Weekday Days
-✔ Weekend Days
-✔ Weekday OT (hours)
-✔ Weekend OT (hours)
-✔ Food Allowance
-✔ Expenses
-✔ Cash Advance
-
-🎯 FINAL OUTPUT MATCHES YOUR IMAGE
-
-✔ Yellow block structure ✔
-✔ OT in hours ✔
-✔ Expenses added ✔
-✔ Final payable correct ✔
-
-🧠 WHAT YOU JUST BUILT
-
-👉 This is now:
-
-✔ Contractor billing system
-✔ Handles:
-
-Daily rates
-Hourly OT
-Allowances
-Expenses
-Cash reconciliation
-
-👉 This is consultant-grade invoice engine
-
-🚀 NEXT STEP (VERY POWERFUL)
-
-Now we can:
-
-👉 Auto-fill:
-
-Engineer name
-Project name
-Date range
-Company
-
-👉 Export as:
-📄 PDF (client-ready)
-
-🎯 TELL ME
-
-👉 “invoice final working”
-
-Then we go:
-
-🔥 FINAL STEP → Fully automated invoice (no manual input at all)
-  const tbody = document.getElementById("invoice-body");
-  tbody.innerHTML = "";
-
-  let total = 0;
-
-  rows.forEach(r=>{
-    total += r[3];
-    tbody.innerHTML += `
-    <tr>
-      <td>${r[0]}</td>
-      <td>${r[1]}</td>
-      <td>$${r[2]}</td>
-      <td>$${r[3].toFixed(2)}</td>
-    </tr>`;
-  });
-
-  document.getElementById("total").innerText = "$" + total.toFixed(2);
-
-  const cash = +document.getElementById("cash").value;
-  document.getElementById("final").innerText =
-  "$" + (total - cash).toFixed(2);
+    "$" + (total - cash).toFixed(2);
 }
 
 </script>
