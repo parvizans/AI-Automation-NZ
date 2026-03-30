@@ -243,7 +243,48 @@ recalculateAllRows();
 <tbody id="timesheet-body"></tbody>
 </table>
 </div>
+  
+<hr>
 
+<section id="invoiceSection" style="padding:40px;">
+
+<h2>Invoice Generator</h2>
+
+<label>Engineer Name:</label>
+<input type="text" id="inv_name"><br><br>
+
+<label>Total Hours:</label>
+<input type="number" id="inv_hours"><br><br>
+
+<label>Hourly Rate ($):</label>
+<input type="number" id="inv_rate"><br><br>
+
+<button onclick="generateInvoice()">Generate Invoice</button>
+
+<h3 id="invoiceResult"></h3>
+
+</section>
+  <hr>
+
+<section id="expenseSection" style="padding:40px;">
+
+<h2>Expense Claim</h2>
+
+<label>Fuel ($):</label>
+<input type="number" id="fuel"><br><br>
+
+<label>Hotel ($):</label>
+<input type="number" id="hotel"><br><br>
+
+<label>Food ($):</label>
+<input type="number" id="food"><br><br>
+
+<button onclick="calculateExpense()">Calculate Total</button>
+
+<h3 id="expenseResult"></h3>
+
+</section>
+  
 <div class="summary-grid">
 <div class="card weekday">
 Weekdays Days: <span id="wd-days">0</span><br>
@@ -448,7 +489,51 @@ function goExpenses(){
   window.location.href = "expenses.html";
 }
 
+  <script>
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function scrollToInvoice() {
+  document.getElementById("invoiceSection").scrollIntoView({ behavior: 'smooth' });
+}
+
+function scrollToExpenses() {
+  document.getElementById("expenseSection").scrollIntoView({ behavior: 'smooth' });
+}
+  function generateInvoice() {
+  const name = document.getElementById("inv_name").value;
+  const hours = document.getElementById("inv_hours").value;
+  const rate = document.getElementById("inv_rate").value;
+
+  const total = hours * rate;
+
+  document.getElementById("invoiceResult").innerHTML =
+    "Invoice for " + name + "<br>Total: $" + total;
+}
+
+function calculateExpense() {
+  const fuel = Number(document.getElementById("fuel").value) || 0;
+  const hotel = Number(document.getElementById("hotel").value) || 0;
+  const food = Number(document.getElementById("food").value) || 0;
+
+  const total = fuel + hotel + food;
+
+  document.getElementById("expenseResult").innerHTML =
+    "Total Expense: $" + total;
+}
+
 </script>
 
 </body>
+  <div style="position:sticky; top:0; background:#fff; z-index:999; padding:10px; border-bottom:1px solid #ccc; text-align:center;">
+
+  <button onclick="scrollToTop()">Home</button>
+
+  <button onclick="scrollToInvoice()">Invoice</button>
+
+  <button onclick="scrollToExpenses()">Expenses</button>
+    
+
+</div>
 </html>
