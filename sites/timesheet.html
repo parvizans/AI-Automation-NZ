@@ -139,13 +139,15 @@ button {
     🏠 Home
   </button>
 
-  <button onclick="goInvoice()" style="background:#5aa7ff;">
-    📄 Invoice
-  </button>
+ function goInvoice(){
+  exportToInvoice();
+  window.open("invoice.html", "_blank"); // opens new tab 🔥
+}
 
-  <button onclick="goExpenses()" style="background:#ffcc00;">
-    💰 Expenses
-  </button>
+function goExpenses(){
+  exportToExpenses();
+  window.open("expenses.html", "_blank");
+}
 
 </div>
 
@@ -284,7 +286,10 @@ document.getElementById("engineer").addEventListener("change", function(){
   document.getElementById("eng-email").value = s.value;
   document.getElementById("eng-phone").value = s.dataset.phone || "";
 });
-
+document.getElementById("location").addEventListener("change", function(){
+  document.querySelectorAll("#timesheet-body tr").forEach(row=>{
+    calculateRow(row);
+});
 document.getElementById("pm").addEventListener("change", function(){
   document.getElementById("pm-email").value = this.value;
 });
