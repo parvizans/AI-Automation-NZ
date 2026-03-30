@@ -146,38 +146,74 @@ ACCENTURE WALKTEST & DRIVE TEST PROJECT
 </div>
 
 <table>
+
 <thead>
 <tr>
-<th>Description</th>
-<th>Qty</th>
-<th>Rate</th>
-<th>Amount</th>
+  <th>Description</th>
+  <th>Qty</th>
+  <th>Rate</th>
+  <th>Amount</th>
 </tr>
 </thead>
 
-<t id="invoice-body"></tbody>
+<tbody>
+
+<tr>
+  <td>Weekdays</td>
+  <td>3</td>
+  <td>$240</td>
+  <td>$720.00</td>
+</tr>
+
+<tr>
+  <td>Weekend Days</td>
+  <td>0</td>
+  <td>$280</td>
+  <td>$0.00</td>
+</tr>
+
+<tr>
+  <td>Weekday OT (Hours)</td>
+  <td>0</td>
+  <td>$30</td>
+  <td>$0.00</td>
+</tr>
+
+<tr>
+  <td>Weekend OT (Hours)</td>
+  <td>0</td>
+  <td>$35</td>
+  <td>$0.00</td>
+</tr>
+
+<tr>
+  <td>Food Allowance</td>
+  <td>3</td>
+  <td>$50</td>
+  <td>$150.00</td>
+</tr>
+
+</tbody>
 
 <tfoot>
-<tr class="total-row">
-<td colspan="3">Total</td>
-<td id="total"></td>
+
+<tr>
+  <td colspan="3">Expenses</td>
+  <td><input id="expenses" value="0"></td>
 </tr>
 
 <tr>
-<td colspan="3">Expenses</td>
-<td><input id="expenses" value="0"></td>
-</tr>
-
-<tr>
-<td colspan="3">Cash Advance</td>
-<td><input id="cash" value="1000"></td>
+  <td colspan="3">Cash Advance</td>
+  <td><input id="cash" value="1000"></td>
 </tr>
 
 <tr class="final">
-<td colspan="3">Final Payable</td>
-<td id="final"></td>
+  <td colspan="3">Final Payable</td>
+  <td id="final"></td>
 </tr>
+
 </tfoot>
+
 </table>
 
 <button onclick="calculate()">Calculate</button>
