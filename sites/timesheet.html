@@ -177,7 +177,7 @@ button {
 <option value="abhignya.reddy@linkquestglobal.com" data-phone="61422421555">Abhignya Reddy</option>
 <option value="parviz.ansari@linkquestglobal.com" data-phone="64220100700">Parviz Ansari</option>
 <option value="pavinee.suwanta@linkquestglobal.com" data-phone="6100000000">Pavinee Suwanta</option>
-<option value="abhishek.ahirrao@linkquestglobal.com data-phone="614113637010">Abhishek Ahirrao</option>
+<option value="abhishek.ahirrao@linkquestglobal.com" data-phone="614113637010">Abhishek Ahirrao</option>
 <option value="sanjay.nampally@linkquestglobal.com" data-phone="61424944711">Sanjay Nampally</option>
 <option value="saidinesh.mogili@linkquestglobal.com" data-phone="61451907999">Sai Dinesh Mogili</option>
 <option value="manish.redekar@linkquestglobal.com" data-phone="61403969766">Manish Redekar</option>
@@ -230,9 +230,7 @@ button {
 <option value="outside">Outside Sydney</option>
 </select>
 </div>
-  // future fix idea
-recalculateAllRows();
-
+  
 <div class="expected-box">Expected: 8h/day</div>
 
 </div>
@@ -314,6 +312,8 @@ Weekend OT: <span id="we-ot">0</span>
 </div>
 
 </div>
+  
+  <script>
 
 /* AUTO FILL */
 document.getElementById("engineer").addEventListener("change", function(){
@@ -446,7 +446,7 @@ document.addEventListener("change", e=>{
   if(row) calculateRow(row);
 });
 
-  function goHome(){
+ function goHome(){
   window.scrollTo({
     top: 0,
     behavior: "smooth"
@@ -493,8 +493,6 @@ function goExpenses(){
   window.location.href = "expenses.html";
 }
 
-<script>
-
 /* AUTO FILL */
 document.getElementById("engineer").addEventListener("change", function(){
   const s = this.options[this.selectedIndex];
@@ -519,10 +517,6 @@ function scrollToExpenses() {
   document.getElementById("expenseSection").scrollIntoView({ behavior: 'smooth' });
 }
 
-/* NAV */
-function goHome(){
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
 
 function goInvoice(){
   exportToInvoice();
@@ -573,5 +567,4 @@ function calculateExpense() {
 
 </body>
   
-
 </html>
