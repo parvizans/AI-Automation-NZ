@@ -117,17 +117,6 @@ button {
 </head>
 
 <body>
-  
-    <div style="position:sticky; top:0; background:#fff; z-index:999; padding:10px; border-bottom:1px solid #ccc; text-align:center;">
-
-  <button onclick="scrollToTop()">Home</button>
-
-  <button onclick="scrollToInvoice()">Invoice</button>
-
-  <button onclick="scrollToExpenses()">Expenses</button>
-    
-
-</div>
 
 <div class="container">
 
@@ -139,15 +128,13 @@ button {
     🏠 Home
   </button>
 
- function goInvoice(){
-  exportToInvoice();
-  window.open("invoice.html", "_blank"); // opens new tab 🔥
-}
+  <button onclick="goInvoice()" style="background:#5aa7ff;">
+    📄 Invoice
+  </button>
 
-function goExpenses(){
-  exportToExpenses();
-  window.open("expenses.html", "_blank");
-}
+  <button onclick="goExpenses()" style="background:#ffcc00;">
+    💰 Expenses
+  </button>
 
 </div>
 
@@ -179,7 +166,7 @@ function goExpenses(){
 <option value="abhignya.reddy@linkquestglobal.com" data-phone="61422421555">Abhignya Reddy</option>
 <option value="parviz.ansari@linkquestglobal.com" data-phone="64220100700">Parviz Ansari</option>
 <option value="pavinee.suwanta@linkquestglobal.com" data-phone="6100000000">Pavinee Suwanta</option>
-<option value="abhishek.ahirrao@linkquestglobal.com" data-phone="614113637010">Abhishek Ahirrao</option>
+<option value="abhishek.ahirrao@linkquestglobal.com data-phone="614113637010">Abhishek Ahirrao</option>
 <option value="sanjay.nampally@linkquestglobal.com" data-phone="61424944711">Sanjay Nampally</option>
 <option value="saidinesh.mogili@linkquestglobal.com" data-phone="61451907999">Sai Dinesh Mogili</option>
 <option value="manish.redekar@linkquestglobal.com" data-phone="61403969766">Manish Redekar</option>
@@ -232,7 +219,9 @@ function goExpenses(){
 <option value="outside">Outside Sydney</option>
 </select>
 </div>
-  
+  // future fix idea
+recalculateAllRows();
+
 <div class="expected-box">Expected: 8h/day</div>
 
 </div>
@@ -254,9 +243,7 @@ function goExpenses(){
 <tbody id="timesheet-body"></tbody>
 </table>
 </div>
-  
-</section>
-  
+
 <div class="summary-grid">
 <div class="card weekday">
 Weekdays Days: <span id="wd-days">0</span><br>
@@ -275,10 +262,8 @@ Weekend OT: <span id="we-ot">0</span>
 </div>
 
 </div>
-  
-<script>
 
-document.addEventListener("DOMContentLoaded", function(){
+<script>
 
 /* AUTO FILL */
 document.getElementById("engineer").addEventListener("change", function(){
@@ -286,10 +271,7 @@ document.getElementById("engineer").addEventListener("change", function(){
   document.getElementById("eng-email").value = s.value;
   document.getElementById("eng-phone").value = s.dataset.phone || "";
 });
-document.getElementById("location").addEventListener("change", function(){
-  document.querySelectorAll("#timesheet-body tr").forEach(row=>{
-    calculateRow(row);
-});
+
 document.getElementById("pm").addEventListener("change", function(){
   document.getElementById("pm-email").value = this.value;
 });
@@ -321,19 +303,20 @@ function generateMonth(){
       <td><input type="date" value="${date}"></td>
       <td>${getDayName(d)}</td>
       <td><input type="time" value="08:00" readonly class="time-in"></td>
-      <td>
-        <select class="time-hour">
-          ${Array.from({length: 24}, (_, i) =>
-            `<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`
-          ).join("")}
-        </select>
-        <select class="time-minute">
-          <option value="00">00</option>
-          <option value="15">15</option>
-          <option value="30">30</option>
-          <option value="45">45</option>
-        </select>
-      </td>
+     <td>
+  <select class="time-hour">
+    ${Array.from({length: 24}, (_, i) =>
+      `<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`
+    ).join("")}
+  </select>
+
+  <select class="time-minute">
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+  </select>
+</td>
       <td class="total">0</td>
       <td class="ot">0</td>
       <td class="food">-</td>
@@ -341,6 +324,68 @@ function generateMonth(){
 
     tbody.appendChild(row);
   }
+}
+
+/* CALC */
+function calculateRow(row){
+const hour = row.querySelector(".time-hour").value;
+const minute = row.querySelector(".time-minute").value;
+
+const timeOut = `${hour}:${minute}`;
+  if(!timeOut) return;
+
+  const dateVal = row.querySelector("input[type=date]").value;
+  const day = new Date(dateVal).getDay();
+
+  const start = new Date("1970-01-01T08:00:00");
+  const end = new Date(`1970-01-01T${timeOut}:00`);
+
+  let total = (end-start)/(1000*60*60);
+  if(total<0) total=0;
+
+  const ot = total>8 ? total-8 : 0;
+
+  row.querySelector(".total").innerText = total.toFixed(2);
+  row.querySelector(".ot").innerText = ot.toFixed(2);
+
+  const loc = document.getElementById("location").value;
+  const food = row.querySelector(".food");
+
+  if(loc==="outside"){
+    food.innerText="$50";
+    food.className="food food-yes";
+  } else {
+    food.innerText="-";
+    food.className="food food-no";
+  }
+
+  updateSummary();
+}
+
+/* SUMMARY */
+function updateSummary(){
+  let wdDays=0, wdHours=0, weDays=0, weOT=0;
+
+  document.querySelectorAll("tbody tr").forEach(row=>{
+    const dateVal = row.querySelector("input[type=date]").value;
+    const day = new Date(dateVal).getDay();
+
+    const total = parseFloat(row.querySelector(".total").innerText)||0;
+    const ot = parseFloat(row.querySelector(".ot").innerText)||0;
+
+    if(day===0 || day===6){
+      if(total>0) weDays++;
+      weOT+=ot;
+    } else {
+      if(total>0) wdDays++;
+      wdHours+=total;
+    }
+  });
+
+  document.getElementById("wd-days").innerText = wdDays;
+  document.getElementById("wd-hours").innerText = wdHours.toFixed(2);
+  document.getElementById("we-days").innerText = weDays;
+  document.getElementById("we-ot").innerText = weOT.toFixed(2);
 }
 
 /* EVENTS */
@@ -351,42 +396,59 @@ document.addEventListener("change", e=>{
   if(row) calculateRow(row);
 });
 
-}); // 🔥 IMPORTANT CLOSING
-
-/* KEEP THESE OUTSIDE (GLOBAL FUNCTIONS) */
-
-function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  function goHome(){
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 }
 
-function scrollToInvoice() {
-  document.getElementById("invoiceSection").scrollIntoView({ behavior: 'smooth' });
+function goInvoice(){
+  exportToInvoice();
+  window.location.href = "invoice.html";
+}
+  /* =========================
+   ADD THESE FUNCTIONS BELOW
+========================= */
+
+function goHome(){
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
 }
 
-function scrollToExpenses() {
-  document.getElementById("expenseSection").scrollIntoView({ behavior: 'smooth' });
+function goExpenses(){
+  window.location.href = "expenses.html";
 }
 
-function generateInvoice() {
-  const name = document.getElementById("inv_name").value;
-  const hours = document.getElementById("inv_hours").value;
-  const rate = document.getElementById("inv_rate").value;
 
-  document.getElementById("invoiceResult").innerHTML =
-    "Invoice for " + name + "<br>Total: $" + (hours * rate);
+/* =========================
+   EXPORT DATA TO INVOICE
+========================= */
+
+function exportToInvoice(){
+
+  const wdDays = document.getElementById("wd-days")?.innerText || 0;
+  const wdHours = document.getElementById("wd-hours")?.innerText || 0;
+  const weDays = document.getElementById("we-days")?.innerText || 0;
+  const weOT = document.getElementById("we-ot")?.innerText || 0;
+
+  const data = {
+    wdDays: wdDays,
+    wdHours: wdHours,
+    weDays: weDays,
+    weOT: weOT
+  };
+
+  localStorage.setItem("invoiceData", JSON.stringify(data));
 }
 
-function calculateExpense() {
-  const fuel = Number(document.getElementById("fuel").value) || 0;
-  const hotel = Number(document.getElementById("hotel").value) || 0;
-  const food = Number(document.getElementById("food").value) || 0;
-
-  document.getElementById("expenseResult").innerHTML =
-    "Total Expense: $" + (fuel + hotel + food);
+function goExpenses(){
+  window.location.href = "expenses.html";
 }
 
 </script>
 
 </body>
-  
 </html>
