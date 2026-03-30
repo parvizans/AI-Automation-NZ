@@ -396,6 +396,22 @@ document.addEventListener("change", e=>{
   if(row) calculateRow(row);
 });
 
+  function goHome(){
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+function goInvoice(){
+  exportToInvoice();
+  window.location.href = "invoice.html";
+}
+
+function goExpenses(){
+  window.location.href = "expenses.html";
+}
+
 </script>
 
 </body>
