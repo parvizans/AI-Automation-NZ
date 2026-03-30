@@ -315,8 +315,6 @@ Weekend OT: <span id="we-ot">0</span>
 
 </div>
 
-<script>
-
 /* AUTO FILL */
 document.getElementById("engineer").addEventListener("change", function(){
   const s = this.options[this.selectedIndex];
@@ -495,7 +493,20 @@ function goExpenses(){
   window.location.href = "expenses.html";
 }
 
-  <script>
+<script>
+
+/* AUTO FILL */
+document.getElementById("engineer").addEventListener("change", function(){
+  const s = this.options[this.selectedIndex];
+  document.getElementById("eng-email").value = s.value;
+  document.getElementById("eng-phone").value = s.dataset.phone || "";
+});
+
+document.getElementById("pm").addEventListener("change", function(){
+  document.getElementById("pm-email").value = this.value;
+});
+
+/* SCROLL */
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -507,7 +518,35 @@ function scrollToInvoice() {
 function scrollToExpenses() {
   document.getElementById("expenseSection").scrollIntoView({ behavior: 'smooth' });
 }
-  function generateInvoice() {
+
+/* NAV */
+function goHome(){
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function goInvoice(){
+  exportToInvoice();
+  window.location.href = "invoice.html";
+}
+
+function goExpenses(){
+  window.location.href = "expenses.html";
+}
+
+/* EXPORT */
+function exportToInvoice(){
+  const data = {
+    wdDays: document.getElementById("wd-days")?.innerText || 0,
+    wdHours: document.getElementById("wd-hours")?.innerText || 0,
+    weDays: document.getElementById("we-days")?.innerText || 0,
+    weOT: document.getElementById("we-ot")?.innerText || 0
+  };
+
+  localStorage.setItem("invoiceData", JSON.stringify(data));
+}
+
+/* INVOICE */
+function generateInvoice() {
   const name = document.getElementById("inv_name").value;
   const hours = document.getElementById("inv_hours").value;
   const rate = document.getElementById("inv_rate").value;
@@ -518,6 +557,7 @@ function scrollToExpenses() {
     "Invoice for " + name + "<br>Total: $" + total;
 }
 
+/* EXPENSE */
 function calculateExpense() {
   const fuel = Number(document.getElementById("fuel").value) || 0;
   const hotel = Number(document.getElementById("hotel").value) || 0;
@@ -528,12 +568,6 @@ function calculateExpense() {
   document.getElementById("expenseResult").innerHTML =
     "Total Expense: $" + total;
 }
-
-
-function goExpenses(){
-  window.location.href = "expenses.html";
-}
-
 
 </script>
 
