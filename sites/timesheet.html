@@ -117,6 +117,17 @@ button {
 </head>
 
 <body>
+  
+    <div style="position:sticky; top:0; background:#fff; z-index:999; padding:10px; border-bottom:1px solid #ccc; text-align:center;">
+
+  <button onclick="scrollToTop()">Home</button>
+
+  <button onclick="scrollToInvoice()">Invoice</button>
+
+  <button onclick="scrollToExpenses()">Expenses</button>
+    
+
+</div>
 
 <div class="container">
 
@@ -457,11 +468,6 @@ function goHome(){
     top: 0,
     behavior: "smooth"
   });
-}
-
-function goExpenses(){
-  window.location.href = "expenses.html";
-}
 
 
 /* =========================
@@ -523,17 +529,15 @@ function calculateExpense() {
     "Total Expense: $" + total;
 }
 
+
+function goExpenses(){
+  window.location.href = "expenses.html";
+}
+
+
 </script>
 
 </body>
-  <div style="position:sticky; top:0; background:#fff; z-index:999; padding:10px; border-bottom:1px solid #ccc; text-align:center;">
+  
 
-  <button onclick="scrollToTop()">Home</button>
-
-  <button onclick="scrollToInvoice()">Invoice</button>
-
-  <button onclick="scrollToExpenses()">Expenses</button>
-    
-
-</div>
 </html>
