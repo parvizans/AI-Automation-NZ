@@ -7,14 +7,18 @@
 <style>
 body {
   font-family: Arial;
+  background: #0b1220;
+  color:#000;
+}
 
-  background:
-    linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)),
-    url("assets/invoice-bg.jpg");
-
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+body::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  background:url("assets/invoice-bg.jpg") center/cover no-repeat;
+  opacity:0.25;
+  filter:blur(4px);
+  z-index:-1;
 }
 .container { max-width:1000px; margin:auto; }
 
