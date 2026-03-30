@@ -10,14 +10,22 @@ body {
   background: #0b1220;
   color:#000;
 }
+  h1, h2, h3, b {
+  color: #ffffff;
+}
+  .box {
+  background: rgba(0,0,0,0.6);
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.2);
+}
 
 body::before {
   content:"";
   position:fixed;
   inset:0;
   background:url("assets/invoice-bg.jpg") center/cover no-repeat;
-  opacity:0.25;
-  filter:blur(4px);
+  opacity:0.12;   /* 🔥 LOWER THIS */
+  filter:blur(3px);
   z-index:-1;
 }
   <div class="top-nav">
@@ -51,15 +59,18 @@ th, td {
   padding:10px;
 }
 
-th { background:#ddd; }
+th {
+  background: rgba(255,255,255,0.15);
+  color: #ffffff;
+}
+
+td {
+  color: #ffffff;
+}
 
 .total-row { font-weight:bold; }
 
 .final {
-  background:yellow;
-  color:red;
-  font-weight:bold;
-}
 
 button {
   margin-top:20px;
