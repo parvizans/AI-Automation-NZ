@@ -313,7 +313,9 @@ Weekend OT: <span id="we-ot">0</span>
 
 </div>
   
-  <script>
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
 
 /* AUTO FILL */
 document.getElementById("engineer").addEventListener("change", function(){
@@ -353,20 +355,19 @@ function generateMonth(){
       <td><input type="date" value="${date}"></td>
       <td>${getDayName(d)}</td>
       <td><input type="time" value="08:00" readonly class="time-in"></td>
-     <td>
-  <select class="time-hour">
-    ${Array.from({length: 24}, (_, i) =>
-      `<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`
-    ).join("")}
-  </select>
-
-  <select class="time-minute">
-    <option value="00">00</option>
-    <option value="15">15</option>
-    <option value="30">30</option>
-    <option value="45">45</option>
-  </select>
-</td>
+      <td>
+        <select class="time-hour">
+          ${Array.from({length: 24}, (_, i) =>
+            `<option value="${String(i).padStart(2,'0')}">${String(i).padStart(2,'0')}</option>`
+          ).join("")}
+        </select>
+        <select class="time-minute">
+          <option value="00">00</option>
+          <option value="15">15</option>
+          <option value="30">30</option>
+          <option value="45">45</option>
+        </select>
+      </td>
       <td class="total">0</td>
       <td class="ot">0</td>
       <td class="food">-</td>
@@ -374,68 +375,6 @@ function generateMonth(){
 
     tbody.appendChild(row);
   }
-}
-
-/* CALC */
-function calculateRow(row){
-const hour = row.querySelector(".time-hour").value;
-const minute = row.querySelector(".time-minute").value;
-
-const timeOut = `${hour}:${minute}`;
-  if(!timeOut) return;
-
-  const dateVal = row.querySelector("input[type=date]").value;
-  const day = new Date(dateVal).getDay();
-
-  const start = new Date("1970-01-01T08:00:00");
-  const end = new Date(`1970-01-01T${timeOut}:00`);
-
-  let total = (end-start)/(1000*60*60);
-  if(total<0) total=0;
-
-  const ot = total>8 ? total-8 : 0;
-
-  row.querySelector(".total").innerText = total.toFixed(2);
-  row.querySelector(".ot").innerText = ot.toFixed(2);
-
-  const loc = document.getElementById("location").value;
-  const food = row.querySelector(".food");
-
-  if(loc==="outside"){
-    food.innerText="$50";
-    food.className="food food-yes";
-  } else {
-    food.innerText="-";
-    food.className="food food-no";
-  }
-
-  updateSummary();
-}
-
-/* SUMMARY */
-function updateSummary(){
-  let wdDays=0, wdHours=0, weDays=0, weOT=0;
-
-  document.querySelectorAll("tbody tr").forEach(row=>{
-    const dateVal = row.querySelector("input[type=date]").value;
-    const day = new Date(dateVal).getDay();
-
-    const total = parseFloat(row.querySelector(".total").innerText)||0;
-    const ot = parseFloat(row.querySelector(".ot").innerText)||0;
-
-    if(day===0 || day===6){
-      if(total>0) weDays++;
-      weOT+=ot;
-    } else {
-      if(total>0) wdDays++;
-      wdHours+=total;
-    }
-  });
-
-  document.getElementById("wd-days").innerText = wdDays;
-  document.getElementById("wd-hours").innerText = wdHours.toFixed(2);
-  document.getElementById("we-days").innerText = weDays;
-  document.getElementById("we-ot").innerText = weOT.toFixed(2);
 }
 
 /* EVENTS */
@@ -446,65 +385,10 @@ document.addEventListener("change", e=>{
   if(row) calculateRow(row);
 });
 
- function goHome(){
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-}
+}); // 🔥 IMPORTANT CLOSING
 
-function goInvoice(){
-  exportToInvoice();
-  window.location.href = "invoice.html";
-}
-  /* =========================
-   ADD THESE FUNCTIONS BELOW
-========================= */
+/* KEEP THESE OUTSIDE (GLOBAL FUNCTIONS) */
 
-function goHome(){
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-
-
-/* =========================
-   EXPORT DATA TO INVOICE
-========================= */
-
-function exportToInvoice(){
-
-  const wdDays = document.getElementById("wd-days")?.innerText || 0;
-  const wdHours = document.getElementById("wd-hours")?.innerText || 0;
-  const weDays = document.getElementById("we-days")?.innerText || 0;
-  const weOT = document.getElementById("we-ot")?.innerText || 0;
-
-  const data = {
-    wdDays: wdDays,
-    wdHours: wdHours,
-    weDays: weDays,
-    weOT: weOT
-  };
-
-  localStorage.setItem("invoiceData", JSON.stringify(data));
-}
-
-function goExpenses(){
-  window.location.href = "expenses.html";
-}
-
-/* AUTO FILL */
-document.getElementById("engineer").addEventListener("change", function(){
-  const s = this.options[this.selectedIndex];
-  document.getElementById("eng-email").value = s.value;
-  document.getElementById("eng-phone").value = s.dataset.phone || "";
-});
-
-document.getElementById("pm").addEventListener("change", function(){
-  document.getElementById("pm-email").value = this.value;
-});
-
-/* SCROLL */
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -517,50 +401,22 @@ function scrollToExpenses() {
   document.getElementById("expenseSection").scrollIntoView({ behavior: 'smooth' });
 }
 
-
-function goInvoice(){
-  exportToInvoice();
-  window.location.href = "invoice.html";
-}
-
-function goExpenses(){
-  window.location.href = "expenses.html";
-}
-
-/* EXPORT */
-function exportToInvoice(){
-  const data = {
-    wdDays: document.getElementById("wd-days")?.innerText || 0,
-    wdHours: document.getElementById("wd-hours")?.innerText || 0,
-    weDays: document.getElementById("we-days")?.innerText || 0,
-    weOT: document.getElementById("we-ot")?.innerText || 0
-  };
-
-  localStorage.setItem("invoiceData", JSON.stringify(data));
-}
-
-/* INVOICE */
 function generateInvoice() {
   const name = document.getElementById("inv_name").value;
   const hours = document.getElementById("inv_hours").value;
   const rate = document.getElementById("inv_rate").value;
 
-  const total = hours * rate;
-
   document.getElementById("invoiceResult").innerHTML =
-    "Invoice for " + name + "<br>Total: $" + total;
+    "Invoice for " + name + "<br>Total: $" + (hours * rate);
 }
 
-/* EXPENSE */
 function calculateExpense() {
   const fuel = Number(document.getElementById("fuel").value) || 0;
   const hotel = Number(document.getElementById("hotel").value) || 0;
   const food = Number(document.getElementById("food").value) || 0;
 
-  const total = fuel + hotel + food;
-
   document.getElementById("expenseResult").innerHTML =
-    "Total Expense: $" + total;
+    "Total Expense: $" + (fuel + hotel + food);
 }
 
 </script>
