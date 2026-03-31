@@ -2,436 +2,208 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Invoice Generator</title>
+<title>Invoice</title>
 
 <style>
 body {
-  font-family: Arial;<style>
-  background: #0b1220;
-  color:#000;
-}
-  h1, h2, h3, b {
-  color: #ffffff;
-}
-  .box {
-  background: rgba(0,0,0,0.6);
-  color: #ffffff;
-  border: 1px solid rgba(255,255,255,0.2);
-}
+  font-family: Arial;
+  color:#fff;
+  margin:0;
+  padding:20px;
 
-body::before {
-  content:"";
-  position:fixed;
-  inset:0;
   background:
-    linear-gradient(rgba(11,18,32,0.75), rgba(11,18,32,0.75)),
+    linear-gradient(rgba(11,18,32,0.9), rgba(11,18,32,0.9)),
     url("assets/invoice-bg.jpg") center/cover no-repeat;
-
-  opacity:1;          /* IMPORTANT */
-  filter:blur(2px);   /* optional softer blur */
-  z-index:-1;
 }
-  <div class="top-nav">
 
-  <button onclick="goBack()">🏠 Timesheet</button>
-  <button class="active">📄 Invoice</button>
-  <button onclick="goExpenses()">💰 Expenses</button>
+.container {
+  max-width:1000px;
+  margin:auto;
+}
 
-</div>a
-.container { max-width:1000px; margin:auto; }
+h1 {
+  color:#32d296;
+}
 
-.header {
-  display:flex;
-  justify-content:space-between;
+.top-nav {
   margin-bottom:20px;
 }
-  border:1px solid #000;
-  padding:10px;
+
+button {
+  padding:10px 20px;
+  border:none;
+  border-radius:6px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-right:10px;
+}
+
+.btn-green { background:#32d296; color:#000; }
+.btn-blue { background:#5aa7ff; color:#fff; }
+
+.card {
+  background:#1c2541;
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:15px;
 }
 
 table {
   width:100%;
   border-collapse:collapse;
   margin-top:20px;
+  background:rgba(0,0,0,0.5);
 }
 
 th, td {
-  border:1px solid #000;
-  padding:14px;
-}
-
-th {
-  background: rgba(255,255,255,0.15);
-  color: #ffffff;
-}
-
-td {
-  color: #ffffff;
-}
-
-.total-row { font-weight:bold; }
-
-.final {
-  background: Green;
-  color: red;
-  font-weight: bold;
-  font-size: 18px;
-}
-  button {
-  cursor: pointer;
-}
-  .invoice-grid {
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:15px;
-  margin-top:20px;
-}
-
-.card {
-  background:#1c2541;
   padding:15px;
-  border-radius:10px;
-}
-
-.card label {
-  font-size:12px;
-  color:#b8c3e6;
-}
-
-.card input {
-  margin-top:5px;
-  width:100%;
-  padding:8px;
-  border-radius:6px;
-  border:none;
-  background:#2a355f;
-  color:#fff;
-}
-
-.result-box {
-  margin-top:30px;
-  padding:20px;
-  background:#32d296;
-  color:#000;
-  border-radius:10px;
-  font-weight:bold;
-}
-  .btn {
-  padding:12px 24px;
-  border:none;
-  border-radius:8px;
-  font-weight:bold;
-  cursor:pointer;
-  font-size:14px;
-}
-
-.btn-green {
-  background:#32d296;
-  color:#000;
-}
-
-.btn-blue {
-  background:#5aa7ff;
-  color:#fff;
-}
-  /* =========================
-   UI IMPROVEMENT (ADD AT END)
-========================= */
-
-th, td {
-  padding: 16px;
-  font-size: 16px;
-}
-
-tr {
-  height: 55px;
+  border:1px solid rgba(255,255,255,0.1);
+  text-align:center;
 }
 
 th {
-  font-size: 16px;
+  background:#111a33;
 }
 
-td {
-  font-size: 16px;
-}
-
-/* Amount column highlight */
-td:nth-child(4) {
-  font-weight: bold;
-  font-size: 17px;
-}
-
-/* Labels */
-.card label {
-  font-size: 13px;
-}
-
-/* Final row */
 .final {
-  background: #0f9d58;
-  color: #ffffff;
-  font-weight: bold;
-  font-size: 18px;
+  background:#0f9d58;
+  font-size:18px;
+  font-weight:bold;
 }
-
-/* Inputs */
-.card input {
-  margin-top:5px;
-  width:100%;
-  padding:8px;
-  border-radius:6px;
-  border:none;
-  background:#2a355f;
-  color:#fff;
-}
-  /* =========================
-   BIGGER TABLE (ADD HERE)
-========================= */
-
-th, td {
-  padding: 18px;
-  font-size: 18px;
-}
-
-tr {
-  height: 60px;
-}
-
-/* Make Amount stand out */
-td:nth-child(4) {
-  font-size: 19px;
-  font-weight: bold;
-}
-
-/* Inputs bigger */
-input {
-  padding:10px;
-  font-size:16px;
-}
-
 </style>
 </head>
 
-<>
+<body>
 
 <div class="container">
 
-<div class="header">
-
-  <div>
-    <b id="inv-name">Engineer Name</b><br>
-    <span id="inv-project">Project Name</span>
-  </div>
-
-  <div style="text-align:right;">
-    <div id="inv-number">INV-0000</div>
-  </div>
-
-</div>
-  
-  table {
-  background: rgba(0,0,0,0.4);
-}
-
-<div>
-<b>INVOICE #008</b><br>
-Date: <span id="today"></span>
-</div>
+<div class="top-nav">
+  <button onclick="goHome()">🏠 Timesheet</button>
+  <button onclick="goExpenses()">💰 Expenses</button>
 </div>
 
-<div class="box">
-<b>TO:</b><br>
-LINKQUEST TELECOM AUSTRALIA PTY LTD<br>
-LEVEL 5 NEXUS NORWEST
-</div>
+<h1>📄 Invoice</h1>
 
-<div class="box" style="margin-top:10px;">
-<b>FOR:</b><br>
-ACCENTURE WALKTEST & DRIVE TEST PROJECT
+<div class="card">
+<b id="name"></b><br>
+<span id="project"></span><br>
+Invoice #: <span id="inv"></span><br>
+Date: <span id="date"></span>
 </div>
 
 <table>
-
 <thead>
 <tr>
-  <th>Description</th>
-  <th>Qty</th>
-  <th>Rate</th>
-  <th>Amount</th>
+<th>Description</th>
+<th>Qty</th>
+<th>Rate</th>
+<th>Amount</th>
 </tr>
 </thead>
 
-<tbody>
-
-<tr>
-  <td>Weekdays</td>
-  <td>3</td>
-  <td>$240</td>
-  <td>$720.00</td>
-</tr>
-
-<tr>
-  <td>Weekend Days</td>
-  <td>0</td>
-  <td>$280</td>
-  <td>$0.00</td>
-</tr>
-
-<tr>
-  <td>Weekday OT (Hours)</td>
-  <td>0</td>
-  <td>$30</td>
-  <td>$0.00</td>
-</tr>
-
-<tr>
-  <td>Weekend OT (Hours)</td>
-  <td>0</td>
-  <td>$35</td>
-  <td>$0.00</td>
-</tr>
-
-<tr>
-  <td>Food Allowance</td>
-  <td>3</td>
-  <td>$50</td>
-  <td>$150.00</td>
-</tr>
-
-</tbody>
+<tbody id="rows"></tbody>
 
 <tfoot>
 
 <tr>
-  <td colspan="3">Expenses</td>
-  <td><input id="expenses" value="0"></td>
+<td colspan="3">Expenses</td>
+<td><input id="expenses" value="0"></td>
 </tr>
 
 <tr>
-  <td colspan="3">Cash Advance</td>
-  <td><input id="cash" value="1000"></td>
+<td colspan="3">Cash Advance</td>
+<td><input id="cash" value="0"></td>
 </tr>
 
 <tr class="final">
-  <td colspan="3">Final Payable</td>
-  <td id="final"></td>
+<td colspan="3">Final Payable</td>
+<td id="final"></td>
 </tr>
 
 </tfoot>
-
 </table>
 
-<button class="btn btn-green" onclick="calculate()">Calculate</button>
-<button class="btn btn-blue" onclick="window.print()">Print / Save PDF</button>
+<br>
 
-<div style="margin-top:30px;">
-<button onclick="goHome()" style="
-  background:#32d296;
-  color:#000;
-  padding:10px 20px;
-  border:none;
-  border-radius:6px;
-  font-weight:bold;
-">
-🏠 Back to Timesheet
-</button>
-</div>
+<button class="btn-green" onclick="calculate()">Calculate</button>
+<button class="btn-blue" onclick="window.print()">Print / Save PDF</button>
 
 </div>
 
 <script>
 
-/* DATE */
-document.getElementById("today").innerText =
-new Date().toLocaleDateString();
+/* LOAD DATA */
+const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
 
-/* NAVIGATION */
-function goHome(){
-  window.location.href = "timesheet.html";
+document.getElementById("name").innerText = data.name || "";
+document.getElementById("project").innerText = data.project || "";
+document.getElementById("inv").innerText = data.invoiceNo || "";
+document.getElementById("date").innerText = new Date().toLocaleDateString();
+
+/* LOAD EXPENSES */
+const savedExpense = localStorage.getItem("expenseTotal");
+if(savedExpense){
+  document.getElementById("expenses").value = savedExpense;
 }
 
 /* CALCULATE */
 function calculate(){
 
-  const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
-
   const wdDays = +data.wdDays || 0;
   const weDays = +data.weDays || 0;
-  const wdOT = +data.wdOT || 0;
+  const wdOT = +data.wdHours - (wdDays*8) || 0;
   const weOT = +data.weOT || 0;
+
+  const rates = {
+    wd:240,
+    we:280,
+    wdOT:30,
+    weOT:35,
+    food:50
+  };
 
   const foodDays = wdDays + weDays;
 
-  const wdRate = 240;
-  const weRate = 280;
-  const wdOTRate = 30;
-  const weOTRate = 35;
-  const foodRate = 50;
-
-  const expenses = +document.getElementById("expenses").value || 0;
-  const cash = +document.getElementById("cash").value || 0;
-
   const rows = [
-    ["Weekdays", wdDays, wdRate, wdDays * wdRate],
-    ["Weekend Days", weDays, weRate, weDays * weRate],
-    ["Weekday OT (Hours)", wdOT, wdOTRate, wdOT * wdOTRate],
-    ["Weekend OT (Hours)", weOT, weOTRate, weOT * weOTRate],
-    ["Food Allowance", foodDays, foodRate, foodDays * foodRate]
+    ["Weekdays", wdDays, rates.wd, wdDays*rates.wd],
+    ["Weekend Days", weDays, rates.we, weDays*rates.we],
+    ["Weekday OT", wdOT, rates.wdOT, wdOT*rates.wdOT],
+    ["Weekend OT", weOT, rates.weOT, weOT*rates.weOT],
+    ["Food Allowance", foodDays, rates.food, foodDays*rates.food]
   ];
 
   let total = 0;
-
-  const tbody = document.getElementById("invoice-body");
+  const tbody = document.getElementById("rows");
   tbody.innerHTML = "";
 
   rows.forEach(r=>{
     total += r[3];
+
     tbody.innerHTML += `
-      <tr>
-        <td>${r[0]}</td>
-        <td>${r[1]}</td>
-        <td>$${r[2]}</td>
-        <td>$${r[3].toFixed(2)}</td>
-      </tr>
-    `;
+    <tr>
+      <td>${r[0]}</td>
+      <td>${r[1]}</td>
+      <td>$${r[2]}</td>
+      <td>$${r[3].toFixed(2)}</td>
+    </tr>`;
   });
 
-  total += expenses;
+  const expenses = +document.getElementById("expenses").value || 0;
+  const cash = +document.getElementById("cash").value || 0;
 
-  document.getElementById("total").innerText =
-    "$" + total.toFixed(2);
+  total += expenses;
 
   document.getElementById("final").innerText =
     "$" + (total - cash).toFixed(2);
 }
-  window.onload = function(){
 
-  const data = JSON.parse(localStorage.getItem("invoiceData"));
-
-  if(!data) return;
-
-  document.getElementById("inv-name").value = data.name;
-  document.getElementById("inv-hours").value = data.totalHours;
-
-};
-
-  function calculateInvoice(){
-
-  const hours = Number(document.getElementById("inv-hours").value) || 0;
-  const rate = Number(document.getElementById("rate-weekday").value) || 0;
-
-  const total = hours * rate;
-
-  document.getElementById("finalTotal").innerText = total.toFixed(2);
+/* NAV */
+function goHome(){
+  window.location.href = "timesheet.html";
 }
-  window.onload = function(){
 
-  const data = JSON.parse(localStorage.getItem("invoiceData"));
-  if(!data) return;
-
-  document.getElementById("inv-name").innerText = data.name;
-  document.getElementById("inv-project").innerText = data.project;
-  document.getElementById("inv-number").innerText = data.invoiceNo;
+function goExpenses(){
+  window.location.href = "expenses.html";
 }
 
 </script>
