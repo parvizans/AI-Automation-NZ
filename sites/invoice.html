@@ -6,7 +6,7 @@
 
 <style>
 body {
-  font-family: Arial;
+  font-family: Arial;<style>
   background: #0b1220;
   color:#000;
 }
@@ -114,6 +114,24 @@ td {
   color:#000;
   border-radius:10px;
   font-weight:bold;
+}
+  .btn {
+  padding:12px 24px;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:14px;
+}
+
+.btn-green {
+  background:#32d296;
+  color:#000;
+}
+
+.btn-blue {
+  background:#5aa7ff;
+  color:#fff;
 }
   /* =========================
    UI IMPROVEMENT (ADD AT END)
@@ -268,8 +286,8 @@ ACCENTURE WALKTEST & DRIVE TEST PROJECT
 
 </table>
 
-<button onclick="calculate()">Calculate</button>
-<button onclick="window.print()">Print / Save PDF</button>
+<button class="btn btn-green" onclick="calculate()">Calculate</button>
+<button class="btn btn-blue" onclick="window.print()">Print / Save PDF</button>
 
 <div style="margin-top:30px;">
 <button onclick="goHome()" style="
