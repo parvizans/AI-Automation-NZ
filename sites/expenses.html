@@ -6,56 +6,108 @@
 
 <style>
 
+/* =========================
+   BODY
+========================= */
 body {
   font-family: Arial;
   color:#fff;
-  background:#0b1220;
+  margin:0;
   padding:20px;
+
+  background:
+    linear-gradient(rgba(11,18,32,0.85), rgba(11,18,32,0.85)),
+    url("assets/invoice-bg.jpg");
+
+  background-size: cover;
+  background-position: center;
 }
 
+/* =========================
+   CONTAINER
+========================= */
 .container {
   max-width:1200px;
   margin:auto;
 }
 
 h1 {
-  margin-bottom:20px;
   color:#32d296;
+  margin-bottom:20px;
 }
 
-/* TABLE */
+/* =========================
+   HEADER GRID
+========================= */
+.header-grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.card {
+  background:#1c2541;
+  padding:15px;
+  border-radius:10px;
+}
+
+.card label {
+  font-size:12px;
+  color:#b8c3e6;
+}
+
+.card input, .card select {
+  width:100%;
+  margin-top:5px;
+  padding:8px;
+  border:none;
+  border-radius:6px;
+  background:#2a355f;
+  color:#fff;
+}
+
+/* =========================
+   TABLE
+========================= */
 table {
   width:100%;
   border-collapse:collapse;
-  background:rgba(0,0,0,0.5);
+  background:rgba(0,0,0,0.6);
   border-radius:10px;
   overflow:hidden;
 }
 
 th, td {
-  padding:15px;
+  padding:16px;
   text-align:center;
   border:1px solid rgba(255,255,255,0.1);
+  font-size:16px;
 }
 
 th {
   background:rgba(0,0,0,0.7);
 }
 
-/* INPUTS */
-select, input {
-  padding:8px;
-  border-radius:6px;
-  border:none;
+/* =========================
+   FINAL ROW
+========================= */
+.final {
+  background:#0f9d58;
+  font-weight:bold;
+  font-size:18px;
 }
 
-/* BUTTONS */
+/* =========================
+   BUTTONS
+========================= */
 .btn {
   padding:12px 20px;
   border:none;
   border-radius:8px;
   font-weight:bold;
   cursor:pointer;
+  margin-top:10px;
 }
 
 .btn-green {
@@ -68,6 +120,11 @@ select, input {
   color:#fff;
 }
 
+.btn-red {
+  background:#ff6b6b;
+  color:#fff;
+}
+
 </style>
 </head>
 
@@ -75,13 +132,39 @@ select, input {
 
 <div class="container">
 
-<h1>💰 Expenses</h1>
+<h1>💰 Expense Claim</h1>
 
+<!-- =========================
+     HEADER
+========================= -->
+<div class="header-grid">
+
+<div class="card">
+<label>Engineer</label>
+<input id="engName" placeholder="Auto later">
+</div>
+
+<div class="card">
+<label>Project</label>
+<input id="projectName" placeholder="Auto later">
+</div>
+
+<div class="card">
+<label>Date</label>
+<input type="date" id="todayDate">
+</div>
+
+</div>
+
+<!-- =========================
+     TABLE
+========================= -->
 <table id="expenseTable">
 
 <thead>
 <tr>
-<th>Item</th>
+<th>Type</th>
+<th>Funding</th>
 <th>Date</th>
 <th>Day</th>
 <th>Amount ($)</th>
@@ -99,37 +182,59 @@ select, input {
 <option>Food</option>
 <option>Rental Car</option>
 <option>Tools</option>
+<option>Phone</option>
+<option>Parking</option>
 <option>Other</option>
 </select>
 </td>
 
+<td>
+<select>
+<option>Company CC</option>
+<option>Engineer CC</option>
+<option>Manager</option>
+</select>
+</td>
+
 <td><input type="date"></td>
+
 <td><span>-</span></td>
+
 <td><input type="number" value="0"></td>
 
-<td>
-<button onclick="removeRow(this)">❌</button>
-</td>
+<td><button class="btn-red" onclick="removeRow(this)">X</button></td>
 
 </tr>
 
 </tbody>
+
+<tfoot>
+<tr class="final">
+<td colspan="4">Total</td>
+<td id="total">0</td>
+<td></td>
+</tr>
+</tfoot>
+
 </table>
 
 <br>
 
 <button class="btn btn-green" onclick="addRow()">➕ Add Row</button>
 
-<h2>Total: $<span id="total">0</span></h2>
+<br>
+
+<button class="btn btn-blue" onclick="saveExpenses()">💾 Save to Invoice</button>
 
 <br>
 
-<button class="btn btn-blue" onclick="window.open('timesheet.html','_self')">
-🏠 Back to Timesheet
-</button>
+<button class="btn btn-green" onclick="goHome()">🏠 Back to Timesheet</button>
 
 </div>
 
+<!-- =========================
+     SCRIPT
+========================= -->
 <script>
 
 /* ADD ROW */
@@ -145,13 +250,24 @@ function addRow(){
         <option>Food</option>
         <option>Rental Car</option>
         <option>Tools</option>
+        <option>Phone</option>
+        <option>Parking</option>
         <option>Other</option>
       </select>
     </td>
+
+    <td>
+      <select>
+        <option>Company CC</option>
+        <option>Engineer CC</option>
+        <option>Manager</option>
+      </select>
+    </td>
+
     <td><input type="date"></td>
     <td><span>-</span></td>
     <td><input type="number" value="0"></td>
-    <td><button onclick="removeRow(this)">❌</button></td>
+    <td><button class="btn-red" onclick="removeRow(this)">X</button></td>
   </tr>
   `;
 
@@ -164,7 +280,7 @@ function removeRow(btn){
   calculateTotal();
 }
 
-/* CALCULATE */
+/* CALCULATE TOTAL */
 document.addEventListener("input", calculateTotal);
 
 function calculateTotal(){
@@ -178,7 +294,7 @@ function calculateTotal(){
   document.getElementById("total").innerText = total.toFixed(2);
 }
 
-/* DAY AUTO */
+/* AUTO DAY */
 document.addEventListener("change", function(e){
   if(e.target.type === "date"){
     const date = new Date(e.target.value);
@@ -186,6 +302,18 @@ document.addEventListener("change", function(e){
     e.target.closest("tr").querySelector("span").innerText = day;
   }
 });
+
+/* SAVE TO INVOICE */
+function saveExpenses(){
+  const total = document.getElementById("total").innerText;
+  localStorage.setItem("expenseTotal", total);
+  alert("Saved to Invoice!");
+}
+
+/* NAV */
+function goHome(){
+  window.location.href = "timesheet.html";
+}
 
 </script>
 
