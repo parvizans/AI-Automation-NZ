@@ -817,3 +817,25 @@ button {
   background-size:cover;
   background-position:center;
 }
+@media (max-width: 768px) {
+
+  #menu-toggle {
+    display: block;
+    font-size: 22px;
+  }
+
+  .menu {
+    display: none;
+  }
+
+  .menu.active {
+    display: block;
+  }
+
+  .menu ul {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+}
