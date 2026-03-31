@@ -363,6 +363,20 @@ function goHome(){
   }
 
 };
+   window.onload = function(){
+
+  const savedInv = localStorage.getItem("expenseInvoiceNo");
+  const savedExp = localStorage.getItem("expenseNumber");
+
+  if(savedInv){
+    document.getElementById("expenseInv").value = savedInv;
+  }
+
+  if(savedExp){
+    document.getElementById("expenseNo").value = savedExp;
+  }
+
+};
 
 </script>
 
