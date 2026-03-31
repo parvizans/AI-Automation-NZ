@@ -1,1 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Expenses</title>
 
+<style>
+
+body {
+  font-family: Arial;
+  color:#fff;
+  background:#0b1220;
+  padding:20px;
+}
+
+.container {
+  max-width:1200px;
+  margin:auto;
+}
+
+h1 {
+  margin-bottom:20px;
+  color:#32d296;
+}
+
+/* TABLE */
+table {
+  width:100%;
+  border-collapse:collapse;
+  background:rgba(0,0,0,0.5);
+  border-radius:10px;
+  overflow:hidden;
+}
+
+th, td {
+  padding:15px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,0.1);
+}
+
+th {
+  background:rgba(0,0,0,0.7);
+}
+
+/* INPUTS */
+select, input {
+  padding:8px;
+  border-radius:6px;
+  border:none;
+}
+
+/* BUTTONS */
+.btn {
+  padding:12px 20px;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.btn-green {
+  background:#32d296;
+  color:#000;
+}
+
+.btn-blue {
+  background:#5aa7ff;
+  color:#fff;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💰 Expenses</h1>
+
+<table id="expenseTable">
+
+<thead>
+<tr>
+<th>Item</th>
+<th>Date</th>
+<th>Day</th>
+<th>Amount ($)</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>
+<select>
+<option>Fuel</option>
+<option>Hotel</option>
+<option>Food</option>
+<option>Rental Car</option>
+<option>Tools</option>
+<option>Other</option>
+</select>
+</td>
+
+<td><input type="date"></td>
+<td><span>-</span></td>
+<td><input type="number" value="0"></td>
+
+<td>
+<button onclick="removeRow(this)">❌</button>
+</td>
+
+</tr>
+
+</tbody>
+</table>
+
+<br>
+
+<button class="btn btn-green" onclick="addRow()">➕ Add Row</button>
+
+<h2>Total: $<span id="total">0</span></h2>
+
+<br>
+
+<button class="btn btn-blue" onclick="window.open('timesheet.html','_self')">
+🏠 Back to Timesheet
+</button>
+
+</div>
+
+<script>
+
+/* ADD ROW */
+function addRow(){
+  const table = document.querySelector("#expenseTable tbody");
+
+  const row = `
+  <tr>
+    <td>
+      <select>
+        <option>Fuel</option>
+        <option>Hotel</option>
+        <option>Food</option>
+        <option>Rental Car</option>
+        <option>Tools</option>
+        <option>Other</option>
+      </select>
+    </td>
+    <td><input type="date"></td>
+    <td><span>-</span></td>
+    <td><input type="number" value="0"></td>
+    <td><button onclick="removeRow(this)">❌</button></td>
+  </tr>
+  `;
+
+  table.insertAdjacentHTML("beforeend", row);
+}
+
+/* REMOVE */
+function removeRow(btn){
+  btn.closest("tr").remove();
+  calculateTotal();
+}
+
+/* CALCULATE */
+document.addEventListener("input", calculateTotal);
+
+function calculateTotal(){
+  let total = 0;
+
+  document.querySelectorAll("#expenseTable tbody tr").forEach(row=>{
+    const val = Number(row.querySelector("input[type=number]").value) || 0;
+    total += val;
+  });
+
+  document.getElementById("total").innerText = total.toFixed(2);
+}
+
+/* DAY AUTO */
+document.addEventListener("change", function(e){
+  if(e.target.type === "date"){
+    const date = new Date(e.target.value);
+    const day = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][date.getDay()];
+    e.target.closest("tr").querySelector("span").innerText = day;
+  }
+});
+
+</script>
+
+</body>
+</html>
