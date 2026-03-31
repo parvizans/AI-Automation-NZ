@@ -23,9 +23,12 @@ body::before {
   content:"";
   position:fixed;
   inset:0;
-  background:url("assets/invoice-bg.jpg") center/cover no-repeat;
-  opacity:0.12;   /* 🔥 LOWER THIS */
-  filter:blur(3px);
+  background:
+    linear-gradient(rgba(11,18,32,0.75), rgba(11,18,32,0.75)),
+    url("assets/invoice-bg.jpg") center/cover no-repeat;
+
+  opacity:1;          /* IMPORTANT */
+  filter:blur(2px);   /* optional softer blur */
   z-index:-1;
 }
   <div class="top-nav">
@@ -197,6 +200,9 @@ td:nth-child(4) {
 Street Address: East Killara<br>
 Phone: +64220100700
 </div>
+  table {
+  background: rgba(0,0,0,0.4);
+}
 
 <div>
 <b>INVOICE #008</b><br>
