@@ -76,6 +76,38 @@ th {
 <body>
 
 <div class="container">
+  <div style="margin-bottom:20px;">
+
+<div style="display:flex; justify-content:space-between;">
+
+<div>
+<b>Parviz Ansari</b><br>
+Street Address: East Killara<br>
+Phone: +64220100700
+</div>
+
+<div style="text-align:right;">
+<b>INVOICE</b><br>
+<span id="inv"></span><br>
+Date: <span id="date"></span>
+</div>
+
+</div>
+
+<br>
+
+<div class="card">
+<b>TO:</b><br>
+LINKQUEST TELECOM AUSTRALIA PTY LTD<br>
+LEVEL 5 NEXUS NORWEST
+</div>
+
+<div class="card">
+<b>FOR:</b><br>
+<span id="project"></span>
+</div>
+
+</div>
 
 <div class="top-nav">
   <button onclick="goHome()">🏠 Timesheet</button>
@@ -151,7 +183,8 @@ function calculate(){
 
   const wdDays = +data.wdDays || 0;
   const weDays = +data.weDays || 0;
-  const wdOT = +data.wdHours - (wdDays*8) || 0;
+  const wdHours = +data.wdHours || 0;
+  const wdOT = wdHours > (wdDays * 8) ? wdHours - (wdDays * 8) : 0;
   const weOT = +data.weOT || 0;
 
   const rates = {
@@ -167,8 +200,8 @@ function calculate(){
   const rows = [
     ["Weekdays", wdDays, rates.wd, wdDays*rates.wd],
     ["Weekend Days", weDays, rates.we, weDays*rates.we],
-    ["Weekday OT", wdOT, rates.wdOT, wdOT*rates.wdOT],
-    ["Weekend OT", weOT, rates.weOT, weOT*rates.weOT],
+    ["Weekday OT (Hours)", wdOT, rates.wdOT, wdOT*rates.wdOT],
+    ["Weekend OT (Hours)", weOT, rates.weOT, weOT*rates.weOT],
     ["Food Allowance", foodDays, rates.food, foodDays*rates.food]
   ];
 
