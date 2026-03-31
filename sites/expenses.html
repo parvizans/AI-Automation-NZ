@@ -41,7 +41,7 @@ h1 {
 ========================= */
 .header-grid {
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:repeat(5,1fr);
   gap:15px;
   margin-bottom:20px;
 }
@@ -173,13 +173,12 @@ th {
 
 <div class="card">
 <label>Invoice #</label>
-<select id="expenseInv">
-<option value="">Select</option>
-<option>INV-1001</option>
-<option>INV-1002</option>
-<option>INV-1003</option>
-<option>INV-1004</option>
-</select>
+<input id="expenseInv" placeholder="e.g. INV-007">
+</div>
+
+<div class="card">
+<label>Expense #</label>
+<input id="expenseNo" placeholder="e.g. EXP-007">
 </div>
 </div>
 
@@ -333,15 +332,37 @@ document.addEventListener("change", function(e){
 
 /* SAVE TO INVOICE */
 function saveExpenses(){
+
   const total = document.getElementById("total").innerText;
+  const invNo = document.getElementById("expenseInv").value;
+  const expNo = document.getElementById("expenseNo").value;
+
   localStorage.setItem("expenseTotal", total);
+  localStorage.setItem("expenseInvoiceNo", invNo);
+  localStorage.setItem("expenseNumber", expNo);
+
   alert("Saved to Invoice!");
+
 }
 
 /* NAV */
 function goHome(){
   window.location.href = "timesheet.html";
 }
+   window.onload = function(){
+
+  const savedInv = localStorage.getItem("expenseInvoiceNo");
+  const savedExp = localStorage.getItem("expenseNumber");
+
+  if(savedInv){
+    document.getElementById("expenseInv").value = savedInv;
+  }
+
+  if(savedExp){
+    document.getElementById("expenseNo").value = savedExp;
+  }
+
+};
 
 </script>
 
