@@ -2,116 +2,116 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Timesheet</title>
-
-<link rel="stylesheet" href="timesheet.css">
+<title>Timesheet_Pro_2</title>
 
 <style>
+* { margin:0; padding:0; box-sizing:border-box; }
 
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* BODY (NO BACKGROUND HERE — handled by timesheet.css) */
 body {
   font-family: Arial;
-  color: #fff;
-  padding: 20px;
+  background:#0b1220;
+  color:#fff;
+  padding:20px;
 }
 
-/* CONTAINER */
-.container {
-  max-width: 1200px;
-  margin: auto;
-  background: transparent;
-}
+.container { max-width:1400px; margin:auto; }
 
-/* TITLE */
-h1 {
-  margin-bottom: 20px;
-  color: #32d296;
-}
+h1 { margin-bottom:20px; color:#32d296; }
 
-/* CONTROL PANEL */
+/* CONTROL PANEL GRID */
 .control-panel {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 15px;
-  margin-bottom: 20px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin-bottom:20px;
 }
 
-.field {
-  display: flex;
-  flex-direction: column;
-}
+.field { display:flex; flex-direction:column; }
 
 label {
-  font-size: 12px;
-  color: #b8c3e6;
-  margin-bottom: 5px;
+  font-size:12px;
+  color:#b8c3e6;
+  margin-bottom:5px;
 }
 
 select, input {
-  padding: 8px;
-  border-radius: 6px;
-  border: none;
-  background: #1c2541;
-  color: #fff;
+  padding:8px;
+  border-radius:6px;
+  background:#1c2541;
+  color:#fff;
+  border:none;
+}
+
+/* GREEN BOX */
+.expected-box {
+  background:#32d296;
+  color:#000;
+  padding:10px;
+  border-radius:8px;
+  font-weight:bold;
+  text-align:center;
 }
 
 /* TABLE */
 .table-container {
-  background: #1c2541;
-  padding: 10px;
-  border-radius: 10px;
+  background:#1c2541;
+  padding:10px;
+  border-radius:10px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
+table { width:100%; border-collapse:collapse; }
 
 th, td {
-  padding: 10px;
-  text-align: center;
-  border: 1px solid rgba(255,255,255,0.1);
+  padding:10px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,0.1);
 }
 
-thead {
-  background: #111a33;
-}
+thead { background:#111a33; }
 
 .time-in {
-  background: #2a355f;
-  font-weight: bold;
+  background:#2a355f;
+  font-weight:bold;
 }
 
-.food-yes {
-  color: #32d296;
-  font-weight: bold;
-}
-
-.food-no {
-  color: #ff6b6b;
-}
+.food-yes { color:#32d296; font-weight:bold; }
+.food-no { color:#ff6b6b; }
 
 /* SUMMARY */
 .summary-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-  margin-top: 20px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+  margin-top:20px;
 }
 
 .card {
-  background: rgba(28, 37, 65, 0.85);
-  border-radius: 10px;
-  padding: 15px;
-  backdrop-filter: blur(6px);
+  padding:15px;
+  border-radius:10px;
+  font-weight:bold;
 }
+
+.weekday { background:#1c2541; }
+.weekend { background:#2a1c1c; }
+
+/* BUTTONS */
+.actions {
+  margin-top:20px;
+  display:flex;
+  gap:10px;
+}
+
+button {
+  padding:10px 20px;
+  border:none;
+  border-radius:6px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.save { background:#32d296; }
+.export { background:#5aa7ff; }
+.submit { background:#ffcc00; }
 
 </style>
 </head>
