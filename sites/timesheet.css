@@ -140,3 +140,29 @@ body.timesheet {
 body.timesheet * {
   color: inherit;
 }
+/* INPUT TEXT */
+body.timesheet input,
+body.timesheet select,
+body.timesheet textarea {
+  color: #ffffff;
+}
+
+/* LABELS */
+body.timesheet label {
+  color: #d1d5db; /* softer white */
+}
+
+/* TABLE TEXT */
+body.timesheet th,
+body.timesheet td {
+  color: #ffffff;
+}
+/* PLACEHOLDER TEXT */
+body.timesheet input::placeholder {
+  color: #9ca3af;
+}
+
+/* HEADINGS */
+body.timesheet h1 {
+  color: #32d296; /* keep your green brand */
+}
