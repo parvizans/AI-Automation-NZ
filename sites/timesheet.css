@@ -5,16 +5,39 @@
 }
 
 html, body {
-  min-height: 100%;
-  font-family: Arial;
-  color: #fff;
+  height: 100%;
+  margin: 0;
 }
 
 /* BACKGROUND */
+/* COMMON BACKGROUND SETTINGS */
+body {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* TIMESHEET-Background */
+
 body.timesheet {
-  background:
-    linear-gradient(rgba(11,18,32,0.7), rgba(11,18,32,0.7)),
-    url("assets/timesheet-bg-1.jpg") center/cover no-repeat fixed;
+  background-image: 
+    linear-gradient(rgba(11,18,32,0.75), rgba(11,18,32,0.75)),
+    url("assets/timesheet-bg-1.jpg");
+}
+
+/* INVOICE */
+body.invoice {
+  background-image: 
+    linear-gradient(rgba(11,18,32,0.75), rgba(11,18,32,0.75)),
+    url("assets/invoice-bg-3.jpg");
+}
+
+/* EXPENSES */
+body.expenses {
+  background-image: 
+    linear-gradient(rgba(11,18,32,0.75), rgba(11,18,32,0.75)),
+    url("assets/expenses-bg-3.jpg");
 }
 
 /* LAYOUT */
