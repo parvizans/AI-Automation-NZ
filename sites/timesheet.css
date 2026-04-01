@@ -130,3 +130,13 @@ th, td {
 .save { background:#32d296; }
 .export { background:#5aa7ff; }
 .submit { background:#ffcc00; }
+
+/* FORCE ALL TEXT TO WHITE */
+body.timesheet {
+  color: #ffffff;
+}
+
+/* MAKE EVERYTHING INHERIT WHITE */
+body.timesheet * {
+  color: inherit;
+}
