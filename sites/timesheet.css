@@ -23,21 +23,22 @@ body {
 body.timesheet {
   background-image: 
     linear-gradient(rgba(11,18,32,0.75), rgba(11,18,32,0.75)),
-    url("assets/timesheet-bg-1.jpg");
+    url("/assets/timesheet-bg-1.jpg");
 }
 
 /* INVOICE */
 body.invoice {
   background-image: 
     linear-gradient(rgba(11,18,32,0.75), rgba(11,18,32,0.75)),
-    url("assets/invoice-bg-3.jpg");
+    url("/assets/invoice-bg-3.jpg");
+   
 }
 
 /* EXPENSES */
 body.expenses {
   background-image: 
     linear-gradient(rgba(11,18,32,0.75), rgba(11,18,32,0.75)),
-    url("assets/expenses-bg-3.jpg");
+    url("/assets/expenses-bg-3.jpg");
 }
 
 /* LAYOUT */
