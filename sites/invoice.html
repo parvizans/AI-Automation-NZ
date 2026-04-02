@@ -14,33 +14,48 @@ body {
   background:
     linear-gradient(rgba(11,18,32,0.9), rgba(11,18,32,0.9)),
     url("../assets/invoice-bg-3.jpg") center/cover no-repeat;
-
-}
-  .header-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  align-items: center;
-  gap: 20px;
 }
 
-.invoice-title {
-  font-size: 40px;
-  font-weight: bold;
-  text-align: right;
-  color: #000;
-  background: #2ecc71;
-  padding: 10px 25px;
-}
-
+/* CONTAINER */
 .container {
   max-width:1000px;
   margin:auto;
 }
 
-h1 {
-  color:#32d296;
+/* HEADER GRID */
+.header-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 15px;
 }
 
+.field label {
+  display:block;
+  margin-bottom:5px;
+}
+
+.field input,
+.field select {
+  width:100%;
+  padding:8px;
+}
+
+/* TO + PROJECT */
+.client-grid {
+  display:grid;
+  grid-template-columns: 2fr 1fr;
+  gap:20px;
+  margin-bottom:20px;
+}
+
+.card {
+  background:#1c2541;
+  padding:15px;
+  border-radius:10px;
+}
+
+/* NAV */
 .top-nav {
   margin-bottom:20px;
 }
@@ -57,13 +72,20 @@ button {
 .btn-green { background:#32d296; color:#000; }
 .btn-blue { background:#5aa7ff; color:#fff; }
 
-.card {
-  background:#1c2541;
-  padding:15px;
-  border-radius:10px;
-  margin-bottom:15px;
+/* TITLE */
+.invoice-title {
+  font-size:36px;
+  font-weight:bold;
+  background:#2ecc71;
+  color:#000;
+  padding:10px 20px;
+  display:inline-block;
+  border-radius:5px;
+  float:right;
+  margin-bottom:20px;
 }
 
+/* TABLE */
 table {
   width:100%;
   border-collapse:collapse;
@@ -89,14 +111,11 @@ th {
 </style>
 </head>
 
-<body class="invoice">
+<body>
 
 <div class="container">
-<div style="margin-bottom:20px;">
 
-<div style="display:flex; justify-content:space-between;">
-
-
+<!-- HEADER -->
 <div class="header-grid">
 
   <div class="field">
@@ -106,7 +125,19 @@ th {
 
   <div class="field">
     <label>Engineer Name</label>
-    <select id="engineer">...</select>
+    <select id="engineer">
+      <option value="">Select</option>
+      <option value="abhignya.reddy@linkquestglobal.com">Abhignya Reddy</option>
+      <option value="parviz.ansari@linkquestglobal.com">Parviz Ansari</option>
+      <option value="pavinee.suwanta@linkquestglobal.com">Pavinee Suwanta</option>
+      <option value="abhishek.ahirrao@linkquestglobal.com">Abhishek Ahirrao</option>
+      <option value="sanjay.nampally@linkquestglobal.com">Sanjay Nampally</option>
+      <option value="saidinesh.mogili@linkquestglobal.com">Sai Dinesh Mogili</option>
+      <option value="manish.redekar@linkquestglobal.com">Manish Redekar</option>
+      <option value="shivtejgasti@gmail.com">Shivtej Gasti</option>
+      <option value="skofficial8991@gmail.com">Shreekant Kadam</option>
+      <option value="ergaganverma@gmail.com">Gagan Verma</option>
+    </select>
   </div>
 
   <div class="field">
@@ -115,42 +146,39 @@ th {
   </div>
 
 </div>
-    
- <select id="engineer">
-  <option value="">Select</option>
 
-  <option value="abhignya.reddy@linkquestglobal.com" data-phone="61422421555">Abhignya Reddy</option>
-  <option value="parviz.ansari@linkquestglobal.com" data-phone="64220100700">Parviz Ansari</option>
-  <option value="pavinee.suwanta@linkquestglobal.com" data-phone="6100000000">Pavinee Suwanta</option>
-  <option value="abhishek.ahirrao@linkquestglobal.com" data-phone="614113637010">Abhishek Ahirrao</option>
-  <option value="sanjay.nampally@linkquestglobal.com" data-phone="61424944711">Sanjay Nampally</option>
-  <option value="saidinesh.mogili@linkquestglobal.com" data-phone="61451907999">Sai Dinesh Mogili</option>
-  <option value="manish.redekar@linkquestglobal.com" data-phone="61403969766">Manish Redekar</option>
-  <option value="shivtejgasti@gmail.com" data-phone="61472547936">Shivtej Gasti</option>
-  <option value="skofficial8991@gmail.com" data-phone="61413149152">Shreekant Kadam</option>
-  <option value="ergaganverma@gmail.com" data-phone="61343187167">Gagan Verma</option>
+<!-- TO + PROJECT -->
+<div class="client-grid">
 
-</select>
+  <div class="card">
+    <b>TO:</b><br>
+    LINKQUEST TELECOM AUSTRALIA PTY LTD<br>
+    LEVEL 5 NEXUS NORWEST
+  </div>
 
-<div class="card">
-<b>TO:</b><br>
-LINKQUEST TELECOM AUSTRALIA PTY LTD<br>
-LEVEL 5 NEXUS NORWEST
-</div>
-
-<div class="card">
-<b>Project:</b><br>
-<span id="project"></span>
-</div>
+  <div class="card">
+    <b>Project</b><br>
+    <select id="project">
+      <option value="">Select Project</option>
+      <option>TPG 5G Upgrade</option>
+      <option>Drive Test</option>
+      <option>Optimization</option>
+      <option>Integration</option>
+    </select>
+  </div>
 
 </div>
+
+<!-- NAV -->
 <div class="top-nav">
   <button onclick="goHome()">🏠 Timesheet</button>
   <button onclick="goExpenses()">💰 Expenses</button>
 </div>
 
+<!-- TITLE -->
 <h1 class="invoice-title">📄 INVOICE</h1>
-  
+
+<!-- TABLE -->
 <table>
 <thead>
 <tr>
@@ -191,22 +219,14 @@ LEVEL 5 NEXUS NORWEST
 </div>
 
 <script>
-
-/* LOAD DATA */
 const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
 
-document.getElementById("name").innerText = data.name || "";
-document.getElementById("project").innerText = data.project || "";
-document.getElementById("inv").innerText = data.invoiceNo || "";
-document.getElementById("date").innerText = new Date().toLocaleDateString();
-
-/* LOAD EXPENSES */
+/* LOAD EXPENSE */
 const savedExpense = localStorage.getItem("expenseTotal");
 if(savedExpense){
   document.getElementById("expenses").value = savedExpense;
 }
 
-/* CALCULATE */
 function calculate(){
 
   const wdDays = +data.wdDays || 0;
@@ -228,8 +248,8 @@ function calculate(){
   const rows = [
     ["Weekdays", wdDays, rates.wd, wdDays*rates.wd],
     ["Weekend Days", weDays, rates.we, weDays*rates.we],
-    ["Weekday OT (Hours)", wdOT, rates.wdOT, wdOT*rates.wdOT],
-    ["Weekend OT (Hours)", weOT, rates.weOT, weOT*rates.weOT],
+    ["Weekday OT", wdOT, rates.wdOT, wdOT*rates.wdOT],
+    ["Weekend OT", weOT, rates.weOT, weOT*rates.weOT],
     ["Food Allowance", foodDays, rates.food, foodDays*rates.food]
   ];
 
@@ -239,7 +259,6 @@ function calculate(){
 
   rows.forEach(r=>{
     total += r[3];
-
     tbody.innerHTML += `
     <tr>
       <td>${r[0]}</td>
@@ -258,7 +277,6 @@ function calculate(){
     "$" + (total - cash).toFixed(2);
 }
 
-/* NAV */
 function goHome(){
   window.location.href = "timesheet.html";
 }
@@ -266,7 +284,6 @@ function goHome(){
 function goExpenses(){
   window.location.href = "expenses.html";
 }
-
 </script>
 
 </body>
