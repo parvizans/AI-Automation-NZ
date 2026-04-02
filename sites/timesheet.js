@@ -49,10 +49,9 @@ function goHome(){
   window.scrollTo({ top:0, behavior:"smooth" });
 }
 
-function goInvoice(){
-  window.location.href = "invoice.html";
-}
-
 function goExpenses(){
   window.location.href = "expenses.html";
+}
+function goInvoice(){
+  window.location.href = "invoice.html";
 }
