@@ -196,7 +196,7 @@ body.timesheet h1 {
   border-radius: 5px;
 }
 .btn-home {
-  background: #e0e0e0;   /* light grey */
+  background: #e0e0e0;   /* DARK text  */
   color: #000;           /* DARK text */
   font-weight: bold;
 }
