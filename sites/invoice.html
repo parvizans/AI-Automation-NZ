@@ -226,6 +226,15 @@ const savedExpense = localStorage.getItem("expenseTotal");
 if(savedExpense){
   document.getElementById("expenses").value = savedExpense;
 }
+  const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
+
+if(data.engineer){
+  document.getElementById("engineer").value = data.engineer;
+}
+
+if(data.project){
+  document.getElementById("project").value = data.project;
+}
 
 function calculate(){
 
