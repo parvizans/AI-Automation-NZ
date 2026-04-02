@@ -53,5 +53,5 @@ function goExpenses(){
   window.location.href = "expenses.html";
 }
 function goInvoice(){
-  window.location.href = "invoice.html";
+  window.location.href = "Invoice.html";
 }
