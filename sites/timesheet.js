@@ -55,3 +55,41 @@ function goExpenses(){
 function goInvoice(){
   window.location.href = "invoice.html";
 }
+function saveToInvoice(){
+
+  const engineer = document.getElementById("engineer").value;
+  const project = document.getElementById("project").value;
+
+  let wdDays = 0;
+  let weDays = 0;
+  let wdHours = 0;
+  let weOT = 0;
+
+  document.querySelectorAll("#timesheet-body tr").forEach(row => {
+
+    const day = row.children[2].innerText;
+    const hours = 10; // (you can refine later)
+
+    if(day === "Sat" || day === "Sun"){
+      weDays++;
+      weOT += hours;
+    } else {
+      wdDays++;
+      wdHours += hours;
+    }
+
+  });
+
+  const data = {
+    engineer,
+    project,
+    wdDays,
+    weDays,
+    wdHours,
+    weOT
+  };
+
+  localStorage.setItem("invoiceData", JSON.stringify(data));
+
+  alert("🔥 Sent to Invoice!");
+}
