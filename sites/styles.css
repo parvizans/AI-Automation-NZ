@@ -876,3 +876,8 @@ button {
   align-items:center;
   flex-wrap:wrap; /* 🔥 THIS FIXES OVERFLOW */
 }
+@media (max-width:768px){
+  .subscribe-btn {
+    display:none;
+  }
+}
