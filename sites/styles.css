@@ -839,3 +839,34 @@ button {
   }
 
 }
+/* HAMBURGER ICON */
+#menu-toggle {
+  font-size:28px;
+  cursor:pointer;
+  display:none;
+  color:white;
+}
+
+/* MOBILE MODE */
+@media (max-width:768px){
+
+  #menu-toggle {
+    display:block;
+  }
+
+  .menu {
+    display:none;
+    flex-direction:column;
+    background:#0b1220;
+    position:absolute;
+    top:60px;
+    right:0;
+    width:200px;
+    padding:15px;
+  }
+
+  .menu.active {
+    display:flex;
+  }
+
+}
