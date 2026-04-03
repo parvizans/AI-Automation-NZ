@@ -84,6 +84,13 @@ h1 {
 
 <h1>📡 Network Insight Dashboard</h1>
 
+<!-- Upload -->
+<input type="file" id="fileInput" accept=".csv">
+<button onclick="loadData()">Upload CSV</button>
+
+<!-- Filters -->
+<select id="siteFilter">...</select>
+  
 <!-- KPI CARDS -->
 <div class="kpi-grid">
   <div class="card">
@@ -158,6 +165,49 @@ new Chart(document.getElementById("signalChart"), {
     }]
   }
 });
+
+  let rawData = [];
+
+function loadData() {
+  const file = document.getElementById("fileInput").files[0];
+
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    const text = e.target.result;
+    const rows = text.split("\n");
+
+    rawData = rows.map(row => row.split(","));
+
+    console.log("DATA LOADED:", rawData);
+
+    calculateKPI();
+  };
+
+  reader.readAsText(file);
+}
+
+function calculateKPI() {
+
+  let sdcchAttempts = 0;
+  let sdcchSuccess = 0;
+  let tchAttempts = 0;
+  let tchSuccess = 0;
+
+  rawData.forEach(row => {
+    sdcchAttempts += Number(row[0]);
+    sdcchSuccess += Number(row[1]);
+    tchAttempts += Number(row[2]);
+    tchSuccess += Number(row[3]);
+  });
+
+  let sdcchRate = (sdcchSuccess / sdcchAttempts) * 100;
+  let tchRate = (tchSuccess / tchAttempts) * 100;
+
+  let cssr = (sdcchRate + tchRate) / 2;
+
+  document.getElementById("throughput").innerText = cssr.toFixed(2) + " %";
+}
 
 </script>
 
