@@ -1,1 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Network Insight Dashboard</title>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+  font-family: Arial;
+  background:#0b1220;
+  color:#fff;
+  margin:0;
+  padding:20px;
+}
+
+.container {
+  max-width:1400px;
+  margin:auto;
+}
+
+h1 {
+  color:#32d296;
+  margin-bottom:20px;
+}
+
+/* KPI CARDS */
+.kpi-grid {
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:15px;
+  margin-bottom:30px;
+}
+
+.card {
+  background:#1c2541;
+  padding:15px;
+  border-radius:10px;
+  text-align:center;
+}
+
+.card h2 {
+  margin:0;
+  font-size:22px;
+}
+
+.card p {
+  margin:5px 0;
+  color:#aaa;
+}
+
+/* CHARTS */
+.chart-grid {
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
+}
+
+.chart-box {
+  background:#1c2541;
+  padding:15px;
+  border-radius:10px;
+}
+
+/* ALERTS */
+.alerts {
+  margin-top:30px;
+  background:#2a1a1a;
+  padding:15px;
+  border-radius:10px;
+}
+
+.alert {
+  color:#ff6b6b;
+  margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📡 Network Insight Dashboard</h1>
+
+<!-- KPI CARDS -->
+<div class="kpi-grid">
+  <div class="card">
+    <h2 id="throughput">85 Mbps</h2>
+    <p>Throughput</p>
+  </div>
+  <div class="card">
+    <h2 id="rsrp">-95 dBm</h2>
+    <p>RSRP</p>
+  </div>
+  <div class="card">
+    <h2 id="rsrq">-10 dB</h2>
+    <p>RSRQ</p>
+  </div>
+  <div class="card">
+    <h2 id="sinr">18 dB</h2>
+    <p>SINR</p>
+  </div>
+  <div class="card">
+    <h2 id="drop">2%</h2>
+    <p>Drop Rate</p>
+  </div>
+</div>
+
+<!-- CHARTS -->
+<div class="chart-grid">
+  <div class="chart-box">
+    <canvas id="throughputChart"></canvas>
+  </div>
+  <div class="chart-box">
+    <canvas id="signalChart"></canvas>
+  </div>
+</div>
+
+<!-- ALERTS -->
+<div class="alerts">
+  <h3>🚨 Network Alerts</h3>
+  <div class="alert">⚠ High drop rate detected in Sector A</div>
+  <div class="alert">⚠ SINR degradation observed</div>
+</div>
+
+</div>
+
+<script>
+
+// SAMPLE DATA
+const labels = ["1","2","3","4","5","6","7","8"];
+
+const throughputData = [50,60,55,70,90,85,80,95];
+const sinrData = [10,12,14,15,18,17,16,19];
+
+// THROUGHPUT CHART
+new Chart(document.getElementById("throughputChart"), {
+  type: "line",
+  data: {
+    labels: labels,
+    datasets: [{
+      label: "Throughput (Mbps)",
+      data: throughputData
+    }]
+  }
+});
+
+// SIGNAL CHART
+new Chart(document.getElementById("signalChart"), {
+  type: "line",
+  data: {
+    labels: labels,
+    datasets: [{
+      label: "SINR (dB)",
+      data: sinrData
+    }]
+  }
+});
+
+</script>
+
+</body>
+</html>
