@@ -169,7 +169,15 @@ new Chart(document.getElementById("signalChart"), {
   let rawData = [];
 
 function loadData() {
-  const file = document.getElementById("fileInput").files[0];
+
+  const input = document.getElementById("fileInput");
+
+  if (!input.files.length) {
+    alert("Please select a file first!");
+    return;
+  }
+
+  const file = input.files[0];
 
   const reader = new FileReader();
 
@@ -177,7 +185,9 @@ function loadData() {
     const text = e.target.result;
     const rows = text.split("\n");
 
-    rawData = rows.map(row => row.split(","));
+    rawData = rows
+      .filter(row => row.trim() !== "")
+      .map(row => row.split(","));
 
     console.log("DATA LOADED:", rawData);
 
