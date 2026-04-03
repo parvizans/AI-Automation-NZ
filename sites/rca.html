@@ -1,1 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RCA Analyzer</title>
 
+<style>
+body {
+  font-family: Arial;
+  background:#0b1220;
+  color:#fff;
+  margin:0;
+  padding:20px;
+}
+
+.container {
+  max-width:1000px;
+  margin:auto;
+}
+
+h1 {
+  color:#32d296;
+  margin-bottom:20px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
+}
+
+.card {
+  background:#1c2541;
+  padding:15px;
+  border-radius:10px;
+}
+
+label {
+  font-size:12px;
+  color:#aaa;
+}
+
+input, select {
+  width:100%;
+  padding:8px;
+  margin-top:5px;
+  border:none;
+  border-radius:5px;
+}
+
+button {
+  margin-top:20px;
+  padding:12px;
+  width:100%;
+  background:#32d296;
+  border:none;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.result {
+  margin-top:30px;
+  padding:20px;
+  background:#111827;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📡 RCA Analyzer (Telecom AI)</h1>
+
+<div class="grid">
+
+<div class="card">
+<label>RSRP (dBm)</label>
+<input id="rsrp" type="number" placeholder="-95">
+</div>
+
+<div class="card">
+<label>SINR (dB)</label>
+<input id="sinr" type="number" placeholder="10">
+</div>
+
+<div class="card">
+<label>PRB Utilization (%)</label>
+<input id="prb" type="number" placeholder="70">
+</div>
+
+<div class="card">
+<label>BLER (%)</label>
+<input id="bler" type="number" placeholder="5">
+</div>
+
+<div class="card">
+<label>CQI</label>
+<input id="cqi" type="number" placeholder="10">
+</div>
+
+<div class="card">
+<label>Throughput Issue</label>
+<select id="issue">
+<option value="low">Low Throughput</option>
+<option value="drop">Call Drop</option>
+<option value="latency">High Latency</option>
+</select>
+</div>
+
+</div>
+
+<button onclick="runRCA()">Analyze Root Cause</button>
+
+<div class="result" id="result">
+Result will appear here...
+</div>
+
+</div>
+
+<script>
+
+function runRCA(){
+
+let rsrp = parseFloat(document.getElementById("rsrp").value);
+let sinr = parseFloat(document.getElementById("sinr").value);
+let prb = parseFloat(document.getElementById("prb").value);
+let bler = parseFloat(document.getElementById("bler").value);
+let cqi = parseFloat(document.getElementById("cqi").value);
+
+let cause = "";
+let fix = "";
+
+// 🔥 RULE ENGINE (PHASE 1)
+
+if (sinr < 5) {
+  cause = "Poor Radio Conditions (Low SINR)";
+  fix = "Check interference, tilt optimization, neighbor cells";
+}
+
+else if (rsrp < -110) {
+  cause = "Weak Coverage";
+  fix = "Add site / increase power / antenna optimization";
+}
+
+else if (prb > 85) {
+  cause = "Cell Congestion";
+  fix = "Capacity expansion / load balancing / spectrum optimization";
+}
+
+else if (bler > 10) {
+  cause = "High Retransmissions";
+  fix = "Check HARQ / link adaptation / interference";
+}
+
+else if (cqi < 7) {
+  cause = "Low Modulation Efficiency";
+  fix = "Improve SINR / reduce interference";
+}
+
+else {
+  cause = "Control Channel Bottleneck (PDCCH)";
+  fix = "Optimize CCE allocation / aggregation level / CORESET config";
+}
+
+// OUTPUT
+
+document.getElementById("result").innerHTML = `
+<h3>📊 Root Cause:</h3>
+<p>${cause}</p>
+
+<h3>🛠 Recommendation:</h3>
+<p>${fix}</p>
+`;
+
+}
+
+</script>
+
+</body>
+</html>
