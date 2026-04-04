@@ -85,7 +85,7 @@ h1 {
 <h1>📡 Network Insight Dashboard</h1>
 
 <!-- Upload -->
-<input type="file" id="fileInput" accept=".csv">
+<input type="file" id="fileInput" accept=".csv,.txt,.xlsx,.xls">
 <button onclick="loadData()">Upload CSV</button>
 
 <!-- Filters -->
@@ -201,34 +201,29 @@ function loadData() {
   }
 
   const file = input.files[0];
+  const fileName = file.name.toLowerCase();
 
-  const reader = new FileReader();
+  // 🔹 CSV / TXT
+  if (fileName.endsWith(".csv") || fileName.endsWith(".txt")) {
 
-  reader.onload = function(e) {
-    const text = e.target.result;
-    const rows = text.split("\n");
+    const reader = new FileReader();
 
-    // ✅ STEP 1: Get headers
-    headers = rows[0].split(",");
+    reader.onload = function(e) {
+      processTextData(e.target.result);
+    };
 
-    // ✅ STEP 2: Detect industry
-    const industry = detectIndustry(headers);
-    console.log("Detected Industry:", industry);
-    window.currentIndustry = industry;
+    reader.readAsText(file);
+  }
 
-    // ✅ STEP 3: Load data (skip header row)
-    rawData = rows
-      .slice(1)
-      .filter(row => row.trim() !== "")
-      .map(row => row.split(","));
+  // 🔹 Excel (we handle next step)
+  else if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
 
-    console.log("DATA LOADED:", rawData);
+    alert("Excel detected — next step we enable parser 🔥");
+  }
 
-    // ✅ STEP 4: Calculate KPI
-    calculateKPI();
-  };
-
-  reader.readAsText(file);
+  else {
+    alert("Unsupported file format");
+  }
 }
 function calculateKPI() {
 
