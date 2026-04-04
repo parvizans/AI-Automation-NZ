@@ -244,6 +244,10 @@ function calculateKPI() {
     tchSuccess += Number(row[3]);
   });
 
+  function getIndex(name) {
+  return headers.findIndex(h => h.includes(name));
+}
+
   let sdcchRate = (sdcchSuccess / sdcchAttempts) * 100;
   let tchRate = (tchSuccess / tchAttempts) * 100;
 
