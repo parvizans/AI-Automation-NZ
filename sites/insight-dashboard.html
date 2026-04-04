@@ -334,21 +334,28 @@ function processTextData(text) {
 
   const rows = text.split("\n");
 
+  // HEADERS
   headers = rows[0].split(",");
 
-  let kpis = detectKPIs(headers);
-   generateCharts(kpis);
-
-  currentIndustry = detectIndustry(headers);
-  console.log("Detected:", currentIndustry);
-
+  // DATA FIRST 🔥
   rawData = rows
     .slice(1)
     .filter(r => r.trim() !== "")
     .map(r => r.split(","));
 
+  // DETECT INDUSTRY
+  currentIndustry = detectIndustry(headers);
+  console.log("Detected:", currentIndustry);
+
+  // KPI CALCULATION
   calculateKPI();
-  updateCharts();
+
+  // 🔥 NOW DETECT KPIs (after data exists)
+  let kpis = detectKPIs(headers);
+  console.log("KPIs detected:", kpis);
+
+  // 🔥 NOW GENERATE CHARTS
+  generateCharts(kpis);
 }
 
 
