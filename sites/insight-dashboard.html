@@ -34,33 +34,40 @@ h1 {
 }
 
 .card {
-  background:#1c2541;
-  padding:15px;
-  border-radius:10px;
-  text-align:center;
+  background: linear-gradient(145deg, #1c2541, #141b2d);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
 }
 
 .card h2 {
-  margin:0;
-  font-size:22px;
+  font-size: 26px;
+  color: #32d296;
 }
 
 .card p {
-  margin:5px 0;
-  color:#aaa;
+  font-size: 14px;
+  color: #bbb;
 }
 
 /* CHARTS */
 .chart-grid {
   display:grid;
-  grid-template-columns:repeat(2,1fr);
+  grid-template-columns:repeat(auto-fit, minmax(400px,1fr));
   gap:20px;
 }
 
 .chart-box {
   background:#1c2541;
-  padding:15px;
-  border-radius:10px;
+  padding:20px;
+  border-radius:12px;
+  height:300px;
 }
 
 /* ALERTS */
@@ -164,12 +171,59 @@ h1 {
    // =======================
  //   Auto Generate Charts
 // =======================
-  function generateCharts(kpis) {
+let charts = [];
+
+function generateCharts(kpis) {
 
   const container = document.getElementById("chartContainer");
+
+  // 🔥 Destroy old charts (VERY IMPORTANT)
+  charts.forEach(c => c.destroy());
+  charts = [];
+
   container.innerHTML = "";
 
   kpis.forEach((kpi, index) => {
+
+    const box = document.createElement("div");
+    box.className = "chart-box";
+
+    const canvas = document.createElement("canvas");
+    box.appendChild(canvas);
+    container.appendChild(box);
+
+    let dataIndex = getIndex(kpi);
+
+    let data = rawData.map(r => Number(r[dataIndex]) || 0);
+    let labels = rawData.map((_, i) => i + 1);
+
+    // 🎨 Auto color logic
+
+    let color = "#32d296";
+if (kpi.toLowerCase().includes("drop")) color = "#ff6b6b";
+if (kpi.toLowerCase().includes("rsrp")) color = "#4dabf7";
+if (kpi.toLowerCase().includes("sinr")) color = "#ffd43b";
+
+
+
+    let chart = new Chart(canvas, {
+      type: getChartType(kpi),
+      data: {
+        labels: labels,
+        datasets: [{
+          label: kpi,
+          data: data,
+          borderColor: color,
+          backgroundColor: color + "33",
+          borderWidth: 2,
+          tension: 0.3
+        }]
+      }
+    });
+
+    charts.push(chart);
+  });
+}
 
     const box = document.createElement("div");
     box.className = "chart-box";
@@ -322,7 +376,10 @@ function detectIndustry(headers) {
 // FIND COLUMN INDEX
 // =======================
 function getIndex(name) {
-  return headers.findIndex(h => h.toLowerCase().includes(name.toLowerCase()));
+  return headers.findIndex(h => 
+    h.toLowerCase().replace(/[^a-z]/g, "")
+    .includes(name.toLowerCase())
+  );
 }
 
 
