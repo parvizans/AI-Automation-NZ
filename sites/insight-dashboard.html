@@ -132,7 +132,30 @@ h1 {
   <div class="alert">⚠ SINR degradation observed</div>
 </div>
 
-</div>
+</div
+  // STEP 1: Detect Industry
+function detectIndustry(headers) {
+
+  const h = headers.join(" ").toLowerCase();
+
+  if (h.includes("rab") || h.includes("rrc") || h.includes("handover")) {
+    return "telecom";
+  }
+
+  if (h.includes("revenue") || h.includes("profit") || h.includes("cost")) {
+    return "finance";
+  }
+
+  if (h.includes("production") || h.includes("defect") || h.includes("downtime")) {
+    return "manufacturing";
+  }
+
+  if (h.includes("order") || h.includes("delivery") || h.includes("customer")) {
+    return "food";
+  }
+
+  return "unknown";
+}
 
 <script>
 
@@ -185,18 +208,28 @@ function loadData() {
     const text = e.target.result;
     const rows = text.split("\n");
 
+    // ✅ STEP 1: Get headers
+    headers = rows[0].split(",");
+
+    // ✅ STEP 2: Detect industry
+    const industry = detectIndustry(headers);
+    console.log("Detected Industry:", industry);
+    window.currentIndustry = industry;
+
+    // ✅ STEP 3: Load data (skip header row)
     rawData = rows
+      .slice(1)
       .filter(row => row.trim() !== "")
       .map(row => row.split(","));
 
     console.log("DATA LOADED:", rawData);
 
+    // ✅ STEP 4: Calculate KPI
     calculateKPI();
   };
 
   reader.readAsText(file);
 }
-
 function calculateKPI() {
 
   let sdcchAttempts = 0;
