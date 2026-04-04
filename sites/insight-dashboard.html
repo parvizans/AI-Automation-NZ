@@ -116,7 +116,7 @@ h1 {
 </div>
 
 <!-- CHARTS -->
-<div class="chart-grid">
+<div id="chartContainer" class="chart-grid"></div>
   <div class="chart-box">
     <canvas id="throughputChart"></canvas>
   </div>
@@ -138,6 +138,82 @@ h1 {
 </div>  <!-- FIXED closing div -->
 
 <script>
+
+  
+  // =======================
+ //   Detect KPI VARIABLES
+// =======================
+
+  function detectKPIs(headers) {
+
+  return headers.filter(h => {
+    const name = h.toLowerCase();
+
+    return (
+      name.includes("throughput") ||
+      name.includes("rsrp") ||
+      name.includes("rsrq") ||
+      name.includes("sinr") ||
+      name.includes("snir") ||
+      name.includes("drop") ||
+      name.includes("traffic") ||
+      name.includes("availability")
+    );
+  });
+}
+   // =======================
+ //   Auto Generate Charts
+// =======================
+  function generateCharts(kpis) {
+
+  const container = document.getElementById("chartContainer");
+  container.innerHTML = "";
+
+  kpis.forEach((kpi, index) => {
+
+    const box = document.createElement("div");
+    box.className = "chart-box";
+
+    const canvas = document.createElement("canvas");
+    canvas.id = "chart_" + index;
+
+    box.appendChild(canvas);
+    container.appendChild(box);
+
+    let dataIndex = getIndex(kpi);
+
+    let chartData = rawData.map(row => Number(row[dataIndex]));
+    let labels = rawData.map((_, i) => i + 1);
+
+    new Chart(canvas, {
+      type: getChartType(kpi),
+      data: {
+        labels: labels,
+        datasets: [{
+          label: kpi,
+          data: chartData
+        }]
+      }
+    });
+
+  });
+}
+
+   // =======================
+ //   Auto Generate Charts Types
+// =======================
+  
+  function getChartType(kpi) {
+
+  const name = kpi.toLowerCase();
+
+  if (name.includes("drop")) return "bar";
+  if (name.includes("availability")) return "line";
+  if (name.includes("traffic")) return "bar";
+  if (name.includes("throughput")) return "line";
+
+  return "line"; // default
+}
 
 // =======================
 // GLOBAL VARIABLES
@@ -205,6 +281,9 @@ function processTextData(text) {
   const rows = text.split("\n");
 
   headers = rows[0].split(",");
+
+  let kpis = detectKPIs(headers);
+   generateCharts(kpis);
 
   currentIndustry = detectIndustry(headers);
   console.log("Detected:", currentIndustry);
