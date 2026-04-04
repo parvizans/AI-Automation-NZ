@@ -148,7 +148,7 @@ h1 {
   function detectKPIs(headers) {
 
   return headers.filter(h => {
-    const name = h.toLowerCase();
+    const name = normalize(h);
 
     return (
       name.includes("throughput") ||
@@ -335,10 +335,9 @@ function detectIndustry(headers) {
 // FIND COLUMN INDEX
 // =======================
 function getIndex(name) {
-  return headers.findIndex(h => 
-    h.toLowerCase().replace(/[^a-z]/g, "")
-    .includes(name.toLowerCase())
-  );
+  const target = normalize(name);
+
+  return headers.findIndex(h => normalize(h).includes(target));
 }
 
 
