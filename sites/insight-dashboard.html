@@ -59,9 +59,8 @@ h1 {
 /* CHARTS */
 .chart-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(3, 1fr); /* 👈 KEY FIX */
   gap: 20px;
-  align-items: stretch;
 }
 
 .chart-box {
