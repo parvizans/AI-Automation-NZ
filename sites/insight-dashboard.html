@@ -391,6 +391,34 @@ function calculateKPI() {
   document.getElementById("drop").innerText = (d/c).toFixed(2) + " %";
 }
 
+  function changeChartType(chartId, newType){
+  let chart = Chart.getChart(chartId);
+  let data = chart.data;
+
+  chart.destroy();
+
+  new Chart(document.getElementById(chartId), {
+    type: newType,
+    data: data,
+    options: { responsive:true }
+  });
+}
+
+function changeChartColor(chartId){
+  let chart = Chart.getChart(chartId);
+
+  let colors = ['#32d296','#00c2ff','#ff6384','#ffcd56','#8e44ad'];
+
+  let randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+  chart.data.datasets.forEach(ds => {
+    ds.borderColor = randomColor;
+    ds.backgroundColor = randomColor;
+  });
+
+  chart.update();
+}
+
 
 </script>
 
