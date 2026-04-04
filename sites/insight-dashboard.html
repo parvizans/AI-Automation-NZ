@@ -185,7 +185,8 @@ function generateCharts(kpis) {
     box.appendChild(canvas);
     container.appendChild(box);
 
-    let dataIndex = getIndex(kpi);
+let dataIndex = getIndex(kpi);
+if (dataIndex === -1) return; // skip bad columns
 
     let data = rawData.map(r => Number(r[dataIndex]) || 0);
     let labels = rawData.map((_, i) => i + 1);
@@ -215,33 +216,6 @@ function generateCharts(kpis) {
   });
 }
 
-    const box = document.createElement("div");
-    box.className = "chart-box";
-
-    const canvas = document.createElement("canvas");
-    canvas.id = "chart_" + index;
-
-    box.appendChild(canvas);
-    container.appendChild(box);
-
-    let dataIndex = getIndex(kpi);
-
-    let chartData = rawData.map(row => Number(row[dataIndex]));
-    let labels = rawData.map((_, i) => i + 1);
-
-    new Chart(canvas, {
-      type: getChartType(kpi),
-      data: {
-        labels: labels,
-        datasets: [{
-          label: kpi,
-          data: chartData
-        }]
-      }
-    });
-
-  });
-}
 
    // =======================
  //   Auto Generate Charts Types
@@ -265,7 +239,7 @@ function generateCharts(kpis) {
 let rawData = [];
 let headers = [];
 let currentIndustry = "unknown";
-let charts = [];
+
 
 
 
@@ -316,6 +290,10 @@ function processTextData(text) {
     .slice(1)
     .filter(r => r.trim() !== "")
     .map(r => r.split(","));
+
+   // ✅ ADD HERE 👇
+  console.log("Headers:", headers);
+  console.log("Raw Data:", rawData);
 
   // DETECT INDUSTRY
   currentIndustry = detectIndustry(headers);
