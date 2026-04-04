@@ -132,31 +132,11 @@ h1 {
   <div class="alert">⚠ SINR degradation observed</div>
 </div>
 
-</div
-  // STEP 1: Detect Industry
-function detectIndustry(headers) {
-
-  const h = headers.join(" ").toLowerCase();
-
-  if (h.includes("rab") || h.includes("rrc") || h.includes("handover")) {
-    return "telecom";
-  }
-
-  if (h.includes("revenue") || h.includes("profit") || h.includes("cost")) {
-    return "finance";
-  }
-
-  if (h.includes("production") || h.includes("defect") || h.includes("downtime")) {
-    return "manufacturing";
-  }
-
-  if (h.includes("order") || h.includes("delivery") || h.includes("customer")) {
-    return "food";
-  }
-
-  return "unknown";
-}
+</div>
+ 
   
+</div>  <!-- FIXED closing div -->
+
 <script>
 
 // =======================
@@ -165,46 +145,29 @@ function detectIndustry(headers) {
 let rawData = [];
 let headers = [];
 let currentIndustry = "unknown";
+let throughputChart, signalChart;
 
 
 // =======================
-// OPTIONAL: EMPTY CHARTS (INITIAL LOAD)
+// INIT CHARTS AFTER LOAD
 // =======================
-function initCharts() {
+window.onload = function() {
 
-  const emptyLabels = [];
-  const emptyData = [];
-
-  new Chart(document.getElementById("throughputChart"), {
+  throughputChart = new Chart(document.getElementById("throughputChart"), {
     type: "line",
-    data: {
-      labels: emptyLabels,
-      datasets: [{
-        label: "Throughput",
-        data: emptyData
-      }]
-    }
+    data: { labels: [], datasets: [{ label: "Throughput", data: [] }] }
   });
 
-  new Chart(document.getElementById("signalChart"), {
+  signalChart = new Chart(document.getElementById("signalChart"), {
     type: "line",
-    data: {
-      labels: emptyLabels,
-      datasets: [{
-        label: "Signal",
-        data: emptyData
-      }]
-    }
+    data: { labels: [], datasets: [{ label: "Signal", data: [] }] }
   });
-}
 
-// Call once on load
-initCharts();
-
+};
 
 
 // =======================
-// LOAD FILE (START HERE)
+// LOAD FILE
 // =======================
 function loadData() {
 
@@ -218,7 +181,6 @@ function loadData() {
   const file = input.files[0];
   const fileName = file.name.toLowerCase();
 
-  // CSV / TXT
   if (fileName.endsWith(".csv") || fileName.endsWith(".txt")) {
 
     const reader = new FileReader();
@@ -228,45 +190,37 @@ function loadData() {
     };
 
     reader.readAsText(file);
-  }
 
-  // Excel (future)
-  else if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
-    alert("Excel support coming next 🔥");
-  }
-
-  else {
-    alert("Unsupported file format");
+  } else {
+    alert("Only CSV/TXT supported for now");
   }
 }
 
+
 // =======================
-// PROCESS TEXT DATA
+// PROCESS DATA
 // =======================
 function processTextData(text) {
 
   const rows = text.split("\n");
 
-  // HEADERS
   headers = rows[0].split(",");
 
-  // DETECT INDUSTRY
   currentIndustry = detectIndustry(headers);
-  console.log("Detected Industry:", currentIndustry);
+  console.log("Detected:", currentIndustry);
 
-  // DATA
   rawData = rows
     .slice(1)
-    .filter(row => row.trim() !== "")
-    .map(row => row.split(","));
-
-  console.log("DATA:", rawData);
+    .filter(r => r.trim() !== "")
+    .map(r => r.split(","));
 
   calculateKPI();
+  updateCharts();
 }
 
+
 // =======================
-// DETECT INDUSTRY
+// INDUSTRY DETECTION
 // =======================
 function detectIndustry(headers) {
 
@@ -279,58 +233,77 @@ function detectIndustry(headers) {
     h.includes("snir") ||
     h.includes("throughput") ||
     h.includes("drop")
-  ) {
-    return "telecom";
-  }
-
-  if (h.includes("revenue") || h.includes("profit")) {
-    return "finance";
-  }
+  ) return "telecom";
 
   return "unknown";
 }
 
+
 // =======================
-// GET COLUMN INDEX
+// FIND COLUMN INDEX
 // =======================
 function getIndex(name) {
   return headers.findIndex(h => h.toLowerCase().includes(name.toLowerCase()));
 }
+
 
 // =======================
 // KPI CALCULATION
 // =======================
 function calculateKPI() {
 
-  if (currentIndustry === "telecom") {
+  if (currentIndustry !== "telecom") return;
 
-    let thrIndex = getIndex("throughput");
-    let dropIndex = getIndex("drop");
+  let thr = getIndex("throughput");
+  let rsrp = getIndex("rsrp");
+  let rsrq = getIndex("rsrq");
+  let sinr = getIndex("sinr") !== -1 ? getIndex("sinr") : getIndex("snir");
+  let drop = getIndex("drop");
 
-    let totalThr = 0;
-    let totalDrop = 0;
-    let count = 0;
+  let t=0, r1=0, r2=0, s=0, d=0, c=0;
 
-    rawData.forEach(row => {
-      totalThr += Number(row[thrIndex]);
-      totalDrop += Number(row[dropIndex]);
-      count++;
-    });
+  rawData.forEach(row => {
+    t += Number(row[thr]);
+    r1 += Number(row[rsrp]);
+    r2 += Number(row[rsrq]);
+    s += Number(row[sinr]);
+    d += Number(row[drop]);
+    c++;
+  });
 
-    let avgThr = totalThr / count;
-    let avgDrop = totalDrop / count;
-
-    console.log("Avg Throughput:", avgThr);
-    console.log("Avg Drop:", avgDrop);
-
-    document.getElementById("throughput").innerText =
-      avgThr.toFixed(0) + " Mbps";
-  }
-
-  else {
-    document.getElementById("throughput").innerText = "Unknown Data";
-  }
+  document.getElementById("throughput").innerText = (t/c).toFixed(0) + " Mbps";
+  document.getElementById("rsrp").innerText = (r1/c).toFixed(0) + " dBm";
+  document.getElementById("rsrq").innerText = (r2/c).toFixed(0) + " dB";
+  document.getElementById("sinr").innerText = (s/c).toFixed(0) + " dB";
+  document.getElementById("drop").innerText = (d/c).toFixed(2) + " %";
 }
+
+
+// =======================
+// UPDATE CHARTS
+// =======================
+function updateCharts() {
+
+  let thr = getIndex("throughput");
+  let sinr = getIndex("sinr") !== -1 ? getIndex("sinr") : getIndex("snir");
+
+  const labels = rawData.map((_, i) => i + 1);
+  const thrData = rawData.map(r => Number(r[thr]));
+  const sinrData = rawData.map(r => Number(r[sinr]));
+
+  throughputChart.data.labels = labels;
+  throughputChart.data.datasets[0].data = thrData;
+  throughputChart.update();
+
+  signalChart.data.labels = labels;
+  signalChart.data.datasets[0].data = sinrData;
+  signalChart.update();
+}
+
+</script>
+
+</body>
+</html>
 
 </script>
 
