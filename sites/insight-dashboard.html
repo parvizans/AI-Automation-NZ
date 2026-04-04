@@ -332,12 +332,12 @@ function detectIndustry(headers) {
 
 function normalize(str) {
   return str.toLowerCase().replace(/[^a-z]/g, "");
+}
 
 function getIndex(name) {
   const target = normalize(name);
   return headers.findIndex(h => normalize(h).includes(target));
 }
-
 
 // =======================
 // KPI CALCULATION
