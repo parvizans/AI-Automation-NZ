@@ -124,13 +124,7 @@ h1 {
 
 <!-- CHARTS -->
 <div id="chartContainer" class="chart-grid"></div>
-  <div class="chart-box">
-    <canvas id="throughputChart"></canvas>
-  </div>
-  <div class="chart-box">
-    <canvas id="signalChart"></canvas>
-  </div>
-</div>
+
 
 <!-- ALERTS -->
 <div class="alerts">
@@ -177,13 +171,12 @@ function generateCharts(kpis) {
 
   const container = document.getElementById("chartContainer");
 
-  // 🔥 Destroy old charts (VERY IMPORTANT)
   charts.forEach(c => c.destroy());
   charts = [];
 
   container.innerHTML = "";
 
-  kpis.forEach((kpi, index) => {
+  kpis.forEach((kpi) => {
 
     const box = document.createElement("div");
     box.className = "chart-box";
@@ -197,14 +190,11 @@ function generateCharts(kpis) {
     let data = rawData.map(r => Number(r[dataIndex]) || 0);
     let labels = rawData.map((_, i) => i + 1);
 
-    // 🎨 Auto color logic
-
+    // 🎨 Smart colors
     let color = "#32d296";
-if (kpi.toLowerCase().includes("drop")) color = "#ff6b6b";
-if (kpi.toLowerCase().includes("rsrp")) color = "#4dabf7";
-if (kpi.toLowerCase().includes("sinr")) color = "#ffd43b";
-
-
+    if (kpi.toLowerCase().includes("drop")) color = "#ff6b6b";
+    if (kpi.toLowerCase().includes("rsrp")) color = "#4dabf7";
+    if (kpi.toLowerCase().includes("sinr")) color = "#ffd43b";
 
     let chart = new Chart(canvas, {
       type: getChartType(kpi),
@@ -275,25 +265,9 @@ if (kpi.toLowerCase().includes("sinr")) color = "#ffd43b";
 let rawData = [];
 let headers = [];
 let currentIndustry = "unknown";
-let throughputChart, signalChart;
+let charts = [];
 
 
-// =======================
-// INIT CHARTS AFTER LOAD
-// =======================
-window.onload = function() {
-
-  throughputChart = new Chart(document.getElementById("throughputChart"), {
-    type: "line",
-    data: { labels: [], datasets: [{ label: "Throughput", data: [] }] }
-  });
-
-  signalChart = new Chart(document.getElementById("signalChart"), {
-    type: "line",
-    data: { labels: [], datasets: [{ label: "Signal", data: [] }] }
-  });
-
-};
 
 
 // =======================
@@ -421,27 +395,6 @@ function calculateKPI() {
   document.getElementById("drop").innerText = (d/c).toFixed(2) + " %";
 }
 
-
-// =======================
-// UPDATE CHARTS
-// =======================
-function updateCharts() {
-
-  let thr = getIndex("throughput");
-  let sinr = getIndex("sinr") !== -1 ? getIndex("sinr") : getIndex("snir");
-
-  const labels = rawData.map((_, i) => i + 1);
-  const thrData = rawData.map(r => Number(r[thr]));
-  const sinrData = rawData.map(r => Number(r[sinr]));
-
-  throughputChart.data.labels = labels;
-  throughputChart.data.datasets[0].data = thrData;
-  throughputChart.update();
-
-  signalChart.data.labels = labels;
-  signalChart.data.datasets[0].data = sinrData;
-  signalChart.update();
-}
 
 </script>
 
