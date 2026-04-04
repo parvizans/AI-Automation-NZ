@@ -191,6 +191,16 @@ new Chart(document.getElementById("signalChart"), {
 
   let rawData = [];
 
+<script>
+
+// GLOBAL VARIABLES
+let rawData = [];
+let headers = [];
+let currentIndustry = "unknown";
+
+// =======================
+// LOAD FILE
+// =======================
 function loadData() {
 
   const input = document.getElementById("fileInput");
@@ -203,7 +213,7 @@ function loadData() {
   const file = input.files[0];
   const fileName = file.name.toLowerCase();
 
-  // 🔹 CSV / TXT
+  // CSV / TXT
   if (fileName.endsWith(".csv") || fileName.endsWith(".txt")) {
 
     const reader = new FileReader();
@@ -215,40 +225,106 @@ function loadData() {
     reader.readAsText(file);
   }
 
-  // 🔹 Excel (we handle next step)
+  // Excel (future)
   else if (fileName.endsWith(".xlsx") || fileName.endsWith(".xls")) {
-
-    alert("Excel detected — next step we enable parser 🔥");
+    alert("Excel support coming next 🔥");
   }
 
   else {
     alert("Unsupported file format");
   }
 }
-function calculateKPI() {
 
-  let sdcchAttempts = 0;
-  let sdcchSuccess = 0;
-  let tchAttempts = 0;
-  let tchSuccess = 0;
+// =======================
+// PROCESS TEXT DATA
+// =======================
+function processTextData(text) {
 
-  rawData.forEach(row => {
-    sdcchAttempts += Number(row[0]);
-    sdcchSuccess += Number(row[1]);
-    tchAttempts += Number(row[2]);
-    tchSuccess += Number(row[3]);
-  });
+  const rows = text.split("\n");
 
-  function getIndex(name) {
-  return headers.findIndex(h => h.includes(name));
+  // HEADERS
+  headers = rows[0].split(",");
+
+  // DETECT INDUSTRY
+  currentIndustry = detectIndustry(headers);
+  console.log("Detected Industry:", currentIndustry);
+
+  // DATA
+  rawData = rows
+    .slice(1)
+    .filter(row => row.trim() !== "")
+    .map(row => row.split(","));
+
+  console.log("DATA:", rawData);
+
+  calculateKPI();
 }
 
-  let sdcchRate = (sdcchSuccess / sdcchAttempts) * 100;
-  let tchRate = (tchSuccess / tchAttempts) * 100;
+// =======================
+// DETECT INDUSTRY
+// =======================
+function detectIndustry(headers) {
 
-  let cssr = (sdcchRate + tchRate) / 2;
+  const h = headers.join(" ").toLowerCase();
 
-  document.getElementById("throughput").innerText = cssr.toFixed(2) + " %";
+  if (
+    h.includes("rsrp") ||
+    h.includes("rsrq") ||
+    h.includes("sinr") ||
+    h.includes("snir") ||
+    h.includes("throughput") ||
+    h.includes("drop")
+  ) {
+    return "telecom";
+  }
+
+  if (h.includes("revenue") || h.includes("profit")) {
+    return "finance";
+  }
+
+  return "unknown";
+}
+
+// =======================
+// GET COLUMN INDEX
+// =======================
+function getIndex(name) {
+  return headers.findIndex(h => h.toLowerCase().includes(name.toLowerCase()));
+}
+
+// =======================
+// KPI CALCULATION
+// =======================
+function calculateKPI() {
+
+  if (currentIndustry === "telecom") {
+
+    let thrIndex = getIndex("throughput");
+    let dropIndex = getIndex("drop");
+
+    let totalThr = 0;
+    let totalDrop = 0;
+    let count = 0;
+
+    rawData.forEach(row => {
+      totalThr += Number(row[thrIndex]);
+      totalDrop += Number(row[dropIndex]);
+      count++;
+    });
+
+    let avgThr = totalThr / count;
+    let avgDrop = totalDrop / count;
+
+    console.log("Avg Throughput:", avgThr);
+    console.log("Avg Drop:", avgDrop);
+
+    document.getElementById("throughput").innerText =
+      avgThr.toFixed(0) + " Mbps";
+  }
+
+  else {
+    document.getElementById("throughput").innerText = "Unknown Data";
+  }
 }
 
 </script>
