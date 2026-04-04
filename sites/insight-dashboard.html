@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Network Insight Dashboard</title>
-
+<div class="top-controls">
+  <select id="timeFilter">
+    <option value="hourly">Hourly</option>
+    <option value="daily">Daily</option>
+    <option value="weekly">Weekly</option>
+    <option value="monthly">Monthly</option>
+    <option value="yearly">Yearly</option>
+  </select>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -106,6 +114,16 @@ h1 {
   <div class="card">
     <h2 id="throughput">85 Mbps</h2>
     <p>Throughput</p>
+    
+    <div class="chart-controls">
+  <select onchange="changeChartType('throughputChart', this.value)">
+    <option value="line">Line</option>
+    <option value="bar">Bar</option>
+    <option value="pie">Pie</option>
+  </select>
+
+  <button onclick="changeChartColor('throughputChart')">🎨</button>
+
   </div>
   <div class="card">
     <h2 id="rsrp">-95 dBm</h2>
