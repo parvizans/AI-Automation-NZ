@@ -58,16 +58,20 @@ h1 {
 
 /* CHARTS */
 .chart-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(400px,1fr));
-  gap:20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+  align-items: stretch;
 }
 
 .chart-box {
-  background:#1c2541;
-  padding:20px;
-  border-radius:12px;
-  height:300px;
+  background: #1c2541;
+  padding: 15px;
+  border-radius: 12px;
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 /* ALERTS */
@@ -123,7 +127,17 @@ h1 {
 
 
 <!-- CHARTS -->
-<div id="chartContainer" class="chart-grid"></div>
+<div class="main-grid">
+
+  <div id="chartContainer" class="chart-grid"></div>
+
+  <div class="alerts">
+    <h3>🚨 Network Alerts</h3>
+    <div class="alert">⚠ High drop rate detected in Sector A</div>
+    <div class="alert">⚠ SINR degradation observed</div>
+  </div>
+
+</div>
 
 
 <!-- ALERTS -->
