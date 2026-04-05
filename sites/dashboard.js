@@ -71,12 +71,7 @@ const keys = Object.keys(data[0]).filter(k => {
 }
 
 // CREATE CHART
-.chart-card {
-  background: #1c2541;
-  padding: 15px;
-  border-radius: 12px;
-  height: 280px;   /* 🔥 THIS FIXES CHART COLLAPSE */
-}
+function createChart(title, values, index) {
 
   let color = "#32d296";
   if (title.toLowerCase().includes("drop")) color = "#ff6b6b";
@@ -113,7 +108,6 @@ const keys = Object.keys(data[0]).filter(k => {
     });
   }, 0);
 }
-
 // KPI UPDATE
 function updateKPICard(key, values) {
 
