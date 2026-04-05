@@ -71,7 +71,12 @@ const keys = Object.keys(data[0]).filter(k => {
 }
 
 // CREATE CHART
-function createChart(title, values, index) {
+.chart-card {
+  background: #1c2541;
+  padding: 15px;
+  border-radius: 12px;
+  height: 280px;   /* 🔥 THIS FIXES CHART COLLAPSE */
+}
 
   let color = "#32d296";
   if (title.toLowerCase().includes("drop")) color = "#ff6b6b";
