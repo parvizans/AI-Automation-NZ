@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Network Insight Dashboard</title>
@@ -25,7 +23,7 @@ h1 {
   margin-bottom:20px;
 }
 
-/* KPI CARDS */
+/* KPI */
 .kpi-grid {
   display:grid;
   grid-template-columns:repeat(5,1fr);
@@ -38,39 +36,23 @@ h1 {
   padding: 20px;
   border-radius: 12px;
   text-align: center;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
 }
 
 .card h2 {
-  font-size: 26px;
-  color: #32d296;
+  color:#32d296;
 }
 
-.card p {
-  font-size: 14px;
-  color: #bbb;
-}
-
-/* CHARTS */
-.chart-grid {
+/* NEW CHART GRID */
+.charts-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 👈 KEY FIX */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 20px;
 }
 
-.chart-box {
+.chart-card {
   background: #1c2541;
   padding: 15px;
   border-radius: 12px;
-  height: 280px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 
 /* ALERTS */
@@ -83,29 +65,9 @@ h1 {
 
 .alert {
   color:#ff6b6b;
-  margin-bottom:10px;
 }
-  <head>
-  <style>
-    /* existing CSS */
-
-    .charts-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 20px;
-    }
-
-    .chart-card {
-      background: #1c2541;
-      padding: 15px;
-      border-radius: 12px;
-    }
-
-  </style>
-</head>
 </style>
 </head>
-
 <body>
 
 <div class="container">
