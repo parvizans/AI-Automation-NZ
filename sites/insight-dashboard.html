@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Network Insight Dashboard</title>
@@ -23,6 +25,25 @@ h1 {
   margin-bottom:20px;
 }
 
+/* Upload */
+.upload-box {
+  margin-bottom: 20px;
+}
+
+.upload-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #32d296;
+  color: #000;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#fileInput {
+  display: none;
+}
+
 /* KPI */
 .kpi-grid {
   display:grid;
@@ -42,7 +63,7 @@ h1 {
   color:#32d296;
 }
 
-/* NEW CHART GRID */
+/* Charts */
 .charts-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -55,7 +76,7 @@ h1 {
   border-radius: 12px;
 }
 
-/* ALERTS */
+/* Alerts */
 .alerts {
   margin-top:30px;
   background:#2a1a1a;
@@ -68,6 +89,7 @@ h1 {
 }
 </style>
 </head>
+
 <body>
 
 <div class="container">
@@ -75,49 +97,31 @@ h1 {
 <h1>📡 Network Insight Dashboard</h1>
 
 <!-- Upload -->
-<input type="file" id="fileInput" accept=".csv">
+<div class="upload-box">
+  <label for="fileInput" class="upload-btn">📂 Upload CSV</label>
+  <input type="file" id="fileInput" accept=".csv">
+</div>
 
-
-
-<!-- Filters -->
-<select id="siteFilter">...</select>
-  
-<!-- KPI CARDS -->
+<!-- KPI -->
 <div class="kpi-grid">
-  <div class="card">
-  <h2 id="throughput">--</h2>
-    <p>Throughput</p>
-  </div>
-  <div class="card">
-    <h2 id="rsrp">-95 dBm</h2>
-    <p>RSRP</p>
-  </div>
-  <div class="card">
-    <h2 id="rsrq">-10 dB</h2>
-    <p>RSRQ</p>
-  </div>
-  <div class="card">
-    <h2 id="sinr">18 dB</h2>
-    <p>SINR</p>
-  </div>
-  <div class="card">
-    <h2 id="drop">2%</h2>
-    <p>Drop Rate</p>
-  </div>
+  <div class="card"><h2 id="throughput">--</h2><p>Throughput</p></div>
+  <div class="card"><h2 id="rsrp">--</h2><p>RSRP</p></div>
+  <div class="card"><h2 id="rsrq">--</h2><p>RSRQ</p></div>
+  <div class="card"><h2 id="sinr">--</h2><p>SINR</p></div>
+  <div class="card"><h2 id="drop">--</h2><p>Drop Rate</p></div>
+</div>
 
-
-<!-- CHARTS -->
+<!-- Charts -->
 <div class="charts-grid"></div>
 
-
-  <div class="alerts">
-    <h3>🚨 Network Alerts</h3>
-    <div class="alert">⚠ High drop rate detected in Sector A</div>
-    <div class="alert">⚠ SINR degradation observed</div>
-  </div>
+<!-- Alerts -->
+<div class="alerts">
+  <h3>🚨 Network Insights</h3>
 </div>
-  
-<script src="dashboard.js"></script>
-<script src="dashboard.js?v=2"></script>
+
+</div>
+
+<script src="dashboard.js?v=3"></script>
+
 </body>
 </html>
