@@ -137,8 +137,11 @@ const keys = Object.keys(data[0]).filter(k => {
 
     const name = key.toLowerCase();
 
-    if (name.includes("rsrp") && latest < -105)
-      insights.push("⚠ Coverage issue detected");
+   if (name.includes("rsrp") && latest < -110)
+  insights.push("🔴 Critical: Coverage failure");
+
+else if (name.includes("rsrp") && latest < -105)
+  insights.push("🟠 Warning: Weak coverage");
 
     if ((name.includes("sinr") || name.includes("snir")) && latest < 5)
       insights.push("⚠ Interference suspected");
