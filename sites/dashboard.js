@@ -1,4 +1,4 @@
-🔹 // STEP 2.1 — CSV PARSER (ROBUST)
+// CSV PARSER
 function parseCSV(text) {
   const lines = text.trim().split("\n");
   const headers = lines[0].split(",");
@@ -12,38 +12,39 @@ function parseCSV(text) {
     return obj;
   });
 }
-🔹 // STEP 2.2 — SAFE COLUMN EXTRACTION
+
+// GET COLUMN
 function getColumn(data, key) {
   return data.map(row => {
     let val = row[key];
     return val !== undefined && val !== "" ? parseFloat(val) : null;
   });
 }
-🔹// STEP 2.3 — GET LATEST VALUE (FIX NaN)
+
+// LATEST VALUE
 function getLatestValue(arr) {
   const valid = arr.filter(v => v !== null && !isNaN(v));
   return valid.length ? valid[valid.length - 1] : "-";
 }
-🟡 PHASE 3 — AUTO KPI + AUTO CHART ENGINE 🔥
 
-👉 THIS is the big upgrade (no more limit)
-
-🔹 // STEP 3.1 — FILE UPLOAD HANDLER
+// FILE UPLOAD
 document.getElementById("fileInput").addEventListener("change", function(e) {
   const file = e.target.files[0];
   const reader = new FileReader();
 
   reader.onload = function(event) {
-    const text = event.target.result;
-    const data = parseCSV(text);
-
+    const data = parseCSV(event.target.result);
     buildDashboard(data);
+    generateRCA(data);
   };
 
   reader.readAsText(file);
 });
-🔹 // STEP 3.2 — MAIN ENGINE
+
+// MAIN ENGINE
 function buildDashboard(data) {
+
+  if (!data || data.length === 0) return;
 
   document.querySelector(".charts-grid").innerHTML = "";
 
@@ -54,19 +55,23 @@ function buildDashboard(data) {
     const values = getColumn(data, key);
 
     createChart(key, values, index);
-
     updateKPICard(key, values);
 
   });
 }
-🔹 // STEP 3.3 — CREATE CHART (AUTO)
+
+// CREATE CHART
 function createChart(title, values, index) {
+
+  let color = "#32d296";
+  if (title.toLowerCase().includes("drop")) color = "#ff6b6b";
+  if (title.toLowerCase().includes("rsrp")) color = "#4dabf7";
+  if (title.toLowerCase().includes("sinr")) color = "#ffd43b";
 
   const container = document.createElement("div");
   container.className = "chart-card";
 
   const canvas = document.createElement("canvas");
-  canvas.id = "chart_" + index;
 
   container.appendChild(canvas);
   document.querySelector(".charts-grid").appendChild(container);
@@ -78,23 +83,81 @@ function createChart(title, values, index) {
       datasets: [{
         label: title,
         data: values,
+        borderColor: color,
+        backgroundColor: color + "33",
         borderWidth: 2,
         tension: 0.3
       }]
     }
   });
 }
-🔹 // STEP 3.4 — KPI CARD UPDATE
 
-👉 (Assumes you already have KPI divs)
-
+// KPI UPDATE
 function updateKPICard(key, values) {
 
-  let id = key.toLowerCase();
+  const el = document.getElementById(key.toLowerCase());
+  if (!el) return;
 
-  const el = document.getElementById(id);
-
-  if (el) {
-    el.innerText = getLatestValue(values);
+  let val = getLatestValue(values);
+  if (val === "-") {
+    el.innerText = "--";
+    return;
   }
+
+  if (key.toLowerCase().includes("rsrp")) el.innerText = val + " dBm";
+  else if (key.toLowerCase().includes("rsrq") || key.toLowerCase().includes("sinr")) el.innerText = val + " dB";
+  else if (key.toLowerCase().includes("drop")) el.innerText = val + " %";
+  else if (key.toLowerCase().includes("throughput")) el.innerText = val + " Mbps";
+  else el.innerText = val;
+}
+
+// RCA ENGINE
+function generateRCA(data) {
+
+  let insights = [];
+
+  const keys = Object.keys(data[0]);
+
+  keys.forEach(key => {
+
+    const values = getColumn(data, key);
+    const latest = getLatestValue(values);
+
+    if (latest === "-" || isNaN(latest)) return;
+
+    const name = key.toLowerCase();
+
+    if (name.includes("rsrp") && latest < -105)
+      insights.push("⚠ Coverage issue detected");
+
+    if ((name.includes("sinr") || name.includes("snir")) && latest < 5)
+      insights.push("⚠ Interference suspected");
+
+    if (name.includes("drop") && latest > 2)
+      insights.push("⚠ High drop rate (mobility issue)");
+
+    if (name.includes("throughput") && latest < 5)
+      insights.push("⚠ Low throughput (possible congestion)");
+  });
+
+  displayAlerts(insights);
+}
+
+// SHOW ALERTS
+function displayAlerts(insights) {
+
+  const alertBox = document.querySelector(".alerts");
+  alertBox.innerHTML = "<h3>🚨 Network Insights</h3>";
+
+  if (insights.length === 0) {
+    alertBox.innerHTML += "<div class='alert'>✅ Network OK</div>";
+    return;
+  }
+
+  insights.forEach(msg => {
+    const div = document.createElement("div");
+    div.className = "alert";
+    div.innerText = msg;
+    alertBox.appendChild(div);
+  });
 }
