@@ -48,8 +48,18 @@ function buildDashboard(data) {
 
   document.querySelector(".charts-grid").innerHTML = "";
 
-  const keys = Object.keys(data[0]);
+const keys = Object.keys(data[0]).filter(k => {
+  const name = k.toLowerCase();
 
+  return (
+    name.includes("throughput") ||
+    name.includes("rsrp") ||
+    name.includes("rsrq") ||
+    name.includes("sinr") ||
+    name.includes("snir") ||
+    name.includes("drop")
+  );
+});
   keys.forEach((key, index) => {
 
     const values = getColumn(data, key);
@@ -144,8 +154,8 @@ else if (name.includes("rsrp") && latest < -105)
   insights.push("🟠 Warning: Weak coverage");
 
     if ((name.includes("sinr") || name.includes("snir")) && latest < 5)
-      insights.push("⚠ Interference suspected");
-
+   insights.push("⚠ Interference suspected: Low SINR indicates signal quality degradation likely caused by interference or noise.");
+    
     if (name.includes("drop") && latest > 2)
       insights.push("⚠ High drop rate (mobility issue)");
 
@@ -174,3 +184,8 @@ function displayAlerts(insights) {
     alertBox.appendChild(div);
   });
 }
+insights.push("⚠ Coverage issue: Low RSRP indicates weak signal strength, likely due to distance or obstruction.");
+
+insights.push("⚠ Mobility issue: High drop rate suggests handover failure or unstable radio conditions.");
+
+insights.push("⚠ Congestion: Low throughput despite acceptable signal conditions indicates capacity limitation.");
