@@ -1,4 +1,4 @@
-🔹 ////STEP 2.1 — CSV PARSER (ROBUST)//////
+🔹 // STEP 2.1 — CSV PARSER (ROBUST)
 function parseCSV(text) {
   const lines = text.trim().split("\n");
   const headers = lines[0].split(",");
@@ -12,14 +12,14 @@ function parseCSV(text) {
     return obj;
   });
 }
-🔹 //////STEP 2.2 — SAFE COLUMN EXTRACTION/////
+🔹 // STEP 2.2 — SAFE COLUMN EXTRACTION
 function getColumn(data, key) {
   return data.map(row => {
     let val = row[key];
     return val !== undefined && val !== "" ? parseFloat(val) : null;
   });
 }
-🔹///// STEP 2.3 — GET LATEST VALUE (FIX NaN)/////
+🔹// STEP 2.3 — GET LATEST VALUE (FIX NaN)
 function getLatestValue(arr) {
   const valid = arr.filter(v => v !== null && !isNaN(v));
   return valid.length ? valid[valid.length - 1] : "-";
@@ -28,7 +28,7 @@ function getLatestValue(arr) {
 
 👉 THIS is the big upgrade (no more limit)
 
-🔹 /////STEP 3.1 — FILE UPLOAD HANDLER//////
+🔹 // STEP 3.1 — FILE UPLOAD HANDLER
 document.getElementById("fileInput").addEventListener("change", function(e) {
   const file = e.target.files[0];
   const reader = new FileReader();
@@ -42,7 +42,7 @@ document.getElementById("fileInput").addEventListener("change", function(e) {
 
   reader.readAsText(file);
 });
-🔹 ////STEP 3.2 — MAIN ENGINE/////
+🔹 // STEP 3.2 — MAIN ENGINE
 function buildDashboard(data) {
 
   document.querySelector(".charts-grid").innerHTML = "";
@@ -59,7 +59,7 @@ function buildDashboard(data) {
 
   });
 }
-🔹 /////STEP 3.3 — CREATE CHART (AUTO)//////
+🔹 // STEP 3.3 — CREATE CHART (AUTO)
 function createChart(title, values, index) {
 
   const container = document.createElement("div");
@@ -84,7 +84,7 @@ function createChart(title, values, index) {
     }
   });
 }
-🔹 ////STEP 3.4 — KPI CARD UPDATE//////
+🔹 // STEP 3.4 — KPI CARD UPDATE
 
 👉 (Assumes you already have KPI divs)
 
