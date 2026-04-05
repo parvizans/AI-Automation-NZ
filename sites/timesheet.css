@@ -200,3 +200,6 @@ body.timesheet h1 {
   color: #000;           /* DARK text */
   font-weight: bold;
 }
+.chart-card {
+  height: 280px;
+}
