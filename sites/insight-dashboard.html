@@ -85,6 +85,24 @@ h1 {
   color:#ff6b6b;
   margin-bottom:10px;
 }
+  <head>
+  <style>
+    /* existing CSS */
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .chart-card {
+      background: #1c2541;
+      padding: 15px;
+      border-radius: 12px;
+    }
+
+  </style>
+</head>
 </style>
 </head>
 
@@ -95,8 +113,9 @@ h1 {
 <h1>📡 Network Insight Dashboard</h1>
 
 <!-- Upload -->
-<input type="file" id="fileInput" accept=".csv,.txt,.xlsx,.xls">
-<button onclick="loadData()">Upload CSV</button>
+<input type="file" id="fileInput" accept=".csv">
+
+
 
 <!-- Filters -->
 <select id="siteFilter">...</select>
@@ -126,7 +145,7 @@ h1 {
 
 
 <!-- CHARTS -->
-<div class="main-grid">
+<div class="charts-grid"></div>
 
   <div id="chartContainer" class="chart-grid"></div>
 
