@@ -226,7 +226,7 @@ const savedExpense = localStorage.getItem("expenseTotal");
 if(savedExpense){
   document.getElementById("expenses").value = savedExpense;
 }
-  const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
+  
 
 if(data.engineer){
   document.getElementById("engineer").value = data.engineer;
