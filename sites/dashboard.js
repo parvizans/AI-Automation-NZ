@@ -116,7 +116,17 @@ function generateRCA(data) {
 
   let insights = [];
 
-  const keys = Object.keys(data[0]);
+const keys = Object.keys(data[0]).filter(k => {
+  const name = k.toLowerCase();
+  return (
+    name.includes("throughput") ||
+    name.includes("rsrp") ||
+    name.includes("rsrq") ||
+    name.includes("sinr") ||
+    name.includes("snir") ||
+    name.includes("drop")
+  );
+});
 
   keys.forEach(key => {
 
