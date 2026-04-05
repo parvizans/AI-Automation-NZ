@@ -189,3 +189,6 @@ insights.push("⚠ Coverage issue: Low RSRP indicates weak signal strength, like
 insights.push("⚠ Mobility issue: High drop rate suggests handover failure or unstable radio conditions.");
 
 insights.push("⚠ Congestion: Low throughput despite acceptable signal conditions indicates capacity limitation.");
+
+
+console.log("Total KPIs:", keys.length);
