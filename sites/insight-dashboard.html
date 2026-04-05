@@ -152,7 +152,7 @@ let charts = [];
 
 function generateCharts(kpis) {
 
-  const container = document.getElementById("chartContainer");
+
 
   charts.forEach(c => c.destroy());
   charts = [];
@@ -224,12 +224,6 @@ let headers = [];
 let currentIndustry = "unknown";
 
 
-
-
-
-
-
-
 // =======================
 // INDUSTRY DETECTION
 // =======================
@@ -288,7 +282,7 @@ function calculateKPI() {
   document.getElementById("sinr").innerText = (s/c).toFixed(0) + " dB";
   document.getElementById("drop").innerText = (d/c).toFixed(2) + " %";
 }
-
+<script src="dashboard.js"></script>
 
 </script>
 
