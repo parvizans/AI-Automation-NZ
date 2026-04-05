@@ -86,20 +86,27 @@ function createChart(title, values, index) {
   container.appendChild(canvas);
   document.querySelector(".charts-grid").appendChild(container);
 
-  new Chart(canvas, {
-    type: "line",
-    data: {
-      labels: values.map((_, i) => i + 1),
-      datasets: [{
-        label: title,
-        data: values,
-        borderColor: color,
-        backgroundColor: color + "33",
-        borderWidth: 2,
-        tension: 0.3
-      }]
-    }
-  });
+  // 🔥 CRITICAL FIX: delay rendering (prevents chart limit issue)
+  setTimeout(() => {
+    new Chart(canvas, {
+      type: "line",
+      data: {
+        labels: values.map((_, i) => i + 1),
+        datasets: [{
+          label: title,
+          data: values,
+          borderColor: color,
+          backgroundColor: color + "33",
+          borderWidth: 2,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    });
+  }, 0);
 }
 
 // KPI UPDATE
