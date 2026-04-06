@@ -189,3 +189,15 @@ document.addEventListener("change", function(e){
   }
 
 });
+document.addEventListener("change", function(e){
+
+  if(
+    e.target.classList.contains("time-in") ||
+    e.target.classList.contains("time-out") ||
+    e.target.classList.contains("row-location")
+  ){
+    calculateTimes();
+    updateAllowance();
+  }
+
+});
