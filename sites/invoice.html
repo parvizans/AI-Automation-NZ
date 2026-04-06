@@ -293,6 +293,43 @@ function goHome(){
 function goExpenses(){
   window.location.href = "expenses.html";
 }
+
+  window.addEventListener("load", function(){
+  calculate();
+});
+  // 🔥 STEP 1 — AUTO CALCULATE ON LOAD
+window.addEventListener("load", function(){
+  calculate();
+});
+
+
+// 🔥 STEP 2 — AUTO UPDATE WHEN USER TYPES
+document.getElementById("expenses").addEventListener("input", calculate);
+document.getElementById("cash").addEventListener("input", calculate);
+
+
+// 🔥 STEP 3 — GENERATE INVOICE NUMBER
+function generateInvoiceNo(){
+  const d = new Date();
+  return "INV-" + d.getFullYear() +
+         String(d.getMonth()+1).padStart(2,'0') +
+         String(d.getDate()).padStart(2,'0') +
+         "-" + Math.floor(Math.random()*1000);
+}
+
+
+// 🔥 STEP 3.1 — APPLY INVOICE NUMBER
+if(!document.getElementById("invoiceNo").value){
+  document.getElementById("invoiceNo").value = generateInvoiceNo();
+}
+
+
+// 🔥 STEP 4 — AUTO DATE
+if(!document.getElementById("invoiceDate").value){
+  document.getElementById("invoiceDate").value =
+    new Date().toISOString().split("T")[0];
+}
+
 </script>
 
 </body>
