@@ -215,3 +215,13 @@ input[type="time"] {
   color-scheme: dark;
   filter: invert(1);
 }
+.footer {
+  margin-top: 50px;
+  padding: 20px;
+  background: rgba(20,30,60,0.8);
+  color: #8fa8ff;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
