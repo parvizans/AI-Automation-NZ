@@ -180,44 +180,48 @@ function calculateTimes(){
 
 }
 /* =========================
-   SINGLE CLEAN LISTENER
+   SINGLE CLEAN LISTENER (FINAL)
 ========================= */
 document.addEventListener("change", function(e){
 
+  // TIME IN / TIME OUT
   if(
     e.target.classList.contains("time-in") ||
     e.target.classList.contains("time-out")
   ){
+
+    // 🔥 FORCE minutes to 00 / 15 / 30 / 45
+    if(e.target.classList.contains("time-out")){
+
+      let value = e.target.value;
+      if(value){
+
+        let [h,m] = value.split(":").map(Number);
+
+        if(m < 15) m = 0;
+        else if(m < 30) m = 15;
+        else if(m < 45) m = 30;
+        else m = 45;
+
+        e.target.value =
+          String(h).padStart(2,'0') + ":" +
+          String(m).padStart(2,'0');
+      }
+    }
+
+    // 🔥 UPDATE CALCULATIONS
     calculateTimes();
     updateAllowance();
   }
 
+  // LOCATION CHANGE
   if(e.target.classList.contains("row-location")){
     updateAllowance();
   }
 
 });
-document.addEventListener("change", function(e){
 
-  if(e.target.classList.contains("time-out")){
 
-    let value = e.target.value;
-    if(!value) return;
-
-    let [h,m] = value.split(":").map(Number);
-
-    if(m < 15) m = 0;
-    else if(m < 30) m = 15;
-    else if(m < 45) m = 30;
-    else m = 45;
-
-    e.target.value =
-      String(h).padStart(2,'0') + ":" +
-      String(m).padStart(2,'0');
-
-  }
-
-});
 /* =========================
    INITIAL LOAD
 ========================= */
