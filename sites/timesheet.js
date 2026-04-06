@@ -14,21 +14,22 @@ function getDayName(date){
 
 function generateMonth(){
   const month = document.getElementById("month").value;
-  if(month==="") return;
+  if(month === "") return;
 
   const year = new Date().getFullYear();
   const days = new Date(year, parseInt(month)+1, 0).getDate();
 
   const tbody = document.getElementById("timesheet-body");
-  tbody.innerHTML="";
+  tbody.innerHTML = "";
 
   for(let i=1;i<=days;i++){
+
     const d = new Date(year, month, i);
     const date = d.toISOString().split('T')[0];
 
     const row = document.createElement("tr");
 
-row.innerHTML = 
+row.innerHTML = `
   <td>${i}</td>
   <td><input type="date" value="${date}"></td>
   <td>${getDayName(d)}</td>
@@ -50,8 +51,7 @@ row.innerHTML =
   </td>
 
   <td class="food">-</td>
-
-;
+`
 
 tbody.appendChild(row);
 }
