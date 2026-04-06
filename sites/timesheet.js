@@ -38,10 +38,10 @@ function generateMonth(){
   <td class="ot">0</td>
 
   <td>
-    <select class="row-location">
-      <option value="sydney">Sydney</option>
-      <option value="outside">Outside</option>
-    </select>
+  <select class="row-location">
+  <option value="australia">Australia</option>
+  <option value="newzealand">New Zealand</option>
+  </select>
   </td>
 
   <td class="food">-</td>
