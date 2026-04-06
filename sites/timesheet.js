@@ -104,24 +104,37 @@ function saveToInvoice(){
 
 function updateAllowance(){
 
-  const rows = document.querySelectorAll("#timesheet-body tr");
-
-  rows.forEach(row => {
+  document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
     const location = row.querySelector(".row-location")?.value;
+    const timeOut = row.querySelector(".time-out")?.value;
     const foodCell = row.querySelector(".food");
 
     if(!foodCell) return;
 
-    if(location === "outside"){
-      foodCell.innerText = "$50";
-      foodCell.style.color = "#32d296";
+    // Apply only if worked (has time-out)
+    if(timeOut && timeOut !== ""){
+
+      if(location === "Australia"){
+        foodCell.innerText = "$50";
+        foodCell.style.color = "#32d296";
+      }
+      else if(location === "New Zealand"){
+        foodCell.innerText = "$55";
+        foodCell.style.color = "#4dd0e1";
+      }
+      else{
+        foodCell.innerText = "-";
+        foodCell.style.color = "#ff4d4d";
+      }
+
     } else {
       foodCell.innerText = "-";
-      foodCell.style.color = "#ff4d4d";
+      foodCell.style.color = "#888";
     }
 
   });
+
 }
 document.getElementById("location")
   .addEventListener("change", updateAllowance);
