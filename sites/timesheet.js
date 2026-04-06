@@ -116,3 +116,7 @@ function updateAllowance(){
   });
 
 }
+window.addEventListener("load", function(){
+  updateAllowance();
+});
+updateAllowance();
