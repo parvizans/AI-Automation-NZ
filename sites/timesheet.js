@@ -36,9 +36,20 @@ row.innerHTML = `
 
   <td><input type="time" class="time-in" value="08:00"></td>
 
-  <td>
-   <input type="time" class="time-out" step="900">
-  </td>
+ <td>
+  <select class="time-out-hour">
+    ${[...Array(24).keys()].map(h =>
+      `<option value="${h}">${String(h).padStart(2,'0')}</option>`
+    ).join('')}
+  </select>
+
+  <select class="time-out-minute">
+    <option value="00">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
+  </select>
+</td>
 
   <td class="total">0</td>
   <td class="ot">0</td>
