@@ -209,3 +209,9 @@ input[type="time"] {
   color-scheme: dark;
   filter: invert(1);
 }
+/* Fix date & time icon visibility */
+input[type="date"],
+input[type="time"] {
+  color-scheme: dark;
+  filter: invert(1);
+}
