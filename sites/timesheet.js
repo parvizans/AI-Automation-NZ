@@ -93,3 +93,26 @@ function saveToInvoice(){
 
   alert("🔥 Sent to Invoice!");
 }
+
+function updateAllowance(){
+
+  const location = document.getElementById("location").value;
+  const rows = document.querySelectorAll("#timesheet-body tr");
+
+  rows.forEach(row => {
+
+    const foodCell = row.querySelector(".food");
+
+    if(!foodCell) return;
+
+    if(location === "outside"){
+      foodCell.innerText = "$50";
+      foodCell.style.color = "#32d296"; // green
+    } else {
+      foodCell.innerText = "-";
+      foodCell.style.color = "#ff4d4d"; // red
+    }
+
+  });
+
+}
