@@ -28,7 +28,7 @@ function generateMonth(){
 
     const row = document.createElement("tr");
 
-row.innerHTML = `
+row.innerHTML = 
   <td>${i}</td>
   <td><input type="date" value="${date}"></td>
   <td>${getDayName(d)}</td>
@@ -36,13 +36,7 @@ row.innerHTML = `
   <td><input type="time" class="time-in" value="08:00"></td>
 
   <td>
-    <select class="time-out">
-      <option value="">--</option>
-      <option value="18:00">18:00</option>
-      <option value="18:15">18:15</option>
-      <option value="18:30">18:30</option>
-      <option value="18:45">18:45</option>
-    </select>
+    <input type="time" class="time-out">
   </td>
 
   <td class="total">0</td>
@@ -56,7 +50,8 @@ row.innerHTML = `
   </td>
 
   <td class="food">-</td>
-`;
+
+;
 
 tbody.appendChild(row);
 }
@@ -152,7 +147,38 @@ function updateAllowance(){
   });
 
 }
+function calculateTimes(){
 
+  document.querySelectorAll("#timesheet-body tr").forEach(row => {
+
+    const timeIn = row.querySelector(".time-in")?.value;
+    const timeOut = row.querySelector(".time-out")?.value;
+
+    const totalCell = row.querySelector(".total");
+    const otCell = row.querySelector(".ot");
+
+    if(!timeIn || !timeOut){
+      totalCell.innerText = "0";
+      otCell.innerText = "0";
+      return;
+    }
+
+    const [inH, inM] = timeIn.split(":").map(Number);
+    const [outH, outM] = timeOut.split(":").map(Number);
+
+    let totalHours = (outH + outM/60) - (inH + inM/60);
+
+    if(totalHours < 0) totalHours = 0;
+
+    totalCell.innerText = totalHours.toFixed(1);
+
+    // OT = anything above 8h
+    let ot = totalHours > 8 ? totalHours - 8 : 0;
+    otCell.innerText = ot.toFixed(1);
+
+  });
+
+}
 /* =========================
    SINGLE CLEAN LISTENER
 ========================= */
@@ -171,7 +197,27 @@ document.addEventListener("change", function(e){
   }
 
 });
+document.addEventListener("change", function(e){
 
+  if(e.target.classList.contains("time-out")){
+
+    let value = e.target.value;
+    if(!value) return;
+
+    let [h,m] = value.split(":").map(Number);
+
+    if(m < 15) m = 0;
+    else if(m < 30) m = 15;
+    else if(m < 45) m = 30;
+    else m = 45;
+
+    e.target.value =
+      String(h).padStart(2,'0') + ":" +
+      String(m).padStart(2,'0');
+
+  }
+
+});
 /* =========================
    INITIAL LOAD
 ========================= */
