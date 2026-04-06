@@ -116,7 +116,11 @@ function updateAllowance(){
   });
 
 }
+document.getElementById("location")
+  .addEventListener("change", updateAllowance);
+
 window.addEventListener("load", function(){
   updateAllowance();
 });
-updateAllowance();
+
+
