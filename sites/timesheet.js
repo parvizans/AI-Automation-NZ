@@ -147,4 +147,13 @@ document.addEventListener("change", function(e){
     updateAllowance();
   }
 });
+document.addEventListener("change", function(e){
 
+  if(e.target.classList.contains("time-out") || 
+     e.target.classList.contains("time-in")){
+
+    calculateTimes();   // your existing logic
+    updateAllowance();  // recalc food
+  }
+
+});
