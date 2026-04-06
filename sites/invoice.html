@@ -237,26 +237,30 @@ th {
 <script>
 const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
 
-/* LOAD EXPENSE */
-const savedExpense = localStorage.getItem("expenseTotal");
-if(savedExpense){
-  document.getElementById("expenses").value = savedExpense;
-}
-  
+// LOAD SAVED VALUES
+function loadData(){
+  const savedExpense = localStorage.getItem("expenseTotal");
+  if(savedExpense){
+    document.getElementById("expenses").value = savedExpense;
+  }
 
-if(data.engineer){
-  document.getElementById("engineer").value = data.engineer;
+  if(data.engineer){
+    document.getElementById("engineer").value = data.engineer;
+  }
+
+  if(data.project){
+    document.getElementById("project").value = data.project;
+  }
 }
 
-if(data.project){
-  document.getElementById("project").value = data.project;
-}
-
+// MAIN CALCULATION
 function calculate(){
 
   const wdDays = +data.wdDays || 0;
   const weDays = +data.weDays || 0;
   const wdHours = +data.wdHours || 0;
+
+  // ✅ OT LOGIC (CORRECT)
   const wdOT = wdHours > (wdDays * 8) ? wdHours - (wdDays * 8) : 0;
   const weOT = +data.weOT || 0;
 
@@ -284,6 +288,7 @@ function calculate(){
 
   rows.forEach(r=>{
     total += r[3];
+
     tbody.innerHTML += `
     <tr>
       <td>${r[0]}</td>
@@ -293,15 +298,18 @@ function calculate(){
     </tr>`;
   });
 
+  // INPUT VALUES
   const expenses = +document.getElementById("expenses").value || 0;
   const cash = +document.getElementById("cash").value || 0;
 
-  total += expenses;
+  // FINAL
+  const finalTotal = total + expenses - cash;
 
   document.getElementById("final").innerText =
-    "$" + (total - cash).toFixed(2);
+    "$" + finalTotal.toFixed(2);
 }
 
+// NAVIGATION
 function goHome(){
   window.location.href = "timesheet.html";
 }
@@ -309,14 +317,16 @@ function goHome(){
 function goExpenses(){
   window.location.href = "expenses.html";
 }
-  // 🔥 AUTO CALCULATE ON LOAD
+
+// 🔥 AUTO LOAD + CALCULATE
 window.addEventListener("load", function(){
+  loadData();
   calculate();
 });
-  // 🔥 AUTO CALCULATE ON LOAD
-window.addEventListener("load", function(){
-  calculate();
-});
+
+// 🔥 LIVE UPDATE (SUPER NICE UX)
+document.getElementById("expenses").addEventListener("input", calculate);
+document.getElementById("cash").addEventListener("input", calculate);
   
 </script>
 
