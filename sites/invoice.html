@@ -329,6 +329,18 @@ if(!document.getElementById("invoiceDate").value){
   document.getElementById("invoiceDate").value =
     new Date().toISOString().split("T")[0];
 }
+  .header-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: center;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  height: 40px;
+}
 
 </script>
 
