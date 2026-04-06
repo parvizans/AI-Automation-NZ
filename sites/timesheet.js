@@ -157,3 +157,25 @@ document.addEventListener("change", function(e){
   }
 
 });
+document.addEventListener("change", function(e){
+
+  if(e.target.classList.contains("time-out")){
+
+    let value = e.target.value; // HH:MM
+    if(!value) return;
+
+    let [h,m] = value.split(":").map(Number);
+
+    // round minutes
+    if(m < 15) m = 0;
+    else if(m < 30) m = 15;
+    else if(m < 45) m = 30;
+    else m = 45;
+
+    e.target.value = 
+      String(h).padStart(2,'0') + ":" + 
+      String(m).padStart(2,'0');
+
+  }
+
+});
