@@ -238,6 +238,11 @@ if(data.project){
 
 function calculate(){
 
+  console.log("calculate running...");
+
+  // 🔥 GET DATA SAFELY
+  const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
+
   const wdDays = +data.wdDays || 0;
   const weDays = +data.weDays || 0;
   const wdHours = +data.wdHours || 0;
@@ -266,22 +271,28 @@ function calculate(){
   const tbody = document.getElementById("rows");
   tbody.innerHTML = "";
 
-  rows.forEach(r=>{
+  // 🔥 BUILD TABLE
+  rows.forEach(r => {
+
     total += r[3];
+
     tbody.innerHTML += `
-    <tr>
-      <td>${r[0]}</td>
-      <td>${r[1]}</td>
-      <td>$${r[2]}</td>
-      <td>$${r[3].toFixed(2)}</td>
-    </tr>`;
+      <tr>
+        <td>${r[0]}</td>
+        <td>${r[1]}</td>
+        <td>$${r[2]}</td>
+        <td>$${r[3].toFixed(2)}</td>
+      </tr>
+    `;
   });
 
+  // 🔥 GET EXTRA INPUTS
   const expenses = +document.getElementById("expenses").value || 0;
   const cash = +document.getElementById("cash").value || 0;
 
   total += expenses;
 
+  // 🔥 FINAL RESULT
   document.getElementById("final").innerText =
     "$" + (total - cash).toFixed(2);
 }
