@@ -28,7 +28,7 @@ function generateMonth(){
 
     const row = document.createElement("tr");
 
-  row.innerHTML = `
+row.innerHTML = `
   <td>${i}</td>
   <td><input type="date" value="${date}"></td>
   <td>${getDayName(d)}</td>
@@ -50,31 +50,23 @@ function generateMonth(){
 
   <td>
     <select class="row-location">
-      <option>Australia</option>
-      <option>New Zealand</option>
+      <option value="Sydney">Sydney</option>
+      <option value="Outside Sydney">Outside Sydney</option>
     </select>
   </td>
 
   <td class="food">-</td>
 `;
-🔥 RESULT AFTER THIS
 
-  <td>
-  <select class="row-location">
-  <option value="Sydney">Sydney</option>
-  <option value="Outside Sydney">Outside Sydney</option>
-  </select>
-  </td>
-
-  <td class="food">-</td>
-`;
-
-    tbody.appendChild(row);
-  }
+tbody.appendChild(row);
+}
 }
 
 document.getElementById("month").addEventListener("change", generateMonth);
 
+/* =========================
+   NAVIGATION
+========================= */
 function goHome(){
   window.scrollTo({ top:0, behavior:"smooth" });
 }
@@ -82,9 +74,14 @@ function goHome(){
 function goExpenses(){
   window.location.href = "expenses.html";
 }
+
 function goInvoice(){
   window.location.href = "invoice.html";
 }
+
+/* =========================
+   SAVE TO INVOICE
+========================= */
 function saveToInvoice(){
 
   const engineer = document.getElementById("engineer").value;
@@ -98,7 +95,7 @@ function saveToInvoice(){
   document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
     const day = row.children[2].innerText;
-    const hours = 10; // (you can refine later)
+    const hours = 10;
 
     if(day === "Sat" || day === "Sun"){
       weDays++;
@@ -124,6 +121,9 @@ function saveToInvoice(){
   alert("🔥 Sent to Invoice!");
 }
 
+/* =========================
+   FOOD ALLOWANCE
+========================= */
 function updateAllowance(){
 
   document.querySelectorAll("#timesheet-body tr").forEach(row => {
@@ -134,20 +134,14 @@ function updateAllowance(){
 
     if(!foodCell) return;
 
-    // Apply only if worked (has time-out)
-    if(timeOut && timeOut !== ""){
+    if(timeOut){
 
-      if(location === "Australia"){
+      if(location === "Outside Sydney"){
         foodCell.innerText = "$50";
         foodCell.style.color = "#32d296";
-      }
-      else if(location === "New Zealand"){
-        foodCell.innerText = "$55";
-        foodCell.style.color = "#4dd0e1";
-      }
-      else{
+      } else {
         foodCell.innerText = "-";
-        foodCell.style.color = "#ff4d4d";
+        foodCell.style.color = "#888";
       }
 
     } else {
@@ -158,66 +152,12 @@ function updateAllowance(){
   });
 
 }
-document.getElementById("location")
-  .addEventListener("change", updateAllowance);
 
-window.addEventListener("load", function(){
-  updateAllowance();
-});
-document.addEventListener("change", function(e){
-  if(e.target.classList.contains("row-location")){
-    updateAllowance();
-  }
-});
+/* =========================
+   SINGLE CLEAN LISTENER
+========================= */
 document.addEventListener("change", function(e){
 
-  if(e.target.classList.contains("time-out") || 
-     e.target.classList.contains("time-in")){
-
-    calculateTimes();   // your existing logic
-    updateAllowance();  // recalc food
-  }
-
-});
-
-  if(
-    e.target.classList.contains("time-in") ||
-    e.target.classList.contains("time-out") ||
-    e.target.classList.contains("row-location")
-  ){
-    calculateTimes();
-    updateAllowance();
-  }
-
-});
-
-  document.addEventListener("change", function(e){
-
-  if(e.target.classList.contains("time-out")){
-
-    let value = e.target.value;
-    if(!value) return;
-
-    let [h,m] = value.split(":").map(Number);
-
-    if(m < 15) m = 0;
-    else if(m < 30) m = 15;
-    else if(m < 45) m = 30;
-    else m = 45;
-
-    e.target.value =
-      String(h).padStart(2,'0') + ":" +
-      String(m).padStart(2,'0');
-
-    // trigger calculations AFTER rounding
-    calculateTimes();
-    updateAllowance();
-  }
-
-});
-document.addEventListener("change", function(e){
-
-  // TIME IN or TIME OUT change
   if(
     e.target.classList.contains("time-in") ||
     e.target.classList.contains("time-out")
@@ -226,9 +166,15 @@ document.addEventListener("change", function(e){
     updateAllowance();
   }
 
-  // LOCATION change
   if(e.target.classList.contains("row-location")){
     updateAllowance();
   }
 
+});
+
+/* =========================
+   INITIAL LOAD
+========================= */
+window.addEventListener("load", function(){
+  updateAllowance();
 });
