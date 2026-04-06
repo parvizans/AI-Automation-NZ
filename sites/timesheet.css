@@ -203,3 +203,9 @@ body.timesheet h1 {
 .chart-card {
   height: 280px;
 }
+/* Fix date & time icon visibility */
+input[type="date"],
+input[type="time"] {
+  color-scheme: dark;
+  filter: invert(1);
+}
