@@ -104,25 +104,24 @@ function saveToInvoice(){
 
 function updateAllowance(){
 
-  const location = document.getElementById("location").value;
   const rows = document.querySelectorAll("#timesheet-body tr");
 
   rows.forEach(row => {
 
+    const location = row.querySelector(".row-location")?.value;
     const foodCell = row.querySelector(".food");
 
     if(!foodCell) return;
 
     if(location === "outside"){
       foodCell.innerText = "$50";
-      foodCell.style.color = "#32d296"; // green
+      foodCell.style.color = "#32d296";
     } else {
       foodCell.innerText = "-";
-      foodCell.style.color = "#ff4d4d"; // red
+      foodCell.style.color = "#ff4d4d";
     }
 
   });
-
 }
 document.getElementById("location")
   .addEventListener("change", updateAllowance);
@@ -130,5 +129,9 @@ document.getElementById("location")
 window.addEventListener("load", function(){
   updateAllowance();
 });
-
+document.addEventListener("change", function(e){
+  if(e.target.classList.contains("row-location")){
+    updateAllowance();
+  }
+});
 
