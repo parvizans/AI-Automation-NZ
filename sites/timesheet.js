@@ -33,7 +33,7 @@ function generateMonth(){
       <td><input type="date" value="${date}"></td>
       <td>${getDayName(d)}</td>
       <td><input type="time" value="08:00" readonly></td>
-      <td><input type="time" value="18:00"></td>
+      <td><input type="time"></td>
       <td class="total">0</td>
       <td class="ot">0</td>
       <td class="food">-</td>
