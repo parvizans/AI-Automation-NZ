@@ -167,20 +167,6 @@ document.addEventListener("change", function(e){
   }
 
 });
-document.addEventListener("change", function(e){
-
-  if(e.target.classList.contains("time-out")){
-
-    let value = e.target.value; // HH:MM
-    if(!value) return;
-
-    let [h,m] = value.split(":").map(Number);
-
-
-  }
-
-});
-document.addEventListener("change", function(e){
 
   if(
     e.target.classList.contains("time-in") ||
@@ -192,19 +178,8 @@ document.addEventListener("change", function(e){
   }
 
 });
-document.addEventListener("change", function(e){
 
-  if(e.target.classList.contains("time-out")){
-
-    let value = e.target.value;
-    if(!value) return;
-
-    let [h,m] = value.split(":").map(Number);
-    
-  }
-
-});
-document.addEventListener("change", function(e){
+  document.addEventListener("change", function(e){
 
   if(e.target.classList.contains("time-out")){
 
@@ -224,6 +199,23 @@ document.addEventListener("change", function(e){
 
     // trigger calculations AFTER rounding
     calculateTimes();
+    updateAllowance();
+  }
+
+});
+document.addEventListener("change", function(e){
+
+  // TIME IN or TIME OUT change
+  if(
+    e.target.classList.contains("time-in") ||
+    e.target.classList.contains("time-out")
+  ){
+    calculateTimes();
+    updateAllowance();
+  }
+
+  // LOCATION change
+  if(e.target.classList.contains("row-location")){
     updateAllowance();
   }
 
