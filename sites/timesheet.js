@@ -29,15 +29,23 @@ function generateMonth(){
     const row = document.createElement("tr");
 
     row.innerHTML = `
-      <td>${i}</td>
-      <td><input type="date" value="${date}"></td>
-      <td>${getDayName(d)}</td>
-      <td><input type="time" value="08:00" readonly></td>
-      <td><input type="time"></td>
-      <td class="total">0</td>
-      <td class="ot">0</td>
-      <td class="food">-</td>
-    `;
+  <td>${i}</td>
+  <td><input type="date" value="${date}"></td>
+  <td>${getDayName(d)}</td>
+  <td><input type="time" value="08:00" readonly></td>
+  <td><input type="time" step="900"></td>
+  <td class="total">0</td>
+  <td class="ot">0</td>
+
+  <td>
+    <select class="row-location">
+      <option value="sydney">Sydney</option>
+      <option value="outside">Outside</option>
+    </select>
+  </td>
+
+  <td class="food">-</td>
+`;
 
     tbody.appendChild(row);
   }
