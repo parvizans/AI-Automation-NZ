@@ -135,7 +135,14 @@ function updateAllowance(){
   document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
     const location = row.querySelector(".row-location")?.value;
-    const timeOut = row.querySelector(".time-out")?.value;
+  const hour = row.querySelector(".time-out-hour")?.value;
+const minute = row.querySelector(".time-out-minute")?.value;
+
+let timeOut = null;
+
+if(hour !== undefined && minute !== undefined){
+  timeOut = `${hour}:${minute}`;
+}
     const foodCell = row.querySelector(".food");
 
     if(!foodCell) return;
@@ -163,7 +170,14 @@ function calculateTimes(){
   document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
     const timeIn = row.querySelector(".time-in")?.value;
-    const timeOut = row.querySelector(".time-out")?.value;
+    const hour = row.querySelector(".time-out-hour")?.value;
+const minute = row.querySelector(".time-out-minute")?.value;
+
+let timeOut = null;
+
+if(hour !== undefined && minute !== undefined){
+  timeOut = `${hour}:${minute}`;
+}
 
     const totalCell = row.querySelector(".total");
     const otCell = row.querySelector(".ot");
@@ -238,4 +252,23 @@ document.addEventListener("change", function(e){
 ========================= */
 window.addEventListener("load", function(){
   updateAllowance();
+});
+
+document.addEventListener("change", function(e){
+
+  // TIME CHANGE
+  if(
+    e.target.classList.contains("time-in") ||
+    e.target.classList.contains("time-out-hour") ||
+    e.target.classList.contains("time-out-minute")
+  ){
+    calculateTimes();
+    updateAllowance();
+  }
+
+  // LOCATION CHANGE
+  if(e.target.classList.contains("row-location")){
+    updateAllowance();
+  }
+
 });
