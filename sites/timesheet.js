@@ -37,7 +37,7 @@ row.innerHTML = `
   <td><input type="time" class="time-in" value="08:00"></td>
 
   <td>
-    <input type="time" class="time-out">
+   <input type="time" class="time-out" step="900">
   </td>
 
   <td class="total">0</td>
