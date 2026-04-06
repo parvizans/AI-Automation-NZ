@@ -28,24 +28,36 @@ function generateMonth(){
 
     const row = document.createElement("tr");
 
-    row.innerHTML = `
+  row.innerHTML = `
   <td>${i}</td>
   <td><input type="date" value="${date}"></td>
   <td>${getDayName(d)}</td>
+
   <td><input type="time" class="time-in" value="08:00"></td>
-  <td><input type="time" class="time-out"></td>
 
-    <td class="total">0</td>
-<td class="ot">0</td>
+  <td>
+    <select class="time-out">
+      <option value="">--</option>
+      <option value="18:00">18:00</option>
+      <option value="18:15">18:15</option>
+      <option value="18:30">18:30</option>
+      <option value="18:45">18:45</option>
+    </select>
+  </td>
 
-<td>
-  <select class="row-location">
-    <option>Australia</option>
-    <option>New Zealand</option>
-  </select>
-</td>
+  <td class="total">0</td>
+  <td class="ot">0</td>
 
-<td class="food">-</td>
+  <td>
+    <select class="row-location">
+      <option>Australia</option>
+      <option>New Zealand</option>
+    </select>
+  </td>
+
+  <td class="food">-</td>
+`;
+🔥 RESULT AFTER THIS
 
   <td>
   <select class="row-location">
