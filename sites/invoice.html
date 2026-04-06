@@ -238,11 +238,6 @@ if(data.project){
 
 function calculate(){
 
-  console.log("calculate running...");
-
-  // 🔥 GET DATA SAFELY
-  const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
-
   const wdDays = +data.wdDays || 0;
   const weDays = +data.weDays || 0;
   const wdHours = +data.wdHours || 0;
@@ -271,28 +266,22 @@ function calculate(){
   const tbody = document.getElementById("rows");
   tbody.innerHTML = "";
 
-  // 🔥 BUILD TABLE
-  rows.forEach(r => {
-
+  rows.forEach(r=>{
     total += r[3];
-
     tbody.innerHTML += `
-      <tr>
-        <td>${r[0]}</td>
-        <td>${r[1]}</td>
-        <td>$${r[2]}</td>
-        <td>$${r[3].toFixed(2)}</td>
-      </tr>
-    `;
+    <tr>
+      <td>${r[0]}</td>
+      <td>${r[1]}</td>
+      <td>$${r[2]}</td>
+      <td>$${r[3].toFixed(2)}</td>
+    </tr>`;
   });
 
-  // 🔥 GET EXTRA INPUTS
   const expenses = +document.getElementById("expenses").value || 0;
   const cash = +document.getElementById("cash").value || 0;
 
   total += expenses;
 
-  // 🔥 FINAL RESULT
   document.getElementById("final").innerText =
     "$" + (total - cash).toFixed(2);
 }
@@ -304,55 +293,6 @@ function goHome(){
 function goExpenses(){
   window.location.href = "expenses.html";
 }
-
-  window.addEventListener("load", function(){
-  calculate();
-});
-  // 🔥 STEP 1 — AUTO CALCULATE ON LOAD
-window.addEventListener("load", function(){
-  calculate();
-});
-
-
-// 🔥 STEP 2 — AUTO UPDATE WHEN USER TYPES
-document.getElementById("expenses").addEventListener("input", calculate);
-document.getElementById("cash").addEventListener("input", calculate);
-
-
-// 🔥 STEP 3 — GENERATE INVOICE NUMBER
-function generateInvoiceNo(){
-  const d = new Date();
-  return "INV-" + d.getFullYear() +
-         String(d.getMonth()+1).padStart(2,'0') +
-         String(d.getDate()).padStart(2,'0') +
-         "-" + Math.floor(Math.random()*1000);
-}
-
-
-// 🔥 STEP 3.1 — APPLY INVOICE NUMBER
-if(!document.getElementById("invoiceNo").value){
-  document.getElementById("invoiceNo").value = generateInvoiceNo();
-}
-
-
-// 🔥 STEP 4 — AUTO DATE
-if(!document.getElementById("invoiceDate").value){
-  document.getElementById("invoiceDate").value =
-    new Date().toISOString().split("T")[0];
-}
-  .header-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  align-items: center;
-}
-
-.field input,
-.field select {
-  width: 100%;
-  height: 40px;
-}
-
 </script>
 
 </body>
