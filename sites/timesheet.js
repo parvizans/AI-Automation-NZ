@@ -35,7 +35,7 @@ function generateMonth(){
   <td><input type="time" class="time-in" value="08:00"></td>
   <td><input type="time" class="time-out"></td>
 
-<td class="total">0</td>
+    <td class="total">0</td>
 <td class="ot">0</td>
 
 <td>
@@ -201,7 +201,18 @@ document.addEventListener("change", function(e){
 
     let [h,m] = value.split(":").map(Number);
     
-// round minutes
+  }
+
+});
+document.addEventListener("change", function(e){
+
+  if(e.target.classList.contains("time-out")){
+
+    let value = e.target.value;
+    if(!value) return;
+
+    let [h,m] = value.split(":").map(Number);
+
     if(m < 15) m = 0;
     else if(m < 30) m = 15;
     else if(m < 45) m = 30;
@@ -210,6 +221,10 @@ document.addEventListener("change", function(e){
     e.target.value =
       String(h).padStart(2,'0') + ":" +
       String(m).padStart(2,'0');
+
+    // trigger calculations AFTER rounding
+    calculateTimes();
+    updateAllowance();
   }
 
 });
