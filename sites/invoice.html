@@ -277,14 +277,18 @@ const weOT = Number(data.weOT) || 0;
   const foodDays = wdDays + weDays;
 
   const rows = [
-    ["Weekdays", wdDays, rates.wd, wdDays*rates.wd],
-    ["Weekday Hours", wdHours, hourlyRate, wdHours * hourlyRate]
-    ["Weekend Days", weDays, rates.we, weDays*rates.we],
-    ["Weekday OT", wdOT, rates.wdOT, wdOT*rates.wdOT],
-    ["Weekend OT", weOT, rates.weOT, weOT*rates.weOT],
-    
-    ["Food Allowance", foodDays, rates.food, foodDays*rates.food]
-  ];
+
+  ["Weekdays", wdDays, rates.wd, wdDays * rates.wd],
+
+  ["Weekday Hours", wdHours, rates.wdOT, wdHours * rates.wdOT], // 🔥 NEW
+
+  ["Weekend Days", weDays, rates.we, weDays * rates.we],
+
+  ["Weekend OT", weOT, rates.weOT, weOT * rates.weOT],
+
+  ["Food Allowance", foodDays, rates.food, foodDays * rates.food]
+
+];
 
   let total = 0;
   const tbody = document.getElementById("rows");
