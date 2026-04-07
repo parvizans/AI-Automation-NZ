@@ -211,9 +211,38 @@ if(hour !== undefined && minute !== undefined){
   });
 
 }
-/* =========================
-   SINGLE CLEAN LISTENER (FINAL)
-========================= */
+// 🔥 UPDATE SUMMARY
+let wdDays = 0;
+let weDays = 0;
+let wdHours = 0;
+let weOT = 0;
+
+document.querySelectorAll("#timesheet-body tr").forEach(row => {
+
+  const day = row.children[2].innerText;
+
+  const total = parseFloat(row.querySelector(".total").innerText) || 0;
+  const ot = parseFloat(row.querySelector(".ot").innerText) || 0;
+
+  if(day === "Sat" || day === "Sun"){
+    if(total > 0){
+      weDays++;
+      weOT += ot;
+    }
+  } else {
+    if(total > 0){
+      wdDays++;
+      wdHours += total;
+    }
+  }
+
+});
+
+// 🔥 UPDATE UI
+document.getElementById("wd-days").innerText = wdDays;
+document.getElementById("wd-hours").innerText = wdHours.toFixed(1);
+document.getElementById("we-days").innerText = weDays;
+document.getElementById("we-ot").innerText = weOT.toFixed(1);
 
 
 
