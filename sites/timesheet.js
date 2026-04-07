@@ -102,31 +102,23 @@ function saveToInvoice(){
   document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
     const day = row.children[2].innerText;
- let wdDays = 0;
- let weDays = 0;
- let wdHours = 0;
- let weOT = 0;
 
-document.querySelectorAll("#timesheet-body tr").forEach(row => {
+    const total = parseFloat(row.querySelector(".total").innerText) || 0;
+    const ot = parseFloat(row.querySelector(".ot").innerText) || 0;
 
-  const day = row.children[2].innerText;
-
-  const total = parseFloat(row.querySelector(".total").innerText) || 0;
-  const ot = parseFloat(row.querySelector(".ot").innerText) || 0;
-
-  if(day === "Sat" || day === "Sun"){
-    if(total > 0){
-      weDays++;
-      weOT += total;   // weekend = all hours
+    if(day === "Sat" || day === "Sun"){
+      if(total > 0){
+        weDays++;
+        weOT += total;
+      }
+    } else {
+      if(total > 0){
+        wdDays++;
+        wdHours += total;
+      }
     }
-  } else {
-    if(total > 0){
-      wdDays++;
-      wdHours += total;
-    }
-  }
 
-});
+  });
 
   const data = {
     engineer,
