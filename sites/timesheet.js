@@ -104,7 +104,6 @@ function saveToInvoice(){
     const day = row.children[2].innerText;
 
     const total = parseFloat(row.querySelector(".total").innerText) || 0;
-    const ot = parseFloat(row.querySelector(".ot").innerText) || 0;
 
     if(day === "Sat" || day === "Sun"){
       if(total > 0){
@@ -142,20 +141,18 @@ function updateAllowance(){
   document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
     const location = row.querySelector(".row-location")?.value;
-  const hour = row.querySelector(".time-out-hour")?.value;
-const minute = row.querySelector(".time-out-minute")?.value;
+    const hour = row.querySelector(".time-out-hour")?.value;
+    const minute = row.querySelector(".time-out-minute")?.value;
 
-let timeOut = null;
+    let timeOut = null;
+    if(hour !== undefined && minute !== undefined){
+      timeOut = `${hour}:${minute}`;
+    }
 
-if(hour !== undefined && minute !== undefined){
-  timeOut = `${hour}:${minute}`;
-}
     const foodCell = row.querySelector(".food");
-
     if(!foodCell) return;
 
     if(timeOut){
-
       if(location === "Outside Sydney"){
         foodCell.innerText = "$50";
         foodCell.style.color = "#32d296";
@@ -163,7 +160,6 @@ if(hour !== undefined && minute !== undefined){
         foodCell.innerText = "-";
         foodCell.style.color = "#888";
       }
-
     } else {
       foodCell.innerText = "-";
       foodCell.style.color = "#888";
@@ -172,19 +168,22 @@ if(hour !== undefined && minute !== undefined){
   });
 
 }
+
+/* =========================
+   CALCULATE TIMES
+========================= */
 function calculateTimes(){
 
   document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
     const timeIn = row.querySelector(".time-in")?.value;
     const hour = row.querySelector(".time-out-hour")?.value;
-const minute = row.querySelector(".time-out-minute")?.value;
+    const minute = row.querySelector(".time-out-minute")?.value;
 
-let timeOut = null;
-
-if(hour !== undefined && minute !== undefined){
-  timeOut = `${hour}:${minute}`;
-}
+    let timeOut = null;
+    if(hour !== undefined && minute !== undefined){
+      timeOut = `${hour}:${minute}`;
+    }
 
     const totalCell = row.querySelector(".total");
     const otCell = row.querySelector(".ot");
@@ -199,75 +198,74 @@ if(hour !== undefined && minute !== undefined){
     const [outH, outM] = timeOut.split(":").map(Number);
 
     let totalHours = (outH + outM/60) - (inH + inM/60);
-
     if(totalHours < 0) totalHours = 0;
 
     totalCell.innerText = totalHours.toFixed(1);
 
-    // OT = anything above 8h
     let ot = totalHours > 8 ? totalHours - 8 : 0;
     otCell.innerText = ot.toFixed(1);
 
   });
 
+  updateSummary(); // 🔥 CRITICAL
 }
-// 🔥 UPDATE SUMMARY
-let wdDays = 0;
-let weDays = 0;
-let wdHours = 0;
-let weOT = 0;
 
-document.querySelectorAll("#timesheet-body tr").forEach(row => {
+/* =========================
+   SUMMARY
+========================= */
+function updateSummary(){
 
-  const day = row.children[2].innerText;
+  let wdDays = 0;
+  let weDays = 0;
+  let wdHours = 0;
+  let weOT = 0;
 
-  const total = parseFloat(row.querySelector(".total").innerText) || 0;
-  const ot = parseFloat(row.querySelector(".ot").innerText) || 0;
+  document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
-  if(day === "Sat" || day === "Sun"){
-    if(total > 0){
-      weDays++;
-      weOT += ot;
+    const day = row.children[2].innerText;
+
+    const total = parseFloat(row.querySelector(".total").innerText) || 0;
+    const ot = parseFloat(row.querySelector(".ot").innerText) || 0;
+
+    if(day === "Sat" || day === "Sun"){
+      if(total > 0){
+        weDays++;
+        weOT += ot;
+      }
+    } else {
+      if(total > 0){
+        wdDays++;
+        wdHours += total;
+      }
     }
-  } else {
-    if(total > 0){
-      wdDays++;
-      wdHours += total;
-    }
-  }
 
-});
+  });
 
-// 🔥 UPDATE UI
-document.getElementById("wd-days").innerText = wdDays;
-document.getElementById("wd-hours").innerText = wdHours.toFixed(1);
-document.getElementById("we-days").innerText = weDays;
-document.getElementById("we-ot").innerText = weOT.toFixed(1);
-
-
+  document.getElementById("wd-days").innerText = wdDays;
+  document.getElementById("wd-hours").innerText = wdHours.toFixed(1);
+  document.getElementById("we-days").innerText = weDays;
+  document.getElementById("we-ot").innerText = weOT.toFixed(1);
+}
 
 /* =========================
    INITIAL LOAD
 ========================= */
 window.addEventListener("load", function(){
 
-  // 🔥 SET CURRENT MONTH FIRST
   const today = new Date();
   document.getElementById("month").value = today.getMonth();
 
-  // 🔥 NOW GENERATE TABLE
   generateMonth();
-
-  // 🔥 RUN CALCULATIONS
   calculateTimes();
   updateAllowance();
 
 });
-  
 
+/* =========================
+   EVENTS
+========================= */
 document.addEventListener("change", function(e){
 
-  // TIME CHANGE
   if(
     e.target.classList.contains("time-in") ||
     e.target.classList.contains("time-out-hour") ||
@@ -277,7 +275,6 @@ document.addEventListener("change", function(e){
     updateAllowance();
   }
 
-  // LOCATION CHANGE
   if(e.target.classList.contains("row-location")){
     updateAllowance();
   }
