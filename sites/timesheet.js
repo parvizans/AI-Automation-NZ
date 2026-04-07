@@ -82,6 +82,7 @@ function goExpenses(){
 }
 
 function goInvoice(){
+  saveToInvoice();   // 🔥 ADD THIS
   window.location.href = "invoice.html";
 }
 
@@ -101,17 +102,31 @@ function saveToInvoice(){
   document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
     const day = row.children[2].innerText;
-    const hours = 10;
+ let wdDays = 0;
+ let weDays = 0;
+ let wdHours = 0;
+ let weOT = 0;
 
-    if(day === "Sat" || day === "Sun"){
+document.querySelectorAll("#timesheet-body tr").forEach(row => {
+
+  const day = row.children[2].innerText;
+
+  const total = parseFloat(row.querySelector(".total").innerText) || 0;
+  const ot = parseFloat(row.querySelector(".ot").innerText) || 0;
+
+  if(day === "Sat" || day === "Sun"){
+    if(total > 0){
       weDays++;
-      weOT += hours;
-    } else {
-      wdDays++;
-      wdHours += hours;
+      weOT += total;   // weekend = all hours
     }
+  } else {
+    if(total > 0){
+      wdDays++;
+      wdHours += total;
+    }
+  }
 
-  });
+});
 
   const data = {
     engineer,
