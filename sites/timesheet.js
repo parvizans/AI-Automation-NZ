@@ -227,17 +227,23 @@ function updateSummary(){
     const total = parseFloat(row.querySelector(".total").innerText) || 0;
     const ot = parseFloat(row.querySelector(".ot").innerText) || 0;
 
-    if(day === "Sat" || day === "Sun"){
-      if(total > 0){
-        weDays++;
-        weOT += ot;
-      }
-    } else {
-      if(total > 0){
-        wdDays++;
-        wdHours += total;
-      }
-    }
+  if(day === "Sat" || day === "Sun"){
+
+  if(total >= 8){
+    weDays++;   // only full day
+  }
+
+  weOT += ot;
+
+} else {
+
+  if(total >= 8){
+    wdDays++;   // full day
+  } else {
+    wdHours += total;   // partial hours only
+  }
+
+}
 
   });
 
