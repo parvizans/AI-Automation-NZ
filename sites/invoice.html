@@ -257,12 +257,13 @@ function loadData(){
 // MAIN CALCULATION
 function calculate(){
 
-  const wdDays = +data.wdDays || 0;
-  const weDays = +data.weDays || 0;
-  const wdHours = +data.wdHours || 0;
+const wdDays = Number(data.wdDays) || 0;
+const weDays = Number(data.weDays) || 0;
+const wdHours = Number(data.wdHours) || 0;
+const weOT = Number(data.weOT) || 0;
 
   // ✅ OT LOGIC (CORRECT)
- const wdOT = Math.max(0, wdHours - (wdDays * 8));
+  const wdOT = Math.max(0, wdHours - (wdDays * 8));
   const weOT = +data.weOT || 0;
 
   const rates = {
