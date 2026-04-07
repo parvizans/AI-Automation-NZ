@@ -266,8 +266,20 @@ document.addEventListener("change", function(e){
    INITIAL LOAD
 ========================= */
 window.addEventListener("load", function(){
+
+  // 🔥 SET CURRENT MONTH FIRST
+  const today = new Date();
+  document.getElementById("month").value = today.getMonth();
+
+  // 🔥 NOW GENERATE TABLE
+  generateMonth();
+
+  // 🔥 RUN CALCULATIONS
+  calculateTimes();
   updateAllowance();
+
 });
+  
 
 document.addEventListener("change", function(e){
 
