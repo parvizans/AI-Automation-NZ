@@ -276,9 +276,11 @@ function calculate(){
 
   const rows = [
     ["Weekdays", wdDays, rates.wd, wdDays*rates.wd],
+    ["Weekday Hours", wdHours, hourlyRate, wdHours * hourlyRate]
     ["Weekend Days", weDays, rates.we, weDays*rates.we],
     ["Weekday OT", wdOT, rates.wdOT, wdOT*rates.wdOT],
     ["Weekend OT", weOT, rates.weOT, weOT*rates.weOT],
+    
     ["Food Allowance", foodDays, rates.food, foodDays*rates.food]
   ];
 
