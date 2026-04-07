@@ -215,17 +215,6 @@ if(hour !== undefined && minute !== undefined){
    SINGLE CLEAN LISTENER (FINAL)
 ========================= */
 
-  // 🔥 UPDATE CALCULATIONS
-    calculateTimes();
-    updateAllowance();
-  }
-
-  // LOCATION CHANGE
-  if(e.target.classList.contains("row-location")){
-    updateAllowance();
-  }
-
-});
 
 
 /* =========================
