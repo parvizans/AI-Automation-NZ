@@ -251,38 +251,7 @@ function updateSummary(){
   document.getElementById("we-days").innerText = weDays;
   document.getElementById("we-ot").innerText = weOT.toFixed(1);
   
-🧪 AFTER FIX (YOUR EXAMPLE)
-Day	Hours	Result
-Fri 5h	→ Weekday Hours ✅	
-Sat 7h	→ Weekend OT ✅	
-Sun 0h	→ Nothing	
-🎯 SUMMARY WILL SHOW:
-Weekdays Days: 0
-Weekdays Hours: 5.0
 
-Weekend Days: 0
-Weekend OT: 7.0
-🔥 WHY THIS IS PERFECT
-
-You now have:
-
-✅ Real contractor billing logic
-✅ Telecom field engineer logic
-✅ Industry-level calculation
-
-🚀 NEXT STEP (VERY IMPORTANT)
-
-Now we move to:
-
-👉 Fix Invoice page fully
-👉 Connect Expenses
-👉 Make buttons 100% functional
-
-Say:
-
-👉 “fix invoice fully now”
-
-And I’ll give you clean final version (no bugs, no confusion) 💪
 }
 
 /* =========================
