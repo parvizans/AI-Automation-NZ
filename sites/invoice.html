@@ -235,40 +235,55 @@ th {
 </div>
 
 <script>
+// =========================
+// LOAD DATA FROM TIMESHEET
+// =========================
 const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
-  console.log("INVOICE DATA:", data);
 
-// LOAD SAVED VALUES
+// =========================
+// LOAD INITIAL VALUES
+// =========================
 function loadData(){
+
+  // Expenses
   const savedExpense = localStorage.getItem("expenseTotal");
   if(savedExpense){
     document.getElementById("expenses").value = savedExpense;
   }
 
+  // Engineer
   if(data.engineer){
     document.getElementById("engineer").value = data.engineer;
   }
 
+  // Project
   if(data.project){
     document.getElementById("project").value = data.project;
   }
+
+  // Auto invoice number
+  document.getElementById("invoiceNo").value =
+    "INV-" + Math.floor(Math.random()*10000);
+
+  // Today date
+  const today = new Date().toISOString().split("T")[0];
+  document.getElementById("invoiceDate").value = today;
 }
 
+// =========================
 // MAIN CALCULATION
+// =========================
 function calculate(){
 
-const wdDays = Number(data.wdDays) || 0;
-const weDays = Number(data.weDays) || 0;
-const wdHours = Number(data.wdHours) || 0;
-const weOT = Number(data.weOT) || 0;
-
-  // ✅ OT LOGIC (CORRECT)
-  const wdOT = Math.max(0, wdHours - (wdDays * 8));
+  const wdDays = Number(data.wdDays) || 0;
+  const weDays = Number(data.weDays) || 0;
+  const wdHours = Number(data.wdHours) || 0;
+  const weOT = Number(data.weOT) || 0;
 
   const rates = {
     wd:240,
     we:280,
-    wdOT:30,
+    wdHours:30,   // weekday partial hours
     weOT:35,
     food:50
   };
@@ -277,17 +292,17 @@ const weOT = Number(data.weOT) || 0;
 
   const rows = [
 
-  ["Weekdays", wdDays, rates.wd, wdDays * rates.wd],
+    ["Weekdays", wdDays, rates.wd, wdDays * rates.wd],
 
-  ["Weekday Hours", wdHours, rates.wdOT, wdHours * rates.wdOT], // 🔥 NEW
+    ["Weekday Hours", wdHours, rates.wdHours, wdHours * rates.wdHours],
 
-  ["Weekend Days", weDays, rates.we, weDays * rates.we],
+    ["Weekend Days", weDays, rates.we, weDays * rates.we],
 
-  ["Weekend OT", weOT, rates.weOT, weOT * rates.weOT],
+    ["Weekend OT", weOT, rates.weOT, weOT * rates.weOT],
 
-  ["Food Allowance", foodDays, rates.food, foodDays * rates.food]
+    ["Food Allowance", foodDays, rates.food, foodDays * rates.food]
 
-];
+  ];
 
   let total = 0;
   const tbody = document.getElementById("rows");
@@ -305,18 +320,19 @@ const weOT = Number(data.weOT) || 0;
     </tr>`;
   });
 
-  // INPUT VALUES
-  const expenses = +document.getElementById("expenses").value || 0;
-  const cash = +document.getElementById("cash").value || 0;
+  // Inputs
+  const expenses = Number(document.getElementById("expenses").value) || 0;
+  const cash = Number(document.getElementById("cash").value) || 0;
 
-  // FINAL
   const finalTotal = total + expenses - cash;
 
   document.getElementById("final").innerText =
     "$" + finalTotal.toFixed(2);
 }
 
+// =========================
 // NAVIGATION
+// =========================
 function goHome(){
   window.location.href = "timesheet.html";
 }
@@ -325,16 +341,19 @@ function goExpenses(){
   window.location.href = "expenses.html";
 }
 
-// 🔥 AUTO LOAD + CALCULATE
+// =========================
+// AUTO LOAD
+// =========================
 window.addEventListener("load", function(){
   loadData();
   calculate();
 });
 
-// 🔥 LIVE UPDATE (SUPER NICE UX)
+// =========================
+// LIVE UPDATE
+// =========================
 document.getElementById("expenses").addEventListener("input", calculate);
-document.getElementById("cash").addEventListener("input", calculate);
-  
+document.getElementById("cash").addEventListener("input", calculate);  
 </script>
 
 </body>
