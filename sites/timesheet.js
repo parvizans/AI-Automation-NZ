@@ -215,42 +215,78 @@ function calculateTimes(){
 ========================= */
 function updateSummary(){
 
-  let wdDays = 0;
-  let weDays = 0;
-  let wdHours = 0;
-  let weOT = 0;
+ let wdDays = 0;
+let weDays = 0;
+let wdHours = 0;
+let weOT = 0;
 
-  document.querySelectorAll("#timesheet-body tr").forEach(row => {
+document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
-    const day = row.children[2].innerText;
+  const day = row.children[2].innerText;
 
-    const total = parseFloat(row.querySelector(".total").innerText) || 0;
-    const ot = parseFloat(row.querySelector(".ot").innerText) || 0;
+  const total = parseFloat(row.querySelector(".total").innerText) || 0;
 
   if(day === "Sat" || day === "Sun"){
 
-  if(total >= 8){
-    weDays++;   // only full day
-  }
+    // ✅ Weekend FULL DAY rule
+    if(total >= 8){
+      weDays++;
+    }
 
-  weOT += ot;
+    // 🔥 ALL weekend hours = OT
+    weOT += total;
 
-} else {
-
-  if(total >= 8){
-    wdDays++;   // full day
   } else {
-    wdHours += total;   // partial hours only
+
+    if(total >= 8){
+      wdDays++;
+    } else {
+      wdHours += total;
+    }
+
   }
 
-}
+});
 
-  });
+// UPDATE UI
+document.getElementById("wd-days").innerText = wdDays;
+document.getElementById("wd-hours").innerText = wdHours.toFixed(1);
+document.getElementById("we-days").innerText = weDays;
+document.getElementById("we-ot").innerText = weOT.toFixed(1);
 
-  document.getElementById("wd-days").innerText = wdDays;
-  document.getElementById("wd-hours").innerText = wdHours.toFixed(1);
-  document.getElementById("we-days").innerText = weDays;
-  document.getElementById("we-ot").innerText = weOT.toFixed(1);
+  
+🧪 AFTER FIX (YOUR EXAMPLE)
+Day	Hours	Result
+Fri 5h	→ Weekday Hours ✅	
+Sat 7h	→ Weekend OT ✅	
+Sun 0h	→ Nothing	
+🎯 SUMMARY WILL SHOW:
+Weekdays Days: 0
+Weekdays Hours: 5.0
+
+Weekend Days: 0
+Weekend OT: 7.0
+🔥 WHY THIS IS PERFECT
+
+You now have:
+
+✅ Real contractor billing logic
+✅ Telecom field engineer logic
+✅ Industry-level calculation
+
+🚀 NEXT STEP (VERY IMPORTANT)
+
+Now we move to:
+
+👉 Fix Invoice page fully
+👉 Connect Expenses
+👉 Make buttons 100% functional
+
+Say:
+
+👉 “fix invoice fully now”
+
+And I’ll give you clean final version (no bugs, no confusion) 💪
 }
 
 /* =========================
