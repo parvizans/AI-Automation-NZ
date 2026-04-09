@@ -214,47 +214,71 @@ function calculateTimes(){
    SUMMARY
 ========================= */
 function updateSummary(){
- let wdDays = 0;
-let weDays = 0;
-let wdHours = 0;
-let weOT = 0;
 
-document.querySelectorAll("#timesheet-body tr").forEach(row => {
+  let wdDays = 0;
+  let weDays = 0;
+  let wdHours = 0;
+  let wdOT = 0;
+  let weOT = 0;
+  let foodTotal = 0;
 
-  const day = row.children[2].innerText;
+  document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
-  const total = parseFloat(row.querySelector(".total").innerText) || 0;
+    const day = row.children[2].innerText;
+    const total = parseFloat(row.querySelector(".total").innerText) || 0;
+    const location = row.querySelector(".row-location")?.value;
 
-  if(day === "Sat" || day === "Sun"){
+    if(total <= 0) return;
 
-    // ✅ Weekend FULL DAY rule
-    if(total >= 8){
-      weDays++;
+    // WEEKEND
+    if(day === "Sat" || day === "Sun"){
+
+      if(total >= 8){
+        weDays++;
+        weOT += (total - 8);   // ONLY EXTRA
+      } else {
+        weOT += total;         // ALL hours = OT
+      }
+
+    }
+    // WEEKDAY
+    else {
+
+      if(total >= 8){
+        wdDays++;
+        wdOT += (total - 8);
+      } else {
+        wdHours += total;
+      }
+
     }
 
-    // 🔥 ALL weekend hours = OT
-    weOT += total;
-
-  } else {
-
-    if(total >= 8){
-      wdDays++;
-    } else {
-      wdHours += total;
+    // FOOD LOGIC
+    if(location === "Outside Sydney"){
+      foodTotal++;
     }
 
-  }
+  });
 
-});
+  // UPDATE UI
+  document.getElementById("wd-days").innerText = wdDays;
+  document.getElementById("wd-hours").innerText = wdHours.toFixed(1);
+  document.getElementById("wd-ot").innerText = wdOT.toFixed(1);   // 🔥 NEW
+  document.getElementById("we-days").innerText = weDays;
+  document.getElementById("we-ot").innerText = weOT.toFixed(1);
 
-// UPDATE UI
-document.getElementById("wd-days").innerText = wdDays;
-document.getElementById("wd-hours").innerText = wdHours.toFixed(1);
-document.getElementById("we-days").innerText = weDays;
-document.getElementById("we-ot").innerText = weOT.toFixed(1);
-
+  // SAVE FOR INVOICE
+  localStorage.setItem("invoiceData", JSON.stringify({
+    engineer: document.getElementById("engineer").value,
+    project: document.getElementById("project").value,
+    wdDays,
+    wdHours,
+    wdOT,
+    weDays,
+    weOT,
+    foodTotal
+  }));
 }
-
 /* =========================
    INITIAL LOAD
 ========================= */
