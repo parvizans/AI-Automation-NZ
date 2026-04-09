@@ -105,11 +105,15 @@ function saveToInvoice(){
 
     const total = parseFloat(row.querySelector(".total").innerText) || 0;
 
-    if(day === "Sat" || day === "Sun"){
-      if(total > 0){
-        weDays++;
-        weOT += total;
-      }
+   if(day === "Sat" || day === "Sun"){
+
+  if(total >= 8){
+    weDays++;   // full day
+  }
+
+  weOT += total;   // 🔥 ALL hours are OT (THIS IS THE FIX)
+
+}
     } else {
       if(total > 0){
         wdDays++;
