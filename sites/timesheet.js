@@ -283,14 +283,14 @@ function updateSummary(){
    INITIAL LOAD
 ========================= */
 window.addEventListener("load", function(){
-
   const today = new Date();
   document.getElementById("month").value = today.getMonth();
 
   generateMonth();
+  loadTimesheet();   // 🔥 ADD THIS
+
   calculateTimes();
   updateAllowance();
-
 });
 
 /* =========================
@@ -312,3 +312,23 @@ document.addEventListener("change", function(e){
   }
 
 });
+
+/* =========================
+   Save.Load,Reset Timesheet
+========================= */
+function saveTimesheet(){
+  localStorage.setItem("timesheetBackup", document.getElementById("timesheet-body").innerHTML);
+  alert("Saved ✅");
+}
+
+function loadTimesheet(){
+  const saved = localStorage.getItem("timesheetBackup");
+  if(saved){
+    document.getElementById("timesheet-body").innerHTML = saved;
+  }
+}
+
+function resetTimesheet(){
+  localStorage.removeItem("timesheetBackup");
+  location.reload();
+}
