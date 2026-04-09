@@ -353,6 +353,16 @@ window.addEventListener("load", function(){
   loadData();
   calculate();
 });
+  function saveInvoice(){
+  localStorage.setItem("invoiceBackup", document.getElementById("rows").innerHTML);
+  alert("Invoice saved ✅");
+}
+
+function resetInvoice(){
+  localStorage.removeItem("invoiceData");
+  localStorage.removeItem("invoiceBackup");
+  location.reload();
+}
 
 // =========================
 // LIVE UPDATE
