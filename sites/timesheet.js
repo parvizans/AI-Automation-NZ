@@ -280,17 +280,21 @@ function updateSummary(){
 /* =========================
    INITIAL LOAD
 ========================= */
-  window.addEventListener("load", function(){
+ const today = new Date();
 
-  const today = new Date();
+  // ✅ set current month
   document.getElementById("month").value = today.getMonth();
 
+  // ✅ generate table FIRST
   generateMonth();
+
+  // ✅ then load saved data
   loadTimesheet();
 
+  // ✅ then calculate
   calculateTimes();
   updateAllowance();
-  updateSummary();   // ✅ FINAL LINE
+  updateSummary();
 
 });
 
