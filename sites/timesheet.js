@@ -98,7 +98,7 @@ function saveToInvoice(){
   let weDays = 0;
   let wdHours = 0;
   let weOT = 0;
-
+  
   document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
     const day = row.children[2].innerText;
@@ -228,41 +228,35 @@ function updateSummary(){
 
   document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
-    const day = row.children[2].innerText;
-    const total = parseFloat(row.querySelector(".total").innerText) || 0;
-    const location = row.querySelector(".row-location")?.value;
+  const day = row.children[2].innerText;
 
-    if(total <= 0) return;
+  const total = parseFloat(row.querySelector(".total").innerText) || 0;
+  const ot = parseFloat(row.querySelector(".ot").innerText) || 0;
 
-    // WEEKEND
-    if(day === "Sat" || day === "Sun"){
+  // ✅ WEEKEND
+  if(day === "Sat" || day === "Sun"){
 
-      if(total >= 8){
-        weDays++;
-        weOT += (total - 8);   // ONLY EXTRA
-      } else {
-        weOT += total;         // ALL hours = OT
-      }
-
-    }
-    // WEEKDAY
-    else {
-
-      if(total >= 8){
-        wdDays++;
-        wdOT += (total - 8);
-      } else {
-        wdHours += total;
-      }
-
+    if(total >= 8){
+      weDays++;   // full day
     }
 
-    // FOOD LOGIC
-    if(location === "Outside Sydney"){
-      foodTotal++;
+    weOT += total;   // 🔥 ALL weekend hours = OT
+
+  } 
+  // ✅ WEEKDAY
+  else {
+
+    if(total >= 8){
+      wdDays++;
     }
 
-  });
+    if(total > 0){
+      wdHours += total;
+    }
+       wdOT += ot;   // 🔥 ADD THIS LINE HERE
+  }
+
+});
 
   // UPDATE UI
   document.getElementById("wd-days").innerText = wdDays;
@@ -286,15 +280,18 @@ function updateSummary(){
 /* =========================
    INITIAL LOAD
 ========================= */
-window.addEventListener("load", function(){
+  window.addEventListener("load", function(){
+
   const today = new Date();
   document.getElementById("month").value = today.getMonth();
 
   generateMonth();
-  loadTimesheet();   // 🔥 ADD THIS
+  loadTimesheet();
 
   calculateTimes();
   updateAllowance();
+  updateSummary();   // ✅ FINAL LINE
+
 });
 
 /* =========================
