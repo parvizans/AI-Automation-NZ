@@ -105,22 +105,22 @@ function saveToInvoice(){
 
     const total = parseFloat(row.querySelector(".total").innerText) || 0;
 
-   if(day === "Sat" || day === "Sun"){
+  if(day === "Sat" || day === "Sun"){
 
   if(total >= 8){
-    weDays++;   // full day
+    weDays++;
   }
 
-  weOT += total;   // 🔥 ALL hours are OT (THIS IS THE FIX)
+  weOT += total;
+
+} else {
+
+  if(total > 0){
+    wdDays++;
+    wdHours += total;
+  }
 
 }
-    } else {
-      if(total > 0){
-        wdDays++;
-        wdHours += total;
-      }
-    }
-
   });
 
   const data = {
@@ -280,18 +280,16 @@ function updateSummary(){
 /* =========================
    INITIAL LOAD
 ========================= */
- const today = new Date();
+window.addEventListener("load", function(){
 
-  // ✅ set current month
+  const today = new Date();
+
   document.getElementById("month").value = today.getMonth();
 
-  // ✅ generate table FIRST
   generateMonth();
 
-  // ✅ then load saved data
   loadTimesheet();
 
-  // ✅ then calculate
   calculateTimes();
   updateAllowance();
   updateSummary();
