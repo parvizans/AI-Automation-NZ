@@ -95,9 +95,10 @@ function saveToInvoice(){
 
   const engineer = document.getElementById("engineer").value;
   const project = document.getElementById("project").value;
-
-  let wdDays = 0;
+  
   let weDays = 0;
+  let wdDays = 0;
+  let weHours = 0;
   let wdHours = 0;
   let weOT = 0;
   
