@@ -224,7 +224,7 @@ function updateSummary(){
 
   let wdDays = 0;
   let weDays = 0;
-  let wdHours = 0;
+  let weHours = 0;
   let wdOT = 0;
   let weOT = 0;
 
@@ -286,7 +286,7 @@ window.addEventListener("load", function(){
 
   const today = new Date();
 
- = today.getMonth();
+document.getElementById("month").value = today.getMonth();
 
   loadTimesheet();
   calculateTimes();
