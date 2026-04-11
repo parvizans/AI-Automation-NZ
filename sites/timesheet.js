@@ -224,48 +224,48 @@ function updateSummary(){
   let wdHours = 0;
   let wdOT = 0;
   let weOT = 0;
-  let foodTotal = 0;
 
   document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
-  const day = row.children[2].innerText;
+    const day = row.children[2].innerText;
+    const total = parseFloat(row.querySelector(".total").innerText) || 0;
 
-  const total = parseFloat(row.querySelector(".total").innerText) || 0;
-  const ot = parseFloat(row.querySelector(".ot").innerText) || 0;
+    // 🔴 WEEKEND
+    if(day === "Sat" || day === "Sun"){
 
-  // ✅ WEEKEND
-  if(day === "Sat" || day === "Sun"){
+      if(total >= 8){
+        weDays++;   // full day
+        weOT += (total - 8);   // ONLY extra is OT
+      } else {
+        weOT += total;  // all hours OT if <8
+      }
 
-    if(total >= 8){
-      weDays++;   // full day
     }
 
-    weOT += total;   // 🔥 ALL weekend hours = OT
+    // 🔵 WEEKDAY
+    else {
 
-  } 
-  // ✅ WEEKDAY
-  else {
+      if(total >= 8){
+        wdDays++;                 // full day
+        wdOT += (total - 8);      // only extra
+      } 
+      else if(total > 0){
+        wdHours += total;         // half-day bucket
+      }
 
-    if(total >= 8){
-      wdDays++;
     }
 
-    if(total > 0){
-      wdHours += total;
-    }
-       wdOT += ot;   // 🔥 ADD THIS LINE HERE
-  }
+  });
 
-});
-
-  // UPDATE UI
+  // UI UPDATE
   document.getElementById("wd-days").innerText = wdDays;
   document.getElementById("wd-hours").innerText = wdHours.toFixed(1);
-  document.getElementById("wd-ot").innerText = wdOT.toFixed(1);   // 🔥 NEW
+  document.getElementById("wd-ot").innerText = wdOT.toFixed(1);
+
   document.getElementById("we-days").innerText = weDays;
   document.getElementById("we-ot").innerText = weOT.toFixed(1);
 
-  // SAVE FOR INVOICE
+  // SAVE → INVOICE
   localStorage.setItem("invoiceData", JSON.stringify({
     engineer: document.getElementById("engineer").value,
     project: document.getElementById("project").value,
@@ -273,8 +273,7 @@ function updateSummary(){
     wdHours,
     wdOT,
     weDays,
-    weOT,
-    foodTotal
+    weOT
   }));
 }
 /* =========================
