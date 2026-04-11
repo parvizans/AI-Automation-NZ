@@ -269,16 +269,22 @@ function updateSummary(){
   document.getElementById("we-ot").innerText = weOT.toFixed(1);
 
   // SAVE → INVOICE
-  localStorage.setItem("invoiceData", JSON.stringify({
-    engineer: document.getElementById("engineer").value,
-    project: document.getElementById("project").value,
-    wdDays,
-    wdHours,
-    wdOT,
-    weDays,
-    weOT
-  }));
-}
+// ✅ ALWAYS RECALCULATE BEFORE SAVE
+updateSummary();
+
+localStorage.setItem("invoiceData", JSON.stringify({
+  engineer: document.getElementById("engineer").value,
+  project: document.getElementById("project").value,
+  wdDays,
+  wdHours,
+  wdOT,
+  weDays,
+  weOT
+}));
+
+console.log("✅ SAVED DATA:", {
+  wdDays, wdHours, wdOT, weDays, weOT
+});
 /* =========================
    INITIAL LOAD
 ========================= */
