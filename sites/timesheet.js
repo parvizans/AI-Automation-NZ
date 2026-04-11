@@ -283,12 +283,9 @@ window.addEventListener("load", function(){
 
   const today = new Date();
 
-  document.getElementById("month").value = today.getMonth();
-
-  generateMonth();
+ = today.getMonth();
 
   loadTimesheet();
-
   calculateTimes();
   updateAllowance();
   updateSummary();
