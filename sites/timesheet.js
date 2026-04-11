@@ -157,7 +157,7 @@ function updateAllowance(){
     if(!foodCell) return;
 
     if(timeOut){
-      if(location === "Outside Sydney"){
+     if(location === "Outside Sydney" && total > 0){
         foodCell.innerText = "$50";
         foodCell.style.color = "#32d296";
       } else {
