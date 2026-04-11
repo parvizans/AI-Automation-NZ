@@ -21,7 +21,8 @@ function generateMonth(){
   const days = new Date(year, parseInt(month)+1, 0).getDate();
 
   const tbody = document.getElementById("timesheet-body");
-  tbody.innerHTML = "";
+ 
+  tbody.innerHTML = "";   // ✅ THIS IS THE ONLY LINE YOU NEED
 
   for(let i=1;i<=days;i++){
 
