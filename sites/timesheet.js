@@ -14,7 +14,8 @@ function getDayName(date){
 
 function generateMonth(){
   const month = document.getElementById("month").value;
-  if(month === "") return;
+
+  if(month === "") return;  // 🚫 do nothing if not selected
 
   const year = new Date().getFullYear();
   const days = new Date(year, parseInt(month)+1, 0).getDate();
