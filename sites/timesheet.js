@@ -348,3 +348,5 @@ function resetTimesheet(){
   localStorage.removeItem("timesheetBackup");
   location.reload();
 }
+
+});
