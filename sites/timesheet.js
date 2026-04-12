@@ -285,28 +285,6 @@ localStorage.setItem("invoiceData", JSON.stringify({
 console.log("✅ SAVED DATA:", {
   wdDays, wdHours, wdOT, weDays, weOT
 });
-/* =========================
-   INITIAL LOAD
-========================= */
-window.addEventListener("load", function(){
-
-  const today = new Date();
-
-  // ✅ Set current month
-  document.getElementById("month").value = today.getMonth();
-
-  // ✅ FIRST build table
-  generateMonth();
-
-  // ✅ THEN load saved data
-  loadTimesheet();
-
-  // ✅ THEN calculate everything
-  calculateTimes();
-  updateAllowance();
-  updateSummary();
-
-});
 
 
 /* =========================
@@ -348,3 +326,26 @@ function resetTimesheet(){
   localStorage.removeItem("timesheetBackup");
   location.reload();
 }
+  /* =========================
+   INITIAL LOAD
+========================= */
+window.addEventListener("load", function(){
+
+  const today = new Date();
+
+  // ✅ Set current month
+  document.getElementById("month").value = today.getMonth();
+
+  // ✅ FIRST build table
+  generateMonth();
+
+  // ✅ THEN load saved data
+  loadTimesheet();
+
+  // ✅ THEN calculate everything
+  calculateTimes();
+  updateAllowance();
+  updateSummary();
+
+});
+
