@@ -308,7 +308,6 @@ window.addEventListener("load", function(){
 
 });
 
-});
 
 /* =========================
    EVENTS
