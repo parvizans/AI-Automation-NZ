@@ -276,23 +276,21 @@ function loadData(){
 // =========================
 function calculate(){
 
-
+const wdHours = Number(data.wdHours) || 0;
 const weDays = Number(data.weDays) || 0;
 const wdDays = Number(data.wdDays) || 0;
-const weHours = Number(data.weHours) || 0;
 const wdOT = Number(data.wdOT) || 0;
 const weOT = Number(data.weOT) || 0;  
 const foodTotal = Number(data.foodTotal) || 0;
 
- const rates = {
-  weDays:240,
-  wdDays:280,
-  weHours:30,
-  wdOT:35,
-  weOT:30,
+const rates = {
+  wd:240,       // weekday day
+  we:280,       // weekend day
+  wdHours:30,   // weekday hours
+  wdOT:30,      // weekday OT
+  weOT:35,      // weekend OT
   food:50
 };
-
 
   const foodDays = wdDays + weDays;
 
@@ -304,6 +302,7 @@ const foodTotal = Number(data.foodTotal) || 0;
    ["Weekday OT", wdOT, rates.wdOT, wdOT * rates.wdOT],   // 🔥 NEW
    ["Weekend OT", weOT, rates.weOT, weOT * rates.weOT], 
    ["Food Allowance", foodTotal, rates.food, foodTotal * rates.food],
+
 
 ];
 
