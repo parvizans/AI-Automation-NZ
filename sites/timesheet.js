@@ -292,12 +292,21 @@ window.addEventListener("load", function(){
 
   const today = new Date();
 
-document.getElementById("month").value = today.getMonth();
+  // ✅ Set current month
+  document.getElementById("month").value = today.getMonth();
 
+  // ✅ FIRST build table
+  generateMonth();
+
+  // ✅ THEN load saved data
   loadTimesheet();
+
+  // ✅ THEN calculate everything
   calculateTimes();
   updateAllowance();
   updateSummary();
+
+});
 
 });
 
