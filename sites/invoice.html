@@ -179,8 +179,8 @@ th {
 
   <div class="card">
     <b>Project</b><br>
-    <input id="project" placeholder="Enter Project Name / Code">
-    </select>
+  <input id="project" placeholder="Enter Project Name / Code">
+
   </div>
 
 </div>
@@ -276,36 +276,32 @@ function loadData(){
 // =========================
 function calculate(){
 
-const wdHours = Number(data.wdHours) || 0;
-const weDays = Number(data.weDays) || 0;
-const wdDays = Number(data.wdDays) || 0;
-const wdOT = Number(data.wdOT) || 0;
-const weOT = Number(data.weOT) || 0;  
-const foodTotal = Number(data.foodTotal) || 0;
+  const wdDays = Number(data.wdDays) || 0;
+  const weDays = Number(data.weDays) || 0;
+  const wdHours = Number(data.wdHours) || 0;
+  const wdOT = Number(data.wdOT) || 0;
+  const weOT = Number(data.weOT) || 0;
+  const foodTotal = Number(data.foodTotal) || 0;
 
-const rates = {
-  wd:240,       // weekday day
-  we:280,       // weekend day
-  wdHours:30,   // weekday hours
-  wdOT:30,      // weekday OT
-  weOT:35,      // weekend OT
-  food:50
-};
-
-  const foodDays = wdDays + weDays;
+  const rates = {
+    wd:240,
+    we:280,
+    wdHours:30,
+    wdOT:30,
+    weOT:35,
+    food:50
+  };
 
   const rows = [
 
-   ["Weekdays", wdDays, rates.wd, wdDays * rates.wd],
-   ["Weekend Days", weDays, rates.we, weDays * rates.we],
-   ["Weekday Hours", wdHours, rates.wdHours, wdHours * rates.wdHours],
-   ["Weekday OT", wdOT, rates.wdOT, wdOT * rates.wdOT],   // 🔥 NEW
-   ["Weekend OT", weOT, rates.weOT, weOT * rates.weOT], 
-   ["Food Allowance", foodTotal, rates.food, foodTotal * rates.food],
+    ["Weekdays", wdDays, rates.wd, wdDays * rates.wd],
+    ["Weekday Hours", wdHours, rates.wdHours, wdHours * rates.wdHours],
+    ["Weekday OT", wdOT, rates.wdOT, wdOT * rates.wdOT],
+    ["Weekend Days", weDays, rates.we, weDays * rates.we],
+    ["Weekend OT", weOT, rates.weOT, weOT * rates.weOT],
+    ["Food Allowance", foodTotal, rates.food, foodTotal * rates.food]
 
-
-];
-
+  ];
 
   let total = 0;
   const tbody = document.getElementById("rows");
@@ -323,7 +319,6 @@ const rates = {
     </tr>`;
   });
 
-  // Inputs
   const expenses = Number(document.getElementById("expenses").value) || 0;
   const cash = Number(document.getElementById("cash").value) || 0;
 
