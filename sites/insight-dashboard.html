@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Network Insight Dashboard</title>
+<title>Network Insight Dashboard</title><input type="file" id="fileInput" accept=".csv">
+  <input type="number" id="limitInput" placeholder="Show last N points">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
 
 <style>
 body {
@@ -99,7 +101,8 @@ h1 {
 <!-- Upload -->
 <div class="upload-box">
   <label for="fileInput" class="upload-btn">📂 Upload CSV</label>
-  <input type="file" id="fileInput" accept=".csv">
+  <input type="file" id="fileInput" accept=".csv
+  <input type="number" id="limitInput" placeholder="Show last N points">
 </div>
 
 <!-- KPI -->
