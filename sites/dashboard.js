@@ -117,8 +117,6 @@ function buildDashboard(data) {
     }
   });
 }
-💥 WHY THIS FIX
-}
 
 /* =========================
    KPI
