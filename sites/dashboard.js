@@ -90,32 +90,34 @@ function applyFilters() {
 ========================= */
 function buildDashboard(data) {
   if (!data || data.length === 0) return;
+
   const keys = Object.keys(data[0]);
 
   document.querySelector(".kpi-grid").innerHTML = "";
   document.querySelector(".charts-grid").innerHTML = "";
 
-keys.forEach(key => {
-  let values = data.map(row => row[key]).filter(v => typeof v === "number");
+  keys.forEach(key => {
+    let values = data.map(row => row[key]).filter(v => typeof v === "number");
 
-  // 🔥 ADD THIS (N-point logic)
-  const limit = parseInt(document.getElementById("limitInput").value);
+    // 🔥 N-point logic (KEEP THIS)
+    const limit = parseInt(document.getElementById("limitInput").value);
 
-  if (!isNaN(limit) && limit > 0) {
-    values = values.slice(-limit);
-  }
+    if (!isNaN(limit) && limit > 0) {
+      values = values.slice(-limit);
+    }
 
-  // Existing condition
-  if (
-    values.length > 0 &&
-    !key.toLowerCase().includes("year") &&
-    !key.toLowerCase().includes("day") &&
-    !key.toLowerCase().includes("month")
-  ) {
-    createKPI(key, values);
-    createChart(key, values);
-  }
-});
+    if (
+      values.length > 0 &&
+      !key.toLowerCase().includes("year") &&
+      !key.toLowerCase().includes("day") &&
+      !key.toLowerCase().includes("month")
+    ) {
+      createKPI(key, values);
+      createChart(key, values);
+    }
+  });
+}
+💥 WHY THIS FIX
 }
 
 /* =========================
