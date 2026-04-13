@@ -122,7 +122,6 @@ createAggregatedChart(data, "Country", "Sales");
 createAggregatedChart(data, "Segment", "Profit");
 
 }
-}
 
 /* =========================
    KPI
@@ -195,35 +194,7 @@ datasets: [{
         data: values
       }]
     }
-  });
-
-  select.addEventListener("change", () => {
-    chart.destroy();
-    chart = new Chart(canvas, {
-      type: select.value,
-      data: {
-      labels: values.map((_, i) => `Pt ${i + 1}`),
-        datasets: [{
-          label: name,
-          data: values
-        }]
-      }
-    });
-  });
-
-  checkbox.addEventListener("change", () => {
-    container.style.display = checkbox.checked ? "block" : "none";
-  });
-
- // const issue = detectIssues(name, values);
-// if (issue) {
-//   const alert = document.createElement("div");
-//   alert.style.color = "red";
-//   alert.innerText = issue;
-//   container.appendChild(alert);
-// }
-
-   function groupBy(data, key, valueField) {
+      function groupBy(data, key, valueField) {
   const result = {};
 
   data.forEach(row => {
@@ -270,3 +241,33 @@ datasets: [{
     }
   });
 }
+
+ 
+
+  select.addEventListener("change", () => {
+    chart.destroy();
+    chart = new Chart(canvas, {
+      type: select.value,
+      data: {
+      labels: values.map((_, i) => `Pt ${i + 1}`),
+        datasets: [{
+          label: name,
+          data: values
+        }]
+      }
+    });
+  });
+
+  checkbox.addEventListener("change", () => {
+    container.style.display = checkbox.checked ? "block" : "none";
+  });
+
+ // const issue = detectIssues(name, values);
+// if (issue) {
+//   const alert = document.createElement("div");
+//   alert.style.color = "red";
+//   alert.innerText = issue;
+//   container.appendChild(alert);
+// }
+
+ 
