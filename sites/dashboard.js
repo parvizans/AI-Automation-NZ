@@ -77,7 +77,7 @@ function applyFilters() {
     const key = select.dataset.key;
     const selected = [...select.selectedOptions].map(o => o.value);
 
-    if (selected.length > 0) {
+   if (selected.length > 0 && !selected.includes("__ALL__")) {
       filtered = filtered.filter(row => selected.includes(String(row[key])));
     }
   });
@@ -91,7 +91,7 @@ function applyFilters() {
 function buildDashboard(data) {
   if (!data || data.length === 0) return;
 
-  const limit = document.getElementById("limitInput").value;
+  const limit = parseInt(document.getElementById("limitInput").value);
   const keys = Object.keys(data[0]);
 
   document.querySelector(".kpi-grid").innerHTML = "";
