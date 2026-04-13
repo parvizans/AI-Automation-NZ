@@ -6,7 +6,7 @@ let globalData = [];
 document.getElementById("fileInput").addEventListener("change", handleFile);
 
 document.getElementById("limitInput").addEventListener("input", () => {
-  applyFilters(); // re-run dashboard
+  applyFilters();
 });
 
 function handleFile(event) {
@@ -45,19 +45,19 @@ function buildFilters(data) {
       select.multiple = true;
       select.dataset.key = key;
 
-// Add ALL option
-const allOption = document.createElement("option");
-allOption.value = "__ALL__";
-allOption.innerText = "ALL";
-select.appendChild(allOption);
+      // ALL option
+      const allOption = document.createElement("option");
+      allOption.value = "__ALL__";
+      allOption.innerText = "ALL";
+      select.appendChild(allOption);
 
-// Existing loop (keep it)
-uniqueValues.forEach(val => {
-  const opt = document.createElement("option");
-  opt.value = val;
-  opt.innerText = val;
-  select.appendChild(opt);
-});
+      uniqueValues.forEach(val => {
+        const opt = document.createElement("option");
+        opt.value = val;
+        opt.innerText = val;
+        select.appendChild(opt);
+      });
+
       select.addEventListener("change", applyFilters);
 
       wrapper.appendChild(label);
@@ -77,7 +77,7 @@ function applyFilters() {
     const key = select.dataset.key;
     const selected = [...select.selectedOptions].map(o => o.value);
 
-   if (selected.length > 0 && !selected.includes("__ALL__")) {
+    if (selected.length > 0 && !selected.includes("__ALL__")) {
       filtered = filtered.filter(row => selected.includes(String(row[key])));
     }
   });
@@ -99,7 +99,6 @@ function buildDashboard(data) {
   keys.forEach(key => {
     let values = data.map(row => row[key]).filter(v => typeof v === "number");
 
-    // 🔥 N-point logic (KEEP THIS)
     const limit = parseInt(document.getElementById("limitInput").value);
 
     if (!isNaN(limit) && limit > 0) {
@@ -117,10 +116,9 @@ function buildDashboard(data) {
     }
   });
 
-   // 🔥 ADD AGGREGATION HERE (INSIDE FUNCTION)
-createAggregatedChart(data, "Country", "Sales");
-createAggregatedChart(data, "Segment", "Profit");
-
+  // 🔥 AGGREGATED INSIGHTS
+  createAggregatedChart(data, "Country", "Sales");
+  createAggregatedChart(data, "Segment", "Profit");
 }
 
 /* =========================
@@ -134,27 +132,10 @@ function createKPI(name, values) {
 
   card.innerHTML = `
     <h3>${name}</h3>
-    <p>${avg}</p>
+    <p>${Number(avg).toLocaleString()}</p>
   `;
 
   document.querySelector(".kpi-grid").appendChild(card);
-}
-
-/* =========================
-   RCA ENGINE
-========================= */
-function detectIssues(name, values) {
-  if (values.length < 15) return null;
-
-  const avg = values.reduce((a,b)=>a+b,0) / values.length;
-  const last = values[values.length - 1];
-
-  const deviation = Math.abs(last - avg) / avg;
-
-  if (deviation > 1.0) return "🔴 Critical";
-  if (deviation > 0.6) return "🟠 Warning";
-
-  return null;
 }
 
 /* =========================
@@ -188,13 +169,37 @@ function createChart(name, values) {
   let chart = new Chart(canvas, {
     type: "line",
     data: {
-   labels: values.map((_, i) => `Pt ${i + 1}`),
-datasets: [{
+      labels: values.map((_, i) => `Pt ${i + 1}`),
+      datasets: [{
         label: name,
         data: values
       }]
     }
-      function groupBy(data, key, valueField) {
+  });
+
+  select.addEventListener("change", () => {
+    chart.destroy();
+    chart = new Chart(canvas, {
+      type: select.value,
+      data: {
+        labels: values.map((_, i) => `Pt ${i + 1}`),
+        datasets: [{
+          label: name,
+          data: values
+        }]
+      }
+    });
+  });
+
+  checkbox.addEventListener("change", () => {
+    container.style.display = checkbox.checked ? "block" : "none";
+  });
+}
+
+/* =========================
+   AGGREGATION ENGINE
+========================= */
+function groupBy(data, key, valueField) {
   const result = {};
 
   data.forEach(row => {
@@ -210,7 +215,7 @@ datasets: [{
   return result;
 }
 
-   function createAggregatedChart(data, groupKey, valueKey) {
+function createAggregatedChart(data, groupKey, valueKey) {
 
   const grouped = groupBy(data, groupKey, valueKey);
 
@@ -241,33 +246,3 @@ datasets: [{
     }
   });
 }
-
- 
-
-  select.addEventListener("change", () => {
-    chart.destroy();
-    chart = new Chart(canvas, {
-      type: select.value,
-      data: {
-      labels: values.map((_, i) => `Pt ${i + 1}`),
-        datasets: [{
-          label: name,
-          data: values
-        }]
-      }
-    });
-  });
-
-  checkbox.addEventListener("change", () => {
-    container.style.display = checkbox.checked ? "block" : "none";
-  });
-
- // const issue = detectIssues(name, values);
-// if (issue) {
-//   const alert = document.createElement("div");
-//   alert.style.color = "red";
-//   alert.innerText = issue;
-//   container.appendChild(alert);
-// }
-
- 
