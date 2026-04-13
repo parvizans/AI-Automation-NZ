@@ -90,8 +90,6 @@ function applyFilters() {
 ========================= */
 function buildDashboard(data) {
   if (!data || data.length === 0) return;
-
-  const limit = parseInt(document.getElementById("limitInput").value);
   const keys = Object.keys(data[0]);
 
   document.querySelector(".kpi-grid").innerHTML = "";
