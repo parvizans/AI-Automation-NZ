@@ -5,6 +5,10 @@ let globalData = [];
 ========================= */
 document.getElementById("fileInput").addEventListener("change", handleFile);
 
+document.getElementById("limitInput").addEventListener("input", () => {
+  applyFilters(); // re-run dashboard
+});
+
 function handleFile(event) {
   const file = event.target.files[0];
 
@@ -41,13 +45,19 @@ function buildFilters(data) {
       select.multiple = true;
       select.dataset.key = key;
 
-      uniqueValues.forEach(val => {
-        const opt = document.createElement("option");
-        opt.value = val;
-        opt.innerText = val;
-        select.appendChild(opt);
-      });
+// Add ALL option
+const allOption = document.createElement("option");
+allOption.value = "__ALL__";
+allOption.innerText = "ALL";
+select.appendChild(allOption);
 
+// Existing loop (keep it)
+uniqueValues.forEach(val => {
+  const opt = document.createElement("option");
+  opt.value = val;
+  opt.innerText = val;
+  select.appendChild(opt);
+});
       select.addEventListener("change", applyFilters);
 
       wrapper.appendChild(label);
