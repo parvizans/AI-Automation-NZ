@@ -133,13 +133,15 @@ function createKPI(name, values) {
    RCA ENGINE
 ========================= */
 function detectIssues(name, values) {
+  if (values.length < 15) return null;
+
   const avg = values.reduce((a,b)=>a+b,0) / values.length;
   const last = values[values.length - 1];
 
   const deviation = Math.abs(last - avg) / avg;
 
-  if (deviation > 0.5) return "⚠ HIGH ANOMALY";
-  if (deviation > 0.3) return "⚠ MEDIUM CHANGE";
+  if (deviation > 1.0) return "🔴 Critical";
+  if (deviation > 0.6) return "🟠 Warning";
 
   return null;
 }
