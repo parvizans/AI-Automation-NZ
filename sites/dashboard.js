@@ -97,14 +97,17 @@ function buildDashboard(data) {
   document.querySelector(".kpi-grid").innerHTML = "";
   document.querySelector(".charts-grid").innerHTML = "";
 
- keys.forEach(key => {
+keys.forEach(key => {
   let values = data.map(row => row[key]).filter(v => typeof v === "number");
-    const limit = parseInt(document.getElementById("limitInput").value);
 
-if (!isNaN(limit) && limit > 0) {
-  values = values.slice(-limit);
-}
+  // 🔥 ADD THIS (N-point logic)
+  const limit = parseInt(document.getElementById("limitInput").value);
 
+  if (!isNaN(limit) && limit > 0) {
+    values = values.slice(-limit);
+  }
+
+  // Existing condition
   if (
     values.length > 0 &&
     !key.toLowerCase().includes("year") &&
