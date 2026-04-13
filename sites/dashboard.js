@@ -116,6 +116,12 @@ function buildDashboard(data) {
       createChart(key, values);
     }
   });
+
+   // 🔥 ADD AGGREGATION HERE (INSIDE FUNCTION)
+createAggregatedChart(data, "Country", "Sales");
+createAggregatedChart(data, "Segment", "Profit");
+
+}
 }
 
 /* =========================
@@ -216,3 +222,51 @@ datasets: [{
 //   alert.innerText = issue;
 //   container.appendChild(alert);
 // }
+
+   function groupBy(data, key, valueField) {
+  const result = {};
+
+  data.forEach(row => {
+    const group = row[key];
+    const value = row[valueField];
+
+    if (typeof value !== "number") return;
+
+    if (!result[group]) result[group] = 0;
+    result[group] += value;
+  });
+
+  return result;
+}
+
+   function createAggregatedChart(data, groupKey, valueKey) {
+
+  const grouped = groupBy(data, groupKey, valueKey);
+
+  const labels = Object.keys(grouped);
+  const values = Object.values(grouped);
+
+  const container = document.createElement("div");
+  container.className = "chart-box";
+
+  const title = document.createElement("h4");
+  title.innerText = `${valueKey} by ${groupKey}`;
+
+  const canvas = document.createElement("canvas");
+
+  container.appendChild(title);
+  container.appendChild(canvas);
+
+  document.querySelector(".charts-grid").appendChild(container);
+
+  new Chart(canvas, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: valueKey,
+        data: values
+      }]
+    }
+  });
+}
