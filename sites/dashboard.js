@@ -209,11 +209,10 @@ datasets: [{
     container.style.display = checkbox.checked ? "block" : "none";
   });
 
-  const issue = detectIssues(name, values);
-  if (issue) {
-    const alert = document.createElement("div");
-    alert.style.color = "red";
-    alert.innerText = issue;
-    container.appendChild(alert);
-  }
-}
+ // const issue = detectIssues(name, values);
+// if (issue) {
+//   const alert = document.createElement("div");
+//   alert.style.color = "red";
+//   alert.innerText = issue;
+//   container.appendChild(alert);
+// }
