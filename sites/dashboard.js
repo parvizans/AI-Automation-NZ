@@ -190,7 +190,7 @@ datasets: [{
     chart = new Chart(canvas, {
       type: select.value,
       data: {
-      labels: values.map((_, i) => `Pt ${i + 1}`)
+      labels: values.map((_, i) => `Pt ${i + 1}`),
         datasets: [{
           label: name,
           data: values
