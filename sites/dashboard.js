@@ -87,16 +87,19 @@ function buildDashboard(data) {
   document.querySelector(".kpi-grid").innerHTML = "";
   document.querySelector(".charts-grid").innerHTML = "";
 
-  keys.forEach(key => {
-    let values = data.map(row => row[key]).filter(v => typeof v === "number");
+ keys.forEach(key => {
+  let values = data.map(row => row[key]).filter(v => typeof v === "number");
 
-    if (limit) values = values.slice(-limit);
-
-    if (values.length > 0) {
-      createKPI(key, values);
-      createChart(key, values);
-    }
-  });
+  if (
+    values.length > 0 &&
+    !key.toLowerCase().includes("year") &&
+    !key.toLowerCase().includes("day") &&
+    !key.toLowerCase().includes("month")
+  ) {
+    createKPI(key, values);
+    createChart(key, values);
+  }
+});
 }
 
 /* =========================
@@ -123,8 +126,10 @@ function detectIssues(name, values) {
   const avg = values.reduce((a,b)=>a+b,0) / values.length;
   const last = values[values.length - 1];
 
-  if (last < avg * 0.7) return "⚠ DROP DETECTED";
-  if (last > avg * 1.3) return "⚠ SPIKE DETECTED";
+  const deviation = Math.abs(last - avg) / avg;
+
+  if (deviation > 0.5) return "⚠ HIGH ANOMALY";
+  if (deviation > 0.3) return "⚠ MEDIUM CHANGE";
 
   return null;
 }
