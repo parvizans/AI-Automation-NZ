@@ -1,118 +1,201 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Network Insight Dashboard</title>
+let globalData = [];
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+document.getElementById("fileInput").addEventListener("change", handleFile);
 
-<style>
-body {
-  font-family: Arial;
-  background:#0b1220;
-  color:#fff;
-  margin:0;
-  padding:20px;
+function handleFile(event) {
+  const file = event.target.files[0];
+
+  Papa.parse(file, {
+    header: true,
+    dynamicTyping: true,
+    complete: function(results) {
+      globalData = results.data.filter(row => Object.keys(row).length > 0);
+      buildFilters(globalData);
+      buildDashboard(globalData);
+    }
+  });
 }
 
-.container {
-  max-width:1400px;
-  margin:auto;
+/* =========================
+   FILTER ENGINE
+========================= */
+function buildFilters(data) {
+  const filterDiv = document.getElementById("filters");
+  if (!filterDiv) return;
+
+  filterDiv.innerHTML = "";
+
+  const keys = Object.keys(data[0]);
+
+  keys.forEach(key => {
+    const uniqueValues = [...new Set(data.map(d => d[key]))];
+
+    if (uniqueValues.length < 20 && typeof uniqueValues[0] !== "number") {
+      const wrapper = document.createElement("div");
+
+      const label = document.createElement("label");
+      label.innerText = key;
+
+      const select = document.createElement("select");
+      select.multiple = true;
+      select.dataset.key = key;
+
+      uniqueValues.forEach(val => {
+        const opt = document.createElement("option");
+        opt.value = val;
+        opt.innerText = val;
+        select.appendChild(opt);
+      });
+
+      select.addEventListener("change", applyFilters);
+
+      wrapper.appendChild(label);
+      wrapper.appendChild(select);
+
+      filterDiv.appendChild(wrapper);
+    }
+  });
 }
 
-h1 {
-  color:#32d296;
-  margin-bottom:20px;
+function applyFilters() {
+  const selects = document.querySelectorAll("#filters select");
+
+  let filtered = [...globalData];
+
+  selects.forEach(select => {
+    const key = select.dataset.key;
+    const selected = [...select.selectedOptions].map(o => o.value);
+
+    if (selected.length > 0) {
+      filtered = filtered.filter(row => selected.includes(String(row[key])));
+    }
+  });
+
+  buildDashboard(filtered);
 }
 
-/* Upload */
-.upload-box {
-  margin-bottom: 20px;
+/* =========================
+   DASHBOARD ENGINE
+========================= */
+function buildDashboard(data) {
+  if (!data || data.length === 0) return;
+
+  const limit = document.getElementById("limitInput")?.value;
+
+  const keys = Object.keys(data[0]);
+
+  document.querySelector(".kpi-grid").innerHTML = "";
+  document.querySelector(".charts-grid").innerHTML = "";
+
+  keys.forEach(key => {
+    let values = data.map(row => row[key]).filter(v => typeof v === "number");
+
+    if (limit) values = values.slice(-limit);
+
+    if (values.length > 0) {
+      createKPI(key, values);
+      createChart(key, values);
+    }
+  });
 }
 
-.upload-btn {
-  display: inline-block;
-  padding: 10px 20px;
-  background: #32d296;
-  color: #000;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
+/* =========================
+   KPI
+========================= */
+function createKPI(name, values) {
+  const avg = (values.reduce((a,b)=>a+b,0) / values.length).toFixed(2);
+
+  let color = "#32d296";
+  if (name.toLowerCase().includes("drop")) color = "#ff6b6b";
+  if (name.toLowerCase().includes("rsrp")) color = "#4dabf7";
+  if (name.toLowerCase().includes("sinr")) color = "#ffd43b";
+
+  const card = document.createElement("div");
+  card.className = "kpi-card";
+
+  card.innerHTML = `
+    <h3>${name}</h3>
+    <p style="color:${color}">${avg}</p>
+  `;
+
+  document.querySelector(".kpi-grid").appendChild(card);
 }
 
-#fileInput {
-  display: none;
+/* =========================
+   RCA ENGINE (BASIC)
+========================= */
+function detectIssues(name, values) {
+  const avg = values.reduce((a,b)=>a+b,0) / values.length;
+  const last = values[values.length - 1];
+
+  if (last < avg * 0.7) return "⚠ DROP DETECTED";
+  if (last > avg * 1.3) return "⚠ SPIKE DETECTED";
+
+  return null;
 }
 
-/* KPI GRID */
-.kpi-grid {
-  display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap:15px;
-  margin-bottom:30px;
+/* =========================
+   CHART ENGINE
+========================= */
+function createChart(name, values) {
+
+  const container = document.createElement("div");
+  container.className = "chart-box";
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.checked = true;
+
+  const select = document.createElement("select");
+  ["line","bar","pie"].forEach(t=>{
+    const o=document.createElement("option");
+    o.value=t;
+    o.innerText=t;
+    select.appendChild(o);
+  });
+
+  const canvas = document.createElement("canvas");
+
+  container.appendChild(checkbox);
+  container.appendChild(select);
+  container.appendChild(canvas);
+
+  document.querySelector(".charts-grid").appendChild(container);
+
+  let chart = new Chart(canvas, {
+    type: "line",
+    data: {
+      labels: values.map((_, i) => i + 1),
+      datasets: [{
+        label: name,
+        data: values
+      }]
+    }
+  });
+
+  select.addEventListener("change", () => {
+    chart.destroy();
+    chart = new Chart(canvas, {
+      type: select.value,
+      data: {
+        labels: values.map((_, i) => i + 1),
+        datasets: [{
+          label: name,
+          data: values
+        }]
+      }
+    });
+  });
+
+  checkbox.addEventListener("change", () => {
+    container.style.display = checkbox.checked ? "block" : "none";
+  });
+
+  const issue = detectIssues(name, values);
+  if (issue) {
+    const alert = document.createElement("div");
+    alert.style.color = "red";
+    alert.innerText = issue;
+    container.appendChild(alert);
+  }
 }
-
-.kpi-card {
-  background: linear-gradient(145deg, #1c2541, #141b2d);
-  padding: 20px;
-  border-radius: 12px;
-  text-align: center;
-}
-
-/* Charts */
-.charts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 20px;
-}
-
-.chart-box {
-  background: #1c2541;
-  padding: 15px;
-  border-radius: 12px;
-}
-
-/* Alerts */
-.alerts {
-  margin-top:30px;
-  background:#2a1a1a;
-  padding:15px;
-  border-radius:10px;
-}
-</style>
-</head>
-
-<body>
-
-<div class="container">
-
-<h1>📡 Network Insight Dashboard</h1>
-
-<!-- Upload -->
-<div class="upload-box">
-  <label for="fileInput" class="upload-btn">📂 Upload CSV</label>
-  <input type="file" id="fileInput" accept=".csv">
-</div>
-
-<!-- Filter -->
-<input type="number" id="limitInput" placeholder="Show last N points">
-
-<!-- KPI -->
-<div class="kpi-grid"></div>
-
-<!-- Charts -->
-<div class="charts-grid"></div>
-
-<!-- Alerts -->
-<div class="alerts">
-  <h3>🚨 Network Insights</h3>
-</div>
-
-</div>
-
-<!-- JS MUST BE LAST -->
-<script src="dashboard.js?v=3"></script>
-
-</body>
-</html>
