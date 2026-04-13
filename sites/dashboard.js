@@ -175,7 +175,7 @@ function createChart(name, values) {
   let chart = new Chart(canvas, {
     type: "line",
     data: {
-      labels: values.map((_, i) => i + 1),
+    labels: values.map((_, i) => `Pt ${i + 1}`)
       datasets: [{
         label: name,
         data: values
@@ -188,7 +188,7 @@ function createChart(name, values) {
     chart = new Chart(canvas, {
       type: select.value,
       data: {
-        labels: values.map((_, i) => i + 1),
+      labels: values.map((_, i) => `Pt ${i + 1}`)
         datasets: [{
           label: name,
           data: values
