@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Network Insight Dashboard</title><input type="file" id="fileInput" accept=".csv">
-  <input type="number" id="limitInput" placeholder="Show last N points">
+<title>Network Insight Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
@@ -46,33 +45,29 @@ h1 {
   display: none;
 }
 
-/* KPI */
+/* KPI GRID */
 .kpi-grid {
   display:grid;
-  grid-template-columns:repeat(5,1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap:15px;
   margin-bottom:30px;
 }
 
-.card {
+.kpi-card {
   background: linear-gradient(145deg, #1c2541, #141b2d);
   padding: 20px;
   border-radius: 12px;
   text-align: center;
 }
 
-.card h2 {
-  color:#32d296;
-}
-
 /* Charts */
 .charts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 20px;
 }
 
-.chart-card {
+.chart-box {
   background: #1c2541;
   padding: 15px;
   border-radius: 12px;
@@ -84,10 +79,6 @@ h1 {
   background:#2a1a1a;
   padding:15px;
   border-radius:10px;
-}
-
-.alert {
-  color:#ff6b6b;
 }
 </style>
 </head>
@@ -101,18 +92,14 @@ h1 {
 <!-- Upload -->
 <div class="upload-box">
   <label for="fileInput" class="upload-btn">📂 Upload CSV</label>
-  <input type="file" id="fileInput" accept=".csv
-  <input type="number" id="limitInput" placeholder="Show last N points">
+  <input type="file" id="fileInput" accept=".csv">
 </div>
 
+<!-- Filter -->
+<input type="number" id="limitInput" placeholder="Show last N points">
+
 <!-- KPI -->
-<div class="kpi-grid">
-  <div class="card"><h2 id="throughput">--</h2><p>Throughput</p></div>
-  <div class="card"><h2 id="rsrp">--</h2><p>RSRP</p></div>
-  <div class="card"><h2 id="rsrq">--</h2><p>RSRQ</p></div>
-  <div class="card"><h2 id="sinr">--</h2><p>SINR</p></div>
-  <div class="card"><h2 id="drop">--</h2><p>Drop Rate</p></div>
-</div>
+<div class="kpi-grid"></div>
 
 <!-- Charts -->
 <div class="charts-grid"></div>
@@ -124,6 +111,7 @@ h1 {
 
 </div>
 
+<!-- JS MUST BE LAST -->
 <script src="dashboard.js?v=3"></script>
 
 </body>
