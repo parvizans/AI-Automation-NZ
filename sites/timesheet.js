@@ -29,8 +29,26 @@ function loadTimesheet(){
     document.getElementById("timesheet-body").innerHTML = saved;
   }
 }
-
 // ================= GENERATE MONTH =================
+function generateMonth(){
+
+  const month = document.getElementById("month").value;
+  if(month === "") return;
+
+  const year = new Date().getFullYear();
+  const days = new Date(year, parseInt(month)+1, 0).getDate();
+
+  const tbody = document.getElementById("timesheet-body");
+  tbody.innerHTML = "";
+
+  for(let i=1;i<=days;i++){
+
+    const d = new Date(year, parseInt(month), i);
+    const date = d.toLocaleDateString("en-GB");
+    const weekday = d.toLocaleDateString("en-US", { weekday: "short" });
+
+    const row = document.createElement("tr");
+
 row.innerHTML = `
   <td>${i}</td>
   <td>${date}</td>
