@@ -129,19 +129,24 @@ function calculateTimes(){
 ========================= */
 function updateAllowance(){
 
+  let totalFood = 0;
+
   document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
-    const location = row.querySelector(".row-location").value;
-    const total = parseFloat(row.querySelector(".total").innerText) || 0;
-    const foodCell = row.querySelector(".food");
+    const location = row.querySelector(".row-location")?.value;
+    const foodCell = row.querySelector(".food-cell");
 
-    if(location === "Outside Sydney" && total > 0){
+    if(location === "Outside Sydney" || location === "Outside AKL"){
       foodCell.innerText = "$50";
-      foodCell.style.color = "#32d296";
+      totalFood += 50;
     } else {
       foodCell.innerText = "-";
-      foodCell.style.color = "#888";
     }
+
+  });
+
+  localStorage.setItem("foodTotal", totalFood);
+}
   });
 }
 
