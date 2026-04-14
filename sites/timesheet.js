@@ -22,30 +22,33 @@ function getDayName(date){
    GENERATE MONTH
 ========================= */
 function generateMonth(){
- document.getElementById("month").addEventListener("change", function(){
-  generateMonth();
-});
+
   const month = document.getElementById("month").value;
   if(month === "") return;
 
   const year = new Date().getFullYear();
-  const days = new Date(year, parseInt(month)+1, 0).getDate();
+  const days = new Date(year, parseInt(month) + 1, 0).getDate();
 
   const tbody = document.getElementById("timesheet-body");
   tbody.innerHTML = "";
 
-for(let i=1;i<=days;i++){
+  for(let i = 1; i <= days; i++){
 
-  const d = new Date(year, parseInt(month), i);
-  const date = d.toLocaleDateString("en-GB"); // ✅ FIXED
-  const weekday = d.toLocaleDateString("en-US", { weekday: "short" });
+    const d = new Date(year, parseInt(month), i);
 
-  const row = document.createElement("tr");
+    const day = String(d.getDate()).padStart(2, '0');
+    const mon = String(d.getMonth() + 1).padStart(2, '0');
+    const yearFull = d.getFullYear();
+
+    const formattedDate = `${day}/${mon}/${yearFull}`;
+    const weekday = d.toLocaleDateString("en-US", { weekday: "short" });
+
+    const row = document.createElement("tr");
 
     row.innerHTML = `
       <td>${i}</td>
-      <td><input type="date" value="${date}"></td>
-      <td>${getDayName(d)}</td>
+      <td><input type="text" value="${formattedDate}" readonly></td>
+      <td>${weekday}</td>
 
       <td><input type="time" class="time-in" value="08:00"></td>
 
@@ -56,8 +59,8 @@ for(let i=1;i<=days;i++){
           ).join('')}
         </select>
 
-        <select class="time-out-minute">
-          <option value="00">00</option>
+     
+          <option value="0">00</option>
           <option value="15">15</option>
           <option value="30">30</option>
           <option value="45">45</option>
@@ -69,8 +72,8 @@ for(let i=1;i<=days;i++){
 
       <td>
         <select class="row-location">
-          <option value="Sydney">Sydney</option>
-          <option value="Outside Sydney">Outside Sydney</option>
+          <option>Sydney</option>
+          <option>Outside Sydney</option>
         </select>
       </td>
 
@@ -79,9 +82,17 @@ for(let i=1;i<=days;i++){
 
     tbody.appendChild(row);
   }
-}
 
+  calculateTimes();
+  updateAllowance();
+  updateSummary();
+
+
+   
+// OUTSIDE ↓↓↓
 document.getElementById("month").addEventListener("change", generateMonth);
+
+
 
 /* =========================
    NAVIGATION
