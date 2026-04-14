@@ -94,19 +94,25 @@ row.innerHTML = `
 // ================= FOOD =================
 function updateAllowance(){
 
+  let totalFood = 0;
+
   document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
     const location = row.querySelector(".row-location")?.value;
     const foodCell = row.querySelector(".food");
 
-    if(location === "Outside Sydney"){
+    if(location && location.toLowerCase().includes("outside")){
       foodCell.innerText = "$50";
       foodCell.style.color = "#32d296";
+      totalFood += 50;
     } else {
       foodCell.innerText = "-";
       foodCell.style.color = "#888";
     }
+
   });
+
+  localStorage.setItem("foodTotal", totalFood);
 }
 
 // ================= INIT =================
