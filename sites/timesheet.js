@@ -51,19 +51,19 @@ function generateMonth(){
     const row = document.createElement("tr");
 
     row.innerHTML = `
-      <td>${i}</td>
-      <td>${date}</td>
-      <td>${weekday}</td>
-      <td><input type="time" value="08:00"></td>
-      <td>--</td>
-      <td>0</td>
-      <td>0</td>
-      <td>
-        <select class="row-location">
-          <option>Sydney</option>
-          <option>Outside Sydney</option>
-        </select>
-      </td>
+  <td>
+  <select class="time-out-hour">
+    ${[...Array(24).keys()].map(h =>
+      `<option value="${h}">${String(h).padStart(2,'0')}</option>`
+    ).join('')}
+  </select>
+
+  <select class="time-out-minute">
+    ${["00","15","30","45"].map(m =>
+      `<option value="${m}">${m}</option>`
+    ).join('')}
+  </select>
+</td>
       <td class="food">-</td>
     `;
 
