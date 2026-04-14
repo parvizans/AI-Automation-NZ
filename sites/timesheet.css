@@ -32,16 +32,6 @@ body.invoice {
     linear-gradient(rgba(11,18,32,0.75), rgba(11,18,32,0.75)),
    url("../assets/invoice-bg-3.jpg");
 }
-
-body.timesheet {
-  background-image: 
-    linear-gradient(rgba(11,18,32,0.85), rgba(11,18,32,0.85)),
-    url("assets/bg-tech.jpg");
-
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
   
 
 /* EXPENSES */
