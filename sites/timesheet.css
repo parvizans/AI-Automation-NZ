@@ -225,3 +225,16 @@ input[type="time"] {
   font-size: 14px;
   border-top: 1px solid rgba(255,255,255,0.1);
 }
+.actions button {
+  background: #2d7ef7 !important;
+  color: #fff !important;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 1 !important;
+}
+
+.actions button:hover {
+  background: #1f5fd1 !important;
+}
