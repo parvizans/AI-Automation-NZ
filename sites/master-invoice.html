@@ -80,10 +80,14 @@ th, td {
 </div>
 
 <div class="card">
+  
   <h3>Summary</h3>
-  <p>Total Invoices: $<span id="totalInvoices">0</span></p>
-  <p>Total Expenses: $<span id="totalExpenses">0</span></p>
+
+  <p>CAPEX (Engineers): $<span id="capex">0</span></p>
+  <p>OPEX (Expenses): $<span id="opex">0</span></p>
+
   <hr>
+
   <h2>Final Total: $<span id="finalTotal">0</span></h2>
 </div>
 
@@ -146,17 +150,21 @@ function updateAmount(index, value){
 ========================= */
 function calculateMaster(){
 
-  let total = 0;
+  let capex = 0;
 
   uploadedInvoices.forEach(inv=>{
-    total += inv.amount;
+    capex += inv.amount;
   });
 
-  const expenses = Number(localStorage.getItem("expenseTotal")) || 0;
+  // 🔥 Expenses from your system
+  const opex = Number(localStorage.getItem("expenseTotal")) || 0;
 
-  document.getElementById("totalInvoices").innerText = total.toFixed(2);
-  document.getElementById("totalExpenses").innerText = expenses.toFixed(2);
-  document.getElementById("finalTotal").innerText = (total + expenses).toFixed(2);
+
+  const total = capex + opex;
+
+  document.getElementById("capex").innerText = capex.toFixed(2);
+  document.getElementById("opex").innerText = opex.toFixed(2);
+  document.getElementById("finalTotal").innerText = total.toFixed(2);
 }
 
 /* =========================
