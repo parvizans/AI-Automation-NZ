@@ -22,6 +22,9 @@ function getDayName(date){
    GENERATE MONTH
 ========================= */
 function generateMonth(){
+ document.getElementById("month").addEventListener("change", function(){
+  generateMonth();
+});
   const month = document.getElementById("month").value;
   if(month === "") return;
 
@@ -34,7 +37,6 @@ function generateMonth(){
 for(let i=1;i<=days;i++){
 
   const d = new Date(year, parseInt(month), i);
-
   const date = d.toLocaleDateString("en-GB"); // ✅ FIXED
   const weekday = d.toLocaleDateString("en-US", { weekday: "short" });
 
