@@ -1,1 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Master Invoice</title>
 
+<style>
+body {
+  font-family: Arial;
+  background:#0b1220;
+  color:#fff;
+  padding:20px;
+}
+
+.container {
+  max-width:900px;
+  margin:auto;
+}
+
+h1 {
+  color:#32d296;
+  margin-bottom:20px;
+}
+
+.card {
+  background:#1c2541;
+  padding:20px;
+  border-radius:10px;
+  margin-bottom:20px;
+}
+
+button {
+  padding:10px 20px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:bold;
+  margin-right:10px;
+}
+
+.btn-green { background:#32d296; color:#000; }
+.btn-blue { background:#5aa7ff; color:#fff; }
+
+table {
+  width:100%;
+  border-collapse:collapse;
+}
+
+th, td {
+  padding:10px;
+  border:1px solid rgba(255,255,255,0.1);
+  text-align:center;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>📊 Master Invoice</h1>
+
+<div class="card">
+  <h3>Upload Invoices</h3>
+  <input type="file" id="fileInput" multiple accept="application/pdf">
+</div>
+
+<div class="card">
+  <h3>Invoices List</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>File Name</th>
+        <th>Amount ($)</th>
+      </tr>
+    </thead>
+    <tbody id="invoiceList"></tbody>
+  </table>
+</div>
+
+<div class="card">
+  <h3>Summary</h3>
+  <p>Total Invoices: $<span id="totalInvoices">0</span></p>
+  <p>Total Expenses: $<span id="totalExpenses">0</span></p>
+  <hr>
+  <h2>Final Total: $<span id="finalTotal">0</span></h2>
+</div>
+
+<button class="btn-green" onclick="calculateMaster()">Calculate</button>
+<button class="btn-blue" onclick="savePDF()">Save to PDF</button>
+
+</div>
+
+<script>
+let uploadedInvoices = [];
+
+/* =========================
+   HANDLE FILE UPLOAD
+========================= */
+document.getElementById("fileInput").addEventListener("change", function(e){
+
+  const files = e.target.files;
+
+  for(let i=0;i<files.length;i++){
+    uploadedInvoices.push({
+      name: files[i].name,
+      amount: 0   // user will fill manually
+    });
+  }
+
+  renderTable();
+});
+
+/* =========================
+   RENDER TABLE
+========================= */
+function renderTable(){
+
+  const tbody = document.getElementById("invoiceList");
+  tbody.innerHTML = "";
+
+  uploadedInvoices.forEach((inv, index)=>{
+
+    tbody.innerHTML += `
+      <tr>
+        <td>${inv.name}</td>
+        <td>
+          <input type="number" value="${inv.amount}" 
+          onchange="updateAmount(${index}, this.value)">
+        </td>
+      </tr>
+    `;
+  });
+}
+
+/* =========================
+   UPDATE AMOUNT
+========================= */
+function updateAmount(index, value){
+  uploadedInvoices[index].amount = Number(value) || 0;
+}
+
+/* =========================
+   CALCULATE
+========================= */
+function calculateMaster(){
+
+  let total = 0;
+
+  uploadedInvoices.forEach(inv=>{
+    total += inv.amount;
+  });
+
+  const expenses = Number(localStorage.getItem("expenseTotal")) || 0;
+
+  document.getElementById("totalInvoices").innerText = total.toFixed(2);
+  document.getElementById("totalExpenses").innerText = expenses.toFixed(2);
+  document.getElementById("finalTotal").innerText = (total + expenses).toFixed(2);
+}
+
+/* =========================
+   SAVE PDF
+========================= */
+function savePDF(){
+  window.print();
+}
+</script>
+
+</body>
+</html>
