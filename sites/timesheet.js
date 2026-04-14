@@ -1,166 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Timesheet_Pro_2</title>
+// ================= NAVIGATION =================
+function goHome(){
+  window.location.href = "timesheet.html";
+}
 
-<link rel="stylesheet" href="timesheet.css">
+function goInvoice(){
+  window.open("invoice.html", "_blank");
+}
 
-</head>
+function goExpenses(){
+  window.location.href = "expenses.html";
+}
 
-<body class="timesheet">
+// ================= SAVE / RESET =================
+function saveTimesheet(){
+  localStorage.setItem("timesheetBackup", document.getElementById("timesheet-body").innerHTML);
+  alert("Saved ✅");
+}
 
-<div class="container">
+function resetTimesheet(){
+  localStorage.removeItem("timesheetBackup");
+  location.reload();
+}
 
-<h1>⏱ Timesheet_Pro_2</h1>
+// ================= LOAD =================
+function loadTimesheet(){
+  const saved = localStorage.getItem("timesheetBackup");
+  if(saved){
+    document.getElementById("timesheet-body").innerHTML = saved;
+  }
+}
 
-<div class="top-buttons">
-  <button onclick="goHome()" class="yellow">🏠 Home</button>
-  <button onclick="goInvoice()" class="blue">📄 Invoice</button>
-  <button onclick="goExpenses()" class="yellow">💰 Expenses</button>
-  <button onclick="saveTimesheet()" class="blue">Save</button>
-  <button onclick="resetTimesheet()" class="blue">Reset</button>
-  
-</div>
+// ================= GENERATE MONTH =================
+function generateMonth(){
 
-  <a href="master-invoice.html" target="_blank" class="blue" style="padding:10px 20px; border-radius:6px; display:inline-block; text-decoration:none; font-weight:bold;">
-  📊 Master Invoice
-</a>
-</div>
+  const month = document.getElementById("month").value;
+  if(month === "") return;
 
-<div class="control-panel">
+  const year = new Date().getFullYear();
+  const days = new Date(year, parseInt(month)+1, 0).getDate();
 
-<div class="field">
-<label>Month</label>
-<select id="month">
-<option value="">Select</option>
-<option value="0">January</option>
-<option value="1">February</option>
-<option value="2">March</option>
-<option value="3">April</option>
-<option value="4">May</option>
-<option value="5">June</option>
-<option value="6">July</option>
-<option value="7">August</option>
-<option value="8">September</option>
-<option value="9">October</option>
-<option value="10">November</option>
-<option value="11">December</option>
-</select>
-</div>
+  const tbody = document.getElementById("timesheet-body");
+  tbody.innerHTML = "";
 
-<div class="field">
-<label>Engineer</label>
-<select id="engineer">
-<option value="">Select</option>
-<option value="abhignya.reddy@automationpark.teck" data-phone="6100000000">Abhignya Reddy</option>
-<option value="parviz.ansari@automationpark.teck" data-phone="64220100700">Parviz Ansari</option>
-<option value="pavinee.suwanta@automationpark.teck" data-phone="6100000000">Pavinee Suwanta</option>
-<option value="abhishek.ahirrao@automationpark.teck" data-phone="6100000000">Abhishek Ahirrao</option>
-<option value="sanjay.nampally@automationpark.teck" data-phone="6100000000">Sanjay Nampally</option>
-<option value="saidinesh.mogili@automationpark.teck" data-phone="6100000000">Sai Dinesh Mogili</option>
-<option value="manish.redekar@automationpark.teck" data-phone="6100000000">Manish Redekar</option>
-<option value="shivtejgasti@automationpark.teck" data-phone="6100000000">Shivtej Gasti</option>
-<option value="skofficial8991@automationpark.teck" data-phone="6100000000">Shreekant Kadam</option>
-<option value="ergaganverma@automationpark.teck" data-phone="6100000000">Gagan Verma</option>
-</select>
-</div>
+  for(let i=1;i<=days;i++){
 
-<div class="field">
-<label>Email</label>
-<input id="eng-email" readonly>
-</div>
+    const d = new Date(year, parseInt(month), i);
+    const date = d.toLocaleDateString("en-GB");
+    const weekday = d.toLocaleDateString("en-US", { weekday: "short" });
 
-<div class="field">
-<label>Phone</label>
-<input id="eng-phone" readonly>
-</div>
+    const row = document.createElement("tr");
 
-<div class="field">
-<label>Project</label>
-<input type="text" id="project" placeholder="Enter Project Name / Code">
- 
+    row.innerHTML = `
+      <td>${i}</td>
+      <td>${date}</td>
+      <td>${weekday}</td>
+      <td><input type="time" value="08:00"></td>
+      <td>--</td>
+      <td>0</td>
+      <td>0</td>
+      <td>
+        <select class="row-location">
+          <option>Sydney</option>
+          <option>Outside Sydney</option>
+        </select>
+      </td>
+      <td class="food">-</td>
+    `;
 
-</select>
-</div>
+    tbody.appendChild(row);
+  }
 
-<div class="field">
-<label>Project Manager</label>
-<select id="pm">
-<option value="">Select</option>
-<option value="Parviz.Ansari@automationpark.teck"data-phone="61476765585">Parviz Ansari</option>
-<option value="Behrouz.Lotfipour@automationpark.teck"data-phone="61423423906">Behrouz Lotfipour</option>
-</select>
-</div>
+  updateAllowance();
+}
 
-<div class="field">
-<label>PM Email</label>
-<input id="pm-email" readonly>
-</div>
+// ================= FOOD =================
+function updateAllowance(){
 
-<div class="field">
-<label>Location</label>
-<select id="location">
-<option value="Australia">Australia</option>
-<option value="New Zealand">New Zealand</option>
-</select>
+  document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
-</div>
+    const location = row.querySelector(".row-location")?.value;
+    const foodCell = row.querySelector(".food");
 
-<div class="expected-box">Expected: 8h/day</div>
+    if(location === "Outside Sydney"){
+      foodCell.innerText = "$50";
+      foodCell.style.color = "#32d296";
+    } else {
+      foodCell.innerText = "-";
+      foodCell.style.color = "#888";
+    }
+  });
+}
 
-</div>
+// ================= INIT =================
+window.addEventListener("load", function(){
 
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>Day</th>
-<th>Date</th>
-<th>Weekday</th>
-<th>Time In</th>
-<th>Time Out</th>
-<th>Total</th>
-<th>OT</th>
-<th>Location</th>
-<th>Food</th>
-</tr>
-</thead>
-<tbody id="timesheet-body"></tbody>
-</table>
-</div>
+  loadTimesheet();
 
-<div class="summary-grid">
-<div class="card weekday">
-Weekdays Days: <span id="wd-days">0</span><br>
-Weekdays Hours: <span id="wd-hours">0</span><br>
-Weekdays OT: <span id="wd-ot">0</span>
-</div>
+  document.getElementById("month")
+    .addEventListener("change", generateMonth);
 
-<div class="card weekend">
-Weekend Days: <span id="we-days">0</span><br>
-Weekend OT: <span id="we-ot">0</span>
-</div>
-</div>
-
-<div class="actions">
-  <button class="save" onclick="saveTimesheet()">Save</button>
-  <button class="export">Export</button>
-  <button class="submit">Submit</button>
-</div>
-
-<script src="timesheet.js"></script>
-<footer class="footer">
-  <div>
-    © 2026 AutomationPark — All Rights Reserved  
-    <br>
-  </div>
-
-  <div>
-    Contact: automationpark.tech  
-    <br>
-    +64 220100700
-  </div>
-</footer>
-</body>
-</html>
+});
