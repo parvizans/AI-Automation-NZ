@@ -238,3 +238,23 @@ input[type="time"] {
 .actions button:hover {
   background: #1f5fd1 !important;
 }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* 🔥 IMPORTANT */
+}
+
+th, td {
+  text-align: center;
+  padding: 10px;
+}
+
+th:nth-child(8),
+td:nth-child(8) {
+  width: 160px; /* Location */
+}
+
+th:nth-child(9),
+td:nth-child(9) {
+  width: 100px; /* Food */
+}
