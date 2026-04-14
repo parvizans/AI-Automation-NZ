@@ -90,7 +90,7 @@ function goHome(){
 
 function goInvoice(){
   saveToInvoice();
-  window.location.href = "invoice.html";
+window.open("invoice.html", "_blank");
 }
 
 function goExpenses(){
