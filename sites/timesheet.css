@@ -225,12 +225,3 @@ input[type="time"] {
   font-size: 14px;
   border-top: 1px solid rgba(255,255,255,0.1);
 }
-body.timesheet {
-  background-image: 
-    linear-gradient(rgba(11,18,32,0.85), rgba(11,18,32,0.85)),
-    url("assets/bg-tech.jpg"); /* 👈 your image */
-    
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
