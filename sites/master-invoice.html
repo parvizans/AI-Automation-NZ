@@ -60,7 +60,13 @@ th, td {
 <div class="container">
 
 <h1>📊 Master Invoice</h1>
-
+  
+<div class="top-buttons">
+  <button onclick="goHome()" class="yellow">🏠 Timesheet</button>
+  <button onclick="goInvoice()" class="blue">📄 Invoice</button>
+  <button onclick="goExpenses()" class="yellow">💰 Expenses</button>
+</div>
+  
 <div class="card">
   <h3>Upload Invoices</h3>
   <input type="file" id="fileInput" multiple accept="application/pdf">
