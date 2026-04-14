@@ -278,3 +278,15 @@ window.addEventListener("load", function(){
   updateSummary();
 
 });
+
+function goHome(){
+  window.location.href = "timesheet.html";
+}
+
+function goInvoice(){
+  window.location.href = "invoice.html";
+}
+
+function goExpenses(){
+  window.location.href = "expenses.html";
+}
