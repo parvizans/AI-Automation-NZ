@@ -133,21 +133,27 @@ function updateAllowance(){
 
   document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
-    const location = row.querySelector(".row-location")?.value;
-    const foodCell = row.querySelector(".food-cell");
+    const locationEl = row.querySelector(".row-location");
+    const foodCell = row.querySelector(".food");
 
+    if(!locationEl || !foodCell) return; // safety
+
+    const location = locationEl.value;
+
+    // ✅ ONLY condition = location (as you wanted)
     if(location === "Outside Sydney" || location === "Outside AKL"){
       foodCell.innerText = "$50";
+      foodCell.style.color = "#32d296";
       totalFood += 50;
     } else {
       foodCell.innerText = "-";
+      foodCell.style.color = "#888";
     }
 
   });
 
+  // optional (for invoice later)
   localStorage.setItem("foodTotal", totalFood);
-}
-  });
 }
 
 /* =========================
