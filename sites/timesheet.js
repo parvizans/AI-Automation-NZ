@@ -112,9 +112,9 @@ function updateAllowance(){
 
   });
 
+  // optional (for invoice later)
   localStorage.setItem("foodTotal", totalFood);
 }
-
 // ================= INIT =================
 window.addEventListener("load", function(){
 
