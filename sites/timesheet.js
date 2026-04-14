@@ -31,41 +31,41 @@ function loadTimesheet(){
 }
 
 // ================= GENERATE MONTH =================
-function generateMonth(){
+row.innerHTML = `
+  <td>${i}</td>
+  <td>${date}</td>
+  <td>${weekday}</td>
 
-  const month = document.getElementById("month").value;
-  if(month === "") return;
-
-  const year = new Date().getFullYear();
-  const days = new Date(year, parseInt(month)+1, 0).getDate();
-
-  const tbody = document.getElementById("timesheet-body");
-  tbody.innerHTML = "";
-
-  for(let i=1;i<=days;i++){
-
-    const d = new Date(year, parseInt(month), i);
-    const date = d.toLocaleDateString("en-GB");
-    const weekday = d.toLocaleDateString("en-US", { weekday: "short" });
-
-    const row = document.createElement("tr");
-
-    row.innerHTML = `
   <td>
-  <select class="time-out-hour">
-    ${[...Array(24).keys()].map(h =>
-      `<option value="${h}">${String(h).padStart(2,'0')}</option>`
-    ).join('')}
-  </select>
+    <input type="time" class="time-in" value="08:00">
+  </td>
 
-  <select class="time-out-minute">
-    ${["00","15","30","45"].map(m =>
-      `<option value="${m}">${m}</option>`
-    ).join('')}
-  </select>
-</td>
-      <td class="food">-</td>
-    `;
+  <td>
+    <select class="time-out-hour">
+      ${[...Array(24).keys()].map(h =>
+        `<option value="${h}">${String(h).padStart(2,'0')}</option>`
+      ).join('')}
+    </select>
+
+    <select class="time-out-minute">
+      ${["00","15","30","45"].map(m =>
+        `<option value="${m}">${m}</option>`
+      ).join('')}
+    </select>
+  </td>
+
+  <td class="total">0</td>
+  <td class="ot">0</td>
+
+  <td>
+    <select class="row-location">
+      <option>Sydney</option>
+      <option>Outside Sydney</option>
+    </select>
+  </td>
+
+  <td class="food">-</td>
+`;
 
     tbody.appendChild(row);
   }
