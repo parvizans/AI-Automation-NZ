@@ -116,8 +116,10 @@ function buildDashboard(data) {
     }
   });
 
-   const insights = runRAC(data);
-showRAC(insights);
+ // ✅ CORRECT PLACE
+  const insights = runRAC(data);
+  showRAC(insights);
+}
 
   // 🔥 AGGREGATED INSIGHTS
   createAggregatedChart(data, "Country", "Sales");
@@ -341,9 +343,6 @@ function runRAC(data) {
       action: "Adjust pricing or cost"
     });
   }
- const insights = runRAC(data);
- console.log("RAC:", insights);
- showRAC(insights);
 });
   return insights;
 }
