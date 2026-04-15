@@ -116,6 +116,9 @@ function buildDashboard(data) {
     }
   });
 
+   const insights = runRAC(data);
+showRAC(insights);
+
   // 🔥 AGGREGATED INSIGHTS
   createAggregatedChart(data, "Country", "Sales");
   createAggregatedChart(data, "Segment", "Profit");
@@ -295,19 +298,25 @@ function createAggregatedChart(data, groupKey, valueKey) {
   });
 }
 
+function getField(data, possibleNames) {
+  return possibleNames.find(name => data[0][name] !== undefined);
+}
+
 function runRAC(data) {
 
   let insights = [];
 
-  const keys = Object.keys(data[0]);
-
-  // Extract common fields safely
-  let sales = data.map(d => d["Sales"]).filter(v => typeof v === "number");
-  let profit = data.map(d => d["Profit"]).filter(v => typeof v === "number");
-  let discounts = data.map(d => d["Discounts"]).filter(v => typeof v === "number");
-  let units = data.map(d => d["Units Sold"]).filter(v => typeof v === "number");
+  const salesKey = getField(data, ["Sales","Sum of Sales","sum_of_sales"]);
+  const profitKey = getField(data, ["Profit","Sum of Profit","sum_of_profit"]);
+  const discountKey = getField(data, ["Discounts","Sum of Discounts","sum_of_discounts"]);
+  const unitsKey = getField(data, ["Units Sold","Sum of Units Sold","sum_of_units_sold"]);
 
   const sum = arr => arr.reduce((a,b)=>a+b,0);
+
+  let sales = salesKey ? data.map(d => d[salesKey]).filter(v => typeof v === "number") : [];
+  let profit = profitKey ? data.map(d => d[profitKey]).filter(v => typeof v === "number") : [];
+  let discounts = discountKey ? data.map(d => d[discountKey]).filter(v => typeof v === "number") : [];
+  let units = unitsKey ? data.map(d => d[unitsKey]).filter(v => typeof v === "number") : [];
 
   if (profit.length && sum(profit) < 0) {
     insights.push({
@@ -320,7 +329,7 @@ function runRAC(data) {
   if (discounts.length && sales.length && sum(discounts) > sum(sales) * 0.2) {
     insights.push({
       title: "⚠️ High Discount Impact",
-      cause: "Discounts are too high compared to sales",
+      cause: "Discounts too high vs sales",
       action: "Optimize discount strategy"
     });
   }
@@ -328,13 +337,14 @@ function runRAC(data) {
   if (units.length && profit.length && sum(units) > 1000 && sum(profit) < 0) {
     insights.push({
       title: "📦 High Volume, Low Profit",
-      cause: "Selling high quantity but low margin",
-      action: "Review product pricing or supplier cost"
+      cause: "High sales volume but low margin",
+      action: "Adjust pricing or cost"
     });
   }
 
   return insights;
 }
+
 
 
 
