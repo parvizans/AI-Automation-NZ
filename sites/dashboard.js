@@ -318,6 +318,7 @@ function runRAC(data) {
   let discounts = discountKey ? data.map(d => d[discountKey]).filter(v => typeof v === "number") : [];
   let units = unitsKey ? data.map(d => d[unitsKey]).filter(v => typeof v === "number") : [];
 
+  // REAL CONDITIONS
   if (profit.length && sum(profit) < 0) {
     insights.push({
       title: "📉 Loss Detected",
@@ -341,6 +342,14 @@ function runRAC(data) {
       action: "Adjust pricing or cost"
     });
   }
+
+  // 🧪 TEST INSIGHT (ADD HERE)
+  insights.push({
+    title: "🧪 Test Insight",
+    cause: "RAC engine is working",
+    action: "System confirmed"
+  });
+
   return insights;
 }
 
