@@ -341,7 +341,11 @@ function runRAC(data) {
       action: "Adjust pricing or cost"
     });
   }
-
+  insights.push({
+  title: "🧪 Test Insight",
+  cause: "RAC engine is working",
+  action: "Ready for real data"
+});
   return insights;
 }
 
