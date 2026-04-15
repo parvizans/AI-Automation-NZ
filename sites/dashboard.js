@@ -146,51 +146,89 @@ function createChart(name, values) {
   const container = document.createElement("div");
   container.className = "chart-box";
 
+  // Controls container (clean UI)
+  const controls = document.createElement("div");
+  controls.style.display = "flex";
+  controls.style.justifyContent = "space-between";
+  controls.style.marginBottom = "10px";
+
+  // Checkbox
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
   checkbox.checked = true;
 
+  // Chart selector
   const select = document.createElement("select");
-  ["line","bar","pie"].forEach(t=>{
+  ["line","bar","pie","scatter"].forEach(t=>{
     const o=document.createElement("option");
     o.value=t;
     o.innerText=t;
     select.appendChild(o);
   });
 
+  controls.appendChild(checkbox);
+  controls.appendChild(select);
+
   const canvas = document.createElement("canvas");
 
-  container.appendChild(checkbox);
-  container.appendChild(select);
+  container.appendChild(controls);
   container.appendChild(canvas);
 
   document.querySelector(".charts-grid").appendChild(container);
 
-  let chart = new Chart(canvas, {
-    type: "line",
-    data: {
-      labels: values.map((_, i) => `Pt ${i + 1}`),
-      datasets: [{
-        label: name,
-        data: values
-      }]
-    }
-  });
+  // 🔥 FUNCTION TO PREPARE DATA BASED ON CHART TYPE
+  function getDataset(chartType) {
 
-  select.addEventListener("change", () => {
-    chart.destroy();
-    chart = new Chart(canvas, {
-      type: select.value,
+    // SCATTER FIX
+    if (chartType === "scatter") {
+      return values.map((v, i) => ({ x: i, y: v }));
+    }
+
+    return values;
+  }
+
+  // 🔥 FUNCTION TO BUILD CHART
+  function buildChart(chartType) {
+
+    return new Chart(canvas, {
+      type: chartType,
       data: {
-        labels: values.map((_, i) => `Pt ${i + 1}`),
+        labels: chartType === "pie" 
+          ? values.map((_, i) => `Part ${i + 1}`)
+          : values.map((_, i) => `Pt ${i + 1}`),
+
         datasets: [{
           label: name,
-          data: values
+          data: getDataset(chartType),
+
+          // 🎨 STYLE
+          backgroundColor: "rgba(50,210,150,0.4)",
+          borderColor: "#32d296",
+          borderWidth: 2,
+          fill: chartType === "line" ? false : true
         }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true
+          }
+        }
       }
     });
+  }
+
+  // INITIAL CHART
+  let chart = buildChart("line");
+
+  // 🔁 CHANGE CHART TYPE
+  select.addEventListener("change", () => {
+    chart.destroy();
+    chart = buildChart(select.value);
   });
 
+  // 👁️ SHOW / HIDE
   checkbox.addEventListener("change", () => {
     container.style.display = checkbox.checked ? "block" : "none";
   });
