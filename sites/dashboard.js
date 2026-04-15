@@ -192,14 +192,22 @@ function createChart(name, values) {
 
     return new Chart(canvas, {
       type: chartType,
-      data: {
-        labels: chartType === "pie" 
-          ? values.map((_, i) => `Part ${i + 1}`)
-          : values.map((_, i) => `Pt ${i + 1}`),
+     let displayValues = values;
 
+// 🔴 LIMIT PIE CHART SIZE
+if (chartType === "pie" && values.length > 6) {
+  displayValues = values.slice(0, 6);
+}
+
+data: {
+  labels: chartType === "pie" 
+    ? displayValues.map((_, i) => `Part ${i + 1}`)
+    : displayValues.map((_, i) => `Pt ${i + 1}`),
         datasets: [{
           label: name,
-          data: getDataset(chartType),
+         data: chartType === "scatter"
+  ? values.map((v, i) => ({ x: i, y: v }))
+  : displayValues,
 
           // 🎨 STYLE
           backgroundColor: "rgba(50,210,150,0.4)",
