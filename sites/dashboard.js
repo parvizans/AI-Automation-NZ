@@ -187,46 +187,48 @@ function createChart(name, values) {
     return values;
   }
 
-  // 🔥 FUNCTION TO BUILD CHART
-  function buildChart(chartType) {
 
-    return new Chart(canvas, {
-      type: chartType,
-     let displayValues = values;
+ // 🔥 FUNCTION TO BUILD CHART
+function buildChart(chartType) {
 
-// 🔴 LIMIT PIE CHART SIZE
-if (chartType === "pie" && values.length > 6) {
-  displayValues = values.slice(0, 6);
-}
+  // ✅ DEFINE FIRST (outside Chart config)
+  let displayValues = values;
 
-data: {
-  labels: chartType === "pie" 
-    ? displayValues.map((_, i) => `Part ${i + 1}`)
-    : displayValues.map((_, i) => `Pt ${i + 1}`),
-        datasets: [{
-          label: name,
-         data: chartType === "scatter"
-  ? values.map((v, i) => ({ x: i, y: v }))
-  : displayValues,
-
-          // 🎨 STYLE
-          backgroundColor: "rgba(50,210,150,0.4)",
-          borderColor: "#32d296",
-          borderWidth: 2,
-          fill: chartType === "line" ? false : true
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: true
-          }
-        }
-      }
-    });
+  // 🔴 LIMIT PIE SIZE
+  if (chartType === "pie" && values.length > 6) {
+    displayValues = values.slice(0, 6);
   }
 
+  return new Chart(canvas, {
+    type: chartType,
+    data: {
+      labels: chartType === "pie" 
+        ? displayValues.map((_, i) => `Part ${i + 1}`)
+        : displayValues.map((_, i) => `Pt ${i + 1}`),
+
+      datasets: [{
+        label: name,
+        data: chartType === "scatter"
+          ? values.map((v, i) => ({ x: i, y: v }))
+          : displayValues,
+
+        // 🎨 STYLE
+        backgroundColor: "rgba(50,210,150,0.4)",
+        borderColor: "#32d296",
+        borderWidth: 2,
+        fill: chartType === "line" ? false : true
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true
+        }
+      }
+    }
+  });
+}
   // INITIAL CHART
   let chart = buildChart("line");
 
@@ -292,3 +294,8 @@ function createAggregatedChart(data, groupKey, valueKey) {
     }
   });
 }
+
+
+
+
+
