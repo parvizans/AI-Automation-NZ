@@ -344,6 +344,26 @@ function runRAC(data) {
   return insights;
 }
 
+function showRAC(insights) {
 
+  const container = document.getElementById("rac-results");
+
+  if (!container) {
+    console.error("RAC container not found");
+    return;
+  }
+
+  container.innerHTML = "";
+
+  insights.forEach(i => {
+    container.innerHTML += `
+      <div class="rac-card">
+        <strong>${i.title}</strong><br>
+        <b>Cause:</b> ${i.cause}<br>
+        <b>Action:</b> ${i.action}
+      </div>
+    `;
+  });
+}
 
 
