@@ -116,16 +116,14 @@ function buildDashboard(data) {
     }
   });
 
- // ✅ CORRECT PLACE
+  // 🧠 RAC ENGINE
   const insights = runRAC(data);
   showRAC(insights);
-}
 
-  // 🔥 AGGREGATED INSIGHTS
+  // 🔥 AGGREGATED CHARTS (MUST BE INSIDE FUNCTION)
   createAggregatedChart(data, "Country", "Sales");
   createAggregatedChart(data, "Segment", "Profit");
 }
-
 /* =========================
    KPI
 ========================= */
