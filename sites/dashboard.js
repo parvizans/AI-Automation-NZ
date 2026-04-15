@@ -295,7 +295,46 @@ function createAggregatedChart(data, groupKey, valueKey) {
   });
 }
 
+function runRAC(data) {
 
+  let insights = [];
+
+  const keys = Object.keys(data[0]);
+
+  // Extract common fields safely
+  let sales = data.map(d => d["Sales"]).filter(v => typeof v === "number");
+  let profit = data.map(d => d["Profit"]).filter(v => typeof v === "number");
+  let discounts = data.map(d => d["Discounts"]).filter(v => typeof v === "number");
+  let units = data.map(d => d["Units Sold"]).filter(v => typeof v === "number");
+
+  const sum = arr => arr.reduce((a,b)=>a+b,0);
+
+  if (profit.length && sum(profit) < 0) {
+    insights.push({
+      title: "📉 Loss Detected",
+      cause: "Total profit is negative",
+      action: "Check pricing or reduce discounts"
+    });
+  }
+
+  if (discounts.length && sales.length && sum(discounts) > sum(sales) * 0.2) {
+    insights.push({
+      title: "⚠️ High Discount Impact",
+      cause: "Discounts are too high compared to sales",
+      action: "Optimize discount strategy"
+    });
+  }
+
+  if (units.length && profit.length && sum(units) > 1000 && sum(profit) < 0) {
+    insights.push({
+      title: "📦 High Volume, Low Profit",
+      cause: "Selling high quantity but low margin",
+      action: "Review product pricing or supplier cost"
+    });
+  }
+
+  return insights;
+}
 
 
 
