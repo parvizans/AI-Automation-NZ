@@ -33,9 +33,9 @@ function generateMonth(){
 
   for(let i=1;i<=days;i++){
 
-    const d = new Date(year, month, i);
-    const date = d.toISOString().split('T')[0];
-
+    const d = new Date(year, parseInt(month), i);
+    const date = d.toLocaleDateString("en-GB"); // ✅ FIXED
+    const weekday = d.toLocaleDateString("en-US", { weekday: "short" });
     const row = document.createElement("tr");
 
     row.innerHTML = `
