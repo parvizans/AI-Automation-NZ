@@ -341,7 +341,6 @@ function runRAC(data) {
       action: "Adjust pricing or cost"
     });
   }
-});
   return insights;
 }
 
