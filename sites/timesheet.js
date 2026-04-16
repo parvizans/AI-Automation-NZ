@@ -147,17 +147,21 @@ function updateAllowance(){
 
     const locationEl = row.querySelector(".row-location");
     const foodCell = row.querySelector(".food");
-    const timeOutEl = row.querySelector(".timeOut"); // ✅ NEW
+
+    const hour = row.querySelector(".time-out-hour")?.value;
+    const minute = row.querySelector(".time-out-minute")?.value;
 
     if(!locationEl || !foodCell) return;
 
     const location = locationEl.value;
-    const worked = timeOutEl?.value; // ✅ only count if worked
+
+    // ✅ check if worked
+    const worked = hour && (hour !== "00" || minute !== "00");
 
     let food = 0;
 
-    // ✅ CONDITION: must work + outside
-    if(worked && (location === "Outside Sydney" || location === "Outside AKL")){
+    // ✅ FINAL CONDITION
+    if(worked && location.toLowerCase().includes("outside")){
       food = 50;
       foodCell.innerText = "$50";
       foodCell.style.color = "#32d296";
@@ -170,18 +174,8 @@ function updateAllowance(){
 
   });
 
-  // ✅ SAVE CORRECTLY
   localStorage.setItem("foodTotal", totalFood);
 }
-document.addEventListener("change", function(e) {
-  if(
-    e.target.classList.contains("row-location") || 
-    e.target.classList.contains("timeOut")
-  ) {
-    updateAllowance();
-  }
-});
-
 /* =========================
    SUMMARY
 ========================= */
