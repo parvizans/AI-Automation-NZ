@@ -218,12 +218,12 @@ th {
 
 <tr>
 <td colspan="3">Expenses</td>
-<td><input id="expenses" value="0"></td>
+<td><input id="expenses" placeholder="0"></td>
 </tr>
 
 <tr>
 <td colspan="3">Cash Advance</td>
-<td><input id="cash" value="0"></td>
+<td><input id="cash" placeholder="0"></td>
 </tr>
 
 <tr class="final">
@@ -246,35 +246,52 @@ th {
 // =========================
 const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
 
+
 // =========================
 // LOAD INITIAL VALUES
 // =========================
 function loadData(){
 
-  // Expenses
-  const savedExpense = localStorage.getItem("expenseTotal");
-  if(savedExpense){
-    document.getElementById("expenses").value = savedExpense;
+ // 🔥 REMOVE OLD BUG KEY (VERY IMPORTANT)
+  localStorage.removeItem("expenseTotal");
+
+  // =========================
+  // LOAD EXPENSES (NEW KEY ONLY)
+  // =========================
+  const expEl = document.getElementById("expenses");
+  const savedExpense = localStorage.getItem("invoiceExpenses");
+
+  if(expEl){
+    expEl.value = savedExpense ? savedExpense : "";
   }
 
-  // Engineer
+  // =========================
+  // ENGINEER / PROJECT
+  // =========================
   if(data.engineer){
     document.getElementById("engineer").value = data.engineer;
   }
 
-  // Project
   if(data.project){
     document.getElementById("project").value = data.project;
   }
 
-  // Auto invoice number
-  document.getElementById("invoiceNo").value =
-    "INV-" + Math.floor(Math.random()*10000);
+  // =========================
+  // INVOICE NUMBER
+  // =========================
+  const invEl = document.getElementById("invoiceNo");
+  if(invEl && !invEl.value){
+    invEl.value = "INV-" + Math.floor(Math.random()*10000);
+  }
 
-  // Today date
-  const today = new Date().toISOString().split("T")[0];
-  document.getElementById("invoiceDate").value = today;
-}
+  // =========================
+  // DATE
+  // =========================
+  const dateEl = document.getElementById("invoiceDate");
+  if(dateEl && !dateEl.value){
+    const today = new Date().toISOString().split("T")[0];
+    dateEl.value = today;
+  }
 
 // =========================
 // MAIN CALCULATION
