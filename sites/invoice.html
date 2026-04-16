@@ -16,93 +16,13 @@ body {
     url("../assets/bg-Mexpenses.jpg") center/cover no-repeat;
 }
 
-/* CONTAINER */
 .container {
   max-width:1000px;
   margin:auto;
 }
 
-/* HEADER GRID */
-.header-grid {
-  display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr;  /* 👈 better balance */
-  gap: 30px;                              /* 👈 more spacing */
-  margin-bottom: 25px;
-  align-items: end;                       /* 👈 align nicely */
-}
-
-.field label {
-  display: block;
-  margin-bottom: 8px;
-  color: #aaa;
-  font-size: 14px;
-}
-
-.field input,
-.field select {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 6px;
-  background: #2a355f;
-  color: #fff;
-}
-
-/* TO + PROJECT */
-.client-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 30px;              /* 🔥 more breathing space */
-  margin-bottom: 25px;
-  align-items: stretch;   /* 🔥 equal height boxes */
-}
-  #project {
-  width: 100%;
-  padding:8px;
-  border:none;
-  border-radius:6px;
-  background:#2a355f;
-  color:#fff;
-}
-
-.card {
-  background:#1c2541;
-  padding:20px;           /* 🔥 slightly bigger */
-  border-radius:10px;
-  height:100%;            /* 🔥 equal height */
-}
-  /* 👇 ADD HERE */
-.card p {
-  margin: 5px 0 0 0;
-  line-height: 1.6;
-}
-
-/* NAV */
-.top-nav {
-  margin-bottom:20px;
-}
-
-button {
-  padding:10px 20px;
-  border:none;
-  border-radius:6px;
-  font-weight:bold;
-  cursor:pointer;
-  margin-right:10px;
-}
-
-.btn-green { background:#32d296; color:#000; }
-.btn-blue { background:#5aa7ff; color:#fff; }
-
-.invoice-title {
-  font-size:26px;          /* ↓ smaller */
-  font-weight:bold;
-  background:#2ecc71;
-  color:#000;
-  padding:8px 16px;        /* ↓ tighter */
-  display:inline-block;
-  border-radius:6px;       /* slightly smoother */
-  float:right;
+h1 {
+  color:#32d296;
   margin-bottom:20px;
 }
 
@@ -111,200 +31,131 @@ table {
   width:100%;
   border-collapse:collapse;
   margin-top:20px;
-  background:rgba(0,0,0,0.5);
 }
 
 th, td {
-  padding:15px;
-  border:1px solid rgba(255,255,255,0.1);
+  padding:12px;
+  border-bottom:1px solid #333;
   text-align:center;
 }
 
 th {
-  background:#111a33;
+  background:#1c2541;
 }
 
-.final {
-  background:#0f9d58;
-  font-size:18px;
+input {
+  width:100%;
+  padding:8px;
+  border-radius:6px;
+  border:none;
+  background:#2a355f;
+  color:#fff;
+}
+
+/* FINAL ROW */
+.final-row {
+  background:#2ecc71;
+  color:#000;
   font-weight:bold;
 }
+
+/* BUTTONS */
+.buttons {
+  margin-top:20px;
+}
+
+button {
+  padding:10px 20px;
+  margin-right:10px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.calc { background:#32d296; }
+.reset { background:#e74c3c; }
+
 </style>
 </head>
 
 <body>
 
 <div class="container">
-  <div class="top-buttons">
-  <button onclick="goHome()" class="yellow">🏠 Timesheet</button>
-  <button onclick="goInvoice()" class="blue">📄 Invoice</button>
-  <button onclick="goExpenses()" class="yellow">💰 Expenses</button>
-</div>
 
-<!-- HEADER -->
-<div class="header-grid">
+<h1>📄 Invoice</h1>
 
-  <div class="field">
-    <label>Invoice No</label>
-    <input type="text" id="invoiceNo">
-  </div>
-
-  <div class="field">
-    <label>Engineer Name</label>
-    <select id="engineer">
-      <option value="">Select</option>
-      <option value="abhignya.reddy@linkquestglobal.com">Abhignya Reddy</option>
-      <option value="parviz.ansari@linkquestglobal.com">Parviz Ansari</option>
-      <option value="pavinee.suwanta@linkquestglobal.com">Pavinee Suwanta</option>
-      <option value="abhishek.ahirrao@linkquestglobal.com">Abhishek Ahirrao</option>
-      <option value="sanjay.nampally@linkquestglobal.com">Sanjay Nampally</option>
-      <option value="saidinesh.mogili@linkquestglobal.com">Sai Dinesh Mogili</option>
-      <option value="manish.redekar@linkquestglobal.com">Manish Redekar</option>
-      <option value="shivtejgasti@gmail.com">Shivtej Gasti</option>
-      <option value="skofficial8991@gmail.com">Shreekant Kadam</option>
-      <option value="ergaganverma@gmail.com">Gagan Verma</option>
-    </select>
-  </div>
-
-  <div class="field">
-    <label>Date</label>
-    <input type="date" id="invoiceDate">
-  </div>
-
-</div>
-
-<!-- TO + PROJECT -->
-<div class="client-grid">
-
-  <div class="card">
-    <b>TO:</b><br>
-   AUTOMATIONPARK TELECOM AUSTRALIA LTD<br>
-   NEW ZEALAND & AUSTRALIA
-  </div>
-
-  <div class="card">
-    <b>Project</b><br>
-  <input id="project" placeholder="Enter Project Name / Code">
-
-  </div>
-
-</div>
-
-<!-- NAV -->
-<div class="top-nav">
-  <button onclick="goHome()">🏠 Timesheet</button>
-  <button onclick="goExpenses()">💰 Expenses</button>
-  <button onclick="saveInvoice()">Save</button>
-  <button onclick="resetInvoice()">Reset</button>
-</div>
-
-<!-- TITLE -->
-<h1 class="invoice-title">📄 INVOICE</h1>
-
-<!-- TABLE -->
 <table>
+
 <thead>
 <tr>
-<th>Description</th>
-<th>Qty</th>
-<th>Rate</th>
-<th>Amount</th>
+  <th>Description</th>
+  <th>Qty</th>
+  <th>Rate</th>
+  <th>Amount</th>
 </tr>
 </thead>
 
-<tbody id="rows"></tbody>
-
-<tfoot>
-
-<tr>
-<td colspan="3">Expenses</td>
-<td><input id="expenses" placeholder="0"></td>
-</tr>
+<tbody id="rows">
+</tbody>
 
 <tr>
-<td colspan="3">Cash Advance</td>
-<td><input id="cash" placeholder="0"></td>
+  <td colspan="3">Expenses</td>
+  <td><input id="expenses" placeholder="0"></td>
 </tr>
 
-<tr class="final">
-<td colspan="3">Final Payable</td>
-<td id="final"></td>
+<tr>
+  <td colspan="3">Cash Advance</td>
+  <td><input id="cash" placeholder="0"></td>
 </tr>
 
-</tfoot>
+<tr class="final-row">
+  <td colspan="3">Final Payable</td>
+  <td id="final">$0.00</td>
+</tr>
+
 </table>
 
-<br>
+<div class="buttons">
+  <button class="calc" onclick="calculate()">Calculate</button>
+  <button class="reset" onclick="resetInvoice()">Reset</button>
+</div>
 
-<button class="btn-green" onclick="calculate()">Calculate</button>
-<button class="btn-blue" onclick="window.print()">Print / Save PDF</button>
 </div>
 
 <script>
+
 // =========================
-// LOAD DATA FROM TIMESHEET
+// LOAD DATA
 // =========================
 const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
 
+window.addEventListener("load", function(){
 
-// =========================
-// LOAD INITIAL VALUES
-// =========================
-function loadData(){
-
- // 🔥 REMOVE OLD BUG KEY (VERY IMPORTANT)
+  // clean old bug key
   localStorage.removeItem("expenseTotal");
 
-  // =========================
-  // LOAD EXPENSES (NEW KEY ONLY)
-  // =========================
-  const expEl = document.getElementById("expenses");
-  const savedExpense = localStorage.getItem("invoiceExpenses");
-
-  if(expEl){
-    expEl.value = savedExpense ? savedExpense : "";
+  // load expenses
+  const savedExp = localStorage.getItem("invoiceExpenses");
+  if(savedExp){
+    document.getElementById("expenses").value = savedExp;
   }
 
-  // =========================
-  // ENGINEER / PROJECT
-  // =========================
-  if(data.engineer){
-    document.getElementById("engineer").value = data.engineer;
-  }
+  buildRows();
+});
 
-  if(data.project){
-    document.getElementById("project").value = data.project;
-  }
-
-  // =========================
-  // INVOICE NUMBER
-  // =========================
-  const invEl = document.getElementById("invoiceNo");
-  if(invEl && !invEl.value){
-    invEl.value = "INV-" + Math.floor(Math.random()*10000);
-  }
-
-  // =========================
-  // DATE
-  // =========================
-  const dateEl = document.getElementById("invoiceDate");
-  if(dateEl && !dateEl.value){
-    const today = new Date().toISOString().split("T")[0];
-    dateEl.value = today;
-  }
 
 // =========================
-// MAIN CALCULATION
+// BUILD ROWS (FROM TIMESHEET)
 // =========================
-function calculate(){
+function buildRows(){
+
+  const tbody = document.getElementById("rows");
 
   const wdDays = Number(data.wdDays) || 0;
   const weDays = Number(data.weDays) || 0;
   const wdHours = Number(data.wdHours) || 0;
   const wdOT = Number(data.wdOT) || 0;
   const weOT = Number(data.weOT) || 0;
-
-  // ✅ FIXED FOOD SOURCE
   const foodTotal = Number(localStorage.getItem("foodTotal")) || 0;
 
   const rates = {
@@ -323,19 +174,13 @@ function calculate(){
     ["Weekday OT", wdOT, rates.wdOT, wdOT * rates.wdOT],
     ["Weekend Days", weDays, rates.we, weDays * rates.we],
     ["Weekend OT", weOT, rates.weOT, weOT * rates.weOT],
-
-    // ✅ FIXED FOOD CALCULATION
     ["Food Allowance", foodTotal / 50, rates.food, foodTotal]
 
   ];
 
-  let total = 0;
-  const tbody = document.getElementById("rows");
   tbody.innerHTML = "";
 
   rows.forEach(r=>{
-    total += r[3];
-
     tbody.innerHTML += `
     <tr>
       <td>${r[0]}</td>
@@ -345,9 +190,24 @@ function calculate(){
     </tr>`;
   });
 
-  // ✅ FIXED EXPENSES SOURCE
+}
+
+
+// =========================
+// CALCULATE FINAL
+// =========================
+function calculate(){
+
   const expenses = Number(localStorage.getItem("invoiceExpenses")) || 0;
   const cash = Number(document.getElementById("cash").value) || 0;
+
+  // sum rows
+  let total = 0;
+
+  document.querySelectorAll("#rows tr").forEach(row=>{
+    const amount = row.children[3].innerText.replace("$","");
+    total += Number(amount);
+  });
 
   const finalTotal = total + expenses - cash;
 
@@ -355,59 +215,24 @@ function calculate(){
     "$" + finalTotal.toFixed(2);
 }
 
-// =========================
-// NAVIGATION
-// =========================
-function goHome(){
-  window.location.href = "timesheet.html";
-}
-
-function goExpenses(){
-  window.location.href = "expenses.html";
-}
 
 // =========================
-// AUTO LOAD
+// RESET
 // =========================
-window.addEventListener("load", function(){
-  loadData();
-  calculate();
-});
-  function saveInvoice(){
-  localStorage.setItem("invoiceBackup", document.getElementById("rows").innerHTML);
-  alert("Invoice saved ✅");
-}
-
 function resetInvoice(){
 
-  // 🔥 REMOVE ALL POSSIBLE KEYS (old + new)
   localStorage.removeItem("invoiceExpenses");
-  localStorage.removeItem("expenseTotal"); // 👈 VERY IMPORTANT (old bug)
   localStorage.removeItem("invoiceData");
   localStorage.removeItem("foodTotal");
 
-  // 🔥 CLEAR UI SAFELY
-  const expensesInput = document.getElementById("expenses");
-  if(expensesInput) expensesInput.value = "";
+  document.getElementById("expenses").value = "";
+  document.getElementById("cash").value = "";
+  document.getElementById("rows").innerHTML = "";
+  document.getElementById("final").innerText = "$0.00";
 
-  const rows = document.getElementById("rows");
-  if(rows) rows.innerHTML = "";
+  console.log("Invoice reset ✅");
 
-  const cash = document.querySelector('input[type="number"]');
-  if(cash) cash.value = 0;
-
-  console.log("Invoice fully reset ✅ (all keys cleared)");
-
-  // 🔥 HARD RESET (NO RESURRECTION)
-  window.location.href = window.location.pathname;
 }
-
-// =========================
-// LIVE UPDATE
-// =========================
-document.getElementById("expenses").addEventListener("input", calculate);
-document.getElementById("cash").addEventListener("input", calculate);  
-
 
 </script>
 
