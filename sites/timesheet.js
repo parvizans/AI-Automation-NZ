@@ -147,24 +147,30 @@ function updateAllowance(){
 
     const locationEl = row.querySelector(".row-location");
     const foodCell = row.querySelector(".food");
+    const timeOutEl = row.querySelector(".timeOut"); // ✅ NEW
 
-    if(!locationEl || !foodCell) return; // safety
+    if(!locationEl || !foodCell) return;
 
     const location = locationEl.value;
+    const worked = timeOutEl?.value; // ✅ only count if worked
 
-    // ✅ ONLY condition = location (as you wanted)
-    if(location === "Outside Sydney" || location === "Outside AKL"){
+    let food = 0;
+
+    // ✅ CONDITION: must work + outside
+    if(worked && (location === "Outside Sydney" || location === "Outside AKL")){
+      food = 50;
       foodCell.innerText = "$50";
       foodCell.style.color = "#32d296";
-      totalFood += 50;
     } else {
       foodCell.innerText = "-";
       foodCell.style.color = "#888";
     }
 
+    totalFood += food;
+
   });
 
-  // optional (for invoice later)
+  // ✅ SAVE CORRECTLY
   localStorage.setItem("foodTotal", totalFood);
 }
 
