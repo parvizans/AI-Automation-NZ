@@ -284,7 +284,8 @@ document.addEventListener("change", function(e){
 ========================= */
 function saveTimesheet(){
   localStorage.setItem("timesheetBackup", document.getElementById("timesheet-body").innerHTML);
-  alert("Saved ✅");
+
+  console.log("Auto-saved ✅"); // silent save
 }
 
 function loadTimesheet(){
