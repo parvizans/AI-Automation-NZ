@@ -221,19 +221,23 @@ function calculate(){
 // =========================
 function resetInvoice(){
 
+  // 🔥 CLEAR STORAGE
   localStorage.removeItem("invoiceExpenses");
   localStorage.removeItem("invoiceData");
   localStorage.removeItem("foodTotal");
 
+  // 🔥 CLEAR INPUTS
   document.getElementById("expenses").value = "";
   document.getElementById("cash").value = "";
-  document.getElementById("rows").innerHTML = "";
+
+  // 🔥 RESET FINAL
   document.getElementById("final").innerText = "$0.00";
 
-  console.log("Invoice reset ✅");
+  // 🔥 REBUILD TABLE (THIS IS THE FIX)
+  buildRows();
 
+  console.log("Invoice reset + rebuilt ✅");
 }
-
 </script>
 
 </body>
