@@ -333,3 +333,38 @@ window.addEventListener("load", function(){
   loadTimesheet(); // 🔥 FULL RESTORE
 
 });
+
+
+/* =========================
+   LOAD DATA FROM TIMESHEET & EXPENSES
+========================= */
+window.addEventListener("load", function(){
+
+  // 🔥 LOAD TIMESHEET DATA
+  const data = JSON.parse(localStorage.getItem("invoiceData") || "{}");
+
+  if(data){
+    document.getElementById("project").value = data.project || "";
+    document.getElementById("engineer").value = data.engineer || "";
+
+    document.getElementById("wd-days").innerText = data.wdDays || 0;
+    document.getElementById("wd-hours").innerText = data.wdHours || 0;
+    document.getElementById("wd-ot").innerText = data.wdOT || 0;
+
+    document.getElementById("we-days").innerText = data.weDays || 0;
+    document.getElementById("we-ot").innerText = data.weOT || 0;
+  }
+
+  // 🔥 FOOD
+  let food = localStorage.getItem("foodTotal") || 0;
+  if(document.getElementById("foodQty")){
+    document.getElementById("foodQty").innerText = food / 50;
+  }
+
+  // 🔥 EXPENSES
+  let expenses = localStorage.getItem("invoiceExpenses") || 0;
+  if(document.getElementById("expensesInput")){
+    document.getElementById("expensesInput").value = expenses;
+  }
+
+});
