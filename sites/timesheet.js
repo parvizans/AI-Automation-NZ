@@ -285,7 +285,16 @@ document.addEventListener("change", function(e){
 function saveTimesheet(){
   localStorage.setItem("timesheetBackup", document.getElementById("timesheet-body").innerHTML);
 
-  console.log("Auto-saved ✅"); // silent save
+  // ✅ SHOW TOAST
+  const toast = document.getElementById("saveToast");
+
+  if(toast){
+    toast.style.display = "block";
+
+    setTimeout(() => {
+      toast.style.display = "none";
+    }, 1000);
+  }
 }
 
 function loadTimesheet(){
