@@ -357,8 +357,19 @@ window.addEventListener("load", function(){
 }
 
 function resetInvoice(){
+
+  // Clear ONLY invoice-related data (safe reset)
+  localStorage.removeItem("invoiceExpenses");
+  localStorage.removeItem("invoiceNo");
   localStorage.removeItem("invoiceData");
-  localStorage.removeItem("invoiceBackup");
+  localStorage.removeItem("foodTotal");
+
+  // Clear UI fields
+  document.getElementById("expenses").value = "";
+  
+  // optional: clear table rows
+  document.getElementById("rows").innerHTML = "";
+
   location.reload();
 }
 
