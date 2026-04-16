@@ -358,22 +358,26 @@ window.addEventListener("load", function(){
 
 function resetInvoice(){
 
-  // 🔥 CLEAR EVERYTHING RELATED TO INVOICE
+  // 🔥 REMOVE ALL POSSIBLE KEYS (old + new)
   localStorage.removeItem("invoiceExpenses");
+  localStorage.removeItem("expenseTotal"); // 👈 VERY IMPORTANT (old bug)
   localStorage.removeItem("invoiceData");
   localStorage.removeItem("foodTotal");
 
-  // 🔥 CLEAR UI
-  document.getElementById("expenses").value = "";
-  document.getElementById("rows").innerHTML = "";
+  // 🔥 CLEAR UI SAFELY
+  const expensesInput = document.getElementById("expenses");
+  if(expensesInput) expensesInput.value = "";
 
-  // OPTIONAL: clear cash advance
+  const rows = document.getElementById("rows");
+  if(rows) rows.innerHTML = "";
+
   const cash = document.querySelector('input[type="number"]');
   if(cash) cash.value = 0;
 
-  console.log("Invoice fully reset ✅");
+  console.log("Invoice fully reset ✅ (all keys cleared)");
 
-  location.reload();
+  // 🔥 HARD RESET (NO RESURRECTION)
+  window.location.href = window.location.pathname;
 }
 
 // =========================
