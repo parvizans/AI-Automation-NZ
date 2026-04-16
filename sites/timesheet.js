@@ -173,6 +173,14 @@ function updateAllowance(){
   // ✅ SAVE CORRECTLY
   localStorage.setItem("foodTotal", totalFood);
 }
+document.addEventListener("change", function(e) {
+  if(
+    e.target.classList.contains("row-location") || 
+    e.target.classList.contains("timeOut")
+  ) {
+    updateAllowance();
+  }
+});
 
 /* =========================
    SUMMARY
@@ -236,8 +244,17 @@ function updateSummary(){
    SAVE TO INVOICE
 ========================= */
 function saveToInvoice(){
-  updateSummary();
+
+  saveTimesheet(); // 🔥 IMPORTANT
+
+  // Save summary values
+  localStorage.setItem("totalHours", document.getElementById("total-hours")?.innerText || 0);
+  localStorage.setItem("totalOT", document.getElementById("total-ot")?.innerText || 0);
+  localStorage.setItem("foodTotal", localStorage.getItem("foodTotal") || 0);
+
   alert("🔥 Sent to Invoice!");
+
+  window.open("invoice.html", "_blank"); // optional but recommended
 }
 
 /* =========================
@@ -252,10 +269,12 @@ document.addEventListener("change", function(e){
   ){
     calculateTimes();
     updateAllowance();
+    saveTimesheet(); // 🔥 NEW
   }
 
   if(e.target.classList.contains("row-location")){
     updateAllowance();
+    saveTimesheet(); // 🔥 NEW
   }
 
 });
@@ -272,6 +291,11 @@ function loadTimesheet(){
   const saved = localStorage.getItem("timesheetBackup");
   if(saved){
     document.getElementById("timesheet-body").innerHTML = saved;
+
+    // 🔥 ADD THESE
+    calculateTimes();
+    updateAllowance();
+    updateSummary();
   }
 }
 
@@ -287,8 +311,21 @@ window.addEventListener("load", function(){
 
   // ❌ NO AUTO MONTH (your requirement)
 
-  generateMonth();
-  loadTimesheet();
+ window.addEventListener("load", function(){
+
+  const saved = localStorage.getItem("timesheetBackup");
+
+  if(saved){
+    document.getElementById("timesheet-body").innerHTML = saved;
+  } else {
+    generateMonth();
+  }
+
+  calculateTimes();
+  updateAllowance();
+  updateSummary();
+
+});
   calculateTimes();
   updateAllowance();
   updateSummary();
