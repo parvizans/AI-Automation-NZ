@@ -358,17 +358,20 @@ window.addEventListener("load", function(){
 
 function resetInvoice(){
 
-  // Clear ONLY invoice-related data (safe reset)
+  // 🔥 CLEAR EVERYTHING RELATED TO INVOICE
   localStorage.removeItem("invoiceExpenses");
-  localStorage.removeItem("invoiceNo");
   localStorage.removeItem("invoiceData");
   localStorage.removeItem("foodTotal");
 
-  // Clear UI fields
+  // 🔥 CLEAR UI
   document.getElementById("expenses").value = "";
-  
-  // optional: clear table rows
   document.getElementById("rows").innerHTML = "";
+
+  // OPTIONAL: clear cash advance
+  const cash = document.querySelector('input[type="number"]');
+  if(cash) cash.value = 0;
+
+  console.log("Invoice fully reset ✅");
 
   location.reload();
 }
