@@ -259,16 +259,13 @@ document.addEventListener("change", function(e){
   if(
     e.target.classList.contains("time-in") ||
     e.target.classList.contains("time-out-hour") ||
-    e.target.classList.contains("time-out-minute")
+    e.target.classList.contains("time-out-minute") ||
+    e.target.classList.contains("row-location")
   ){
     calculateTimes();
     updateAllowance();
-    saveTimesheet(); // 🔥 NEW
-  }
-
-  if(e.target.classList.contains("row-location")){
-    updateAllowance();
-    saveTimesheet(); // 🔥 NEW
+    updateSummary();
+    saveTimesheet(); // 🔥 GLOBAL SAVE
   }
 
 });
@@ -277,45 +274,53 @@ document.addEventListener("change", function(e){
    SAVE / LOAD / RESET
 ========================= */
 function saveTimesheet(){
+
+  // SAVE TABLE
   localStorage.setItem("timesheetBackup", document.getElementById("timesheet-body").innerHTML);
 
-  // ✅ SHOW TOAST
-  const toast = document.getElementById("saveToast");
+  // 🔥 SAVE GLOBAL HEADER DATA
+  localStorage.setItem("projectName", document.getElementById("project")?.value || "");
+  localStorage.setItem("engineer", document.getElementById("engineer")?.value || "");
+  localStorage.setItem("engEmail", document.getElementById("eng-email")?.value || "");
+  localStorage.setItem("engPhone", document.getElementById("eng-phone")?.value || "");
+  localStorage.setItem("locationGlobal", document.getElementById("location")?.value || "");
 
+  // TOAST
+  const toast = document.getElementById("saveToast");
   if(toast){
     toast.style.display = "block";
-
-    setTimeout(() => {
-      toast.style.display = "none";
-    }, 1000);
+    setTimeout(() => toast.style.display = "none", 1000);
   }
 }
 
 function loadTimesheet(){
+
   const saved = localStorage.getItem("timesheetBackup");
+
   if(saved){
     document.getElementById("timesheet-body").innerHTML = saved;
-
-    // 🔥 ADD THESE
-    calculateTimes();
-    updateAllowance();
-    updateSummary();
   }
+
+  // 🔥 RESTORE HEADER DATA
+  document.getElementById("project").value = localStorage.getItem("projectName") || "";
+  document.getElementById("engineer").value = localStorage.getItem("engineer") || "";
+  document.getElementById("eng-email").value = localStorage.getItem("engEmail") || "";
+  document.getElementById("eng-phone").value = localStorage.getItem("engPhone") || "";
+  document.getElementById("location").value = localStorage.getItem("locationGlobal") || "";
+
+  calculateTimes();
+  updateAllowance();
+  updateSummary();
 }
 
 function resetTimesheet(){
-  localStorage.removeItem("timesheetBackup");
+  localStorage.clear(); // 🔥 FULL RESET SYSTEM
   location.reload();
 }
-
 /* =========================
    INITIAL LOAD
 ========================= */
 window.addEventListener("load", function(){
-
-  // ❌ NO AUTO MONTH (your requirement)
-
- window.addEventListener("load", function(){
 
   const saved = localStorage.getItem("timesheetBackup");
 
@@ -325,13 +330,6 @@ window.addEventListener("load", function(){
     generateMonth();
   }
 
-  calculateTimes();
-  updateAllowance();
-  updateSummary();
-
-});
-  calculateTimes();
-  updateAllowance();
-  updateSummary();
+  loadTimesheet(); // 🔥 FULL RESTORE
 
 });
