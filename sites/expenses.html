@@ -340,48 +340,65 @@ document.addEventListener("change", function(e){
   }
 });
 
-/* SAVE TO INVOICE */
+/* =========================
+   SAVE TO INVOICE
+========================= */
 function saveExpenses(){
 
-  const total = document.getElementById("total").innerText;
-  const invNo = document.getElementById("expenseInv").value;
-  const expNo = document.getElementById("expenseNo").value;
+  const totalEl = document.getElementById("total");
+  const invEl = document.getElementById("expenseInv");
+  const expEl = document.getElementById("expenseNo");
 
-  localStorage.setItem("expenseTotal", total);
+  const total = totalEl ? totalEl.innerText : 0;
+  const invNo = invEl ? invEl.value : "";
+  const expNo = expEl ? expEl.value : "";
+
+  // 🔥 USE ONLY THESE KEYS (STANDARD)
+  localStorage.setItem("invoiceExpenses", total);
   localStorage.setItem("expenseInvoiceNo", invNo);
   localStorage.setItem("expenseNumber", expNo);
 
-  alert("Saved to Invoice!");
-
+  console.log("Expenses saved ✅");
 }
-   
 
-/* NAV */
-function goHome(){
-  window.location.href = "timesheet.html";
-}
- 
-   window.onload = function(){
+
+/* =========================
+   LOAD DATA
+========================= */
+window.addEventListener("load", function(){
+
+  // 🔥 CLEAN OLD BUG KEYS (RUN EVERY TIME SAFE)
+  localStorage.removeItem("expenseTotal");
 
   const savedInv = localStorage.getItem("expenseInvoiceNo");
   const savedExp = localStorage.getItem("expenseNumber");
 
-  if(savedInv){
-    document.getElementById("expenseInv").value = savedInv;
+  const invEl = document.getElementById("expenseInv");
+  const expEl = document.getElementById("expenseNo");
+
+  if(savedInv && invEl){
+    invEl.value = savedInv;
   }
 
-  if(savedExp){
-    document.getElementById("expenseNo").value = savedExp;
+  if(savedExp && expEl){
+    expEl.value = savedExp;
   }
 
-};
+});
 
 
+/* =========================
+   NAVIGATION
+========================= */
+function goHome(){
+  window.location.href = "timesheet.html";
+}
 
 function goInvoice(){
+  saveExpenses(); // 🔥 ALWAYS SAVE BEFORE NAV
   window.location.href = "invoice.html";
-}  
+}
+
 </script>
-   
 </body>
 </html>
