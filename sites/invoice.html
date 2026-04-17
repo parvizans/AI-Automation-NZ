@@ -23,16 +23,43 @@ body {
 
 h1 {
   color:#32d296;
-  margin-bottom:20px;
 }
 
-/* TABLE */
 table {
   width:100%;
   border-collapse:collapse;
   margin-top:20px;
 }
 
+th, td {
+  padding:10px;
+  text-align:center;
+  border-bottom:1px solid #444;
+}
+
+input {
+  padding:8px;
+  border:none;
+  border-radius:5px;
+  width:100%;
+}
+
+button {
+  padding:10px 15px;
+  margin:5px;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+}
+
+.calc { background:#32d296; }
+.reset { background:#e74c3c; }
+
+.final-row {
+  background:#2ecc71;
+  color:#000;
+  font-weight:bold;
+}
 </style>
 </head>
 
@@ -41,33 +68,30 @@ table {
 <div class="container">
 
 <h1>📄 Invoice</h1>
-  
-<!-- ✅ BUTTONS (NOW CORRECT PLACE) -->
-<div style="margin-bottom:20px;">
+
+<!-- NAV -->
+<div>
   <button onclick="goHome()">🏠 Timesheet</button>
   <button onclick="goExpenses()">💰 Expenses</button>
-  <button onclick="goMaster()">📊 Master Invoice</button>
+  <button onclick="goMaster()">📊 Master</button>
   <button onclick="saveInvoice()">💾 Save</button>
 </div>
 
-<!-- ✅ COMPANY + INFO -->
-<div style="margin-bottom:20px;">
+<!-- INFO -->
+<p><strong>Company:</strong> AutomationPark LTD<br>
+111 Queen Street, Auckland</p>
 
-  <p><strong>Company:</strong> AutomationPark LTD<br>
-  111 Queen Street, Auckland, New Zealand</p>
+<p><strong>Engineer:</strong> <span id="engineerName"></span></p>
+<p><strong>Project:</strong> <span id="projectName"></span></p>
 
-  <p><strong>Engineer:</strong> <span id="engineerName"></span></p>
-  <p><strong>Project:</strong> <span id="projectName"></span></p>
+<p><strong>Invoice No:</strong>
+<input id="invoiceNo">
+</p>
 
-  <p><strong>Invoice No:</strong>
-    <input id="invoiceNo" placeholder="INV-001">
-  </p>
+<p><strong>Expense No:</strong>
+<input id="expenseNo">
+</p>
 
-  <p><strong>Expense No:</strong>
-    <input id="expenseNo" placeholder="EXP-001">
-  </p>
-
-</div>
 <table>
 
 <thead>
@@ -79,17 +103,16 @@ table {
 </tr>
 </thead>
 
-<tbody id="rows">
-</tbody>
+<tbody id="rows"></tbody>
 
 <tr>
   <td colspan="3">Expenses</td>
-  <td><input id="expenses" placeholder="0"></td>
+  <td><input id="expenses" value="0"></td>
 </tr>
 
 <tr>
   <td colspan="3">Cash Advance</td>
-  <td><input id="cash" placeholder="0"></td>
+  <td><input id="cash" value="0"></td>
 </tr>
 
 <tr class="final-row">
@@ -99,48 +122,33 @@ table {
 
 </table>
 
-<div class="buttons">
-  <button class="calc" onclick="calculate()">Calculate</button>
-  <button class="reset" onclick="resetInvoice()">Reset</button>
-</div>
+<button class="calc" onclick="calculateInvoice()">Calculate</button>
+<button class="reset" onclick="resetInvoice()">Reset</button>
 
 </div>
 
 <script>
 
 // =========================
-// NAVIGATION
+// NAV
 // =========================
-function goHome(){
-  window.location.href = "timesheet.html";
-}
-
-function goExpenses(){
-  window.location.href = "expenses.html";
-}
-
-function goMaster(){
-  window.location.href = "master-invoice.html";
-}
+function goHome(){ window.location.href="timesheet.html"; }
+function goExpenses(){ window.location.href="expenses.html"; }
+function goMaster(){ window.location.href="master-invoice.html"; }
 
 // =========================
-// SAVE INVOICE
+// SAVE
 // =========================
 function saveInvoice(){
-
-  const invNo = document.getElementById("invoiceNo").value;
-  const expNo = document.getElementById("expenseNo").value;
-
-  localStorage.setItem("invoiceNumber", invNo);
-  localStorage.setItem("expenseNumber", expNo);
-
-  console.log("Invoice saved ✅");
+  localStorage.setItem("invoiceNumber", invoiceNo.value);
+  localStorage.setItem("expenseNumber", expenseNo.value);
+  localStorage.setItem("invoiceExpenses", expenses.value);
 }
 
 // =========================
-// BUILD ROWS (if not already)
+// BUILD + CALCULATE
 // =========================
-function buildRows(){
+function calculateInvoice(){
 
   const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
 
@@ -149,7 +157,6 @@ function buildRows(){
   const wdHours = Number(data.wdHours) || 0;
   const wdOT = Number(data.wdOT) || 0;
   const weOT = Number(data.weOT) || 0;
-  const foodTotal = Number(data.foodTotal) || 0;
 
   const rates = {
     wd:240,
@@ -160,93 +167,81 @@ function buildRows(){
     food:50
   };
 
+  const foodDays = wdDays + weDays;
+
   const rows = [
     ["Weekdays", wdDays, rates.wd, wdDays * rates.wd],
     ["Weekday Hours", wdHours, rates.wdHours, wdHours * rates.wdHours],
     ["Weekday OT", wdOT, rates.wdOT, wdOT * rates.wdOT],
     ["Weekend Days", weDays, rates.we, weDays * rates.we],
     ["Weekend OT", weOT, rates.weOT, weOT * rates.weOT],
-    ["Food Allowance", foodTotal, rates.food, foodTotal * rates.food]
+    ["Food Allowance", foodDays, rates.food, foodDays * rates.food]
   ];
 
   let total = 0;
+  rows.innerHTML = "";
+
   const tbody = document.getElementById("rows");
   tbody.innerHTML = "";
 
   rows.forEach(r=>{
     total += r[3];
-
     tbody.innerHTML += `
-    <tr>
-      <td>${r[0]}</td>
-      <td>${r[1]}</td>
-      <td>$${r[2]}</td>
-      <td>$${r[3].toFixed(2)}</td>
-    </tr>`;
+      <tr>
+        <td>${r[0]}</td>
+        <td>${r[1]}</td>
+        <td>$${r[2]}</td>
+        <td>$${r[3].toFixed(2)}</td>
+      </tr>`;
   });
 
-  const expenses = Number(document.getElementById("expenses").value) || 0;
-  const cash = Number(document.getElementById("cash").value) || 0;
+  const exp = Number(expenses.value) || 0;
+  const cashVal = Number(cash.value) || 0;
 
-  const finalTotal = total + expenses - cash;
+  const final = total + exp - cashVal;
 
   document.getElementById("final").innerText =
-    "$" + finalTotal.toFixed(2);
+    "$" + final.toFixed(2);
 }
 
 // =========================
-// LOAD EVERYTHING
+// LOAD
 // =========================
-window.addEventListener("load", function(){
-
-  // 🚫 kill old bug value
-  localStorage.removeItem("expenseTotal");
-
-  const savedExp = localStorage.getItem("invoiceExpenses");
-  if(savedExp){
-    document.getElementById("expenses").value = savedExp;
-  }
+window.onload = function(){
 
   const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
 
-  if(data.engineer){
-    document.getElementById("engineerName").innerText = data.engineer;
-  }
+  engineerName.innerText = data.engineer || "";
+  projectName.innerText = data.project || "";
 
-  if(data.project){
-    document.getElementById("projectName").innerText = data.project;
-  }
+  invoiceNo.value = localStorage.getItem("invoiceNumber") || "";
+  expenseNo.value = localStorage.getItem("expenseNumber") || "";
+  expenses.value = localStorage.getItem("invoiceExpenses") || 0;
 
-  const invNo = localStorage.getItem("invoiceNumber");
-  const expNo = localStorage.getItem("expenseNumber");
-
-  if(invNo){
-    document.getElementById("invoiceNo").value = invNo;
-  }
-
-  if(expNo){
-    document.getElementById("expenseNo").value = expNo;
-  }
-
-  buildRows();
-});
+  calculateInvoice();
+}
 
 // =========================
-// RESET (SAFE)
+// LIVE UPDATE 🔥
+// =========================
+expenses.addEventListener("input", calculateInvoice);
+cash.addEventListener("input", calculateInvoice);
+
+// =========================
+// RESET
 // =========================
 function resetInvoice(){
 
+  expenses.value = 0;
+  cash.value = 0;
+
   localStorage.removeItem("invoiceExpenses");
 
-  document.getElementById("expenses").value = "";
-  document.getElementById("cash").value = "";
-  document.getElementById("final").innerText = "$0.00";
+  calculateInvoice();
 
-  buildRows();
-
-  console.log("Invoice reset ✅");
 }
 
 </script>
+
 </body>
 </html>
