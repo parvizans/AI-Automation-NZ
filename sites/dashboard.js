@@ -1,3 +1,14 @@
+let chartIndex = 0;
+const colors = [
+  "#2563eb", // blue
+  "#16a34a", // green
+  "#f59e0b", // orange
+  "#dc2626", // red
+  "#7c3aed", // purple
+  "#0ea5e9"  // sky
+];
+
+
 let globalData = [];
 
 /* =========================
@@ -209,18 +220,18 @@ function buildChart(chartType) {
         ? displayValues.map((_, i) => `Part ${i + 1}`)
         : displayValues.map((_, i) => `Pt ${i + 1}`),
 
-      datasets: [{
-        label: name,
-        data: chartType === "scatter"
-          ? values.map((v, i) => ({ x: i, y: v }))
-          : displayValues,
+     datasets: [{
+  label: name,
+  data: chartType === "scatter"
+    ? values.map((v, i) => ({ x: i, y: v }))
+    : displayValues,
 
-        // 🎨 STYLE
-        backgroundColor: "rgba(50,210,150,0.4)",
-        borderColor: "#32d296",
-        borderWidth: 2,
-        fill: chartType === "line" ? false : true
-      }]
+  // 🎨 STYLE (UPDATED)
+  backgroundColor: colors[index % colors.length] + "66", // adds transparency
+  borderColor: colors[index % colors.length],
+  borderWidth: 2,
+  fill: chartType === "line" ? false : true
+}]
     },
     options: {
       responsive: true,
@@ -286,16 +297,23 @@ function createAggregatedChart(data, groupKey, valueKey) {
 
   document.querySelector(".charts-grid").appendChild(container);
 
-  new Chart(canvas, {
-    type: "bar",
-    data: {
-      labels: labels,
-      datasets: [{
-        label: valueKey,
-        data: values
-      }]
-    }
-  });
+ new Chart(canvas, {
+  type: 'bar', // or your existing chartType
+  data: {
+    labels: labels,
+    datasets: [{
+      label: valueKey,
+      data: values,
+
+      // 🎨 COLOR FIX
+      backgroundColor: colors[chartIndex % colors.length] + "66",
+      borderColor: colors[chartIndex % colors.length],
+      borderWidth: 2
+    }]
+  }
+});
+   // 👇 THIS IS OUTSIDE Chart
+chartIndex++;
 }
 
 function getField(data, possibleNames) {
