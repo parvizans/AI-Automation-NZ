@@ -150,38 +150,47 @@ button {
 <script>
 
 // =========================
-// LOAD DATA
+// NAVIGATION
 // =========================
-const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
+function goHome(){
+  window.location.href = "timesheet.html";
+}
 
-window.addEventListener("load", function(){
+function goExpenses(){
+  window.location.href = "expenses.html";
+}
 
-  // clean old bug key
-  localStorage.removeItem("expenseTotal");
-
-  // load expenses
-  const savedExp = localStorage.getItem("invoiceExpenses");
-  if(savedExp){
-    document.getElementById("expenses").value = savedExp;
-  }
-
-  buildRows();
-});
-
+function goMaster(){
+  window.location.href = "master-invoice.html";
+}
 
 // =========================
-// BUILD ROWS (FROM TIMESHEET)
+// SAVE INVOICE
+// =========================
+function saveInvoice(){
+
+  const invNo = document.getElementById("invoiceNo").value;
+  const expNo = document.getElementById("expenseNo").value;
+
+  localStorage.setItem("invoiceNumber", invNo);
+  localStorage.setItem("expenseNumber", expNo);
+
+  console.log("Invoice saved ✅");
+}
+
+// =========================
+// BUILD ROWS (if not already)
 // =========================
 function buildRows(){
 
-  const tbody = document.getElementById("rows");
+  const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
 
   const wdDays = Number(data.wdDays) || 0;
   const weDays = Number(data.weDays) || 0;
   const wdHours = Number(data.wdHours) || 0;
   const wdOT = Number(data.wdOT) || 0;
   const weOT = Number(data.weOT) || 0;
-  const foodTotal = Number(localStorage.getItem("foodTotal")) || 0;
+  const foodTotal = Number(data.foodTotal) || 0;
 
   const rates = {
     wd:240,
@@ -193,19 +202,21 @@ function buildRows(){
   };
 
   const rows = [
-
     ["Weekdays", wdDays, rates.wd, wdDays * rates.wd],
     ["Weekday Hours", wdHours, rates.wdHours, wdHours * rates.wdHours],
     ["Weekday OT", wdOT, rates.wdOT, wdOT * rates.wdOT],
     ["Weekend Days", weDays, rates.we, weDays * rates.we],
     ["Weekend OT", weOT, rates.weOT, weOT * rates.weOT],
-    ["Food Allowance", foodTotal / 50, rates.food, foodTotal]
-
+    ["Food Allowance", foodTotal, rates.food, foodTotal * rates.food]
   ];
 
+  let total = 0;
+  const tbody = document.getElementById("rows");
   tbody.innerHTML = "";
 
   rows.forEach(r=>{
+    total += r[3];
+
     tbody.innerHTML += `
     <tr>
       <td>${r[0]}</td>
@@ -215,24 +226,8 @@ function buildRows(){
     </tr>`;
   });
 
-}
-
-
-// =========================
-// CALCULATE FINAL
-// =========================
-function calculate(){
-
-  const expenses = Number(localStorage.getItem("invoiceExpenses")) || 0;
+  const expenses = Number(document.getElementById("expenses").value) || 0;
   const cash = Number(document.getElementById("cash").value) || 0;
-
-  // sum rows
-  let total = 0;
-
-  document.querySelectorAll("#rows tr").forEach(row=>{
-    const amount = row.children[3].innerText.replace("$","");
-    total += Number(amount);
-  });
 
   const finalTotal = total + expenses - cash;
 
@@ -240,30 +235,59 @@ function calculate(){
     "$" + finalTotal.toFixed(2);
 }
 
+// =========================
+// LOAD EVERYTHING
+// =========================
+window.addEventListener("load", function(){
+
+  // 🚫 kill old bug value
+  localStorage.removeItem("expenseTotal");
+
+  const savedExp = localStorage.getItem("invoiceExpenses");
+  if(savedExp){
+    document.getElementById("expenses").value = savedExp;
+  }
+
+  const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
+
+  if(data.engineer){
+    document.getElementById("engineerName").innerText = data.engineer;
+  }
+
+  if(data.project){
+    document.getElementById("projectName").innerText = data.project;
+  }
+
+  const invNo = localStorage.getItem("invoiceNumber");
+  const expNo = localStorage.getItem("expenseNumber");
+
+  if(invNo){
+    document.getElementById("invoiceNo").value = invNo;
+  }
+
+  if(expNo){
+    document.getElementById("expenseNo").value = expNo;
+  }
+
+  buildRows();
+});
 
 // =========================
-// RESET
+// RESET (SAFE)
 // =========================
 function resetInvoice(){
 
-  // 🔥 CLEAR STORAGE
   localStorage.removeItem("invoiceExpenses");
-  localStorage.removeItem("invoiceData");
-  localStorage.removeItem("foodTotal");
 
-  // 🔥 CLEAR INPUTS
   document.getElementById("expenses").value = "";
   document.getElementById("cash").value = "";
-
-  // 🔥 RESET FINAL
   document.getElementById("final").innerText = "$0.00";
 
-  // 🔥 REBUILD TABLE (THIS IS THE FIX)
   buildRows();
 
-  console.log("Invoice reset + rebuilt ✅");
+  console.log("Invoice reset ✅");
 }
-</script>
 
+</script>
 </body>
 </html>
