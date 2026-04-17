@@ -25,6 +25,31 @@ h1 {
   color:#32d296;
   margin-bottom:20px;
 }
+  <div style="margin-bottom:20px;">
+
+  <button onclick="goHome()">🏠 Timesheet</button>
+  <button onclick="goExpenses()">💰 Expenses</button>
+  <button onclick="goMaster()">📊 Master Invoice</button>
+  <button onclick="saveInvoice()">💾 Save</button>
+
+</div>
+  <div style="margin-bottom:20px;">
+
+  <p><strong>Company:</strong> AutomationPark LTD<br>
+  111 Queen Street, Auckland, New Zealand</p>
+
+  <p><strong>Engineer:</strong> <span id="engineerName"></span></p>
+  <p><strong>Project:</strong> <span id="projectName"></span></p>
+
+  <p><strong>Invoice No:</strong>
+    <input id="invoiceNo" placeholder="INV-001">
+  </p>
+
+  <p><strong>Expense No:</strong>
+    <input id="expenseNo" placeholder="EXP-001">
+  </p>
+
+</div>
 
 /* TABLE */
 table {
