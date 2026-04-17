@@ -227,8 +227,8 @@ function buildChart(chartType) {
     : displayValues,
 
   // 🎨 STYLE (UPDATED)
-  backgroundColor: colors[index % colors.length] + "66", // adds transparency
-  borderColor: colors[index % colors.length],
+ backgroundColor: colors[chartIndex % colors.length] + "66",
+borderColor: colors[chartIndex % colors.length],
   borderWidth: 2,
   fill: chartType === "line" ? false : true
 }]
