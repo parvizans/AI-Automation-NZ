@@ -228,7 +228,7 @@ function buildChart(chartType) {
 
   // 🎨 STYLE (UPDATED)
  backgroundColor: colors[chartIndex % colors.length] + "66",
-borderColor: colors[chartIndex % colors.length],
+ borderColor: colors[chartIndex % colors.length],
   borderWidth: 2,
   fill: chartType === "line" ? false : true
 }]
