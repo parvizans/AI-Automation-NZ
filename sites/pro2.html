@@ -1,69 +1,67 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Smart Timesheet Pro-2</title>
 
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-
 <style>
 body {
   font-family: Arial;
+  color:#fff;
   margin:0;
   padding:20px;
-  color:#fff;
-  background:#0b1220;
+
+  background:
+    linear-gradient(rgba(11,18,32,0.9), rgba(11,18,32,0.9)),
+    url("../assets/bg-Mexpenses.jpg") center/cover no-repeat;
 }
 
-/* SECTIONS */
+.container {
+  max-width:1200px;
+  margin:auto;
+}
+
+h1 {
+  color:#32d296;
+}
+
 .section {
+  background: rgba(0,0,0,0.6);
   padding:20px;
-  border-radius:12px;
-  margin-bottom:20px;
-  background-size:cover;
-  background-position:center;
+  margin-top:20px;
+  border-radius:10px;
 }
 
-/* BACKGROUNDS */
-#timesheet { background: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)), url("assets/ts.jpg"); }
-#expenses  { background: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)), url("assets/exp.jpg"); }
-#invoice   { background: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)), url("assets/inv.jpg"); }
+table {
+  width:100%;
+  border-collapse:collapse;
+}
 
-h2 { color:#32d296; }
+th, td {
+  padding:10px;
+  border-bottom:1px solid #333;
+  text-align:center;
+}
+
+input {
+  padding:8px;
+  border:none;
+  border-radius:5px;
+  width:90%;
+}
 
 button {
-  padding:8px 12px;
+  padding:8px 15px;
   margin:5px;
   border:none;
-  border-radius:6px;
+  border-radius:5px;
   cursor:pointer;
 }
 
 .green { background:#2ecc71; }
 .red { background:#e74c3c; }
 .blue { background:#3498db; }
-.orange { background:#f39c12; font-size:10px; }
-
-/* TABLE */
-table {
-  width:100%;
-  border-collapse:collapse;
-  margin-top:15px;
-}
-
-th, td {
-  padding:8px;
-  text-align:center;
-  border-bottom:1px solid #555;
-}
-
-input {
-  padding:6px;
-  border-radius:5px;
-  border:none;
-  width:100%;
-}
+.orange { background:#f39c12; }
 
 .final {
   background:#2ecc71;
@@ -71,22 +69,13 @@ input {
   font-weight:bold;
 }
 </style>
-
 </head>
 
 <body>
 
+<div class="container">
+
 <h1>🚀 Smart Timesheet Pro-2</h1>
-
-<!-- ========================= -->
-<!-- HEADER (REPORT PART) -->
-<!-- ========================= -->
-<div id="report-header">
-
-<p><b>Engineer:</b> <input id="engineer"></p>
-<p><b>Project:</b> <input id="project"></p>
-
-</div>
 
 <!-- ========================= -->
 <!-- TIMESHEET -->
@@ -95,21 +84,18 @@ input {
 
 <h2>Timesheet</h2>
 
-<button class="green">Save</button>
-<button class="red" onclick="resetAll()">Reset</button>
+<button class="blue" onclick="goExpenses()">Go Expenses</button>
+<button class="blue" onclick="goInvoice()">Go Invoice</button>
 
-<table id="timesheetTable">
-<thead>
+<table>
 <tr>
 <th>Day</th>
 <th>Hours</th>
 <th>OT</th>
 <th>SDR</th>
 </tr>
-</thead>
 
-<tbody id="tsBody"></tbody>
-
+<tbody id="timesheetRows"></tbody>
 </table>
 
 </div>
@@ -121,7 +107,10 @@ input {
 
 <h2>Expenses</h2>
 
-<input id="expenseInput" placeholder="Enter expense">
+<button class="blue" onclick="goTimesheet()">Go Timesheet</button>
+<button class="blue" onclick="goInvoice()">Go Invoice</button>
+
+<input id="expensesInput" placeholder="Enter Expenses">
 
 </div>
 
@@ -132,112 +121,105 @@ input {
 
 <h2>Invoice</h2>
 
-<table>
+<button class="blue" onclick="goTimesheet()">Go Timesheet</button>
+<button class="blue" onclick="goExpenses()">Go Expenses</button>
 
-<thead>
+<table>
 <tr>
 <th>Description</th>
 <th>Amount</th>
 </tr>
-</thead>
 
-<tbody id="invoiceBody"></tbody>
-
-<tr>
-<td>Expenses</td>
-<td><input id="expenses"></td>
-</tr>
+<tr><td>Total Hours</td><td id="hoursTotal">0</td></tr>
+<tr><td>Total OT</td><td id="otTotal">0</td></tr>
+<tr><td>Expenses</td><td id="expTotal">0</td></tr>
 
 <tr>
 <td>Cash Advance</td>
-<td><input id="cash"></td>
+<td><input id="cashInput" placeholder="0"></td>
 </tr>
 
 <tr class="final">
-<td>Final</td>
+<td>Final Payable</td>
 <td id="final">$0</td>
 </tr>
 
 </table>
+
+<button class="green" onclick="calculate()">Calculate</button>
+<button class="red" onclick="resetAll()">Reset</button>
+
+</div>
 
 </div>
 
 <script>
 
 // =========================
-// GENERATE TIMESHEET
+// BUILD TIMESHEET
 // =========================
-for(let i=1;i<=7;i++){
+const tbody = document.getElementById("timesheetRows");
 
-  tsBody.innerHTML += `
-  <tr id="row-${i}">
+for(let i=1;i<=30;i++){
+  tbody.innerHTML += `
+  <tr>
     <td>${i}</td>
-    <td><input id="h-${i}" value="0"></td>
-    <td><input id="ot-${i}" value="0"></td>
-    <td><button class="orange" onclick="sendDailyReport(${i})">SDR</button></td>
-  </tr>
-  `;
+    <td><input class="hours"></td>
+    <td><input class="ot"></td>
+    <td><button class="orange">SDR</button></td>
+  </tr>`;
 }
 
 // =========================
-// CALCULATE
+// NAVIGATION (SCROLL)
+// =========================
+function goTimesheet(){
+  document.getElementById("timesheet").scrollIntoView({behavior:"smooth"});
+}
+
+function goExpenses(){
+  document.getElementById("expenses").scrollIntoView({behavior:"smooth"});
+}
+
+function goInvoice(){
+  document.getElementById("invoice").scrollIntoView({behavior:"smooth"});
+}
+
+// =========================
+// CALCULATION
 // =========================
 function calculate(){
 
-  let total = 0;
+  let totalHours = 0;
+  let totalOT = 0;
 
-  for(let i=1;i<=7;i++){
-    total += Number(document.getElementById("h-"+i).value || 0) * 30;
-    total += Number(document.getElementById("ot-"+i).value || 0) * 30;
-  }
+  document.querySelectorAll(".hours").forEach(e=>{
+    totalHours += Number(e.value) || 0;
+  });
 
-  const exp = Number(expenses.value || 0);
-  const cashVal = Number(cash.value || 0);
+  document.querySelectorAll(".ot").forEach(e=>{
+    totalOT += Number(e.value) || 0;
+  });
 
-  const finalVal = total + exp - cashVal;
+  const expenses = Number(document.getElementById("expensesInput").value) || 0;
+  const cash = Number(document.getElementById("cashInput").value) || 0;
 
-  final.innerText = "$" + finalVal.toFixed(2);
+  document.getElementById("hoursTotal").innerText = totalHours;
+  document.getElementById("otTotal").innerText = totalOT;
+  document.getElementById("expTotal").innerText = expenses;
 
+  const final = (totalHours * 30) + (totalOT * 35) + expenses - cash;
+
+  document.getElementById("final").innerText = "$" + final.toFixed(2);
 }
-
-// LIVE UPDATE
-document.addEventListener("input", calculate);
 
 // =========================
 // RESET
 // =========================
 function resetAll(){
 
-  document.querySelectorAll("input").forEach(i=>i.value=0);
-  final.innerText="$0";
-
-}
-
-// =========================
-// SDR FUNCTION
-// =========================
-function sendDailyReport(index){
-
-  const header = document.getElementById("report-header");
-  const row = document.getElementById("row-"+index);
-
-  const box = document.createElement("div");
-  box.style.background="#fff";
-  box.style.color="#000";
-  box.style.padding="20px";
-
-  box.appendChild(header.cloneNode(true));
-  box.appendChild(row.cloneNode(true));
-
-  document.body.appendChild(box);
-
-  html2canvas(box).then(canvas=>{
-    const link=document.createElement("a");
-    link.download="Daily_Report_"+index+".png";
-    link.href=canvas.toDataURL();
-    link.click();
-    document.body.removeChild(box);
-  });
+  document.querySelectorAll("input").forEach(i=>i.value="");
+  document.getElementById("final").innerText="$0";
 
 }
 
