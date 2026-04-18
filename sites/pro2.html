@@ -1,1 +1,247 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Timesheet Pro-2</title>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+<style>
+body {
+  font-family: Arial;
+  margin:0;
+  padding:20px;
+  color:#fff;
+  background:#0b1220;
+}
+
+/* SECTIONS */
+.section {
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:20px;
+  background-size:cover;
+  background-position:center;
+}
+
+/* BACKGROUNDS */
+#timesheet { background: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)), url("assets/ts.jpg"); }
+#expenses  { background: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)), url("assets/exp.jpg"); }
+#invoice   { background: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)), url("assets/inv.jpg"); }
+
+h2 { color:#32d296; }
+
+button {
+  padding:8px 12px;
+  margin:5px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.green { background:#2ecc71; }
+.red { background:#e74c3c; }
+.blue { background:#3498db; }
+.orange { background:#f39c12; font-size:10px; }
+
+/* TABLE */
+table {
+  width:100%;
+  border-collapse:collapse;
+  margin-top:15px;
+}
+
+th, td {
+  padding:8px;
+  text-align:center;
+  border-bottom:1px solid #555;
+}
+
+input {
+  padding:6px;
+  border-radius:5px;
+  border:none;
+  width:100%;
+}
+
+.final {
+  background:#2ecc71;
+  color:#000;
+  font-weight:bold;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>🚀 Smart Timesheet Pro-2</h1>
+
+<!-- ========================= -->
+<!-- HEADER (REPORT PART) -->
+<!-- ========================= -->
+<div id="report-header">
+
+<p><b>Engineer:</b> <input id="engineer"></p>
+<p><b>Project:</b> <input id="project"></p>
+
+</div>
+
+<!-- ========================= -->
+<!-- TIMESHEET -->
+<!-- ========================= -->
+<div class="section" id="timesheet">
+
+<h2>Timesheet</h2>
+
+<button class="green">Save</button>
+<button class="red" onclick="resetAll()">Reset</button>
+
+<table id="timesheetTable">
+<thead>
+<tr>
+<th>Day</th>
+<th>Hours</th>
+<th>OT</th>
+<th>SDR</th>
+</tr>
+</thead>
+
+<tbody id="tsBody"></tbody>
+
+</table>
+
+</div>
+
+<!-- ========================= -->
+<!-- EXPENSES -->
+<!-- ========================= -->
+<div class="section" id="expenses">
+
+<h2>Expenses</h2>
+
+<input id="expenseInput" placeholder="Enter expense">
+
+</div>
+
+<!-- ========================= -->
+<!-- INVOICE -->
+<!-- ========================= -->
+<div class="section" id="invoice">
+
+<h2>Invoice</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Description</th>
+<th>Amount</th>
+</tr>
+</thead>
+
+<tbody id="invoiceBody"></tbody>
+
+<tr>
+<td>Expenses</td>
+<td><input id="expenses"></td>
+</tr>
+
+<tr>
+<td>Cash Advance</td>
+<td><input id="cash"></td>
+</tr>
+
+<tr class="final">
+<td>Final</td>
+<td id="final">$0</td>
+</tr>
+
+</table>
+
+</div>
+
+<script>
+
+// =========================
+// GENERATE TIMESHEET
+// =========================
+for(let i=1;i<=7;i++){
+
+  tsBody.innerHTML += `
+  <tr id="row-${i}">
+    <td>${i}</td>
+    <td><input id="h-${i}" value="0"></td>
+    <td><input id="ot-${i}" value="0"></td>
+    <td><button class="orange" onclick="sendDailyReport(${i})">SDR</button></td>
+  </tr>
+  `;
+}
+
+// =========================
+// CALCULATE
+// =========================
+function calculate(){
+
+  let total = 0;
+
+  for(let i=1;i<=7;i++){
+    total += Number(document.getElementById("h-"+i).value || 0) * 30;
+    total += Number(document.getElementById("ot-"+i).value || 0) * 30;
+  }
+
+  const exp = Number(expenses.value || 0);
+  const cashVal = Number(cash.value || 0);
+
+  const finalVal = total + exp - cashVal;
+
+  final.innerText = "$" + finalVal.toFixed(2);
+
+}
+
+// LIVE UPDATE
+document.addEventListener("input", calculate);
+
+// =========================
+// RESET
+// =========================
+function resetAll(){
+
+  document.querySelectorAll("input").forEach(i=>i.value=0);
+  final.innerText="$0";
+
+}
+
+// =========================
+// SDR FUNCTION
+// =========================
+function sendDailyReport(index){
+
+  const header = document.getElementById("report-header");
+  const row = document.getElementById("row-"+index);
+
+  const box = document.createElement("div");
+  box.style.background="#fff";
+  box.style.color="#000";
+  box.style.padding="20px";
+
+  box.appendChild(header.cloneNode(true));
+  box.appendChild(row.cloneNode(true));
+
+  document.body.appendChild(box);
+
+  html2canvas(box).then(canvas=>{
+    const link=document.createElement("a");
+    link.download="Daily_Report_"+index+".png";
+    link.href=canvas.toDataURL();
+    link.click();
+    document.body.removeChild(box);
+  });
+
+}
+
+</script>
+
+</body>
+</html>
