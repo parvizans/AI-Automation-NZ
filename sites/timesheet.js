@@ -43,12 +43,12 @@ function generateMonth(){
       <td><input type="time" class="time-out"></td>
       <td class="total">0</td>
       <td class="ot">0</td>
-      <td>
-        <select class="location">
-          <option>Australia</option>
-          <option>New Zealand</option>
-        </select>
-      </td>
+     <td>
+  <select class="row-location">
+    <option>Sydney</option>
+    <option>Outside Sydney</option>
+  </select>
+</td>
       <td class="food">-</td>
     `;
     tbody.appendChild(row);
