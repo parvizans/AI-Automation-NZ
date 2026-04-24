@@ -130,3 +130,15 @@ document.addEventListener("change", e=>{
 
 // INIT
 document.getElementById("month").addEventListener("change", generateMonth);
+// =========================
+// NAVIGATION FIX 🔥
+// =========================
+function goInvoice(){
+  saveData(); // save before leaving
+  window.location.href = "invoice.html";
+}
+
+function goExpenses(){
+  saveData(); // save before leaving
+  window.location.href = "expenses.html";
+}
