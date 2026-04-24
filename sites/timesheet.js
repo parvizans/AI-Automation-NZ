@@ -36,19 +36,25 @@ function generateMonth(){
     const row = document.createElement("tr");
 
     row.innerHTML = `
-      <td>${i}</td>
-      <td>${d.toLocaleDateString()}</td>
-      <td>${d.toLocaleDateString("en-US",{weekday:"short"})}</td>
-      <td><input type="time" class="time-in" value="08:00"></td>
-      <td><input type="time" class="time-out"></td>
-      <td class="total">0</td>
-      <td class="ot">0</td>
      <td>
-  <select class="row-location">
-    <option>Sydney</option>
-    <option>Outside Sydney</option>
+  <select class="time-out-hour">
+    ${[...Array(24).keys()].map(h =>
+      `<option value="${h}">${String(h).padStart(2,'0')}</option>`
+    ).join('')}
+  </select>
+
+  <select class="time-out-minute">
+    <option value="0">00</option>
+    <option value="15">15</option>
+    <option value="30">30</option>
+    <option value="45">45</option>
   </select>
 </td>
+      <select class="row-location">
+      <option>Sydney</option>
+      <option>Outside Sydney</option>
+      </select>
+      </td>
       <td class="food">-</td>
     `;
     tbody.appendChild(row);
