@@ -1,15 +1,4 @@
 // =========================
-// GLOBAL DATA MODEL
-// =========================
-function getProjectData(){
-  return JSON.parse(localStorage.getItem("projectData") || "{}");
-}
-
-function saveProjectData(data){
-  localStorage.setItem("projectData", JSON.stringify(data));
-}
-
-// =========================
 // ENGINEER / PM AUTO FILL
 // =========================
 document.getElementById("engineer").addEventListener("change", function(){
@@ -18,139 +7,108 @@ document.getElementById("engineer").addEventListener("change", function(){
   document.getElementById("eng-phone").value = s.dataset.phone || "";
 });
 
+document.getElementById("pm").addEventListener("change", function(){
+  document.getElementById("pm-email").value = this.value;
+});
+
 // =========================
 // GENERATE MONTH
 // =========================
 function generateMonth(){
+
   const month = document.getElementById("month").value;
   if(month === "") return;
 
   const year = new Date().getFullYear();
-  const days = new Date(year, parseInt(month)+1, 0).getDate();
+  const days = new Date(year, parseInt(month) + 1, 0).getDate();
 
   const tbody = document.getElementById("timesheet-body");
   tbody.innerHTML = "";
 
-  for(let i=1;i<=days;i++){
-    const d = new Date(year, month, i);
+  for(let i = 1; i <= days; i++){
+
+    const d = new Date(year, parseInt(month), i);
+    const formattedDate = d.toLocaleDateString();
+    const weekday = d.toLocaleDateString("en-US", { weekday: "short" });
+
     const row = document.createElement("tr");
 
     row.innerHTML = `
-     <td>
-  <select class="time-out-hour">
-    ${[...Array(24).keys()].map(h =>
-      `<option value="${h}">${String(h).padStart(2,'0')}</option>`
-    ).join('')}
-  </select>
+      <td>${i}</td>
+      <td><input type="text" value="${formattedDate}" readonly></td>
+      <td>${weekday}</td>
 
-  <select class="time-out-minute">
-    <option value="0">00</option>
-    <option value="15">15</option>
-    <option value="30">30</option>
-    <option value="45">45</option>
-  </select>
-</td>
-      <select class="row-location">
-      <option>Sydney</option>
-      <option>Outside Sydney</option>
-      </select>
+      <td><input type="time" class="time-in" value="08:00"></td>
+
+      <td>
+        <select class="time-out-hour">
+          ${[...Array(24).keys()].map(h =>
+            `<option value="${h}">${String(h).padStart(2,'0')}</option>`
+          ).join('')}
+        </select>
+
+        <select class="time-out-minute">
+          <option value="0">00</option>
+          <option value="15">15</option>
+          <option value="30">30</option>
+          <option value="45">45</option>
+        </select>
       </td>
+
+      <td class="total">0</td>
+      <td class="ot">0</td>
+
+      <td>
+        <select class="row-location">
+          <option>Sydney</option>
+          <option>Outside Sydney</option>
+        </select>
+      </td>
+
       <td class="food">-</td>
     `;
+
     tbody.appendChild(row);
   }
+
+  calculateTimes();
+  updateAllowance();
+  updateSummary();
 }
 
+document.getElementById("month").addEventListener("change", generateMonth);
+
 // =========================
-// CALCULATE
+// CALCULATE TIMES
 // =========================
-function calculate(){
-  let wdDays=0, wdHours=0, wdOT=0, weDays=0, weOT=0;
+function calculateTimes(){
 
-  document.querySelectorAll("#timesheet-body tr").forEach(row=>{
-    const ti = row.querySelector(".time-in").value;
-    const to = row.querySelector(".time-out").value;
+  document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
-    if(!to) return;
+    const timeIn = row.querySelector(".time-in")?.value;
+    const hour = row.querySelector(".time-out-hour")?.value;
+    const minute = row.querySelector(".time-out-minute")?.value;
 
-    const [ih,im]=ti.split(":").map(Number);
-    const [oh,om]=to.split(":").map(Number);
+    if(!timeIn) return;
 
-    let total=(oh+om/60)-(ih+im/60);
-    if(total<0) total=0;
+    const [inH, inM] = timeIn.split(":").map(Number);
+    const outH = parseInt(hour || 0);
+    const outM = parseInt(minute || 0);
+
+    let total = (outH + outM/60) - (inH + inM/60);
+    if(total < 0) total = 0;
 
     row.querySelector(".total").innerText = total.toFixed(1);
 
-    let ot = total>8 ? total-8 : 0;
+    let ot = total > 8 ? total - 8 : 0;
     row.querySelector(".ot").innerText = ot.toFixed(1);
-
-    const day=row.children[2].innerText;
-
-    if(day==="Sat"||day==="Sun"){
-      weDays++;
-      weOT+=ot;
-    }else{
-      if(total>=8) wdDays++;
-      else wdHours+=total;
-      wdOT+=ot;
-    }
   });
 
-  document.getElementById("wd-days").innerText=wdDays;
-  document.getElementById("wd-hours").innerText=wdHours.toFixed(1);
-  document.getElementById("wd-ot").innerText=wdOT.toFixed(1);
-  document.getElementById("we-days").innerText=weDays;
-  document.getElementById("we-ot").innerText=weOT.toFixed(1);
-
-  saveData();
+  updateSummary();
 }
 
 // =========================
-// SAVE DATA (🔥 CORE)
-// =========================
-function saveData(){
-  const data = getProjectData();
-
-  data.engineer = document.getElementById("engineer").value;
-  data.project = document.getElementById("project").value;
-
- data.timesheet = {
-  wdDays: Number(document.getElementById("wd-days").innerText),
-  wdHours: Number(document.getElementById("wd-hours").innerText),
-  wdOT: Number(document.getElementById("wd-ot").innerText),
-  weDays: Number(document.getElementById("we-days").innerText),
-  weOT: Number(document.getElementById("we-ot").innerText)
-};
-
-  saveProjectData(data);
-}
-
-// =========================
-// EVENTS
-// =========================
-document.addEventListener("change", e=>{
-  if(e.target.matches("input, select")){
-    calculate();
-    updateAllowance();   // 🔥 ADD THIS
-  }
-});
-
-// INIT
-document.getElementById("month").addEventListener("change", generateMonth);
-// =========================
-// NAVIGATION FIX 🔥
-// =========================
-function goInvoice(){
-  saveData(); // save before leaving
-  window.location.href = "invoice.html";
-}
-
-function goExpenses(){
-  saveData(); // save before leaving
-  window.location.href = "expenses.html";
-}
-// =========================
-// FOOD ALLOWANCE (FIXED)
+// FOOD ALLOWANCE
 // =========================
 function updateAllowance(){
 
@@ -158,16 +116,12 @@ function updateAllowance(){
 
   document.querySelectorAll("#timesheet-body tr").forEach(row => {
 
-    const locationEl = row.querySelector(".row-location");
+    const location = row.querySelector(".row-location")?.value;
+    const hour = row.querySelector(".time-out-hour")?.value;
+    const minute = row.querySelector(".time-out-minute")?.value;
     const foodCell = row.querySelector(".food");
 
-    const hour = row.querySelector(".time-out-hour")?.value;
-
-    if(!locationEl || !foodCell) return;
-
-    const location = locationEl.value;
-
-    const worked = hour && hour !== "00";
+    const worked = (hour !== "00" || minute !== "00");
 
     let food = 0;
 
@@ -186,3 +140,95 @@ function updateAllowance(){
 
   localStorage.setItem("foodTotal", totalFood);
 }
+
+// =========================
+// SUMMARY
+// =========================
+function updateSummary(){
+
+  let wdDays=0, wdHours=0, wdOT=0, weDays=0, weOT=0;
+
+  document.querySelectorAll("#timesheet-body tr").forEach(row=>{
+    const day=row.children[2].innerText;
+    const total=parseFloat(row.querySelector(".total").innerText)||0;
+
+    if(day==="Sat"||day==="Sun"){
+      weDays++;
+      weOT+=total>8 ? total-8 : total;
+    }else{
+      if(total>=8) wdDays++;
+      else wdHours+=total;
+      wdOT+=total>8 ? total-8 : 0;
+    }
+  });
+
+  document.getElementById("wd-days").innerText=wdDays;
+  document.getElementById("wd-hours").innerText=wdHours.toFixed(1);
+  document.getElementById("wd-ot").innerText=wdOT.toFixed(1);
+  document.getElementById("we-days").innerText=weDays;
+  document.getElementById("we-ot").innerText=weOT.toFixed(1);
+
+  localStorage.setItem("invoiceData", JSON.stringify({
+    engineer: document.getElementById("engineer").value,
+    project: document.getElementById("project").value,
+    wdDays, wdHours, wdOT, weDays, weOT
+  }));
+}
+
+// =========================
+// EVENTS
+// =========================
+document.addEventListener("change", function(e){
+  if(e.target.matches("input, select")){
+    calculateTimes();
+    updateAllowance();
+    updateSummary();
+  }
+});
+
+// =========================
+// NAVIGATION
+// =========================
+function goHome(){
+  window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+function goInvoice(){
+  saveTimesheet();
+  window.location.href = "invoice.html";
+}
+
+function goExpenses(){
+  saveTimesheet();
+  window.location.href = "expenses.html";
+}
+
+// =========================
+// SAVE / RESET
+// =========================
+function saveTimesheet(){
+  localStorage.setItem("timesheetBackup", document.getElementById("timesheet-body").innerHTML);
+  alert("Saved ✅");
+}
+
+function resetTimesheet(){
+  if(confirm("Reset all data?")){
+    localStorage.clear();
+    location.reload();
+  }
+}
+
+// =========================
+// LOAD
+// =========================
+window.addEventListener("load", function(){
+
+  const saved = localStorage.getItem("timesheetBackup");
+
+  if(saved){
+    document.getElementById("timesheet-body").innerHTML = saved;
+  } else {
+    generateMonth();
+  }
+
+});
