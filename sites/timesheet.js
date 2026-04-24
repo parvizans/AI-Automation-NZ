@@ -125,6 +125,7 @@ function saveData(){
 document.addEventListener("change", e=>{
   if(e.target.matches("input, select")){
     calculate();
+    updateAllowance();   // 🔥 ADD THIS
   }
 });
 
@@ -141,4 +142,41 @@ function goInvoice(){
 function goExpenses(){
   saveData(); // save before leaving
   window.location.href = "expenses.html";
+}
+// =========================
+// FOOD ALLOWANCE (FIXED)
+// =========================
+function updateAllowance(){
+
+  let totalFood = 0;
+
+  document.querySelectorAll("#timesheet-body tr").forEach(row => {
+
+    const locationEl = row.querySelector(".row-location");
+    const foodCell = row.querySelector(".food");
+
+    const hour = row.querySelector(".time-out-hour")?.value;
+
+    if(!locationEl || !foodCell) return;
+
+    const location = locationEl.value;
+
+    const worked = hour && hour !== "00";
+
+    let food = 0;
+
+    if(worked && location === "Outside Sydney"){
+      food = 50;
+      foodCell.innerText = "$50";
+      foodCell.style.color = "#32d296";
+    } else {
+      foodCell.innerText = "-";
+      foodCell.style.color = "#888";
+    }
+
+    totalFood += food;
+
+  });
+
+  localStorage.setItem("foodTotal", totalFood);
 }
