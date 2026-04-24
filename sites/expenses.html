@@ -345,20 +345,36 @@ document.addEventListener("change", function(e){
 ========================= */
 function saveExpenses(){
 
-  const totalEl = document.getElementById("total");
-  const invEl = document.getElementById("expenseInv");
-  const expEl = document.getElementById("expenseNo");
+  const data = getProjectData();
+  const rows = [];
 
-  const total = totalEl ? totalEl.innerText : 0;
-  const invNo = invEl ? invEl.value : "";
-  const expNo = expEl ? expEl.value : "";
+  document.querySelectorAll("#expenseTable tbody tr").forEach(row=>{
+    const type = row.children[0].querySelector("select").value;
+    const funding = row.children[1].querySelector("select").value;
+    const amount = Number(row.children[4].querySelector("input").value) || 0;
 
-  // 🔥 USE ONLY THESE KEYS (STANDARD)
-  localStorage.setItem("invoiceExpenses", total);
-  localStorage.setItem("expenseInvoiceNo", invNo);
-  localStorage.setItem("expenseNumber", expNo);
+    rows.push({type, funding, amount});
+  });
 
-  console.log("Expenses saved ✅");
+  data.expenses = rows;
+
+  // 🔥 CALCULATE CAPEX / OPEX
+  let capex=0, opex=0;
+
+  rows.forEach(r=>{
+    if(r.funding === "Engineer CC") opex += r.amount;
+    else capex += r.amount;
+  });
+
+  data.totals = {
+    expensesTotal: capex+opex,
+    capex,
+    opex
+  };
+
+  saveProjectData(data);
+
+  alert("Expenses saved ✅");
 }
 
 
