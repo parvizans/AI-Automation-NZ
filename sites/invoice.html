@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Invoice</title>
 
+<style>
 body {
   font-family: Arial;
   color:#fff;
@@ -11,8 +12,8 @@ body {
   padding:20px;
 
   background:
-    linear-gradient(rgba(11,18,32,0.6), rgba(11,18,32,0.6)),
-    url("../assets/bg-expenses.jpg") center/cover no-repeat;
+    linear-gradient(rgba(11,18,32,0.8), rgba(11,18,32,0.8)),
+    url("../assets/bg-Mexpenses.jpg") center/cover no-repeat;
 }
 
 .container {
@@ -149,48 +150,58 @@ function saveInvoice(){
 // =========================
 function calculateInvoice(){
 
-  const data = getProjectData();
+  const data = JSON.parse(localStorage.getItem("invoiceData")) || {};
 
-  const t = data.timesheet || {};
-  const totals = data.totals || {};
+  const wdDays = Number(data.wdDays) || 0;
+  const weDays = Number(data.weDays) || 0;
+  const wdHours = Number(data.wdHours) || 0;
+  const wdOT = Number(data.wdOT) || 0;
+  const weOT = Number(data.weOT) || 0;
 
   const rates = {
-    wd:240, we:280,
-    wdHours:30, wdOT:30, weOT:35, food:50
+    wd:240,
+    we:280,
+    wdHours:30,
+    wdOT:30,
+    weOT:35,
+    food:50
   };
 
+  const foodDays = wdDays + weDays;
+
   const rows = [
-    ["Weekdays", t.wdDays, rates.wd],
-    ["Weekday Hours", t.wdHours, rates.wdHours],
-    ["Weekday OT", t.wdOT, rates.wdOT],
-    ["Weekend Days", t.weDays, rates.we],
-    ["Weekend OT", t.weOT, rates.weOT]
+    ["Weekdays", wdDays, rates.wd, wdDays * rates.wd],
+    ["Weekday Hours", wdHours, rates.wdHours, wdHours * rates.wdHours],
+    ["Weekday OT", wdOT, rates.wdOT, wdOT * rates.wdOT],
+    ["Weekend Days", weDays, rates.we, weDays * rates.we],
+    ["Weekend OT", weOT, rates.weOT, weOT * rates.weOT],
+    ["Food Allowance", foodDays, rates.food, foodDays * rates.food]
   ];
 
   let total = 0;
+  rows.innerHTML = "";
+
   const tbody = document.getElementById("rows");
   tbody.innerHTML = "";
 
   rows.forEach(r=>{
-    const amount = (r[1]||0) * r[2];
-    total += amount;
-
+    total += r[3];
     tbody.innerHTML += `
       <tr>
         <td>${r[0]}</td>
-        <td>${r[1]||0}</td>
+        <td>${r[1]}</td>
         <td>$${r[2]}</td>
-        <td>$${amount.toFixed(2)}</td>
+        <td>$${r[3].toFixed(2)}</td>
       </tr>`;
   });
 
-  const exp = totals.expensesTotal || 0;
+  const exp = Number(expenses.value) || 0;
   const cashVal = Number(cash.value) || 0;
 
   const final = total + exp - cashVal;
 
-  document.getElementById("expenses").value = exp;
-  document.getElementById("final").innerText = "$" + final.toFixed(2);
+  document.getElementById("final").innerText =
+    "$" + final.toFixed(2);
 }
 
 // =========================
