@@ -108,13 +108,13 @@ function saveData(){
   data.engineer = document.getElementById("engineer").value;
   data.project = document.getElementById("project").value;
 
-  data.timesheet = {
-    wdDays: Number(wd-days.innerText),
-    wdHours: Number(wd-hours.innerText),
-    wdOT: Number(wd-ot.innerText),
-    weDays: Number(we-days.innerText),
-    weOT: Number(we-ot.innerText)
-  };
+ data.timesheet = {
+  wdDays: Number(document.getElementById("wd-days").innerText),
+  wdHours: Number(document.getElementById("wd-hours").innerText),
+  wdOT: Number(document.getElementById("wd-ot").innerText),
+  weDays: Number(document.getElementById("we-days").innerText),
+  weOT: Number(document.getElementById("we-ot").innerText)
+};
 
   saveProjectData(data);
 }
