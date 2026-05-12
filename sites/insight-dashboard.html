@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
-
 <title>AutomationPark Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
@@ -28,7 +26,10 @@ h1{
 UPLOAD
 ========================= */
 
-#fileInput{
+.top-bar{
+    display:flex;
+    gap:20px;
+    align-items:center;
     margin-bottom:20px;
 }
 
@@ -37,64 +38,62 @@ FILTERS
 ========================= */
 
 .filters-grid{
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+    gap:15px;
     margin-bottom:25px;
 }
 
 .filters-grid div{
-    background:#1c2541;
+    background:#18233b;
     padding:10px;
     border-radius:10px;
-    min-width:160px;
 }
 
 .filters-grid label{
     display:block;
-    margin-bottom:5px;
-    font-size:12px;
-    color:#cbd5e1;
+    margin-bottom:6px;
+    font-size:13px;
+    color:#9fb3d1;
 }
 
 .filters-grid select{
     width:100%;
-    padding:8px;
-    border:none;
-    border-radius:6px;
-    background:#2a355f;
+    background:#253352;
     color:white;
+    border:none;
+    padding:8px;
+    border-radius:6px;
 }
 
 /* =========================
-KPIs
+KPI
 ========================= */
 
 .kpi-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     gap:15px;
-    margin-bottom:30px;
+    margin-bottom:25px;
 }
 
 .kpi-card{
-    background:#1c2541;
+    background:#18233b;
     padding:20px;
-    border-radius:12px;
+    border-radius:14px;
     text-align:center;
-    box-shadow:0 0 10px rgba(0,0,0,0.3);
 }
 
 .kpi-card h3{
     margin:0;
-    font-size:16px;
-    color:#cbd5e1;
+    font-size:15px;
+    color:#9fb3d1;
 }
 
 .kpi-card p{
     font-size:28px;
-    color:#32d296;
     margin-top:10px;
+    color:#32d296;
 }
 
 /* =========================
@@ -108,38 +107,57 @@ CHARTS
 }
 
 .chart-box{
-    background:#1c2541;
-    padding:20px;
+    background:#18233b;
     border-radius:14px;
-    box-shadow:0 0 15px rgba(0,0,0,0.35);
+    padding:15px;
 }
 
-.chart-box h3{
-    margin-top:0;
-    text-align:center;
-    color:#32d296;
-}
-
-canvas{
+.chart-box canvas{
     width:100% !important;
     height:350px !important;
 }
 
-</style>
+/* =========================
+RAC
+========================= */
 
+#rac-results{
+    margin-top:30px;
+}
+
+.rac-card{
+    background:#18233b;
+    padding:15px;
+    border-left:5px solid #32d296;
+    margin-bottom:10px;
+    border-radius:8px;
+}
+
+</style>
 </head>
 
 <body>
 
 <h1>🚀 AutomationPark Dashboard</h1>
 
+<div class="top-bar">
+
 <input type="file" id="fileInput">
+
+<div>
+<label>Top N Records</label><br>
+<input type="number" id="limitInput" value="20">
+</div>
+
+</div>
 
 <div id="filters" class="filters-grid"></div>
 
 <div class="kpi-grid"></div>
 
 <div class="charts-grid"></div>
+
+<div id="rac-results"></div>
 
 <script src="dashboard_v2.js"></script>
 
