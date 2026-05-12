@@ -44,6 +44,7 @@ function buildFilters(data) {
   const keys = Object.keys(data[0]);
 
   keys.forEach(key => {
+
     const uniqueValues = [...new Set(data.map(d => d[key]))];
 
     if (uniqueValues.length < 20 && isNaN(uniqueValues[0])) {
@@ -57,7 +58,6 @@ function buildFilters(data) {
       select.multiple = true;
       select.dataset.key = key;
 
-      // ALL option
       const allOption = document.createElement("option");
       allOption.value = "__ALL__";
       allOption.innerText = "ALL";
@@ -76,9 +76,10 @@ function buildFilters(data) {
       wrapper.appendChild(select);
 
       filterDiv.appendChild(wrapper);
+
     }
+
   });
-}
 
 function applyFilters() {
   const selects = document.querySelectorAll("#filters select");
