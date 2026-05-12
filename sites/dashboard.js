@@ -214,11 +214,28 @@ function buildDashboard(data){
 
 function createKPI(name, values){
 
-  const avg =
+  let result = 0;
+
+if(
+  name.toLowerCase().includes("rate") ||
+  name.toLowerCase().includes("rsrp") ||
+  name.toLowerCase().includes("sinr") ||
+  name.toLowerCase().includes("margin")
+){
+
+  result =
     (
       values.reduce((a,b)=>a+b,0)
       / values.length
     ).toFixed(2);
+
+}else{
+
+  result =
+    values.reduce((a,b)=>a+b,0)
+    .toLocaleString();
+
+}
 
   const card =
     document.createElement("div");
@@ -227,7 +244,7 @@ function createKPI(name, values){
 
   card.innerHTML = `
     <h3>${name}</h3>
-    <p>${Number(avg).toLocaleString()}</p>
+    <p>${result}</p>
   `;
 
   document
@@ -256,9 +273,22 @@ function createChart(name, values){
     .querySelector(".charts-grid")
     .appendChild(container);
 
+  const selector =
+  document.createElement("select");
+
+  selector.innerHTML = `
+  <option value="line">line</option>
+  <option value="bar">bar</option>
+  <option value="pie">pie</option>
+  <option value="doughnut">doughnut</option>
+  <option value="radar">radar</option>
+`;
+
+  container.prepend(selector);
+  
   new Chart(canvas,{
 
-    type:"bar",
+    type:selector.value,
 
     data:{
 
@@ -323,6 +353,23 @@ function createChart(name, values){
   chartIndex++;
 
 }
+
+selector.addEventListener("change",()=>{
+
+  chart.destroy();
+
+  chart =
+    new Chart(canvas,{
+
+      type:selector.value,
+
+      data:chart.data,
+
+      options:chart.options
+
+    });
+
+});
 
 /* =========================
    RAC ENGINE
