@@ -189,40 +189,100 @@ function renderKPIs(data){
 // =====================
 // CHART ENGINE
 // =====================
-let chart;
 
-function renderChart(data){
+function renderCharts(data){
 
-  const ctx = document.getElementById("chart").getContext("2d");
-
-  if(chart) chart.destroy();
+  const chartsContainer = document.getElementById("charts-container");
+  chartsContainer.innerHTML = "";
 
   const keys = Object.keys(data[0]);
 
   let numeric = keys.filter(k => !isNaN(data[0][k]));
   let category = keys.find(k => isNaN(data[0][k]));
 
-  const grouped = {};
+  numeric.forEach((numKey, index)=>{
 
-  data.forEach(d=>{
-    const cat = d[category];
-    const val = Number(d[numeric[0]] || 0);
+    const grouped = {};
 
-    if(!grouped[cat]) grouped[cat] = 0;
-    grouped[cat] += val;
+    data.forEach(d=>{
+
+      const cat = d[category];
+      const val = Number(d[numKey] || 0);
+
+      if(!grouped[cat]) grouped[cat] = 0;
+
+      grouped[cat] += val;
+
+    });
+
+    // CREATE CHART CARD
+    const card = document.createElement("div");
+    card.className = "chart-container";
+
+    // TITLE
+    const title = document.createElement("h3");
+    title.innerText = numKey;
+
+    // CANVAS
+    const canvas = document.createElement("canvas");
+
+    card.appendChild(title);
+    card.appendChild(canvas);
+
+    chartsContainer.appendChild(card);
+
+    // CREATE CHART
+    new Chart(canvas, {
+
+      type: index % 2 === 0 ? "bar" : "line",
+
+      data: {
+        labels: Object.keys(grouped),
+
+        datasets: [{
+          label: numKey,
+          data: Object.values(grouped),
+
+          backgroundColor: "#32d29688",
+          borderColor: "#32d296",
+          borderWidth: 2,
+          tension: 0.4
+        }]
+      },
+
+      options: {
+        responsive: true,
+
+        plugins: {
+          legend: {
+            labels: {
+              color: "white"
+            }
+          }
+        },
+
+        scales: {
+
+          x: {
+            ticks: {
+              color: "white"
+            }
+          },
+
+          y: {
+            ticks: {
+              color: "white"
+            }
+          }
+
+        }
+
+      }
+
+    });
+
   });
 
-  chart = new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: Object.keys(grouped),
-      datasets: [{
-        label: numeric[0],
-        data: Object.values(grouped),
-        backgroundColor: "#32d296"
-      }]
-    }
-  });
 }
 
 // =====================
