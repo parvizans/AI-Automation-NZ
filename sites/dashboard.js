@@ -46,7 +46,7 @@ function buildFilters(data) {
   keys.forEach(key => {
     const uniqueValues = [...new Set(data.map(d => d[key]))];
 
-    if (uniqueValues.length < 20 && typeof uniqueValues[0] !== "number") {
+    if (uniqueValues.length < 20 && isNaN(uniqueValues[0]))
       const wrapper = document.createElement("div");
 
       const label = document.createElement("label");
@@ -108,7 +108,9 @@ function buildDashboard(data) {
   document.querySelector(".charts-grid").innerHTML = "";
 
   keys.forEach(key => {
-    let values = data.map(row => row[key]).filter(v => typeof v === "number");
+    let values = data
+  .map(row => Number(row[key]))
+  .filter(v => !isNaN(v));
 
     const limit = parseInt(document.getElementById("limitInput").value);
 
