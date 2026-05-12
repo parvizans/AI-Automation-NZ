@@ -9,6 +9,51 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
+   .top-ribbon{
+
+  position:fixed;
+
+  top:0;
+  left:0;
+
+  width:100%;
+  height:5px;
+
+  z-index:999999;
+
+  background:
+    linear-gradient(
+      90deg,
+      #32d296,
+      #00c2ff,
+      #7c3aed,
+      #32d296
+    );
+
+  background-size:300% 300%;
+
+  animation:ribbonMove 8s ease infinite;
+
+  box-shadow:
+    0 0 20px rgba(50,210,150,0.8);
+
+}
+
+@keyframes ribbonMove{
+
+  0%{
+    background-position:0% 50%;
+  }
+
+  50%{
+    background-position:100% 50%;
+  }
+
+  100%{
+    background-position:0% 50%;
+  }
+
+}
 /* =========================================
    TOP RIBBON FIX
 ========================================= */
@@ -466,6 +511,8 @@ input:focus{
 </head>
 
 <body>
+   
+<div class="top-ribbon"></div>
 
 <h1>🚀 AutomationPark Dashboard</h1>
 
