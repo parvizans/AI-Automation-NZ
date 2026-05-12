@@ -2,15 +2,32 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
 <title>AutomationPark Dashboard</title>
 
+<!-- =====================================
+LIBRARIES
+===================================== -->
+
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<!-- =====================================
+STYLE
+===================================== -->
+
 <style>
-   /* =========================================
-   GLOBAL
+
+/* =========================================
+GLOBAL
 ========================================= */
 
 *{
@@ -41,50 +58,20 @@ body{
 }
 
 /* =========================================
-   HERO PANEL
+TOP RIBBON
 ========================================= */
 
-.hero-panel{
+.top-ribbon{
 
-  position:relative;
-
-  background:
-    linear-gradient(
-      145deg,
-      rgba(20,30,60,0.90),
-      rgba(10,18,35,0.92)
-    );
-
-  border-radius:24px;
-
-  padding:28px;
-
-  margin-bottom:30px;
-
-  overflow:hidden;
-
-  border:
-    1px solid rgba(50,210,150,0.15);
-
-  box-shadow:
-    0 0 40px rgba(0,194,255,0.12);
-}
-
-/* =========================================
-   PREMIUM HEADER RIBBON
-========================================= */
-
-.hero-panel::before{
-
-  content:"";
-
-  position:absolute;
+  position:fixed;
 
   top:0;
   left:0;
 
   width:100%;
   height:5px;
+
+  z-index:9999;
 
   background:
     linear-gradient(
@@ -100,7 +87,7 @@ body{
   animation:ribbonMove 8s linear infinite;
 
   box-shadow:
-    0 0 18px rgba(0,194,255,0.7);
+    0 0 18px rgba(0,194,255,0.8);
 }
 
 @keyframes ribbonMove{
@@ -116,14 +103,44 @@ body{
 }
 
 /* =========================================
-   TITLE
+HERO PANEL
+========================================= */
+
+.hero-panel{
+
+  position:relative;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(20,30,60,0.90),
+      rgba(10,18,35,0.92)
+    );
+
+  border-radius:24px;
+
+  padding:18px 22px;
+
+  margin-bottom:20px;
+
+  overflow:hidden;
+
+  border:
+    1px solid rgba(50,210,150,0.15);
+
+  box-shadow:
+    0 0 40px rgba(0,194,255,0.12);
+}
+
+/* =========================================
+TITLE
 ========================================= */
 
 .hero-panel h1{
 
   font-size:58px;
 
-  margin-bottom:25px;
+  margin-bottom:15px;
 
   color:#32d296;
 
@@ -134,7 +151,7 @@ body{
 }
 
 /* =========================================
-   TOP CONTROLS
+TOP CONTROLS
 ========================================= */
 
 .top-controls{
@@ -144,6 +161,8 @@ body{
   gap:14px;
 
   flex-wrap:wrap;
+
+  margin-top:10px;
 }
 
 input{
@@ -175,7 +194,7 @@ input:focus{
 }
 
 /* =========================================
-   FILTERS
+FILTERS
 ========================================= */
 
 .filters-grid{
@@ -235,9 +254,11 @@ input:focus{
 
   width:100%;
 
-  background:#2a355f;
+  background:#36446b;
 
   color:white;
+
+  font-weight:bold;
 
   border:none;
 
@@ -249,7 +270,7 @@ input:focus{
 }
 
 /* =========================================
-   KPI GRID
+KPI GRID
 ========================================= */
 
 .kpi-grid{
@@ -317,7 +338,7 @@ input:focus{
 }
 
 /* =========================================
-   CHART GRID
+CHART GRID
 ========================================= */
 
 .charts-grid{
@@ -331,7 +352,7 @@ input:focus{
 }
 
 /* =========================================
-   CHART BOX
+CHART BOX
 ========================================= */
 
 .chart-box{
@@ -390,7 +411,7 @@ input:focus{
 }
 
 /* =========================================
-   CHART SELECTOR
+CHART SELECT
 ========================================= */
 
 .chart-box select{
@@ -413,7 +434,7 @@ input:focus{
 }
 
 /* =========================================
-   CHART CANVAS
+CANVAS
 ========================================= */
 
 .chart-box canvas{
@@ -424,7 +445,7 @@ input:focus{
 }
 
 /* =========================================
-   RAC ENGINE
+RAC ENGINE
 ========================================= */
 
 #rac-results{
@@ -454,7 +475,7 @@ input:focus{
 }
 
 /* =========================================
-   SCROLLBAR
+SCROLLBAR
 ========================================= */
 
 ::-webkit-scrollbar{
@@ -475,7 +496,7 @@ input:focus{
 }
 
 /* =========================================
-   MOBILE
+MOBILE
 ========================================= */
 
 @media(max-width:768px){
@@ -503,29 +524,69 @@ input:focus{
 </head>
 
 <body>
-   
+
+<!-- =====================================
+TOP RIBBON
+===================================== -->
+
 <div class="top-ribbon"></div>
 
-<h1>🚀 AutomationPark Dashboard</h1>
+<!-- =====================================
+HERO PANEL
+===================================== -->
 
-<input type="file" id="fileInput">
+<div class="hero-panel">
 
-<input
-  type="number"
-  id="limitInput"
-  value="20"
-  placeholder="Points Limit"
->
+  <h1>🚀 AutomationPark Dashboard</h1>
+
+  <div class="top-controls">
+
+    <input
+      type="file"
+      id="fileInput"
+    >
+
+    <input
+      type="number"
+      id="limitInput"
+      value="20"
+      placeholder="Points Limit"
+    >
+
+  </div>
+
+</div>
+
+<!-- =====================================
+FILTERS
+===================================== -->
 
 <div id="filters" class="filters-grid"></div>
 
+<!-- =====================================
+KPI CARDS
+===================================== -->
+
 <div class="kpi-grid"></div>
+
+<!-- =====================================
+CHARTS
+===================================== -->
 
 <div class="charts-grid"></div>
 
+<!-- =====================================
+RCA RESULTS
+===================================== -->
+
 <div id="rac-results"></div>
+
+<!-- =====================================
+JS FILE
+===================================== -->
 
 <script src="dashboard.js"></script>
 
 </body>
+
 </html>
