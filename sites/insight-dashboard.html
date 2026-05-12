@@ -175,7 +175,7 @@ function renderKPIs(data){
 
   let numeric = keys.filter(k => !isNaN(data[0][k]));
 
-  numeric.slice(0,5).forEach(k=>{
+  numeric.forEach(k=>{
     const sum = data.reduce((a,b)=>a + Number(b[k] || 0), 0);
 
     const div = document.createElement("div");
