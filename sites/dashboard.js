@@ -46,7 +46,8 @@ function buildFilters(data) {
   keys.forEach(key => {
     const uniqueValues = [...new Set(data.map(d => d[key]))];
 
-    if (uniqueValues.length < 20 && isNaN(uniqueValues[0]))
+    if (uniqueValues.length < 20 && isNaN(uniqueValues[0])) {
+
       const wrapper = document.createElement("div");
 
       const label = document.createElement("label");
