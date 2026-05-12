@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <title>AutomationPark Dashboard</title>
@@ -8,63 +9,96 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-body {
-  font-family: Arial;
-  background: #0b1220;
-  color: #fff;
-  padding: 20px;
+
+body{
+  font-family:Arial;
+  background:#0b1220;
+  color:white;
+  padding:20px;
 }
 
-h1 {
-  color: #32d296;
+h1{
+  color:#32d296;
 }
 
 /* FILTERS */
-.filters-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
+.filters-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:20px;
 }
 
-.filter-card {
-  background: #1c2541;
-  padding: 10px;
-  border-radius: 10px;
-  min-width: 150px;
+.filters-grid div{
+  background:#1c2541;
+  padding:10px;
+  border-radius:10px;
+  min-width:150px;
 }
 
-.filter-card select {
-  width: 100%;
-  background: #2a355f;
-  color: #fff;
-  border: none;
-  padding: 5px;
+.filters-grid label{
+  display:block;
+  margin-bottom:5px;
+}
+
+.filters-grid select{
+  width:100%;
+  background:#2a355f;
+  color:white;
+  border:none;
+  padding:8px;
+  border-radius:6px;
 }
 
 /* KPI */
-.kpi-grid {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+  margin-bottom:20px;
 }
 
-.kpi {
-  background: #1c2541;
-  padding: 15px;
-  border-radius: 10px;
-  flex: 1;
-  text-align: center;
+.kpi-card{
+  background:#1c2541;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
 }
 
-/* CHART */
-.chart-container {
-  background: #1c2541;
-  padding: 20px;
-  border-radius: 10px;
-  margin-top: 20px;
+/* CHARTS */
+.charts-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(500px,1fr));
+  gap:20px;
 }
+
+.chart-box{
+  background:#1c2541;
+  padding:20px;
+  border-radius:15px;
+}
+
+/* RAC */
+#rac-results{
+  margin-top:30px;
+}
+
+.rac-card{
+  background:#1c2541;
+  padding:15px;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+
+input{
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  margin-bottom:20px;
+}
+
 </style>
+
 </head>
 
 <body>
@@ -73,168 +107,22 @@ h1 {
 
 <input type="file" id="fileInput">
 
-<div id="filters-container" class="filters-grid"></div>
+<input
+  type="number"
+  id="limitInput"
+  value="20"
+  placeholder="Points Limit"
+>
 
-<div id="kpi-container" class="kpi-grid"></div>
+<div id="filters" class="filters-grid"></div>
 
-<div class="chart-container">
-  <canvas id="chart"></canvas>
-</div>
+<div class="kpi-grid"></div>
 
-<script>
+<div class="charts-grid"></div>
 
-let rawData = [];
-let globalFilters = {};
+<div id="rac-results"></div>
 
-// =====================
-// FILE LOAD
-// =====================
-document.getElementById("fileInput").addEventListener("change", function(e){
-
-  Papa.parse(e.target.files[0], {
-    header: true,
-    complete: function(results){
-      rawData = results.data;
-      createFilters(rawData);
-      redrawDashboard();
-    }
-  });
-
-});
-
-// =====================
-// FILTER ENGINE
-// =====================
-function createFilters(data){
-
-  const container = document.getElementById("filters-container");
-  container.innerHTML = "";
-
-  const keys = Object.keys(data[0]);
-
-  keys.forEach(key => {
-
-    const values = [...new Set(data.map(d => d[key]))];
-
-    if(values.length < 20 && isNaN(values[0])){
-
-      const card = document.createElement("div");
-      card.className = "filter-card";
-
-      const label = document.createElement("div");
-      label.innerText = key;
-
-      const select = document.createElement("select");
-
-      const all = document.createElement("option");
-      all.value = "";
-      all.innerText = "ALL";
-      select.appendChild(all);
-
-      values.forEach(v=>{
-        const opt = document.createElement("option");
-        opt.value = v;
-        opt.innerText = v;
-        select.appendChild(opt);
-      });
-
-      select.onchange = () => {
-        globalFilters[key] = select.value;
-        redrawDashboard();
-      };
-
-      card.appendChild(label);
-      card.appendChild(select);
-      container.appendChild(card);
-    }
-
-  });
-}
-
-// =====================
-// APPLY FILTER
-// =====================
-function applyFilters(data){
-  return data.filter(row=>{
-    return Object.keys(globalFilters).every(key=>{
-      if(!globalFilters[key]) return true;
-      return row[key] == globalFilters[key];
-    });
-  });
-}
-
-// =====================
-// KPI ENGINE
-// =====================
-function renderKPIs(data){
-
-  const container = document.getElementById("kpi-container");
-  container.innerHTML = "";
-
-  const keys = Object.keys(data[0]);
-
-  let numeric = keys.filter(k => !isNaN(data[0][k]));
-
-  numeric.slice(0,5).forEach(k=>{
-    const sum = data.reduce((a,b)=>a + Number(b[k] || 0), 0);
-
-    const div = document.createElement("div");
-    div.className = "kpi";
-    div.innerHTML = `<h3>${k}</h3><p>${Math.round(sum)}</p>`;
-
-    container.appendChild(div);
-  });
-}
-
-// =====================
-// CHART ENGINE
-// =====================
-let chart;
-
-function renderChart(data){
-
-  const ctx = document.getElementById("chart").getContext("2d");
-
-  if(chart) chart.destroy();
-
-  const keys = Object.keys(data[0]);
-
-  let numeric = keys.filter(k => !isNaN(data[0][k]));
-  let category = keys.find(k => isNaN(data[0][k]));
-
-  const grouped = {};
-
-  data.forEach(d=>{
-    const cat = d[category];
-    const val = Number(d[numeric[0]] || 0);
-
-    if(!grouped[cat]) grouped[cat] = 0;
-    grouped[cat] += val;
-  });
-
-  chart = new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: Object.keys(grouped),
-      datasets: [{
-        label: numeric[0],
-        data: Object.values(grouped),
-        backgroundColor: "#32d296"
-      }]
-    }
-  });
-}
-
-// =====================
-// MAIN RENDER
-// =====================
-function redrawDashboard(){
-  const filtered = applyFilters(rawData);
-  renderKPIs(filtered);
-  renderChart(filtered);
-}
-
-</script>
+<script src="dashboard.js"></script>
 
 </body>
 </html>
