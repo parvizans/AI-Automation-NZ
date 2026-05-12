@@ -262,8 +262,17 @@ function createChart(name, values){
 
     data:{
 
-      labels:
-        values.map((_,i)=>`Pt ${i+1}`),
+     labels:
+     data
+    .slice(-values.length)
+    .map((row,i)=>{
+
+      const firstKey =
+        Object.keys(row)[0];
+
+      return row[firstKey] || `Row ${i+1}`;
+
+    }),
 
       datasets:[{
 
