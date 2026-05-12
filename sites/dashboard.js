@@ -303,10 +303,22 @@ function createChart(name, values, data){
       .slice(-values.length)
       .map((row,i)=>{
 
-        const firstKey =
-          Object.keys(row)[0];
+        const keys = Object.keys(row);
 
-        return row[firstKey] || `Row ${i+1}`;
+  const xKey =
+    keys.find(k =>
+    k.toLowerCase().includes("date") ||
+    k.toLowerCase().includes("time") ||
+    k.toLowerCase().includes("month")
+  )
+  ||
+  keys.find(k =>
+    typeof row[k] === "string"
+  )
+  ||
+  keys[0];
+
+return row[xKey] || `Row ${i+1}`;
 
       });
 
