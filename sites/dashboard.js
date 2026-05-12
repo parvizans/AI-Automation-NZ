@@ -162,10 +162,20 @@ function renderCharts(data){
   let numeric =
     keys.filter(k => !isNaN(data[0][k]));
 
-  let category =
-    keys.find(k => isNaN(data[0][k]));
+ // SAFE CATEGORY DETECTION
+    let category =
+     keys.find(k =>
+    typeof data[0][k] === "string"
+  );
+
+// FALLBACK
+if(!category){
+  category = keys[0];
+}
 
   numeric.forEach(metric => {
+    
+   if(metric === category) return;
 
     const grouped = {};
 
