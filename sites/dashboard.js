@@ -1,390 +1,308 @@
-let chartIndex = 0;
-const colors = [
-  "#2563eb", // blue
-  "#16a34a", // green
-  "#f59e0b", // orange
-  "#dc2626", // red
-  "#7c3aed", // purple
-  "#0ea5e9"  // sky
-];
+let rawData = [];
+let globalFilters = {};
 
+// =====================
+// FILE LOAD
+// =====================
+document.getElementById("fileInput").addEventListener("change", function(e){
 
-let globalData = [];
-
-/* =========================
-   FILE LOAD
-========================= */
-document.getElementById("fileInput").addEventListener("change", handleFile);
-
-
-
-function handleFile(event) {
-  const file = event.target.files[0];
-
-  Papa.parse(file, {
+  Papa.parse(e.target.files[0], {
     header: true,
     dynamicTyping: true,
-    complete: function(results) {
-      globalData = results.data.filter(row => Object.keys(row).length > 0);
-      buildFilters(globalData);
-      buildDashboard(globalData);
-    }
-  });
-}
 
-/* =========================
-   FILTER ENGINE
-========================= */
-function buildFilters(data) {
-  const filterDiv = document.getElementById("filters");
-  filterDiv.innerHTML = "";
+    complete: function(results){
 
-  const keys = Object.keys(data[0]);
+      rawData = results.data.filter(
+        row => Object.keys(row).length > 0
+      );
 
-  keys.forEach(key => {
-    const uniqueValues = [...new Set(data.map(d => d[key]))];
+      createFilters(rawData);
 
-    if (uniqueValues.length < 20 && typeof uniqueValues[0] !== "number") {
-      const wrapper = document.createElement("div");
-
-      const label = document.createElement("label");
-      label.innerText = key;
-
-      const select = document.createElement("select");
-      select.multiple = true;
-      select.dataset.key = key;
-
-      // ALL option
-      const allOption = document.createElement("option");
-      allOption.value = "__ALL__";
-      allOption.innerText = "ALL";
-      select.appendChild(allOption);
-
-      uniqueValues.forEach(val => {
-        const opt = document.createElement("option");
-        opt.value = val;
-        opt.innerText = val;
-        select.appendChild(opt);
-      });
-
-      select.addEventListener("change", applyFilters);
-
-      wrapper.appendChild(label);
-      wrapper.appendChild(select);
-
-      filterDiv.appendChild(wrapper);
-    }
-  });
-}
-
-function applyFilters() {
-  const selects = document.querySelectorAll("#filters select");
-
-  let filtered = [...globalData];
-
-  selects.forEach(select => {
-    const key = select.dataset.key;
-    const selected = [...select.selectedOptions].map(o => o.value);
-
-    if (selected.length > 0 && !selected.includes("__ALL__")) {
-      filtered = filtered.filter(row => selected.includes(String(row[key])));
+      redrawDashboard();
     }
   });
 
-  buildDashboard(filtered);
-}
-
-/* =========================
-   DASHBOARD ENGINE
-========================= */
-function buildDashboard(data) {
-  if (!data || data.length === 0) return;
-
-  const keys = Object.keys(data[0]);
-
-  document.querySelector(".kpi-grid").innerHTML = "";
-  document.querySelector(".charts-grid").innerHTML = "";
-
-  keys.forEach(key => {
-    let values = data.map(row => row[key]).filter(v => typeof v === "number");
-
-   
-
-    if (
-      values.length > 0 &&
-      !key.toLowerCase().includes("year") &&
-      !key.toLowerCase().includes("day") &&
-      !key.toLowerCase().includes("month")
-    ) {
-      createKPI(key, values);
-      createChart(key, values);
-    }
-  });
-
-  // 🧠 RAC ENGINE
-  const insights = runRAC(data);
-  showRAC(insights);
-
-  // 🔥 AGGREGATED CHARTS (MUST BE INSIDE FUNCTION)
-  createAggregatedChart(data, "Country", "Sales");
-  createAggregatedChart(data, "Segment", "Profit");
-}
-/* =========================
-   KPI
-========================= */
-function createKPI(name, values) {
-  const avg = (values.reduce((a,b)=>a+b,0) / values.length).toFixed(2);
-
-  const card = document.createElement("div");
-  card.className = "kpi-card";
-
-  card.innerHTML = `
-    <h3>${name}</h3>
-    <p>${Number(avg).toLocaleString()}</p>
-  `;
-
-  document.querySelector(".kpi-grid").appendChild(card);
-}
-
-/* =========================
-   CHART ENGINE
-========================= */
-function createChart(name, values) {
-
-  const container = document.createElement("div");
-  container.className = "chart-box";
-
-  // Controls container (clean UI)
-  const controls = document.createElement("div");
-  controls.style.display = "flex";
-  controls.style.justifyContent = "space-between";
-  controls.style.marginBottom = "10px";
-
-  // Checkbox
-  const checkbox = document.createElement("input");
-  checkbox.type = "checkbox";
-  checkbox.checked = true;
-
-  // Chart selector
-  const select = document.createElement("select");
-  ["line","bar","pie","scatter"].forEach(t=>{
-    const o=document.createElement("option");
-    o.value=t;
-    o.innerText=t;
-    select.appendChild(o);
-  });
-
-  controls.appendChild(checkbox);
-  controls.appendChild(select);
-
-  const canvas = document.createElement("canvas");
-
-  container.appendChild(controls);
-  container.appendChild(canvas);
-
-  document.querySelector(".charts-grid").appendChild(container);
-
-  // 🔥 FUNCTION TO PREPARE DATA BASED ON CHART TYPE
-  function getDataset(chartType) {
-
-    // SCATTER FIX
-    if (chartType === "scatter") {
-      return values.map((v, i) => ({ x: i, y: v }));
-    }
-
-    return values;
-  }
-
-
- // 🔥 FUNCTION TO BUILD CHART
-function buildChart(chartType) {
-
-  // ✅ DEFINE FIRST (outside Chart config)
-  let displayValues = values;
-
-  // 🔴 LIMIT PIE SIZE
-  if (chartType === "pie" && values.length > 6) {
-    displayValues = values.slice(0, 6);
-  }
-
-  return new Chart(canvas, {
-    type: chartType,
-    data: {
-      labels: chartType === "pie" 
-        ? displayValues.map((_, i) => `Part ${i + 1}`)
-        : displayValues.map((_, i) => `Pt ${i + 1}`),
-
-     datasets: [{
-  label: name,
-  data: chartType === "scatter"
-    ? values.map((v, i) => ({ x: i, y: v }))
-    : displayValues,
-
-  // 🎨 STYLE (UPDATED)
- backgroundColor: colors[chartIndex % colors.length] + "66",
- borderColor: colors[chartIndex % colors.length],
-  borderWidth: 2,
-  fill: chartType === "line" ? false : true
-}]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          display: true
-        }
-      }
-    }
-  });
-}
-  // INITIAL CHART
-  let chart = buildChart("line");
-
-  // 🔁 CHANGE CHART TYPE
-  select.addEventListener("change", () => {
-    chart.destroy();
-    chart = buildChart(select.value);
-  });
-
-  // 👁️ SHOW / HIDE
-  checkbox.addEventListener("change", () => {
-    container.style.display = checkbox.checked ? "block" : "none";
-  });
-}
-
-/* =========================
-   AGGREGATION ENGINE
-========================= */
-function groupBy(data, key, valueField) {
-  const result = {};
-
-  data.forEach(row => {
-    const group = row[key];
-    const value = row[valueField];
-
-    if (typeof value !== "number") return;
-
-    if (!result[group]) result[group] = 0;
-    result[group] += value;
-  });
-
-  return result;
-}
-
-function createAggregatedChart(data, groupKey, valueKey) {
-
-  const grouped = groupBy(data, groupKey, valueKey);
-
-  const labels = Object.keys(grouped);
-  const values = Object.values(grouped);
-
-  const container = document.createElement("div");
-  container.className = "chart-box";
-
-  const title = document.createElement("h4");
-  title.innerText = `${valueKey} by ${groupKey}`;
-
-  const canvas = document.createElement("canvas");
-
-  container.appendChild(title);
-  container.appendChild(canvas);
-
-  document.querySelector(".charts-grid").appendChild(container);
-
- new Chart(canvas, {
-  type: 'bar', // or your existing chartType
-  data: {
-    labels: labels,
-    datasets: [{
-      label: valueKey,
-      data: values,
-
-      // 🎨 COLOR FIX
-      backgroundColor: colors[chartIndex % colors.length] + "66",
-      borderColor: colors[chartIndex % colors.length],
-      borderWidth: 2
-    }]
-  }
 });
-   // 👇 THIS IS OUTSIDE Chart
-chartIndex++;
-}
 
-function getField(data, possibleNames) {
-  return possibleNames.find(name => data[0][name] !== undefined);
-}
+// =====================
+// FILTER ENGINE
+// =====================
+function createFilters(data){
 
-function runRAC(data) {
-
-  let insights = [];
-
-  const salesKey = getField(data, ["Sales","Sum of Sales","sum_of_sales"]);
-  const profitKey = getField(data, ["Profit","Sum of Profit","sum_of_profit"]);
-  const discountKey = getField(data, ["Discounts","Sum of Discounts","sum_of_discounts"]);
-  const unitsKey = getField(data, ["Units Sold","Sum of Units Sold","sum_of_units_sold"]);
-
-  const sum = arr => arr.reduce((a,b)=>a+b,0);
-
-  let sales = salesKey ? data.map(d => d[salesKey]).filter(v => typeof v === "number") : [];
-  let profit = profitKey ? data.map(d => d[profitKey]).filter(v => typeof v === "number") : [];
-  let discounts = discountKey ? data.map(d => d[discountKey]).filter(v => typeof v === "number") : [];
-  let units = unitsKey ? data.map(d => d[unitsKey]).filter(v => typeof v === "number") : [];
-
-  // REAL CONDITIONS
-  if (profit.length && sum(profit) < 0) {
-    insights.push({
-      title: "📉 Loss Detected",
-      cause: "Total profit is negative",
-      action: "Check pricing or reduce discounts"
-    });
-  }
-
-  if (discounts.length && sales.length && sum(discounts) > sum(sales) * 0.2) {
-    insights.push({
-      title: "⚠️ High Discount Impact",
-      cause: "Discounts too high vs sales",
-      action: "Optimize discount strategy"
-    });
-  }
-
-  if (units.length && profit.length && sum(units) > 1000 && sum(profit) < 0) {
-    insights.push({
-      title: "📦 High Volume, Low Profit",
-      cause: "High sales volume but low margin",
-      action: "Adjust pricing or cost"
-    });
-  }
-
-  // 🧪 TEST INSIGHT (ADD HERE)
-  insights.push({
-    title: "🧪 Test Insight",
-    cause: "RAC engine is working",
-    action: "System confirmed"
-  });
-
-  return insights;
-}
-
-function showRAC(insights) {
-
-  const container = document.getElementById("rac-results");
-
-  if (!container) {
-    console.error("RAC container not found");
-    return;
-  }
+  const container = document.getElementById("filters-container");
 
   container.innerHTML = "";
 
-  insights.forEach(i => {
-    container.innerHTML += `
-      <div class="rac-card">
-        <strong>${i.title}</strong><br>
-        <b>Cause:</b> ${i.cause}<br>
-        <b>Action:</b> ${i.action}
-      </div>
-    `;
+  const keys = Object.keys(data[0]);
+
+  keys.forEach(key => {
+
+    const values = [...new Set(data.map(d => d[key]))];
+
+    // ONLY TEXT FILTERS
+    if(values.length < 20 && isNaN(values[0])){
+
+      const card = document.createElement("div");
+
+      card.className = "filter-card";
+
+      const label = document.createElement("div");
+
+      label.innerText = key;
+
+      const select = document.createElement("select");
+
+      const all = document.createElement("option");
+
+      all.value = "";
+
+      all.innerText = "ALL";
+
+      select.appendChild(all);
+
+      values.forEach(v => {
+
+        const opt = document.createElement("option");
+
+        opt.value = v;
+
+        opt.innerText = v;
+
+        select.appendChild(opt);
+
+      });
+
+      select.onchange = () => {
+
+        globalFilters[key] = select.value;
+
+        redrawDashboard();
+
+      };
+
+      card.appendChild(label);
+
+      card.appendChild(select);
+
+      container.appendChild(card);
+
+    }
+
   });
+
 }
 
+// =====================
+// APPLY FILTERS
+// =====================
+function applyFilters(data){
 
+  return data.filter(row => {
+
+    return Object.keys(globalFilters).every(key => {
+
+      if(!globalFilters[key]) return true;
+
+      return row[key] == globalFilters[key];
+
+    });
+
+  });
+
+}
+
+// =====================
+// KPI ENGINE
+// =====================
+function renderKPIs(data){
+
+  const container = document.getElementById("kpi-container");
+
+  container.innerHTML = "";
+
+  const keys = Object.keys(data[0]);
+
+  let numeric = keys.filter(k => !isNaN(data[0][k]));
+
+  // 🔥 ALL KPI CARDS
+  numeric.forEach(k => {
+
+    const sum = data.reduce(
+      (a,b)=> a + Number(b[k] || 0),
+      0
+    );
+
+    const div = document.createElement("div");
+
+    div.className = "kpi";
+
+    div.innerHTML = `
+      <h3>${k}</h3>
+      <p>${Math.round(sum).toLocaleString()}</p>
+    `;
+
+    container.appendChild(div);
+
+  });
+
+}
+
+// =====================
+// MULTI CHART ENGINE
+// =====================
+function renderCharts(data){
+
+  const chartsContainer =
+    document.getElementById("charts-container");
+
+  chartsContainer.innerHTML = "";
+
+  const keys = Object.keys(data[0]);
+
+  let numeric =
+    keys.filter(k => !isNaN(data[0][k]));
+
+  let category =
+    keys.find(k => isNaN(data[0][k]));
+
+  numeric.forEach(metric => {
+
+    const grouped = {};
+
+    data.forEach(d => {
+
+      const cat = d[category];
+
+      const val = Number(d[metric] || 0);
+
+      if(!grouped[cat]) grouped[cat] = 0;
+
+      grouped[cat] += val;
+
+    });
+
+    // =====================
+    // CHART BOX
+    // =====================
+    const box = document.createElement("div");
+
+    box.className = "chart-box";
+
+    // TITLE
+    const title = document.createElement("h3");
+
+    title.innerText = metric;
+
+    title.style.marginBottom = "10px";
+
+    // CANVAS
+    const canvas = document.createElement("canvas");
+
+    box.appendChild(title);
+
+    box.appendChild(canvas);
+
+    chartsContainer.appendChild(box);
+
+    // =====================
+    // CHART TYPE LOGIC
+    // =====================
+    let chartType = "bar";
+
+    if(metric.toLowerCase().includes("rating")){
+      chartType = "line";
+    }
+
+    // =====================
+    // CREATE CHART
+    // =====================
+    new Chart(canvas, {
+
+      type: chartType,
+
+      data: {
+
+        labels: Object.keys(grouped),
+
+        datasets: [{
+
+          label: metric,
+
+          data: Object.values(grouped),
+
+          backgroundColor: "#32d296",
+
+          borderColor: "#32d296",
+
+          borderWidth: 2,
+
+          fill: false,
+
+          tension: 0.3
+
+        }]
+
+      },
+
+      options: {
+
+        responsive: true,
+
+        plugins: {
+
+          legend: {
+
+            labels: {
+
+              color: "white"
+
+            }
+
+          }
+
+        },
+
+        scales: {
+
+          x: {
+
+            ticks: {
+
+              color: "white"
+
+            }
+
+          },
+
+          y: {
+
+            ticks: {
+
+              color: "white"
+
+            }
+
+          }
+
+        }
+
+      }
+
+    });
+
+  });
+
+}
+
+// =====================
+// MAIN RENDER
+// =====================
+function redrawDashboard(){
+
+  const filtered = applyFilters(rawData);
+
+  renderKPIs(filtered);
+
+  renderCharts(filtered);
+
+}
