@@ -44,11 +44,9 @@ function buildFilters(data) {
   const keys = Object.keys(data[0]);
 
   keys.forEach(key => {
-
     const uniqueValues = [...new Set(data.map(d => d[key]))];
 
-    if (uniqueValues.length < 20 && isNaN(uniqueValues[0])) {
-
+    if (uniqueValues.length < 20 && typeof uniqueValues[0] !== "number") {
       const wrapper = document.createElement("div");
 
       const label = document.createElement("label");
@@ -58,6 +56,7 @@ function buildFilters(data) {
       select.multiple = true;
       select.dataset.key = key;
 
+      // ALL option
       const allOption = document.createElement("option");
       allOption.value = "__ALL__";
       allOption.innerText = "ALL";
@@ -76,10 +75,9 @@ function buildFilters(data) {
       wrapper.appendChild(select);
 
       filterDiv.appendChild(wrapper);
-
     }
-
   });
+}
 
 function applyFilters() {
   const selects = document.querySelectorAll("#filters select");
@@ -110,9 +108,7 @@ function buildDashboard(data) {
   document.querySelector(".charts-grid").innerHTML = "";
 
   keys.forEach(key => {
-    let values = data
-  .map(row => Number(row[key]))
-  .filter(v => !isNaN(v));
+    let values = data.map(row => row[key]).filter(v => typeof v === "number");
 
     const limit = parseInt(document.getElementById("limitInput").value);
 
