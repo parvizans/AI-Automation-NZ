@@ -16,9 +16,7 @@ let globalData = [];
 ========================= */
 document.getElementById("fileInput").addEventListener("change", handleFile);
 
-document.getElementById("limitInput").addEventListener("input", () => {
-  applyFilters();
-});
+
 
 function handleFile(event) {
   const file = event.target.files[0];
@@ -110,11 +108,7 @@ function buildDashboard(data) {
   keys.forEach(key => {
     let values = data.map(row => row[key]).filter(v => typeof v === "number");
 
-    const limit = parseInt(document.getElementById("limitInput").value);
-
-    if (!isNaN(limit) && limit > 0) {
-      values = values.slice(-limit);
-    }
+   
 
     if (
       values.length > 0 &&
