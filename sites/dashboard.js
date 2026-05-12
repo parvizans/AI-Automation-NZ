@@ -196,7 +196,7 @@ function buildDashboard(data){
 
       createKPI(key, values);
 
-      createChart(key, values);
+     createChart(key, values, data);
 
     }
 
@@ -257,12 +257,33 @@ if(
    CHART ENGINE
 ========================= */
 
-function createChart(name, values){
+function createChart(name, values, data){
 
   const container =
     document.createElement("div");
 
   container.className = "chart-box";
+
+  // =========================
+  // CHART TYPE SELECTOR
+  // =========================
+
+  const selector =
+    document.createElement("select");
+
+  selector.innerHTML = `
+    <option value="line">line</option>
+    <option value="bar">bar</option>
+    <option value="pie">pie</option>
+    <option value="doughnut">doughnut</option>
+    <option value="radar">radar</option>
+  `;
+
+  container.appendChild(selector);
+
+  // =========================
+  // CANVAS
+  // =========================
 
   const canvas =
     document.createElement("canvas");
@@ -273,80 +294,156 @@ function createChart(name, values){
     .querySelector(".charts-grid")
     .appendChild(container);
 
-  const selector =
-  document.createElement("select");
+  // =========================
+  // LABELS
+  // =========================
 
-  selector.innerHTML = `
-  <option value="line">line</option>
-  <option value="bar">bar</option>
-  <option value="pie">pie</option>
-  <option value="doughnut">doughnut</option>
-  <option value="radar">radar</option>
-`;
+  const labels =
+    data
+      .slice(-values.length)
+      .map((row,i)=>{
 
-  container.prepend(selector);
-  
-  new Chart(canvas,{
+        const firstKey =
+          Object.keys(row)[0];
 
-    type:selector.value,
+        return row[firstKey] || `Row ${i+1}`;
 
-    data:{
+      });
 
-     labels:
-     data
-    .slice(-values.length)
-    .map((row,i)=>{
+  // =========================
+  // CREATE CHART
+  // =========================
 
-      const firstKey =
-        Object.keys(row)[0];
+  let chart =
+    new Chart(canvas,{
 
-      return row[firstKey] || `Row ${i+1}`;
+      type: selector.value,
 
-    }),
+      data:{
 
-      datasets:[{
+        labels: labels,
 
-        label:name,
+        datasets:[{
 
-        data:values,
+          label:name,
 
-        backgroundColor:
-          colors[
-            chartIndex % colors.length
-          ] + "66",
+          data:values,
 
-        borderColor:
-          colors[
-            chartIndex % colors.length
-          ],
+          backgroundColor:
+            colors[
+              chartIndex % colors.length
+            ] + "66",
 
-        borderWidth:2
+          borderColor:
+            colors[
+              chartIndex % colors.length
+            ],
 
-      }]
-    },
+          borderWidth:2,
 
-    options:{
-      responsive:true,
-      plugins:{
-        legend:{
-          labels:{
-            color:"white"
-          }
-        }
+          tension:0.3,
+
+          fill:false
+
+        }]
       },
-      scales:{
-        x:{
-          ticks:{
-            color:"white"
+
+      options:{
+
+        responsive:true,
+
+        plugins:{
+          legend:{
+            labels:{
+              color:"white"
+            }
           }
         },
-        y:{
-          ticks:{
-            color:"white"
+
+        scales:{
+          x:{
+            ticks:{
+              color:"white"
+            }
+          },
+          y:{
+            ticks:{
+              color:"white"
+            }
           }
         }
       }
-    }
+
+    });
+
+  // =========================
+  // CHART SWITCHER
+  // =========================
+
+  selector.addEventListener("change",()=>{
+
+    chart.destroy();
+
+    chart =
+      new Chart(canvas,{
+
+        type: selector.value,
+
+        data:{
+          labels: labels,
+
+          datasets:[{
+
+            label:name,
+
+            data:values,
+
+            backgroundColor:
+              colors[
+                chartIndex % colors.length
+              ] + "66",
+
+            borderColor:
+              colors[
+                chartIndex % colors.length
+              ],
+
+            borderWidth:2,
+
+            tension:0.3,
+
+            fill:false
+
+          }]
+        },
+
+        options:{
+
+          responsive:true,
+
+          plugins:{
+            legend:{
+              labels:{
+                color:"white"
+              }
+            }
+          },
+
+          scales:{
+            x:{
+              ticks:{
+                color:"white"
+              }
+            },
+            y:{
+              ticks:{
+                color:"white"
+              }
+            }
+          }
+        }
+
+      });
 
   });
 
@@ -354,22 +451,6 @@ function createChart(name, values){
 
 }
 
-selector.addEventListener("change",()=>{
-
-  chart.destroy();
-
-  chart =
-    new Chart(canvas,{
-
-      type:selector.value,
-
-      data:chart.data,
-
-      options:chart.options
-
-    });
-
-});
 
 /* =========================
    RAC ENGINE
