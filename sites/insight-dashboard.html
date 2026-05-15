@@ -51,6 +51,7 @@ body{
   color:white;
 
   padding:20px;
+  padding-left:260px;
 
   min-height:100vh;
 
@@ -103,6 +104,110 @@ TOP RIBBON
 }
 
 /* =========================================
+SIDEBAR
+========================================= */
+
+.sidebar{
+
+  position:fixed;
+
+  top:100px;
+  left:20px;
+
+  width:220px;
+
+  background:
+    rgba(15,25,45,0.92);
+
+  border-radius:20px;
+
+  padding:20px;
+
+  z-index:999;
+
+  border:
+    1px solid rgba(255,255,255,0.06);
+
+  box-shadow:
+    0 12px 30px rgba(0,0,0,0.45);
+}
+
+.sidebar h2{
+
+  margin-bottom:20px;
+
+  color:#32d296;
+
+  font-size:24px;
+}
+
+.side-group{
+  margin-bottom:18px;
+}
+
+.side-group label{
+
+  display:block;
+
+  margin-bottom:8px;
+
+  color:#cbd5e1;
+
+  font-size:13px;
+
+  text-transform:uppercase;
+}
+
+.side-group select,
+.side-group input{
+
+  width:100%;
+
+  background:#2a355f;
+
+  color:white;
+
+  border:none;
+
+  padding:10px;
+
+  border-radius:10px;
+
+  outline:none;
+}
+
+.export-btn{
+
+  width:100%;
+
+  padding:12px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #32d296,
+      #2563eb
+    );
+
+  color:white;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+  transition:0.3s;
+}
+
+.export-btn:hover{
+
+  transform:translateY(-2px);
+}
+
+/* =========================================
 HERO PANEL
 ========================================= */
 
@@ -132,13 +237,9 @@ HERO PANEL
     0 0 40px rgba(0,194,255,0.12);
 }
 
-/* =========================================
-TITLE
-========================================= */
-
 .hero-panel h1{
 
-  font-size:58px;
+  font-size:46px;
 
   margin-bottom:15px;
 
@@ -203,9 +304,9 @@ FILTERS
 
   flex-wrap:wrap;
 
-  gap:14px;
+  gap:12px;
 
-  margin-bottom:30px;
+  margin-bottom:25px;
 }
 
 .filters-grid div{
@@ -213,11 +314,11 @@ FILTERS
   background:
     rgba(28,37,65,0.95);
 
-  padding:12px;
+  padding:10px;
 
   border-radius:14px;
 
-  min-width:160px;
+  min-width:130px;
 
   border:
     1px solid rgba(255,255,255,0.05);
@@ -228,26 +329,19 @@ FILTERS
   transition:0.3s;
 }
 
-.filters-grid div:hover{
-
-  transform:translateY(-2px);
-}
-
 .filters-grid label{
 
   display:block;
 
-  margin-bottom:8px;
+  margin-bottom:6px;
 
-  font-size:13px;
+  font-size:11px;
 
   font-weight:bold;
 
   color:#d1d5db;
 
   text-transform:uppercase;
-
-  letter-spacing:1px;
 }
 
 .filters-grid select{
@@ -258,11 +352,9 @@ FILTERS
 
   color:white;
 
-  font-weight:bold;
-
   border:none;
 
-  padding:10px;
+  padding:8px;
 
   border-radius:8px;
 
@@ -278,11 +370,11 @@ KPI GRID
   display:grid;
 
   grid-template-columns:
-    repeat(auto-fit,minmax(220px,1fr));
+    repeat(auto-fit,minmax(160px,1fr));
 
-  gap:18px;
+  gap:12px;
 
-  margin-bottom:30px;
+  margin-bottom:22px;
 }
 
 .kpi-card{
@@ -294,7 +386,7 @@ KPI GRID
       rgba(18,25,45,0.96)
     );
 
-  padding:24px;
+  padding:14px;
 
   border-radius:18px;
 
@@ -316,25 +408,22 @@ KPI GRID
 
 .kpi-card h3{
 
-  font-size:15px;
+  font-size:12px;
 
   color:#d1d5db;
 
-  margin-bottom:12px;
+  margin-bottom:10px;
 
   text-transform:uppercase;
 }
 
 .kpi-card p{
 
-  font-size:32px;
+  font-size:22px;
 
   font-weight:bold;
 
   color:#32d296;
-
-  text-shadow:
-    0 0 14px rgba(50,210,150,0.3);
 }
 
 /* =========================================
@@ -346,9 +435,9 @@ CHART GRID
   display:grid;
 
   grid-template-columns:
-    repeat(auto-fit,minmax(420px,1fr));
+    repeat(auto-fit,minmax(340px,1fr));
 
-  gap:22px;
+  gap:16px;
 }
 
 /* =========================================
@@ -368,7 +457,7 @@ CHART BOX
       rgba(18,25,45,0.96)
     );
 
-  padding:20px;
+  padding:16px;
 
   border-radius:20px;
 
@@ -378,15 +467,14 @@ CHART BOX
   box-shadow:
     0 12px 35px rgba(0,0,0,0.4);
 
+  min-height:360px;
+
   transition:0.3s;
 }
 
 .chart-box:hover{
 
   transform:translateY(-4px);
-
-  box-shadow:
-    0 18px 45px rgba(0,0,0,0.5);
 }
 
 .chart-box::before{
@@ -410,10 +498,6 @@ CHART BOX
     );
 }
 
-/* =========================================
-CHART SELECT
-========================================= */
-
 .chart-box select{
 
   background:#2a355f;
@@ -426,24 +510,18 @@ CHART SELECT
 
   border-radius:8px;
 
-  margin-bottom:15px;
+  margin-bottom:10px;
 
   outline:none;
 
   cursor:pointer;
 }
 
-/* =========================================
-CANVAS
-========================================= */
-
 .chart-box canvas{
-  width:100% !important;
-  height:420px !important;
-}
 
-.chart-box{
-  min-height:520px;
+  width:100% !important;
+
+  height:280px !important;
 }
 
 /* =========================================
@@ -452,7 +530,7 @@ RAC ENGINE
 
 #rac-results{
 
-  margin-top:35px;
+  margin-top:30px;
 }
 
 .rac-card{
@@ -503,20 +581,20 @@ MOBILE
 
 @media(max-width:768px){
 
+  body{
+    padding-left:20px;
+  }
+
+  .sidebar{
+    display:none;
+  }
+
   .hero-panel h1{
-    font-size:34px;
+    font-size:32px;
   }
 
   .charts-grid{
     grid-template-columns:1fr;
-  }
-
-  .filters-grid{
-    flex-direction:column;
-  }
-
-  .filters-grid div{
-    width:100%;
   }
 
 }
