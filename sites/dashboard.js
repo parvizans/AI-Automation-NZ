@@ -208,34 +208,122 @@ function buildDashboard(data){
 
 }
 
-/* =========================
-   KPI
-========================= */
+     /*=======================
+     KPI
+     ========================= */
 
-function createKPI(name, values){
+function detectKPIType(name){
 
-  let result = 0;
+  const kpi = name.toLowerCase();
 
-if(
-  name.toLowerCase().includes("rate") ||
-  name.toLowerCase().includes("rsrp") ||
-  name.toLowerCase().includes("sinr") ||
-  name.toLowerCase().includes("margin")
-){
+  // =========================
+  // PERCENTAGE KPIs
+  // =========================
+  if(
+    kpi.includes("rate") ||
+    kpi.includes("success") ||
+    kpi.includes("availability") ||
+    kpi.includes("retain") ||
+    kpi.includes("drop") ||
+    kpi.includes("access") ||
+    kpi.includes("cssr") ||
+    kpi.includes("sr")
+  ){
+    return "percentage";
+  }
 
-  result =
-    (
+  // =========================
+  // RADIO KPIs
+  // =========================
+  if(
+    kpi.includes("rsrp") ||
+    kpi.includes("rsrq") ||
+    kpi.includes("sinr") ||
+    kpi.includes("cqi") ||
+    kpi.includes("ta")
+  ){
+    return "radio";
+  }
+
+  // =========================
+  // COUNTERS / TRAFFIC
+  // =========================
+  if(
+    kpi.includes("traffic") ||
+    kpi.includes("volume") ||
+    kpi.includes("throughput") ||
+    kpi.includes("users") ||
+    kpi.includes("attempt") ||
+    kpi.includes("paging")
+  ){
+    return "counter";
+  }
+
+  return "generic";
+}
+
+function calculateKPIValue(type, values){
+
+  // REMOVE INVALID VALUES
+  values = values.filter(v =>
+    typeof v === "number" &&
+    !isNaN(v)
+  );
+
+  if(values.length === 0) return 0;
+
+  // =========================
+  // PERCENTAGE KPIs
+  // =========================
+  if(type === "percentage"){
+
+    return (
       values.reduce((a,b)=>a+b,0)
       / values.length
     ).toFixed(2);
 
-}else{
+  }
 
-  result =
+  // =========================
+  // RADIO KPIs
+  // =========================
+  if(type === "radio"){
+
+    return (
+      values.reduce((a,b)=>a+b,0)
+      / values.length
+    ).toFixed(2);
+
+  }
+
+  // =========================
+  // COUNTERS
+  // =========================
+  if(type === "counter"){
+
+    return values
+      .reduce((a,b)=>a+b,0)
+      .toLocaleString();
+
+  }
+
+  // =========================
+  // GENERIC
+  // =========================
+  return (
     values.reduce((a,b)=>a+b,0)
-    .toLocaleString();
+    / values.length
+  ).toFixed(2);
 
 }
+
+function createKPI(name, values){
+
+  const type =
+    detectKPIType(name);
+
+  const result =
+    calculateKPIValue(type, values);
 
   const card =
     document.createElement("div");
@@ -253,11 +341,10 @@ if(
 
 }
 
-/* =========================
-   CHART ENGINE
-========================= */
-
 function createChart(name, values, data){
+
+  const type =
+    detectKPIType(name);
 
   const container =
     document.createElement("div");
@@ -265,7 +352,7 @@ function createChart(name, values, data){
   container.className = "chart-box";
 
   // =========================
-  // CHART TYPE SELECTOR
+  // CHART SELECTOR
   // =========================
 
   const selector =
@@ -274,9 +361,9 @@ function createChart(name, values, data){
   selector.innerHTML = `
     <option value="line">line</option>
     <option value="bar">bar</option>
-    <option value="pie">pie</option>
-    <option value="doughnut">doughnut</option>
     <option value="radar">radar</option>
+    <option value="doughnut">doughnut</option>
+    <option value="scatter">scatter</option>
   `;
 
   container.appendChild(selector);
@@ -305,22 +392,50 @@ function createChart(name, values, data){
 
         const keys = Object.keys(row);
 
-  const xKey =
-    keys.find(k =>
-    k.toLowerCase().includes("date") ||
-    k.toLowerCase().includes("time") ||
-    k.toLowerCase().includes("month")
-  )
-  ||
-  keys.find(k =>
-    typeof row[k] === "string"
-  )
-  ||
-  keys[0];
+        const xKey =
+          keys.find(k =>
+            k.toLowerCase().includes("date")
+          )
+          ||
+          keys.find(k =>
+            k.toLowerCase().includes("time")
+          )
+          ||
+          keys.find(k =>
+            k.toLowerCase().includes("month")
+          )
+          ||
+          keys[0];
 
-return row[xKey] || `Row ${i+1}`;
+        return row[xKey] || `Row ${i+1}`;
 
       });
+
+  // =========================
+  // AUTO Y AXIS
+  // =========================
+
+  let yAxis = {};
+
+  // TELECOM PERCENTAGE KPIs
+  if(type === "percentage"){
+
+    yAxis = {
+      min: 0,
+      max: 100
+    };
+
+  }
+
+  // RADIO KPIs
+  else if(type === "radio"){
+
+    yAxis = {
+      suggestedMin: Math.min(...values) - 5,
+      suggestedMax: Math.max(...values) + 5
+    };
+
+  }
 
   // =========================
   // CREATE CHART
@@ -344,16 +459,18 @@ return row[xKey] || `Row ${i+1}`;
           backgroundColor:
             colors[
               chartIndex % colors.length
-            ] + "66",
+            ] + "55",
 
           borderColor:
             colors[
               chartIndex % colors.length
             ],
 
-          borderWidth:2,
+          borderWidth:3,
 
-          tension:0.3,
+          tension:0.4,
+
+          pointRadius:3,
 
           fill:false
 
@@ -364,6 +481,8 @@ return row[xKey] || `Row ${i+1}`;
 
         responsive:true,
 
+        maintainAspectRatio:false,
+
         plugins:{
           legend:{
             labels:{
@@ -373,17 +492,23 @@ return row[xKey] || `Row ${i+1}`;
         },
 
         scales:{
+
           x:{
             ticks:{
               color:"white"
             }
           },
+
           y:{
             ticks:{
               color:"white"
-            }
+            },
+
+            ...yAxis
           }
+
         }
+
       }
 
     });
@@ -396,66 +521,7 @@ return row[xKey] || `Row ${i+1}`;
 
     chart.destroy();
 
-    chart =
-      new Chart(canvas,{
-
-        type: selector.value,
-
-        data:{
-          labels: labels,
-
-          datasets:[{
-
-            label:name,
-
-            data:values,
-
-            backgroundColor:
-              colors[
-                chartIndex % colors.length
-              ] + "66",
-
-            borderColor:
-              colors[
-                chartIndex % colors.length
-              ],
-
-            borderWidth:2,
-
-            tension:0.3,
-
-            fill:false
-
-          }]
-        },
-
-        options:{
-
-          responsive:true,
-
-          plugins:{
-            legend:{
-              labels:{
-                color:"white"
-              }
-            }
-          },
-
-          scales:{
-            x:{
-              ticks:{
-                color:"white"
-              }
-            },
-            y:{
-              ticks:{
-                color:"white"
-              }
-            }
-          }
-        }
-
-      });
+    createChart(name, values, data);
 
   });
 
