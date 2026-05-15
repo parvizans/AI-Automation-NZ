@@ -597,7 +597,7 @@ function createChart(name, values, data){
 
   chartIndex++;
 
-}
+
 
 
 /* =========================
