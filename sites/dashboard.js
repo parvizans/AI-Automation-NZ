@@ -599,11 +599,11 @@ let chart =
 chart =
     new Chart(freshCtx, chartConfig);
 
-});
+}); // END selector change
 
-  chartIndex++;
+chartIndex++;
 
-}
+} // END createChart
 
 
 /* =========================
