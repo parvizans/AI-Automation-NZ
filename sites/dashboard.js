@@ -556,57 +556,43 @@ function createChart(name, values, data){
 
   };
 
-  // =========================
+    // =========================
   // INITIAL CHART
   // =========================
 
-container.appendChild(selector);
-
-const canvas =
-    document.createElement("canvas");
-
-container.appendChild(canvas);
-
-let chart =
+  let chart =
     new Chart(canvas, chartConfig);
+
   // =========================
   // CHART TYPE SWITCHER
   // =========================
 
   selector.addEventListener("change",()=>{
 
-  // DESTROY OLD CHART
-  if(chart){
-    chart.destroy();
-  }
+    if(chart){
+      chart.destroy();
+    }
 
-  // REMOVE OLD CANVAS
-  container.querySelector("canvas").remove();
+    container.querySelector("canvas").remove();
 
-  // CREATE CLEAN NEW CANVAS
-  const freshCanvas =
-    document.createElement("canvas");
+    const freshCanvas =
+      document.createElement("canvas");
 
-  // RESET HEIGHT
-  freshCanvas.height = 320;
+    freshCanvas.height = 320;
 
-  container.appendChild(freshCanvas);
+    container.appendChild(freshCanvas);
 
-  // UPDATE TYPE
-  chartConfig.type =
-    selector.value;
+    chartConfig.type =
+      selector.value;
 
-  // RECREATE CHART
-    
-  chart =
-    new Chart(freshCanvas, chartConfig);
+    chart =
+      new Chart(freshCanvas, chartConfig);
 
-    
-}); // END selector change
+  });
 
-chartIndex++;
+  chartIndex++;
 
- // END createChart
+} // END createChart
 
 
 /* =========================
