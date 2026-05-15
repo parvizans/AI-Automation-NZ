@@ -527,14 +527,21 @@ function createChart(name, values, data){
 
         x:{
           ticks:{
-            color:"white"
+            color:"#cbd5e1"
           }
+          grid:{
+  color:"rgba(255,255,255,0.04)"
+}
         },
 
         y:{
 
           ticks:{
-            color:"white"
+            color:"#cbd5e1"
+          }
+            grid:{
+  color:"rgba(255,255,255,0.04)"
+}
           },
 
           ...yAxis
