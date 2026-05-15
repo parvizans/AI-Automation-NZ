@@ -27,7 +27,7 @@ STYLE
 <style>
 
 /* =========================
-   GLOBAL RESET
+   RESET
 ========================= */
 
 *{
@@ -36,19 +36,14 @@ STYLE
   box-sizing:border-box;
 }
 
-html{
-  scroll-behavior:smooth;
-}
-
 body{
-  font-family: Arial, sans-serif;
-  background:#0b1220;
+  font-family:Arial,sans-serif;
+  background:
+    linear-gradient(rgba(5,10,25,0.82), rgba(5,10,25,0.9)),
+    url("../assets/Hero-4.jpg") center/cover no-repeat fixed;
+
   color:white;
   overflow-x:hidden;
-
-  background:
-    linear-gradient(rgba(11,18,32,0.88), rgba(11,18,32,0.92)),
-    url("../assets/Hero-4.jpg") center/cover no-repeat fixed;
 }
 
 /* =========================
@@ -66,27 +61,25 @@ body{
 
 .sidebar{
   width:260px;
-  background:#111827;
+  background:#0f172a;
   padding:20px;
-  border-right:1px solid rgba(255,255,255,0.06);
-
-  position:sticky;
+  position:fixed;
   top:0;
+  left:0;
   height:100vh;
-
   overflow-y:auto;
+  border-right:1px solid rgba(255,255,255,0.05);
+  z-index:100;
 }
 
 .sidebar h2{
-  font-size:22px;
   margin-bottom:25px;
   color:#60a5fa;
 }
 
 .sidebar label{
   display:block;
-  margin-top:15px;
-  margin-bottom:6px;
+  margin:15px 0 6px;
   font-size:13px;
   color:#cbd5e1;
 }
@@ -94,11 +87,16 @@ body{
 .sidebar select,
 .sidebar input{
   width:100%;
-  padding:10px;
+  padding:12px;
   border:none;
   border-radius:10px;
   background:#1e293b;
   color:white;
+}
+
+.export-btn{
+  margin-top:20px;
+  width:100%;
 }
 
 /* =========================
@@ -106,115 +104,161 @@ body{
 ========================= */
 
 .content{
-  flex:1;
-  padding:20px;
+  margin-left:260px;
+  width:calc(100% - 260px);
+  padding:25px;
 }
 
 /* =========================
-   KPI CARDS
+   HERO
 ========================= */
 
-.kpi-grid{
+.hero-panel{
+  margin-bottom:25px;
+}
+
+.hero-panel h1{
+  font-size:42px;
+  margin-bottom:20px;
+}
+
+.top-controls{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+.top-controls input{
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  background:#1e293b;
+  color:white;
+}
+
+/* =========================
+   FILTERS
+========================= */
+
+.filters-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  grid-template-columns:
+    repeat(auto-fit,minmax(180px,1fr));
+
   gap:15px;
   margin-bottom:25px;
 }
 
+.filters-grid select{
+  width:100%;
+  min-height:120px;
+  background:#111827;
+  color:white;
+  border:none;
+  border-radius:12px;
+  padding:10px;
+}
+
+/* =========================
+   KPI GRID
+========================= */
+
+.kpi-grid{
+  display:grid;
+
+  grid-template-columns:
+    repeat(auto-fit,minmax(180px,1fr));
+
+  gap:18px;
+
+  margin-bottom:30px;
+}
+
 .kpi-card{
   background:#111827;
-  padding:18px;
+  padding:20px;
   border-radius:18px;
-
   border:1px solid rgba(255,255,255,0.05);
 
-  transition:0.2s ease;
-  .chart-card:hover{
-   transform:translateY(-3px);
-}
+  transition:0.2s;
 }
 
 .kpi-card:hover{
-  transform:translateY(-2px);
+  transform:translateY(-3px);
 }
 
 .kpi-card h3{
   font-size:14px;
   color:#94a3b8;
-  margin-bottom:8px;
+  margin-bottom:10px;
 }
 
 .kpi-card p{
   font-size:28px;
-  font-weight:bold;
   color:#60a5fa;
+  font-weight:bold;
 }
 
 /* =========================
-   CHART GRID
+   CHARTS
 ========================= */
 
 .charts-grid{
   display:grid;
 
   grid-template-columns:
-    repeat(auto-fit,minmax(500px,1fr));
+    repeat(auto-fit,minmax(520px,1fr));
 
-  gap:20px;
+  gap:22px;
 }
 
-/* =========================
-   CHART CARD
-========================= */
-
-.chart-card{
+.chart-box{
   background:#111827;
-
-  border-radius:18px;
-
   padding:18px;
+  border-radius:18px;
 
   border:1px solid rgba(255,255,255,0.05);
 
   min-height:420px;
 
-  overflow:hidden;
+  transition:0.2s;
 }
 
-/* =========================
-   CHART TITLE
-========================= */
+.chart-box:hover{
+  transform:translateY(-3px);
+}
 
-.chart-title{
-  font-size:16px;
+.chart-box select{
   margin-bottom:15px;
-  color:#e2e8f0;
+
+  padding:8px 12px;
+
+  background:#1e293b;
+  color:white;
+  border:none;
+  border-radius:10px;
 }
 
-/* =========================
-   CANVAS
-========================= */
-
-.chart-card canvas{
+.chart-box canvas{
   width:100% !important;
   height:340px !important;
 }
 
 /* =========================
-   MAP
+   RCA
 ========================= */
 
-#map{
-  width:100%;
-  height:650px;
+#rac-results{
+  margin-top:35px;
+}
 
-  border-radius:20px;
+.rac-card{
+  background:#111827;
+  padding:20px;
+  border-radius:16px;
+  margin-bottom:15px;
 
-  overflow:hidden;
-
-  margin-top:25px;
-
-  border:1px solid rgba(255,255,255,0.05);
+  border-left:4px solid #3b82f6;
 }
 
 /* =========================
@@ -225,11 +269,9 @@ button{
   background:#2563eb;
   color:white;
   border:none;
-  padding:10px 18px;
+  padding:12px 18px;
   border-radius:10px;
   cursor:pointer;
-
-  transition:0.2s;
 }
 
 button:hover{
@@ -237,49 +279,26 @@ button:hover{
 }
 
 /* =========================
-   SCROLLBAR
-========================= */
-
-::-webkit-scrollbar{
-  width:8px;
-}
-
-::-webkit-scrollbar-track{
-  background:#0b1220;
-}
-
-::-webkit-scrollbar-thumb{
-  background:#334155;
-  border-radius:10px;
-}
-
-/* =========================
    MOBILE
 ========================= */
 
-@media(max-width:1000px){
-
-  .main-container{
-    flex-direction:column;
-  }
+@media(max-width:900px){
 
   .sidebar{
+    position:relative;
     width:100%;
     height:auto;
-    position:relative;
+  }
+
+  .content{
+    margin-left:0;
+    width:100%;
   }
 
   .charts-grid{
     grid-template-columns:1fr;
   }
 
-  .chart-card{
-    min-height:380px;
-  }
-
-  #map{
-    height:500px;
-  }
 }
 
 </style>
