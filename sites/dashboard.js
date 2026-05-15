@@ -510,6 +510,7 @@ function createChart(name, values, data){
       responsive:true,
 
       maintainAspectRatio:false,
+      resizeDelay:100,
 
       animation:false,
 
@@ -559,8 +560,10 @@ function createChart(name, values, data){
   // INITIAL CHART
   // =========================
 
-  let chart =
-    new Chart(canvas, chartConfig);
+  const ctx = canvas.getContext("2d");
+
+let chart =
+    new Chart(ctx, chartConfig);
 
   // =========================
   // CHART TYPE SWITCHER
@@ -590,8 +593,11 @@ function createChart(name, values, data){
     selector.value;
 
   // RECREATE CHART
-  chart =
-    new Chart(freshCanvas, chartConfig);
+  const freshCtx =
+    freshCanvas.getContext("2d");
+
+chart =
+    new Chart(freshCtx, chartConfig);
 
 });
 
