@@ -510,9 +510,8 @@ function createChart(name, values, data){
       responsive:true,
 
       maintainAspectRatio:false,
-      resizeDelay:100,
 
-      animation:false,
+      animation:true,
 
       plugins:{
 
@@ -527,26 +526,18 @@ function createChart(name, values, data){
       scales:{
 
         x:{
-  ticks:{
-    color:"#cbd5e1"
-  },
-
-  grid:{
-    color:"rgba(255,255,255,0.04)"
-  }
-},
+          ticks:{
+            color:"white"
+          }
+        },
 
         y:{
-  ticks:{
-    color:"#cbd5e1"
-  },
 
-  grid:{
-    color:"rgba(255,255,255,0.04)"
-  },
+          ticks:{
+            color:"white"
+          },
 
-  ...yAxis
-}
+          ...yAxis
 
         }
 
@@ -556,7 +547,7 @@ function createChart(name, values, data){
 
   };
 
-    // =========================
+  // =========================
   // INITIAL CHART
   // =========================
 
@@ -569,30 +560,36 @@ function createChart(name, values, data){
 
   selector.addEventListener("change",()=>{
 
-    if(chart){
-      chart.destroy();
-    }
+  // DESTROY OLD CHART
+  if(chart){
+    chart.destroy();
+  }
 
-    container.querySelector("canvas").remove();
+  // REMOVE OLD CANVAS
+  container.querySelector("canvas").remove();
 
-    const freshCanvas =
-      document.createElement("canvas");
+  // CREATE CLEAN NEW CANVAS
+  const freshCanvas =
+    document.createElement("canvas");
 
-    freshCanvas.height = 320;
+  // RESET HEIGHT
+  freshCanvas.height = 320;
 
-    container.appendChild(freshCanvas);
+  container.appendChild(freshCanvas);
 
-    chartConfig.type =
-      selector.value;
+  // UPDATE TYPE
+  chartConfig.type =
+    selector.value;
 
-    chart =
-      new Chart(freshCanvas, chartConfig);
+  // RECREATE CHART
+  chart =
+    new Chart(freshCanvas, chartConfig);
 
-  });
+});
 
   chartIndex++;
 
-} // END createChart
+}
 
 
 /* =========================
@@ -605,7 +602,7 @@ function runRAC(data){
 
   insights.push({
 
-    title:"🧠 RAC ENGINE",
+    title:"­ЪДа RAC ENGINE",
 
     cause:"Dashboard loaded successfully",
 
