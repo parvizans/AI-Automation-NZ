@@ -511,7 +511,7 @@ function createChart(name, values, data){
 
       maintainAspectRatio:false,
 
-      animation:true,
+      animation:false,
 
       plugins:{
 
