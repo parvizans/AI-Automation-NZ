@@ -560,22 +560,29 @@ function createChart(name, values, data){
 
   selector.addEventListener("change",()=>{
 
-    // DESTROY OLD CHART ONLY
+  // DESTROY OLD CHART
+  if(chart){
     chart.destroy();
+  }
 
-    // UPDATE TYPE
-    chartConfig.type =
-      selector.value;
+  // CLEAR CANVAS COMPLETELY
+  canvas.remove();
 
-    // RECREATE SAME CHART
-    chart =
-      new Chart(canvas, chartConfig);
+  // CREATE FRESH CANVAS
+  const newCanvas =
+    document.createElement("canvas");
 
-  });
+  container.appendChild(newCanvas);
 
-  chartIndex++;
+  // UPDATE CONFIG
+  chartConfig.type =
+    selector.value;
 
-}
+  // CREATE BRAND NEW CHART
+  chart =
+    new Chart(newCanvas, chartConfig);
+
+});
 
 
 /* =========================
