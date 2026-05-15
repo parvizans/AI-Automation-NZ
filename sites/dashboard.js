@@ -27,9 +27,12 @@ function handleFile(event){
 
   const file = event.target.files[0];
 
+  if(!file) return;
+
   Papa.parse(file,{
     header:true,
     dynamicTyping:true,
+    skipEmptyLines:true,
 
     complete:function(results){
 
@@ -44,6 +47,7 @@ function handleFile(event){
 
     }
   });
+
 }
 
 /* =========================
@@ -56,6 +60,8 @@ function buildFilters(data){
     document.getElementById("filters");
 
   filterDiv.innerHTML = "";
+
+  if(!data || data.length === 0) return;
 
   const keys = Object.keys(data[0]);
 
@@ -84,7 +90,7 @@ function buildFilters(data){
 
       select.dataset.key = key;
 
-      // ALL
+      // ALL OPTION
       const allOption =
         document.createElement("option");
 
@@ -152,6 +158,7 @@ function applyFilters(){
             String(row[key])
           )
       );
+
     }
 
   });
@@ -167,6 +174,8 @@ function applyFilters(){
 function buildDashboard(data){
 
   if(!data || data.length === 0) return;
+
+  chartIndex = 0;
 
   document.querySelector(".kpi-grid").innerHTML = "";
 
@@ -196,29 +205,29 @@ function buildDashboard(data){
 
       createKPI(key, values);
 
-     createChart(key, values, data);
+      createChart(key, values, data);
 
     }
 
   });
 
-  const insights = runRAC(data);
+  const insights =
+    runRAC(data);
 
   showRAC(insights);
 
 }
 
-     /*=======================
-     KPI
-     ========================= */
+/* =========================
+   KPI ENGINE
+========================= */
 
 function detectKPIType(name){
 
-  const kpi = name.toLowerCase();
+  const kpi =
+    name.toLowerCase();
 
-  // =========================
   // PERCENTAGE KPIs
-  // =========================
   if(
     kpi.includes("rate") ||
     kpi.includes("success") ||
@@ -232,9 +241,7 @@ function detectKPIType(name){
     return "percentage";
   }
 
-  // =========================
   // RADIO KPIs
-  // =========================
   if(
     kpi.includes("rsrp") ||
     kpi.includes("rsrq") ||
@@ -245,9 +252,7 @@ function detectKPIType(name){
     return "radio";
   }
 
-  // =========================
-  // COUNTERS / TRAFFIC
-  // =========================
+  // COUNTER KPIs
   if(
     kpi.includes("traffic") ||
     kpi.includes("volume") ||
@@ -260,45 +265,19 @@ function detectKPIType(name){
   }
 
   return "generic";
+
 }
 
 function calculateKPIValue(type, values){
 
-  // REMOVE INVALID VALUES
-  values = values.filter(v =>
-    typeof v === "number" &&
-    !isNaN(v)
-  );
+  values =
+    values.filter(v =>
+      typeof v === "number" &&
+      !isNaN(v)
+    );
 
   if(values.length === 0) return 0;
 
-  // =========================
-  // PERCENTAGE KPIs
-  // =========================
-  if(type === "percentage"){
-
-    return (
-      values.reduce((a,b)=>a+b,0)
-      / values.length
-    ).toFixed(2);
-
-  }
-
-  // =========================
-  // RADIO KPIs
-  // =========================
-  if(type === "radio"){
-
-    return (
-      values.reduce((a,b)=>a+b,0)
-      / values.length
-    ).toFixed(2);
-
-  }
-
-  // =========================
-  // COUNTERS
-  // =========================
   if(type === "counter"){
 
     return values
@@ -307,9 +286,6 @@ function calculateKPIValue(type, values){
 
   }
 
-  // =========================
-  // GENERIC
-  // =========================
   return (
     values.reduce((a,b)=>a+b,0)
     / values.length
@@ -328,7 +304,8 @@ function createKPI(name, values){
   const card =
     document.createElement("div");
 
-  card.className = "kpi-card";
+  card.className =
+    "kpi-card";
 
   card.innerHTML = `
     <h3>${name}</h3>
@@ -350,20 +327,29 @@ function createChart(name, values, data){
   const type =
     detectKPIType(name);
 
-  // =========================
-  // CREATE CONTAINER
-  // =========================
-
+  // CONTAINER
   const container =
     document.createElement("div");
 
-  container.className = "chart-box";
-  container.style.height = "420px";
+  container.className =
+    "chart-box";
 
-  // =========================
-  // CREATE SELECTOR
-  // =========================
+  container.style.height =
+    "420px";
 
+  container.style.padding =
+    "15px";
+
+  container.style.background =
+    "rgba(10,15,35,0.92)";
+
+  container.style.border =
+    "1px solid rgba(255,255,255,0.08)";
+
+  container.style.borderRadius =
+    "18px";
+
+  // SELECTOR
   const selector =
     document.createElement("select");
 
@@ -377,24 +363,18 @@ function createChart(name, values, data){
 
   container.appendChild(selector);
 
-  // =========================
-  // CREATE CANVAS
-  // =========================
-
+  // CANVAS
   const canvas =
     document.createElement("canvas");
 
   container.appendChild(canvas);
 
-  // APPEND ONLY ONCE
+  // APPEND
   document
     .querySelector(".charts-grid")
     .appendChild(container);
 
-  // =========================
-  // LABEL ENGINE
-  // =========================
-
+  // LABELS
   const labels =
     data
       .slice(-values.length)
@@ -435,23 +415,18 @@ function createChart(name, values, data){
 
       });
 
-  // =========================
-  // AXIS LOGIC
-  // =========================
-
+  // Y AXIS
   let yAxis = {};
 
-  // PERCENTAGE KPI
   if(type === "percentage"){
 
     yAxis = {
-      min: 0,
-      max: 100
+      min:0,
+      max:100
     };
 
   }
 
-  // RADIO KPI
   else if(type === "radio"){
 
     yAxis = {
@@ -466,10 +441,7 @@ function createChart(name, values, data){
 
   }
 
-  // =========================
   // CHART CONFIG
-  // =========================
-
   const chartConfig = {
 
     type: selector.value,
@@ -487,7 +459,7 @@ function createChart(name, values, data){
         backgroundColor:
           colors[
             chartIndex % colors.length
-          ] + "55",
+          ] + "33",
 
         borderColor:
           colors[
@@ -496,13 +468,16 @@ function createChart(name, values, data){
 
         borderWidth:3,
 
-        tension:0.4,
+        tension:0.35,
 
-        pointRadius:2,
+        pointRadius:3,
+
+        pointHoverRadius:6,
 
         fill:false
 
       }]
+
     },
 
     options:{
@@ -513,11 +488,16 @@ function createChart(name, values, data){
 
       animation:true,
 
+      interaction:{
+        mode:"index",
+        intersect:false
+      },
+
       plugins:{
 
         legend:{
           labels:{
-            color:"white"
+            color:"#e2e8f0"
           }
         }
 
@@ -526,15 +506,25 @@ function createChart(name, values, data){
       scales:{
 
         x:{
+
           ticks:{
-            color:"white"
+            color:"#cbd5e1"
+          },
+
+          grid:{
+            color:"rgba(255,255,255,0.05)"
           }
+
         },
 
         y:{
 
           ticks:{
-            color:"white"
+            color:"#cbd5e1"
+          },
+
+          grid:{
+            color:"rgba(255,255,255,0.05)"
           },
 
           ...yAxis
@@ -547,50 +537,46 @@ function createChart(name, values, data){
 
   };
 
-  // =========================
   // INITIAL CHART
-  // =========================
-
   let chart =
-    new Chart(canvas, chartConfig);
+    new Chart(
+      canvas.getContext("2d"),
+      chartConfig
+    );
 
-  // =========================
-  // CHART TYPE SWITCHER
-  // =========================
-
+  // CHART SWITCHER
   selector.addEventListener("change",()=>{
 
-  // DESTROY OLD CHART
-  if(chart){
-    chart.destroy();
-  }
+    if(chart){
+      chart.destroy();
+    }
 
-  // REMOVE OLD CANVAS
-  container.querySelector("canvas").remove();
+    container
+      .querySelector("canvas")
+      .remove();
 
-  // CREATE CLEAN NEW CANVAS
-  const freshCanvas =
-    document.createElement("canvas");
+    const freshCanvas =
+      document.createElement("canvas");
 
-  // RESET HEIGHT
-  freshCanvas.height = 320;
+    freshCanvas.style.height =
+      "320px";
 
-  container.appendChild(freshCanvas);
+    container.appendChild(freshCanvas);
 
-  // UPDATE TYPE
-  chartConfig.type =
-    selector.value;
+    chartConfig.type =
+      selector.value;
 
-  // RECREATE CHART
-  chart =
-    new Chart(freshCanvas, chartConfig);
+    chart =
+      new Chart(
+        freshCanvas.getContext("2d"),
+        chartConfig
+      );
 
-});
+  });
 
   chartIndex++;
 
 }
-
 
 /* =========================
    RAC ENGINE
@@ -602,7 +588,7 @@ function runRAC(data){
 
   insights.push({
 
-    title:"­ЪДа RAC ENGINE",
+    title:"🧠 RAC ENGINE",
 
     cause:"Dashboard loaded successfully",
 
@@ -618,6 +604,8 @@ function showRAC(insights){
 
   const container =
     document.getElementById("rac-results");
+
+  if(!container) return;
 
   container.innerHTML = "";
 
