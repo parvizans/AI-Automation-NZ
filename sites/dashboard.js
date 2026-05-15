@@ -358,6 +358,7 @@ function createChart(name, values, data){
     document.createElement("div");
 
   container.className = "chart-box";
+  container.style.height = "420px";
 
   // =========================
   // CREATE SELECTOR
