@@ -560,6 +560,8 @@ function createChart(name, values, data){
   // INITIAL CHART
   // =========================
 
+container.appendChild(selector);
+
 const canvas =
     document.createElement("canvas");
 
