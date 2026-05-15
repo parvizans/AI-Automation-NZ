@@ -560,13 +560,13 @@ function createChart(name, values, data){
   // INITIAL CHART
   // =========================
 
-document.createElement("canvas");
+const canvas =
+    document.createElement("canvas");
 
 container.appendChild(canvas);
 
 let chart =
     new Chart(canvas, chartConfig);
-
   // =========================
   // CHART TYPE SWITCHER
   // =========================
