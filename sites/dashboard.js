@@ -603,7 +603,7 @@ chart =
 
 chartIndex++;
 
-} // END createChart
+ // END createChart
 
 
 /* =========================
