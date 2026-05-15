@@ -562,7 +562,6 @@ function createChart(name, values, data){
 
   let chart =
     new Chart(canvas, chartConfig);
-
   // =========================
   // CHART TYPE SWITCHER
   // =========================
