@@ -370,7 +370,6 @@ function createChart(name, values, data){
   selector.innerHTML = `
     <option value="line">line</option>
     <option value="bar">bar</option>
-    <option value="radar">radar</option>
     <option value="doughnut">doughnut</option>
     <option value="pie">pie</option>
     <option value="scatter">scatter</option>
