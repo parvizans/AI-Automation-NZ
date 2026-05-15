@@ -560,10 +560,8 @@ function createChart(name, values, data){
   // INITIAL CHART
   // =========================
 
-  const ctx = canvas.getContext("2d");
-
-let chart =
-    new Chart(ctx, chartConfig);
+  let chart =
+    new Chart(canvas, chartConfig);
 
   // =========================
   // CHART TYPE SWITCHER
@@ -593,12 +591,11 @@ let chart =
     selector.value;
 
   // RECREATE CHART
-  const freshCtx =
-    freshCanvas.getContext("2d");
+    
+  chart =
+    new Chart(freshCanvas, chartConfig);
 
-chart =
-    new Chart(freshCtx, chartConfig);
-
+    
 }); // END selector change
 
 chartIndex++;
