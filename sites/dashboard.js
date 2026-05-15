@@ -565,22 +565,25 @@ function createChart(name, values, data){
     chart.destroy();
   }
 
-  // CLEAR CANVAS COMPLETELY
-  canvas.remove();
+  // REMOVE OLD CANVAS
+  container.querySelector("canvas").remove();
 
-  // CREATE FRESH CANVAS
-  const newCanvas =
+  // CREATE CLEAN NEW CANVAS
+  const freshCanvas =
     document.createElement("canvas");
 
-  container.appendChild(newCanvas);
+  // RESET HEIGHT
+  freshCanvas.height = 320;
 
-  // UPDATE CONFIG
+  container.appendChild(freshCanvas);
+
+  // UPDATE TYPE
   chartConfig.type =
     selector.value;
 
-  // CREATE BRAND NEW CHART
+  // RECREATE CHART
   chart =
-    new Chart(newCanvas, chartConfig);
+    new Chart(freshCanvas, chartConfig);
 
 });
 
