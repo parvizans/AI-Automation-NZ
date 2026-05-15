@@ -341,10 +341,18 @@ function createKPI(name, values){
 
 }
 
+/* =========================
+   CHART ENGINE
+========================= */
+
 function createChart(name, values, data){
 
   const type =
     detectKPIType(name);
+
+  // =========================
+  // CREATE CONTAINER
+  // =========================
 
   const container =
     document.createElement("div");
@@ -352,7 +360,7 @@ function createChart(name, values, data){
   container.className = "chart-box";
 
   // =========================
-  // CHART SELECTOR
+  // CREATE SELECTOR
   // =========================
 
   const selector =
@@ -363,13 +371,14 @@ function createChart(name, values, data){
     <option value="bar">bar</option>
     <option value="radar">radar</option>
     <option value="doughnut">doughnut</option>
+    <option value="pie">pie</option>
     <option value="scatter">scatter</option>
   `;
 
   container.appendChild(selector);
 
   // =========================
-  // CANVAS
+  // CREATE CANVAS
   // =========================
 
   const canvas =
@@ -377,34 +386,49 @@ function createChart(name, values, data){
 
   container.appendChild(canvas);
 
+  // APPEND ONLY ONCE
   document
     .querySelector(".charts-grid")
     .appendChild(container);
 
   // =========================
-  // LABELS
+  // LABEL ENGINE
   // =========================
 
   const labels =
     data
       .slice(-values.length)
-      .map((row,i)=>{
+      .map((row, i)=>{
 
-        const keys = Object.keys(row);
+        const keys =
+          Object.keys(row);
 
         const xKey =
+
           keys.find(k =>
             k.toLowerCase().includes("date")
           )
+
           ||
+
           keys.find(k =>
             k.toLowerCase().includes("time")
           )
+
           ||
+
           keys.find(k =>
             k.toLowerCase().includes("month")
           )
+
           ||
+
+          keys.find(k =>
+            typeof row[k] === "string"
+          )
+
+          ||
+
           keys[0];
 
         return row[xKey] || `Row ${i+1}`;
@@ -412,12 +436,12 @@ function createChart(name, values, data){
       });
 
   // =========================
-  // AUTO Y AXIS
+  // AXIS LOGIC
   // =========================
 
   let yAxis = {};
 
-  // TELECOM PERCENTAGE KPIs
+  // PERCENTAGE KPI
   if(type === "percentage"){
 
     yAxis = {
@@ -427,101 +451,125 @@ function createChart(name, values, data){
 
   }
 
-  // RADIO KPIs
+  // RADIO KPI
   else if(type === "radio"){
 
     yAxis = {
-      suggestedMin: Math.min(...values) - 5,
-      suggestedMax: Math.max(...values) + 5
+
+      suggestedMin:
+        Math.min(...values) - 5,
+
+      suggestedMax:
+        Math.max(...values) + 5
+
     };
 
   }
 
   // =========================
-  // CREATE CHART
+  // CHART CONFIG
   // =========================
 
-  let chart =
-    new Chart(canvas,{
+  const chartConfig = {
 
-      type: selector.value,
+    type: selector.value,
 
-      data:{
+    data:{
 
-        labels: labels,
+      labels: labels,
 
-        datasets:[{
+      datasets:[{
 
-          label:name,
+        label:name,
 
-          data:values,
+        data:values,
 
-          backgroundColor:
-            colors[
-              chartIndex % colors.length
-            ] + "55",
+        backgroundColor:
+          colors[
+            chartIndex % colors.length
+          ] + "55",
 
-          borderColor:
-            colors[
-              chartIndex % colors.length
-            ],
+        borderColor:
+          colors[
+            chartIndex % colors.length
+          ],
 
-          borderWidth:3,
+        borderWidth:3,
 
-          tension:0.4,
+        tension:0.4,
 
-          pointRadius:3,
+        pointRadius:2,
 
-          fill:false
+        fill:false
 
-        }]
+      }]
+    },
+
+    options:{
+
+      responsive:true,
+
+      maintainAspectRatio:false,
+
+      animation:true,
+
+      plugins:{
+
+        legend:{
+          labels:{
+            color:"white"
+          }
+        }
+
       },
 
-      options:{
+      scales:{
 
-        responsive:true,
-
-        maintainAspectRatio:false,
-
-        plugins:{
-          legend:{
-            labels:{
-              color:"white"
-            }
+        x:{
+          ticks:{
+            color:"white"
           }
         },
 
-        scales:{
+        y:{
 
-          x:{
-            ticks:{
-              color:"white"
-            }
+          ticks:{
+            color:"white"
           },
 
-          y:{
-            ticks:{
-              color:"white"
-            },
-
-            ...yAxis
-          }
+          ...yAxis
 
         }
 
       }
 
-    });
+    }
+
+  };
 
   // =========================
-  // CHART SWITCHER
+  // INITIAL CHART
+  // =========================
+
+  let chart =
+    new Chart(canvas, chartConfig);
+
+  // =========================
+  // CHART TYPE SWITCHER
   // =========================
 
   selector.addEventListener("change",()=>{
 
+    // DESTROY OLD CHART ONLY
     chart.destroy();
 
-    createChart(name, values, data);
+    // UPDATE TYPE
+    chartConfig.type =
+      selector.value;
+
+    // RECREATE SAME CHART
+    chart =
+      new Chart(canvas, chartConfig);
 
   });
 
