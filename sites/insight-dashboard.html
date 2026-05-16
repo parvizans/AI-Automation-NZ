@@ -4,11 +4,7 @@
 <head>
 
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>AutomationPark Dashboard</title>
 
@@ -17,14 +13,17 @@ LIBRARIES
 ===================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
 
-=====================================
+<!-- =====================================
 STYLE
-===================================== 
+===================================== -->
 
 <style>
+
+/* =========================
+RESET
+========================= */
 
 *{
   margin:0;
@@ -34,19 +33,18 @@ STYLE
 
 body{
 
-  font-family:
-    "Segoe UI",
-    sans-serif;
+  font-family:"Segoe UI",sans-serif;
 
   background:
     linear-gradient(
       rgba(2,6,23,0.92),
-      rgba(2,6,23,0.94)
+      rgba(2,6,23,0.95)
     ),
     url("assets/Hero-4.jpg");
 
   background-size:cover;
   background-position:center;
+  background-attachment:fixed;
 
   color:white;
 
@@ -56,21 +54,21 @@ body{
 }
 
 /* =========================
-   MAIN LAYOUT
+LAYOUT
 ========================= */
 
 .dashboard-layout{
-
   display:flex;
-
-  gap:20px;
-
+  gap:24px;
   padding:20px;
+}
 
+.main-content{
+  flex:1;
 }
 
 /* =========================
-   SIDEBAR
+SIDEBAR
 ========================= */
 
 .sidebar{
@@ -87,13 +85,12 @@ body{
 
   padding:22px;
 
-  backdrop-filter:blur(14px);
+  height:fit-content;
 
   position:sticky;
-
   top:20px;
 
-  height:fit-content;
+  backdrop-filter:blur(14px);
 
   box-shadow:
     0 0 30px rgba(0,0,0,0.45);
@@ -104,22 +101,17 @@ body{
 
   color:#60a5fa;
 
-  margin-bottom:24px;
+  margin-bottom:25px;
 
-  font-size:34px;
+  font-size:30px;
 
 }
-
-/* =========================
-   CONTROLS
-========================= */
 
 .sidebar label{
 
   display:block;
 
   margin-top:18px;
-
   margin-bottom:8px;
 
   color:#cbd5e1;
@@ -135,28 +127,14 @@ body{
 
   padding:12px;
 
+  border:none;
+
   border-radius:12px;
 
-  border:none;
-
   background:
-    rgba(30,41,59,0.85);
+    rgba(30,41,59,0.9);
 
   color:white;
-
-  font-size:14px;
-
-}
-
-/* =========================
-   BUTTONS
-========================= */
-
-button{
-
-  border:none;
-
-  cursor:pointer;
 
 }
 
@@ -164,9 +142,11 @@ button{
 
   width:100%;
 
-  margin-top:20px;
+  margin-top:22px;
 
   padding:14px;
+
+  border:none;
 
   border-radius:14px;
 
@@ -178,50 +158,33 @@ button{
 
   font-weight:600;
 
+  cursor:pointer;
+
   transition:0.3s;
 
 }
 
 .export-btn:hover{
 
-  transform:translateY(-2px);
-
   background:#1d4ed8;
 
+  transform:translateY(-2px);
+
 }
-  <div class="network-panel">
-
-  <button class="network-btn">
-    All Network
-  </button>
-
-  <button class="network-btn">
-    5G
-  </button>
-
-  <button class="network-btn">
-    4G
-  </button>
-
-  <button class="network-btn">
-    3G
-  </button>
-
-</div>
 
 /* =========================
-   TELECOM PANEL
+NETWORK PANEL
 ========================= */
 
 .network-panel{
-
-  margin-top:28px;
 
   display:flex;
 
   flex-direction:column;
 
   gap:12px;
+
+  margin-top:28px;
 
 }
 
@@ -239,7 +202,7 @@ button{
 
   border-radius:14px;
 
-  font-size:14px;
+  cursor:pointer;
 
   font-weight:600;
 
@@ -259,17 +222,7 @@ button{
 }
 
 /* =========================
-   MAIN CONTENT
-========================= */
-
-.main-content{
-
-  flex:1;
-
-}
-
-/* =========================
-   HEADER
+HEADER
 ========================= */
 
 .dashboard-header{
@@ -280,9 +233,11 @@ button{
 
   align-items:center;
 
-  margin-bottom:24px;
+  margin-bottom:25px;
 
   gap:20px;
+
+  flex-wrap:wrap;
 
 }
 
@@ -292,17 +247,15 @@ button{
 
   font-weight:800;
 
-  color:white;
-
 }
 
 .timeline-panel{
 
   display:flex;
 
-  gap:14px;
+  gap:12px;
 
-  align-items:center;
+  flex-wrap:wrap;
 
   background:
     rgba(15,23,42,0.92);
@@ -330,74 +283,58 @@ button{
   font-size:13px;
 
 }
-  <div class="dashboard-header">
-
-  <h1 class="dashboard-title">
-    🚀 AutomationPark Dashboard
-  </h1>
-
-  <div class="timeline-panel">
-
-    <div class="timeline-chip">
-      Daily
-    </div>
-
-    <div class="timeline-chip">
-      RCA Ready
-    </div>
-
-    <div class="timeline-chip">
-      GeoAI Enabled
-    </div>
-
-  </div>
-
-</div>
 
 /* =========================
-   FILTERS
+TOP CONTROLS
 ========================= */
 
-#filters{
+.hero-panel{
+  margin-bottom:24px;
+}
+
+.top-controls{
+
+  display:flex;
+
+  gap:15px;
+
+  flex-wrap:wrap;
+
+}
+
+.top-controls input{
+
+  padding:12px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:
+    rgba(30,41,59,0.92);
+
+  color:white;
+
+}
+
+/* =========================
+FILTERS
+========================= */
+
+.filters-grid{
 
   display:grid;
 
   grid-template-columns:
     repeat(auto-fill,minmax(180px,1fr));
 
-  gap:14px;
+  gap:15px;
 
-  margin-bottom:24px;
-
-}
-
-.filter-box{
-
-  background:
-    rgba(15,23,42,0.9);
-
-  padding:14px;
-
-  border-radius:16px;
-
-  border:
-    1px solid rgba(255,255,255,0.05);
+  margin-bottom:25px;
 
 }
 
-.filter-box label{
-
-  display:block;
-
-  margin-bottom:10px;
-
-  color:#cbd5e1;
-
-  font-size:13px;
-
-}
-
-.filter-box select{
+.filters-grid select{
 
   width:100%;
 
@@ -405,10 +342,10 @@ button{
 
   border:none;
 
-  border-radius:12px;
+  border-radius:14px;
 
   background:
-    rgba(2,6,23,0.92);
+    rgba(15,23,42,0.92);
 
   color:white;
 
@@ -417,7 +354,7 @@ button{
 }
 
 /* =========================
-   KPI GRID
+KPI GRID
 ========================= */
 
 .kpi-grid{
@@ -486,7 +423,7 @@ button{
 }
 
 /* =========================
-   CHART GRID
+CHART GRID
 ========================= */
 
 .charts-grid{
@@ -494,14 +431,14 @@ button{
   display:grid;
 
   grid-template-columns:
-    repeat(2, minmax(0,1fr));
+    repeat(2,minmax(0,1fr));
 
   gap:24px;
 
 }
 
 /* =========================
-   CHART BOX
+CHART BOX
 ========================= */
 
 .chart-box{
@@ -518,12 +455,18 @@ button{
 
   min-height:480px;
 
-  position:relative;
-
   backdrop-filter:blur(8px);
 
   box-shadow:
     0 0 25px rgba(0,0,0,0.35);
+
+  transition:0.3s;
+
+}
+
+.chart-box:hover{
+
+  transform:translateY(-3px);
 
 }
 
@@ -536,7 +479,7 @@ button{
 }
 
 /* =========================
-   CHART HEADER
+CHART HEADER
 ========================= */
 
 .chart-header{
@@ -547,7 +490,7 @@ button{
 
   align-items:center;
 
-  margin-bottom:14px;
+  margin-bottom:12px;
 
 }
 
@@ -557,7 +500,7 @@ button{
 
   flex-direction:column;
 
-  gap:5px;
+  gap:4px;
 
 }
 
@@ -580,7 +523,7 @@ button{
 }
 
 /* =========================
-   CHART SELECTOR
+CHART SELECTOR
 ========================= */
 
 .chart-selector{
@@ -601,7 +544,7 @@ button{
 }
 
 /* =========================
-   RAC PANEL
+RCA
 ========================= */
 
 #rac-results{
@@ -631,15 +574,13 @@ button{
 }
 
 /* =========================
-   RESPONSIVE
+RESPONSIVE
 ========================= */
 
 @media(max-width:1400px){
 
   .charts-grid{
-
     grid-template-columns:1fr;
-
   }
 
 }
@@ -647,19 +588,17 @@ button{
 @media(max-width:1000px){
 
   .dashboard-layout{
-
     flex-direction:column;
-
   }
 
   .sidebar{
-
     width:100%;
-
     position:relative;
-
     top:0;
+  }
 
+  .dashboard-title{
+    font-size:38px;
   }
 
 }
@@ -669,16 +608,16 @@ button{
 </head>
 
 <body>
-  
-<div class="main-container">
 
-<div class="content">
+<div class="dashboard-layout">
+
+  <!-- =========================
+  SIDEBAR
+  ========================= -->
 
   <div class="sidebar">
 
-  <h2>🧠 Control</h2>
-
-  <div class="side-group">
+    <h2>🧠 Control</h2>
 
     <label>Granularity</label>
 
@@ -688,10 +627,6 @@ button{
       <option>Monthly</option>
     </select>
 
-  </div>
-
-  <div class="side-group">
-
     <label>Smoothing</label>
 
     <select>
@@ -699,77 +634,125 @@ button{
       <option>ON</option>
     </select>
 
-  </div>
-
-  <div class="side-group">
-
     <label>Top Sites</label>
 
     <input type="number" value="20">
 
-  </div>
+    <button class="export-btn">
+      Export Report
+    </button>
 
-  <button class="export-btn">
-    Export Report
-  </button>
+    <!-- =========================
+    NETWORK PANEL
+    ========================= -->
 
-</div>
+    <div class="network-panel">
 
-<!-- =====================================
-TOP RIBBON
-===================================== -->
+      <button class="network-btn">
+        All Network
+      </button>
 
-<div class="top-ribbon"></div>
+      <button class="network-btn">
+        5G
+      </button>
 
-<!-- =====================================
-HERO PANEL
-===================================== -->
+      <button class="network-btn">
+        4G
+      </button>
 
-<div class="hero-panel">
+      <button class="network-btn">
+        3G
+      </button>
 
-  <h1>🚀 AutomationPark Dashboard</h1>
-
-  <div class="top-controls">
-
-    <input
-      type="file"
-      id="fileInput"
-    >
-
-    <input
-      type="number"
-      id="limitInput"
-      value="20"
-      placeholder="Points Limit"
-    >
+    </div>
 
   </div>
 
+  <!-- =========================
+  MAIN CONTENT
+  ========================= -->
+
+  <div class="main-content">
+
+    <!-- =========================
+    HEADER
+    ========================= -->
+
+    <div class="dashboard-header">
+
+      <h1 class="dashboard-title">
+        🚀 AutomationPark Dashboard
+      </h1>
+
+      <div class="timeline-panel">
+
+        <div class="timeline-chip">
+          Daily
+        </div>
+
+        <div class="timeline-chip">
+          RCA Ready
+        </div>
+
+        <div class="timeline-chip">
+          GeoAI Enabled
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- =========================
+    HERO PANEL
+    ========================= -->
+
+    <div class="hero-panel">
+
+      <div class="top-controls">
+
+        <input
+          type="file"
+          id="fileInput"
+        >
+
+        <input
+          type="number"
+          id="limitInput"
+          value="20"
+          placeholder="Points Limit"
+        >
+
+      </div>
+
+    </div>
+
+    <!-- =========================
+    FILTERS
+    ========================= -->
+
+    <div id="filters" class="filters-grid"></div>
+
+    <!-- =========================
+    KPI GRID
+    ========================= -->
+
+    <div class="kpi-grid"></div>
+
+    <!-- =========================
+    CHARTS
+    ========================= -->
+
+    <div class="charts-grid"></div>
+
+    <!-- =========================
+    RCA
+    ========================= -->
+
+    <div id="rac-results"></div>
+
+  </div>
+
 </div>
-
-<!-- =====================================
-FILTERS
-===================================== -->
-
-<div id="filters" class="filters-grid"></div>
-
-<!-- =====================================
-KPI CARDS
-===================================== -->
-
-<div class="kpi-grid"></div>
-
-<!-- =====================================
-CHARTS
-===================================== -->
-
-<div class="charts-grid"></div>
-
-<!-- =====================================
-RCA RESULTS
-===================================== -->
-
-<div id="rac-results"></div>
 
 <!-- =====================================
 JS FILE
@@ -777,9 +760,5 @@ JS FILE
 
 <script src="dashboard.js"></script>
 
-</div>
-</div>
-
 </body>
-
 </html>
