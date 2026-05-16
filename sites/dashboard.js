@@ -6,7 +6,9 @@ const colors = [
   "#f59e0b",
   "#ef4444",
   "#8b5cf6",
-  "#06b6d4"
+  "#06b6d4",
+  "#f97316",
+  "#14b8a6"
 ];
 
 let globalData = [];
@@ -210,16 +212,11 @@ function buildDashboard(data){
 
       createKPI(key, values);
 
-      const secondKPI =
-        numericKeys[
-          (index + 1) % numericKeys.length
-        ];
-
       createChart(
         key,
         values,
         data,
-        secondKPI
+        numericKeys
       );
 
     }
@@ -233,74 +230,15 @@ function buildDashboard(data){
 }
 
 /* =========================
-KPI ENGINE
+KPI
 ========================= */
-
-function detectKPIType(name){
-
-  const kpi = name.toLowerCase();
-
-  if(
-    kpi.includes("rate") ||
-    kpi.includes("success") ||
-    kpi.includes("availability") ||
-    kpi.includes("retain") ||
-    kpi.includes("drop")
-  ){
-    return "percentage";
-  }
-
-  if(
-    kpi.includes("rsrp") ||
-    kpi.includes("rsrq") ||
-    kpi.includes("sinr")
-  ){
-    return "radio";
-  }
-
-  if(
-    kpi.includes("traffic") ||
-    kpi.includes("throughput") ||
-    kpi.includes("users")
-  ){
-    return "counter";
-  }
-
-  return "generic";
-
-}
-
-function calculateKPIValue(type, values){
-
-  values = values.filter(v =>
-    typeof v === "number" &&
-    !isNaN(v)
-  );
-
-  if(values.length === 0) return 0;
-
-  if(type === "counter"){
-
-    return values
-      .reduce((a,b)=>a+b,0)
-      .toLocaleString();
-
-  }
-
-  return (
-    values.reduce((a,b)=>a+b,0)
-    / values.length
-  ).toFixed(2);
-
-}
 
 function createKPI(name, values){
 
-  const type =
-    detectKPIType(name);
-
-  const result =
-    calculateKPIValue(type, values);
+  const result = (
+    values.reduce((a,b)=>a+b,0)
+    / values.length
+  ).toFixed(2);
 
   const card =
     document.createElement("div");
@@ -326,7 +264,7 @@ function createChart(
   name,
   values,
   data,
-  secondKPI
+  numericKeys
 ){
 
   const container =
@@ -343,6 +281,22 @@ function createChart(
 
   header.className = "chart-header";
 
+  /* =========================
+  KPI2 DROPDOWN
+  ========================= */
+
+  let optionsHTML = "";
+
+  numericKeys.forEach(kpi=>{
+
+    optionsHTML += `
+      <option value="${kpi}">
+        ${kpi}
+      </option>
+    `;
+
+  });
+
   header.innerHTML = `
 
     <div>
@@ -352,18 +306,18 @@ function createChart(
       </div>
 
       <div class="kpi-secondary">
-        KPI2: ${secondKPI}
+        KPI2:
       </div>
+
+      <select class="chart-selector kpi2-selector">
+        ${optionsHTML}
+      </select>
 
     </div>
 
   `;
 
   container.appendChild(header);
-
-  /* =========================
-  SELECTOR
-  ========================= */
 
   const selector =
     document.createElement("select");
@@ -381,10 +335,6 @@ function createChart(
 
   container.appendChild(selector);
 
-  /* =========================
-  CANVAS
-  ========================= */
-
   const canvas =
     document.createElement("canvas");
 
@@ -394,9 +344,8 @@ function createChart(
     .querySelector(".charts-grid")
     .appendChild(container);
 
-  /* =========================
-  LABELS
-  ========================= */
+  const kpi2Selector =
+    container.querySelector(".kpi2-selector");
 
   const labels =
     data
@@ -432,249 +381,245 @@ function createChart(
 
     });
 
-  /* =========================
-  KPI2 VALUES
-  ========================= */
-
-  const secondValues =
-    data
-    .map(row=>row[secondKPI])
-    .filter(v=>typeof v === "number")
-    .slice(-values.length);
-
   const primaryColor =
     colors[chartIndex % colors.length];
 
   const secondaryColor =
     colors[(chartIndex + 2) % colors.length];
 
-  /* =========================
-  CROSSHAIR
-  ========================= */
+  let chart;
 
-  const crosshairPlugin = {
+  function renderChart(){
 
-    id:"crosshairLine",
+    const secondKPI =
+      kpi2Selector.value;
 
-    afterDraw: chart => {
+    const secondValues =
+      data
+      .map(row=>row[secondKPI])
+      .filter(v=>typeof v === "number")
+      .slice(-values.length);
 
-      if(chart.tooltip?._active?.length){
+    if(chart){
 
-        const ctx = chart.ctx;
-
-        const x =
-          chart.tooltip._active[0].element.x;
-
-        const topY =
-          chart.scales.y.top;
-
-        const bottomY =
-          chart.scales.y.bottom;
-
-        ctx.save();
-
-        ctx.beginPath();
-
-        ctx.moveTo(x, topY);
-
-        ctx.lineTo(x, bottomY);
-
-        ctx.lineWidth = 1;
-
-        ctx.strokeStyle =
-          "rgba(255,255,255,0.35)";
-
-        ctx.stroke();
-
-        ctx.restore();
-
-      }
+      chart.destroy();
 
     }
 
-  };
+    const crosshairPlugin = {
 
-  /* =========================
-  CHART CONFIG
-  ========================= */
+      id:"crosshairLine",
 
-  const chartConfig = {
+      afterDraw: chart => {
 
-    type: selector.value,
+        if(chart.tooltip?._active?.length){
 
-    data:{
+          const ctx = chart.ctx;
 
-      labels: labels,
+          const x =
+            chart.tooltip._active[0].element.x;
 
-      datasets:[
+          const topY =
+            chart.scales.y.top;
 
-        {
+          const bottomY =
+            chart.scales.y.bottom;
 
-          label:name,
+          ctx.save();
 
-          data:values,
+          ctx.beginPath();
 
-          borderColor:primaryColor,
+          ctx.moveTo(x, topY);
 
-          backgroundColor:
-            primaryColor + "33",
+          ctx.lineTo(x, bottomY);
 
-          borderWidth:3,
+          ctx.lineWidth = 1;
 
-          tension:0.45,
+          ctx.strokeStyle =
+            "rgba(255,255,255,0.35)";
 
-          pointRadius:2,
+          ctx.stroke();
 
-          pointHoverRadius:5,
-
-          fill:false,
-
-          yAxisID:"y"
-
-        },
-
-        {
-
-          label:secondKPI,
-
-          data:secondValues,
-
-          borderColor:secondaryColor,
-
-          backgroundColor:
-            secondaryColor + "33",
-
-          borderWidth:2,
-
-          borderDash:[5,5],
-
-          tension:0.45,
-
-          pointRadius:1,
-
-          fill:false,
-
-          yAxisID:"y1"
-
-        }
-
-      ]
-
-    },
-
-    options:{
-
-      responsive:true,
-
-      maintainAspectRatio:false,
-
-      interaction:{
-        mode:"index",
-        intersect:false
-      },
-
-      plugins:{
-
-        legend:{
-
-          position:"top",
-
-          labels:{
-            color:"white",
-            usePointStyle:true
-          }
-
-        },
-
-        tooltip:{
-
-          backgroundColor:
-            "rgba(15,23,42,0.95)",
-
-          borderColor:"#3b82f6",
-
-          borderWidth:1
-
-        }
-
-      },
-
-      scales:{
-
-        x:{
-
-          grid:{
-            color:"rgba(255,255,255,0.04)"
-          },
-
-          ticks:{
-            color:"#cbd5e1"
-          }
-
-        },
-
-        y:{
-
-          position:"left",
-
-          grid:{
-            color:"rgba(255,255,255,0.05)",
-            borderDash:[2,4]
-          },
-
-          ticks:{
-            color:primaryColor
-          }
-
-        },
-
-        y1:{
-
-          position:"right",
-
-          grid:{
-            drawOnChartArea:false
-          },
-
-          ticks:{
-            color:secondaryColor
-          }
+          ctx.restore();
 
         }
 
       }
 
-    },
+    };
 
-    plugins:[crosshairPlugin]
+    chart = new Chart(canvas,{
 
-  };
+      type: selector.value,
 
-  let chart =
-    new Chart(canvas, chartConfig);
+      data:{
 
-  /* =========================
-  CHART SWITCHER
-  ========================= */
+        labels: labels,
 
-  selector.addEventListener("change",()=>{
+        datasets:[
 
-    chart.destroy();
+          {
 
-    chartConfig.type =
-      selector.value;
+            label:name,
 
-    chart =
-      new Chart(canvas, chartConfig);
+            data:values,
 
-  });
+            borderColor:primaryColor,
+
+            backgroundColor:
+              primaryColor + "33",
+
+            borderWidth:3,
+
+            tension:0.45,
+
+            pointRadius:2,
+
+            pointHoverRadius:5,
+
+            fill:false,
+
+            yAxisID:"y"
+
+          },
+
+          {
+
+            label:secondKPI,
+
+            data:secondValues,
+
+            borderColor:secondaryColor,
+
+            backgroundColor:
+              secondaryColor + "33",
+
+            borderWidth:2,
+
+            borderDash:[5,5],
+
+            tension:0.45,
+
+            pointRadius:1,
+
+            fill:false,
+
+            yAxisID:"y1"
+
+          }
+
+        ]
+
+      },
+
+      options:{
+
+        responsive:true,
+
+        maintainAspectRatio:false,
+
+        interaction:{
+          mode:"index",
+          intersect:false
+        },
+
+        plugins:{
+
+          legend:{
+
+            position:"top",
+
+            labels:{
+              color:"white",
+              usePointStyle:true
+            }
+
+          },
+
+          tooltip:{
+
+            backgroundColor:
+              "rgba(15,23,42,0.95)",
+
+            borderColor:"#3b82f6",
+
+            borderWidth:1
+
+          }
+
+        },
+
+        scales:{
+
+          x:{
+
+            grid:{
+              color:"rgba(180,180,180,0.08)"
+            },
+
+            ticks:{
+              color:"#cbd5e1"
+            }
+
+          },
+
+          y:{
+
+            position:"left",
+
+            grid:{
+              color:"rgba(180,180,180,0.08)",
+              borderDash:[2,4]
+            },
+
+            ticks:{
+              color:primaryColor
+            }
+
+          },
+
+          y1:{
+
+            position:"right",
+
+            grid:{
+              drawOnChartArea:false
+            },
+
+            ticks:{
+              color:secondaryColor
+            }
+
+          }
+
+        }
+
+      },
+
+      plugins:[crosshairPlugin]
+
+    });
+
+  }
+
+  renderChart();
+
+  selector.addEventListener(
+    "change",
+    renderChart
+  );
+
+  kpi2Selector.addEventListener(
+    "change",
+    renderChart
+  );
 
   chartIndex++;
 
 }
 
 /* =========================
-RCA ENGINE
+RCA
 ========================= */
 
 function runRAC(data){
@@ -698,10 +643,10 @@ function runRAC(data){
     title:"📊 Smart Overlay",
 
     cause:
-      "Dual KPI overlay enabled",
+      "Dynamic KPI2 selector enabled",
 
     action:
-      "Compare throughput, traffic & accessibility"
+      "Advanced telecom comparison analytics"
 
   });
 
