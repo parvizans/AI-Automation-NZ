@@ -1,18 +1,21 @@
 let chartIndex = 0;
 
 const colors = [
-  "#2563eb",
-  "#16a34a",
+  "#3b82f6",
+  "#10b981",
   "#f59e0b",
-  "#dc2626",
-  "#7c3aed",
-  "#0ea5e9"
+  "#ef4444",
+  "#8b5cf6",
+  "#06b6d4"
 ];
 
 let globalData = [];
 
+Chart.defaults.color = "#cbd5e1";
+Chart.defaults.font.family = "Segoe UI";
+
 /* =========================
-   FILE LOAD
+FILE LOAD
 ========================= */
 
 document
@@ -27,12 +30,11 @@ function handleFile(event){
 
   const file = event.target.files[0];
 
-  if(!file) return;
-
   Papa.parse(file,{
+
     header:true,
+
     dynamicTyping:true,
-    skipEmptyLines:true,
 
     complete:function(results){
 
@@ -46,12 +48,13 @@ function handleFile(event){
       buildDashboard(globalData);
 
     }
+
   });
 
 }
 
 /* =========================
-   FILTER ENGINE
+FILTERS
 ========================= */
 
 function buildFilters(data){
@@ -60,8 +63,6 @@ function buildFilters(data){
     document.getElementById("filters");
 
   filterDiv.innerHTML = "";
-
-  if(!data || data.length === 0) return;
 
   const keys = Object.keys(data[0]);
 
@@ -77,9 +78,6 @@ function buildFilters(data){
 
       const wrapper =
         document.createElement("div");
-
-      wrapper.className =
-        "filter-box";
 
       const label =
         document.createElement("label");
@@ -170,14 +168,12 @@ function applyFilters(){
 }
 
 /* =========================
-   DASHBOARD ENGINE
+DASHBOARD
 ========================= */
 
 function buildDashboard(data){
 
   if(!data || data.length === 0) return;
-
-  chartIndex = 0;
 
   document.querySelector(".kpi-grid").innerHTML = "";
 
@@ -185,7 +181,14 @@ function buildDashboard(data){
 
   const keys = Object.keys(data[0]);
 
-  keys.forEach(key=>{
+  const numericKeys =
+    keys.filter(key =>
+      data.some(
+        row => typeof row[key] === "number"
+      )
+    );
+
+  numericKeys.forEach((key,index)=>{
 
     let values =
       data
@@ -207,27 +210,35 @@ function buildDashboard(data){
 
       createKPI(key, values);
 
-      createChart(key, values, data);
+      const secondKPI =
+        numericKeys[
+          (index + 1) % numericKeys.length
+        ];
+
+      createChart(
+        key,
+        values,
+        data,
+        secondKPI
+      );
 
     }
 
   });
 
-  const insights =
-    runRAC(data);
+  const insights = runRAC(data);
 
   showRAC(insights);
 
 }
 
 /* =========================
-   KPI ENGINE
+KPI ENGINE
 ========================= */
 
 function detectKPIType(name){
 
-  const kpi =
-    name.toLowerCase();
+  const kpi = name.toLowerCase();
 
   if(
     kpi.includes("rate") ||
@@ -247,27 +258,58 @@ function detectKPIType(name){
     return "radio";
   }
 
+  if(
+    kpi.includes("traffic") ||
+    kpi.includes("throughput") ||
+    kpi.includes("users")
+  ){
+    return "counter";
+  }
+
   return "generic";
+
+}
+
+function calculateKPIValue(type, values){
+
+  values = values.filter(v =>
+    typeof v === "number" &&
+    !isNaN(v)
+  );
+
+  if(values.length === 0) return 0;
+
+  if(type === "counter"){
+
+    return values
+      .reduce((a,b)=>a+b,0)
+      .toLocaleString();
+
+  }
+
+  return (
+    values.reduce((a,b)=>a+b,0)
+    / values.length
+  ).toFixed(2);
 
 }
 
 function createKPI(name, values){
 
-  const avg =
-    (
-      values.reduce((a,b)=>a+b,0)
-      / values.length
-    ).toFixed(2);
+  const type =
+    detectKPIType(name);
+
+  const result =
+    calculateKPIValue(type, values);
 
   const card =
     document.createElement("div");
 
-  card.className =
-    "kpi-card";
+  card.className = "kpi-card";
 
   card.innerHTML = `
     <h3>${name}</h3>
-    <p>${avg}</p>
+    <p>${result}</p>
   `;
 
   document
@@ -277,56 +319,72 @@ function createKPI(name, values){
 }
 
 /* =========================
-   CHART ENGINE
+CHART ENGINE
 ========================= */
 
-function createChart(name, values, data){
+function createChart(
+  name,
+  values,
+  data,
+  secondKPI
+){
 
   const container =
     document.createElement("div");
 
-  container.className =
-    "chart-box";
+  container.className = "chart-box";
 
-  /* HEADER */
+  /* =========================
+  HEADER
+  ========================= */
+
   const header =
     document.createElement("div");
 
-  header.className =
-    "chart-header";
+  header.className = "chart-header";
 
   header.innerHTML = `
-    <div class="kpi-title-group">
-      <span class="kpi-main">
-        KPI1: ${name}
-      </span>
 
-      <span class="kpi-secondary">
-        KPI2: Future Overlay
-      </span>
+    <div>
+
+      <div class="kpi-main">
+        KPI1: ${name}
+      </div>
+
+      <div class="kpi-secondary">
+        KPI2: ${secondKPI}
+      </div>
+
     </div>
+
   `;
 
   container.appendChild(header);
 
-  /* SELECTOR */
+  /* =========================
+  SELECTOR
+  ========================= */
+
   const selector =
     document.createElement("select");
 
-  selector.className =
-    "chart-selector";
+  selector.className = "chart-selector";
 
   selector.innerHTML = `
     <option value="line">Line</option>
     <option value="bar">Bar</option>
+    <option value="radar">Radar</option>
+    <option value="scatter">Scatter</option>
     <option value="doughnut">Doughnut</option>
     <option value="pie">Pie</option>
-    <option value="scatter">Scatter</option>
   `;
 
   container.appendChild(selector);
 
-  /* CANVAS */
+  /* =========================
+  CANVAS
+  ========================= */
+
   const canvas =
     document.createElement("canvas");
 
@@ -336,36 +394,110 @@ function createChart(name, values, data){
     .querySelector(".charts-grid")
     .appendChild(container);
 
-  /* LABELS */
+  /* =========================
+  LABELS
+  ========================= */
+
   const labels =
     data
-      .slice(-values.length)
-      .map((row, i)=>{
+    .slice(-values.length)
+    .map((row, i)=>{
 
-        const keys =
-          Object.keys(row);
+      const keys =
+        Object.keys(row);
 
-        const xKey =
+      const xKey =
 
-          keys.find(k =>
-            k.toLowerCase().includes("date")
-          )
+        keys.find(k =>
+          k.toLowerCase().includes("date")
+        )
 
-          ||
+        ||
 
-          keys.find(k =>
-            k.toLowerCase().includes("month")
-          )
+        keys.find(k =>
+          k.toLowerCase().includes("time")
+        )
 
-          ||
+        ||
 
-          keys[0];
+        keys.find(k =>
+          typeof row[k] === "string"
+        )
 
-        return row[xKey] || `Row ${i+1}`;
+        ||
 
-      });
+        keys[0];
 
-  /* CHART */
+      return row[xKey] || `Row ${i+1}`;
+
+    });
+
+  /* =========================
+  KPI2 VALUES
+  ========================= */
+
+  const secondValues =
+    data
+    .map(row=>row[secondKPI])
+    .filter(v=>typeof v === "number")
+    .slice(-values.length);
+
+  const primaryColor =
+    colors[chartIndex % colors.length];
+
+  const secondaryColor =
+    colors[(chartIndex + 2) % colors.length];
+
+  /* =========================
+  CROSSHAIR
+  ========================= */
+
+  const crosshairPlugin = {
+
+    id:"crosshairLine",
+
+    afterDraw: chart => {
+
+      if(chart.tooltip?._active?.length){
+
+        const ctx = chart.ctx;
+
+        const x =
+          chart.tooltip._active[0].element.x;
+
+        const topY =
+          chart.scales.y.top;
+
+        const bottomY =
+          chart.scales.y.bottom;
+
+        ctx.save();
+
+        ctx.beginPath();
+
+        ctx.moveTo(x, topY);
+
+        ctx.lineTo(x, bottomY);
+
+        ctx.lineWidth = 1;
+
+        ctx.strokeStyle =
+          "rgba(255,255,255,0.35)";
+
+        ctx.stroke();
+
+        ctx.restore();
+
+      }
+
+    }
+
+  };
+
+  /* =========================
+  CHART CONFIG
+  ========================= */
+
   const chartConfig = {
 
     type: selector.value,
@@ -374,33 +506,59 @@ function createChart(name, values, data){
 
       labels: labels,
 
-      datasets:[{
+      datasets:[
 
-        label:name,
+        {
 
-        data:values,
+          label:name,
 
-        backgroundColor:
-          colors[
-            chartIndex % colors.length
-          ] + "22",
+          data:values,
 
-        borderColor:
-          colors[
-            chartIndex % colors.length
-          ],
+          borderColor:primaryColor,
 
-        borderWidth:3,
+          backgroundColor:
+            primaryColor + "33",
 
-        tension:0.35,
+          borderWidth:3,
 
-        pointRadius:2,
+          tension:0.45,
 
-        pointHoverRadius:6,
+          pointRadius:2,
 
-        fill:false
+          pointHoverRadius:5,
 
-      }]
+          fill:false,
+
+          yAxisID:"y"
+
+        },
+
+        {
+
+          label:secondKPI,
+
+          data:secondValues,
+
+          borderColor:secondaryColor,
+
+          backgroundColor:
+            secondaryColor + "33",
+
+          borderWidth:2,
+
+          borderDash:[5,5],
+
+          tension:0.45,
+
+          pointRadius:1,
+
+          fill:false,
+
+          yAxisID:"y1"
+
+        }
+
+      ]
 
     },
 
@@ -418,10 +576,25 @@ function createChart(name, values, data){
       plugins:{
 
         legend:{
+
           position:"top",
+
           labels:{
-            color:"#e2e8f0"
+            color:"white",
+            usePointStyle:true
           }
+
+        },
+
+        tooltip:{
+
+          backgroundColor:
+            "rgba(15,23,42,0.95)",
+
+          borderColor:"#3b82f6",
+
+          borderWidth:1
+
         }
 
       },
@@ -430,41 +603,59 @@ function createChart(name, values, data){
 
         x:{
 
-          ticks:{
-            color:"#cbd5e1"
+          grid:{
+            color:"rgba(255,255,255,0.04)"
           },
 
-          grid:{
-            color:"rgba(255,255,255,0.05)"
+          ticks:{
+            color:"#cbd5e1"
           }
 
         },
 
         y:{
 
-          ticks:{
-            color:"#cbd5e1"
-          },
+          position:"left",
 
           grid:{
-            color:"rgba(255,255,255,0.05)"
+            color:"rgba(255,255,255,0.05)",
+            borderDash:[2,4]
+          },
+
+          ticks:{
+            color:primaryColor
+          }
+
+        },
+
+        y1:{
+
+          position:"right",
+
+          grid:{
+            drawOnChartArea:false
+          },
+
+          ticks:{
+            color:secondaryColor
           }
 
         }
 
       }
 
-    }
+    },
+
+    plugins:[crosshairPlugin]
 
   };
 
   let chart =
-    new Chart(
-      canvas.getContext("2d"),
-      chartConfig
-    );
+    new Chart(canvas, chartConfig);
 
-  /* CHART SWITCHER */
+  /* =========================
+  CHART SWITCHER
+  ========================= */
 
   selector.addEventListener("change",()=>{
 
@@ -474,10 +665,7 @@ function createChart(name, values, data){
       selector.value;
 
     chart =
-      new Chart(
-        canvas.getContext("2d"),
-        chartConfig
-      );
+      new Chart(canvas, chartConfig);
 
   });
 
@@ -486,7 +674,7 @@ function createChart(name, values, data){
 }
 
 /* =========================
-   RAC ENGINE
+RCA ENGINE
 ========================= */
 
 function runRAC(data){
@@ -497,9 +685,23 @@ function runRAC(data){
 
     title:"🧠 RAC ENGINE",
 
-    cause:"Dashboard operational",
+    cause:
+      "Dashboard operational with dual KPI analytics",
 
-    action:"AI RCA ready"
+    action:
+      "GeoAI + RCA layer ready"
+
+  });
+
+  insights.push({
+
+    title:"📊 Smart Overlay",
+
+    cause:
+      "Dual KPI overlay enabled",
+
+    action:
+      "Compare throughput, traffic & accessibility"
 
   });
 
@@ -512,8 +714,6 @@ function showRAC(insights){
   const container =
     document.getElementById("rac-results");
 
-  if(!container) return;
-
   container.innerHTML = "";
 
   insights.forEach(i=>{
@@ -522,9 +722,9 @@ function showRAC(insights){
 
       <div class="rac-card">
 
-        <strong>${i.title}</strong><br>
+        <strong>${i.title}</strong><br><br>
 
-        <b>Cause:</b> ${i.cause}<br>
+        <b>Cause:</b> ${i.cause}<br><br>
 
         <b>Action:</b> ${i.action}
 
