@@ -1,29 +1,17 @@
+# Updated `insight-dashboard.html`
+
+```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>AutomationPark Dashboard</title>
-
-<!-- =====================================
-LIBRARIES
-===================================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
 
-<!-- =====================================
-STYLE
-===================================== -->
-
 <style>
-
-/* =========================
-RESET
-========================= */
 
 *{
   margin:0;
@@ -32,12 +20,10 @@ RESET
 }
 
 body{
-
   font-family:"Segoe UI",sans-serif;
-
   background:
     linear-gradient(
-      rgba(2,6,23,0.92),
+      rgba(2,6,23,0.90),
       rgba(2,6,23,0.95)
     ),
     url("assets/Hero-4.jpg");
@@ -47,15 +33,9 @@ body{
   background-attachment:fixed;
 
   color:white;
-
   min-height:100vh;
-
   overflow-x:hidden;
 }
-
-/* =========================
-LAYOUT
-========================= */
 
 .dashboard-layout{
   display:flex;
@@ -72,104 +52,59 @@ SIDEBAR
 ========================= */
 
 .sidebar{
-
   width:280px;
-
-  background:
-    rgba(2,6,23,0.92);
-
-  border:
-    1px solid rgba(255,255,255,0.08);
-
-  border-radius:24px;
-
+  background:rgba(2,6,23,0.92);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:28px;
   padding:22px;
-
   height:fit-content;
-
   position:sticky;
   top:20px;
-
   backdrop-filter:blur(14px);
-
-  box-shadow:
-    0 0 30px rgba(0,0,0,0.45);
-
+  box-shadow:0 0 35px rgba(0,0,0,0.55);
 }
 
 .sidebar h2{
-
-  color:#60a5fa;
-
+  color:#7dd3fc;
   margin-bottom:25px;
-
   font-size:30px;
-
 }
 
 .sidebar label{
-
   display:block;
-
   margin-top:18px;
   margin-bottom:8px;
-
   color:#cbd5e1;
-
   font-size:14px;
-
 }
 
 .sidebar select,
 .sidebar input{
-
   width:100%;
-
   padding:12px;
-
   border:none;
-
-  border-radius:12px;
-
-  background:
-    rgba(30,41,59,0.9);
-
+  border-radius:14px;
+  background:rgba(30,41,59,0.9);
   color:white;
-
 }
 
 .export-btn{
-
   width:100%;
-
   margin-top:22px;
-
   padding:14px;
-
   border:none;
-
-  border-radius:14px;
-
-  background:#2563eb;
-
+  border-radius:16px;
+  background:linear-gradient(135deg,#2563eb,#38bdf8);
   color:white;
-
   font-size:15px;
-
-  font-weight:600;
-
+  font-weight:700;
   cursor:pointer;
-
   transition:0.3s;
-
 }
 
 .export-btn:hover{
-
-  background:#1d4ed8;
-
   transform:translateY(-2px);
-
+  box-shadow:0 0 18px rgba(56,189,248,0.45);
 }
 
 /* =========================
@@ -177,48 +112,60 @@ NETWORK PANEL
 ========================= */
 
 .network-panel{
-
   display:flex;
-
   flex-direction:column;
-
-  gap:12px;
-
-  margin-top:28px;
-
+  gap:14px;
+  margin-top:30px;
 }
 
 .network-btn{
-
-  background:
-    rgba(15,23,42,0.92);
-
-  border:
-    1px solid rgba(239,68,68,0.7);
-
+  position:relative;
+  overflow:hidden;
+  padding:16px;
+  border:none;
+  border-radius:18px;
   color:white;
-
-  padding:14px;
-
-  border-radius:14px;
-
+  font-weight:700;
   cursor:pointer;
+  transition:0.35s;
+  letter-spacing:0.5px;
+}
 
-  font-weight:600;
+.network-btn::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent);
+  transform:translateX(-100%);
+  transition:0.6s;
+}
 
-  transition:0.3s;
-
+.network-btn:hover::before{
+  transform:translateX(100%);
 }
 
 .network-btn:hover{
+  transform:translateY(-3px) scale(1.01);
+}
 
-  background:#ef4444;
+.network-all{
+  background:linear-gradient(135deg,#2563eb,#38bdf8);
+  box-shadow:0 0 18px rgba(37,99,235,0.45);
+}
 
-  transform:translateY(-2px);
+.network-5g{
+  background:linear-gradient(135deg,#7c3aed,#ec4899);
+  box-shadow:0 0 18px rgba(168,85,247,0.35);
+}
 
-  box-shadow:
-    0 0 15px rgba(239,68,68,0.45);
+.network-4g{
+  background:linear-gradient(135deg,#059669,#10b981);
+  box-shadow:0 0 18px rgba(16,185,129,0.35);
+}
 
+.network-3g{
+  background:linear-gradient(135deg,#ea580c,#f59e0b);
+  box-shadow:0 0 18px rgba(249,115,22,0.35);
 }
 
 /* =========================
@@ -226,367 +173,213 @@ HEADER
 ========================= */
 
 .dashboard-header{
-
   display:flex;
-
   justify-content:space-between;
-
   align-items:center;
-
   margin-bottom:25px;
-
   gap:20px;
-
   flex-wrap:wrap;
-
 }
 
 .dashboard-title{
-
   font-size:52px;
-
   font-weight:800;
-
+  background:linear-gradient(90deg,#ffffff,#60a5fa,#38bdf8);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
 
 .timeline-panel{
-
   display:flex;
-
   gap:12px;
-
   flex-wrap:wrap;
-
-  background:
-    rgba(15,23,42,0.92);
-
+  background:rgba(15,23,42,0.92);
   padding:14px 18px;
-
   border-radius:18px;
-
-  border:
-    1px solid rgba(255,255,255,0.08);
-
+  border:1px solid rgba(255,255,255,0.08);
 }
 
 .timeline-chip{
-
   padding:10px 16px;
-
   border-radius:12px;
-
-  background:
-    rgba(37,99,235,0.18);
-
+  background:rgba(37,99,235,0.18);
   color:#93c5fd;
-
   font-size:13px;
-
+  border:1px solid rgba(96,165,250,0.25);
 }
-
-/* =========================
-TOP CONTROLS
-========================= */
 
 .hero-panel{
   margin-bottom:24px;
 }
 
 .top-controls{
-
   display:flex;
-
   gap:15px;
-
   flex-wrap:wrap;
-
 }
 
 .top-controls input{
-
   padding:12px;
-
   border:none;
-
   border-radius:12px;
-
-  background:
-    rgba(30,41,59,0.92);
-
+  background:rgba(30,41,59,0.92);
   color:white;
-
 }
 
-/* =========================
-FILTERS
-========================= */
-
 .filters-grid{
-
   display:grid;
-
-  grid-template-columns:
-    repeat(auto-fill,minmax(180px,1fr));
-
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
   gap:15px;
-
   margin-bottom:25px;
-
 }
 
 .filters-grid select{
-
   width:100%;
-
   min-height:120px;
-
   border:none;
-
-  border-radius:14px;
-
-  background:
-    rgba(15,23,42,0.92);
-
+  border-radius:16px;
+  background:rgba(15,23,42,0.92);
   color:white;
-
   padding:10px;
-
 }
 
-/* =========================
-KPI GRID
-========================= */
-
 .kpi-grid{
-
   display:grid;
-
-  grid-template-columns:
-    repeat(auto-fit,minmax(220px,1fr));
-
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:18px;
-
   margin-bottom:28px;
-
 }
 
 .kpi-card{
-
-  background:
-    linear-gradient(
-      135deg,
-      rgba(15,23,42,0.95),
-      rgba(30,41,59,0.92)
-    );
-
-  border:
-    1px solid rgba(255,255,255,0.06);
-
-  border-radius:22px;
-
+  background:linear-gradient(135deg,rgba(15,23,42,0.95),rgba(30,41,59,0.92));
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:24px;
   padding:24px;
-
   transition:0.3s;
+  box-shadow:0 0 20px rgba(0,0,0,0.25);
+  position:relative;
+  overflow:hidden;
+}
 
-  box-shadow:
-    0 0 20px rgba(0,0,0,0.25);
-
+.kpi-card::after{
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  background:radial-gradient(circle,rgba(59,130,246,0.18),transparent 70%);
+  right:-70px;
+  top:-70px;
 }
 
 .kpi-card:hover{
-
   transform:translateY(-4px);
-
-  box-shadow:
-    0 0 20px rgba(37,99,235,0.28);
-
+  box-shadow:0 0 24px rgba(37,99,235,0.35);
 }
 
 .kpi-card h3{
-
   color:#94a3b8;
-
   font-size:15px;
-
   margin-bottom:14px;
-
 }
 
 .kpi-card p{
-
   font-size:42px;
-
   font-weight:800;
-
   color:#60a5fa;
-
 }
-
-/* =========================
-CHART GRID
-========================= */
 
 .charts-grid{
-
   display:grid;
-
-  grid-template-columns:
-    repeat(2,minmax(0,1fr));
-
+  grid-template-columns:repeat(2,minmax(0,1fr));
   gap:24px;
-
 }
 
-/* =========================
-CHART BOX
-========================= */
-
 .chart-box{
-
-  background:
-    rgba(10,15,35,0.92);
-
-  border:
-    1px solid rgba(255,255,255,0.08);
-
-  border-radius:24px;
-
-  padding:18px;
-
-  min-height:480px;
-
-  backdrop-filter:blur(8px);
-
-  box-shadow:
-    0 0 25px rgba(0,0,0,0.35);
-
+  background:rgba(8,15,35,0.95);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:28px;
+  padding:20px;
+  min-height:520px;
+  backdrop-filter:blur(10px);
+  box-shadow:0 0 30px rgba(0,0,0,0.40);
   transition:0.3s;
+  position:relative;
+  overflow:hidden;
+}
 
+.chart-box::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg,rgba(59,130,246,0.08),transparent 25%);
+  pointer-events:none;
 }
 
 .chart-box:hover{
-
   transform:translateY(-3px);
-
+  border-color:rgba(96,165,250,0.20);
 }
 
 .chart-box canvas{
-
   width:100% !important;
-
-  height:360px !important;
-
+  height:380px !important;
 }
 
-/* =========================
-CHART HEADER
-========================= */
-
 .chart-header{
-
   display:flex;
-
   justify-content:space-between;
-
-  align-items:center;
-
+  align-items:flex-start;
   margin-bottom:12px;
-
+  gap:10px;
 }
 
 .kpi-title-group{
-
   display:flex;
-
   flex-direction:column;
-
   gap:4px;
-
 }
 
 .kpi-main{
-
-  font-size:16px;
-
-  font-weight:700;
-
+  font-size:18px;
+  font-weight:800;
   color:white;
-
 }
 
 .kpi-secondary{
-
   font-size:12px;
-
   color:#38bdf8;
-
 }
-
-/* =========================
-CHART SELECTOR
-========================= */
 
 .chart-selector{
-
-  margin-bottom:12px;
-
-  padding:10px;
-
+  margin-bottom:14px;
+  padding:10px 14px;
   border:none;
-
   border-radius:12px;
-
-  background:
-    rgba(30,41,59,0.9);
-
+  background:rgba(30,41,59,0.9);
   color:white;
-
 }
 
-/* =========================
-RCA
-========================= */
-
 #rac-results{
-
   margin-top:30px;
-
   display:grid;
-
   gap:16px;
-
 }
 
 .rac-card{
-
-  background:
-    rgba(15,23,42,0.92);
-
-  border:
-    1px solid rgba(56,189,248,0.15);
-
+  background:rgba(15,23,42,0.92);
+  border:1px solid rgba(56,189,248,0.15);
   border-radius:18px;
-
   padding:18px;
-
   color:#e2e8f0;
-
 }
 
-/* =========================
-RESPONSIVE
-========================= */
-
 @media(max-width:1400px){
-
   .charts-grid{
     grid-template-columns:1fr;
   }
-
 }
 
 @media(max-width:1000px){
-
   .dashboard-layout{
     flex-direction:column;
   }
@@ -600,165 +393,661 @@ RESPONSIVE
   .dashboard-title{
     font-size:38px;
   }
-
 }
 
 </style>
-
 </head>
 
 <body>
 
 <div class="dashboard-layout">
 
-  <!-- =========================
-  SIDEBAR
-  ========================= -->
+<div class="sidebar">
 
-  <div class="sidebar">
+<h2>🧠 Control</h2>
 
-    <h2>🧠 Control</h2>
+<label>Granularity</label>
+<select>
+<option>Daily</option>
+<option>Weekly</option>
+<option>Monthly</option>
+</select>
 
-    <label>Granularity</label>
+<label>Smoothing</label>
+<select>
+<option>ON</option>
+<option>OFF</option>
+</select>
 
-    <select>
-      <option>Daily</option>
-      <option>Weekly</option>
-      <option>Monthly</option>
-    </select>
+<label>Top Sites</label>
+<input type="number" value="50">
 
-    <label>Smoothing</label>
+<button class="export-btn">
+Export Report
+</button>
 
-    <select>
-      <option>OFF</option>
-      <option>ON</option>
-    </select>
-
-    <label>Top Sites</label>
-
-    <input type="number" value="20">
-
-    <button class="export-btn">
-      Export Report
-    </button>
-
-    <!-- =========================
-    NETWORK PANEL
-    ========================= -->
-
-    <div class="network-panel">
-
-      <button class="network-btn">
-        All Network
-      </button>
-
-      <button class="network-btn">
-        5G
-      </button>
-
-      <button class="network-btn">
-        4G
-      </button>
-
-      <button class="network-btn">
-        3G
-      </button>
-
-    </div>
-
-  </div>
-
-  <!-- =========================
-  MAIN CONTENT
-  ========================= -->
-
-  <div class="main-content">
-
-    <!-- =========================
-    HEADER
-    ========================= -->
-
-    <div class="dashboard-header">
-
-      <h1 class="dashboard-title">
-        🚀 AutomationPark Dashboard
-      </h1>
-
-      <div class="timeline-panel">
-
-        <div class="timeline-chip">
-          Daily
-        </div>
-
-        <div class="timeline-chip">
-          RCA Ready
-        </div>
-
-        <div class="timeline-chip">
-          GeoAI Enabled
-        </div>
-
-      </div>
-
-    </div>
-
-    <!-- =========================
-    HERO PANEL
-    ========================= -->
-
-    <div class="hero-panel">
-
-      <div class="top-controls">
-
-        <input
-          type="file"
-          id="fileInput"
-        >
-
-        <input
-          type="number"
-          id="limitInput"
-          value="20"
-          placeholder="Points Limit"
-        >
-
-      </div>
-
-    </div>
-
-    <!-- =========================
-    FILTERS
-    ========================= -->
-
-    <div id="filters" class="filters-grid"></div>
-
-    <!-- =========================
-    KPI GRID
-    ========================= -->
-
-    <div class="kpi-grid"></div>
-
-    <!-- =========================
-    CHARTS
-    ========================= -->
-
-    <div class="charts-grid"></div>
-
-    <!-- =========================
-    RCA
-    ========================= -->
-
-    <div id="rac-results"></div>
-
-  </div>
+<div class="network-panel">
+<button class="network-btn network-all">🌐 All Network</button>
+<button class="network-btn network-5g">⚡ 5G Ultra</button>
+<button class="network-btn network-4g">📶 4G LTE</button>
+<button class="network-btn network-3g">📡 3G Legacy</button>
+</div>
 
 </div>
 
-<!-- =====================================
-JS FILE
-===================================== -->
+<div class="main-content">
+
+<div class="dashboard-header">
+<h1 class="dashboard-title">🚀 AutomationPark Dashboard</h1>
+
+<div class="timeline-panel">
+<div class="timeline-chip">Daily</div>
+<div class="timeline-chip">RCA Ready</div>
+<div class="timeline-chip">GeoAI Enabled</div>
+</div>
+</div>
+
+<div class="hero-panel">
+<div class="top-controls">
+<input type="file" id="fileInput">
+<input type="number" id="limitInput" value="50" placeholder="Points Limit">
+</div>
+</div>
+
+<div id="filters" class="filters-grid"></div>
+<div class="kpi-grid"></div>
+<div class="charts-grid"></div>
+<div id="rac-results"></div>
+
+</div>
+</div>
 
 <script src="dashboard.js"></script>
 
 </body>
 </html>
+```
+
+---
+
+# Updated `dashboard.js`
+
+```javascript
+let chartIndex = 0;
+
+const colors = [
+  "#3b82f6",
+  "#10b981",
+  "#f59e0b",
+  "#ef4444",
+  "#8b5cf6",
+  "#06b6d4"
+];
+
+let globalData = [];
+
+Chart.defaults.color = "#cbd5e1";
+Chart.defaults.font.family = "Segoe UI";
+
+/* =========================
+FILE LOAD
+========================= */
+
+document
+  .getElementById("fileInput")
+  .addEventListener("change", handleFile);
+
+document
+  .getElementById("limitInput")
+  .addEventListener("input", applyFilters);
+
+function handleFile(event){
+
+  const file = event.target.files[0];
+
+  Papa.parse(file,{
+    header:true,
+    dynamicTyping:true,
+
+    complete:function(results){
+
+      globalData = results.data.filter(
+        row => Object.keys(row).length > 0
+      );
+
+      buildFilters(globalData);
+      buildDashboard(globalData);
+
+    }
+  });
+}
+
+/* =========================
+FILTERS
+========================= */
+
+function buildFilters(data){
+
+  const filterDiv =
+    document.getElementById("filters");
+
+  filterDiv.innerHTML = "";
+
+  const keys = Object.keys(data[0]);
+
+  keys.forEach(key=>{
+
+    const uniqueValues =
+      [...new Set(data.map(d=>d[key]))];
+
+    if(
+      uniqueValues.length < 20 &&
+      typeof uniqueValues[0] !== "number"
+    ){
+
+      const wrapper = document.createElement("div");
+
+      const label = document.createElement("label");
+      label.innerText = key;
+
+      const select = document.createElement("select");
+
+      select.multiple = true;
+      select.dataset.key = key;
+
+      const allOption = document.createElement("option");
+
+      allOption.value = "__ALL__";
+      allOption.innerText = "ALL";
+
+      select.appendChild(allOption);
+
+      uniqueValues.forEach(val=>{
+
+        const opt = document.createElement("option");
+
+        opt.value = val;
+        opt.innerText = val;
+
+        select.appendChild(opt);
+
+      });
+
+      select.addEventListener(
+        "change",
+        applyFilters
+      );
+
+      wrapper.appendChild(label);
+      wrapper.appendChild(select);
+
+      filterDiv.appendChild(wrapper);
+
+    }
+
+  });
+}
+
+function applyFilters(){
+
+  const selects =
+    document.querySelectorAll("#filters select");
+
+  let filtered = [...globalData];
+
+  selects.forEach(select=>{
+
+    const key = select.dataset.key;
+
+    const selected =
+      [...select.selectedOptions]
+      .map(o=>o.value);
+
+    if(
+      selected.length > 0 &&
+      !selected.includes("__ALL__")
+    ){
+
+      filtered = filtered.filter(
+        row => selected.includes(String(row[key]))
+      );
+    }
+
+  });
+
+  buildDashboard(filtered);
+}
+
+/* =========================
+DASHBOARD
+========================= */
+
+function buildDashboard(data){
+
+  if(!data || data.length === 0) return;
+
+  document.querySelector(".kpi-grid").innerHTML = "";
+  document.querySelector(".charts-grid").innerHTML = "";
+
+  const keys = Object.keys(data[0]);
+
+  const numericKeys = keys.filter(key =>
+    data.some(row => typeof row[key] === "number")
+  );
+
+  numericKeys.forEach((key,index)=>{
+
+    let values = data
+      .map(row=>row[key])
+      .filter(v=>typeof v === "number");
+
+    const limit = parseInt(
+      document.getElementById("limitInput").value
+    );
+
+    if(!isNaN(limit) && limit > 0){
+      values = values.slice(-limit);
+    }
+
+    if(values.length > 0){
+
+      createKPI(key, values);
+
+      const secondKPI =
+        numericKeys[(index + 1) % numericKeys.length];
+
+      createChart(
+        key,
+        values,
+        data,
+        secondKPI
+      );
+
+    }
+
+  });
+
+  const insights = runRAC(data);
+  showRAC(insights);
+}
+
+/* =========================
+KPI ENGINE
+========================= */
+
+function detectKPIType(name){
+
+  const kpi = name.toLowerCase();
+
+  if(
+    kpi.includes("rate") ||
+    kpi.includes("success") ||
+    kpi.includes("availability") ||
+    kpi.includes("retain") ||
+    kpi.includes("drop") ||
+    kpi.includes("access") ||
+    kpi.includes("cssr") ||
+    kpi.includes("sr")
+  ){
+    return "percentage";
+  }
+
+  if(
+    kpi.includes("rsrp") ||
+    kpi.includes("rsrq") ||
+    kpi.includes("sinr") ||
+    kpi.includes("cqi") ||
+    kpi.includes("ta")
+  ){
+    return "radio";
+  }
+
+  if(
+    kpi.includes("traffic") ||
+    kpi.includes("volume") ||
+    kpi.includes("throughput") ||
+    kpi.includes("users") ||
+    kpi.includes("attempt") ||
+    kpi.includes("paging")
+  ){
+    return "counter";
+  }
+
+  return "generic";
+}
+
+function calculateKPIValue(type, values){
+
+  values = values.filter(v =>
+    typeof v === "number" &&
+    !isNaN(v)
+  );
+
+  if(values.length === 0) return 0;
+
+  if(type === "counter"){
+    return values.reduce((a,b)=>a+b,0).toLocaleString();
+  }
+
+  return (
+    values.reduce((a,b)=>a+b,0) / values.length
+  ).toFixed(2);
+}
+
+function createKPI(name, values){
+
+  const type = detectKPIType(name);
+  const result = calculateKPIValue(type, values);
+
+  const card = document.createElement("div");
+
+  card.className = "kpi-card";
+
+  card.innerHTML = `
+    <h3>${name}</h3>
+    <p>${result}</p>
+  `;
+
+  document
+    .querySelector(".kpi-grid")
+    .appendChild(card);
+}
+
+/* =========================
+CHART ENGINE
+========================= */
+
+function createChart(name, values, data, secondKPI){
+
+  const container = document.createElement("div");
+
+  container.className = "chart-box";
+
+  const header = document.createElement("div");
+  header.className = "chart-header";
+
+  header.innerHTML = `
+    <div class="kpi-title-group">
+      <div class="kpi-main">KPI1: ${name}</div>
+      <div class="kpi-secondary">KPI2: ${secondKPI}</div>
+    </div>
+  `;
+
+  container.appendChild(header);
+
+  const selector = document.createElement("select");
+
+  selector.className = "chart-selector";
+
+  selector.innerHTML = `
+    <option value="line">Line</option>
+    <option value="bar">Bar</option>
+    <option value="radar">Radar</option>
+    <option value="scatter">Scatter</option>
+    <option value="doughnut">Doughnut</option>
+    <option value="pie">Pie</option>
+  `;
+
+  container.appendChild(selector);
+
+  const canvas = document.createElement("canvas");
+  container.appendChild(canvas);
+
+  document
+    .querySelector(".charts-grid")
+    .appendChild(container);
+
+  const labels = data
+    .slice(-values.length)
+    .map((row, i)=>{
+
+      const keys = Object.keys(row);
+
+      const xKey =
+        keys.find(k => k.toLowerCase().includes("date")) ||
+        keys.find(k => k.toLowerCase().includes("time")) ||
+        keys.find(k => k.toLowerCase().includes("month")) ||
+        keys.find(k => typeof row[k] === "string") ||
+        keys[0];
+
+      return row[xKey] || `Row ${i+1}`;
+
+    });
+
+  const secondValues = data
+    .map(row=>row[secondKPI])
+    .filter(v=>typeof v === "number")
+    .slice(-values.length);
+
+  const primaryColor =
+    colors[chartIndex % colors.length];
+
+  const secondaryColor =
+    colors[(chartIndex + 2) % colors.length];
+
+  const chartConfig = {
+
+    type: selector.value,
+
+    data:{
+
+      labels: labels,
+
+      datasets:[
+
+        {
+          label:name,
+          data:values,
+          borderColor:primaryColor,
+          backgroundColor:primaryColor + "33",
+          borderWidth:3,
+          tension:0.45,
+          pointRadius:2,
+          pointHoverRadius:5,
+          fill:false,
+          yAxisID:"y"
+        },
+
+        {
+          label:secondKPI,
+          data:secondValues,
+          borderColor:secondaryColor,
+          backgroundColor:secondaryColor + "33",
+          borderWidth:2,
+          tension:0.45,
+          pointRadius:1,
+          borderDash:[5,5],
+          fill:false,
+          yAxisID:"y1"
+        }
+
+      ]
+    },
+
+    options:{
+
+      responsive:true,
+      maintainAspectRatio:false,
+
+      interaction:{
+        mode:"index",
+        intersect:false
+      },
+
+      plugins:{
+
+        legend:{
+          position:"top",
+          labels:{
+            color:"white",
+            usePointStyle:true,
+            padding:20
+          }
+        },
+
+        tooltip:{
+          backgroundColor:"rgba(15,23,42,0.95)",
+          borderColor:"#3b82f6",
+          borderWidth:1
+        }
+
+      },
+
+      scales:{
+
+        x:{
+          grid:{
+            color:"rgba(255,255,255,0.04)",
+            drawBorder:false
+          },
+          ticks:{
+            color:"#cbd5e1"
+          }
+        },
+
+        y:{
+          position:"left",
+          grid:{
+            color:"rgba(255,255,255,0.05)",
+            borderDash:[2,4]
+          },
+          ticks:{
+            color:primaryColor
+          }
+        },
+
+        y1:{
+          position:"right",
+          grid:{
+            drawOnChartArea:false
+          },
+          ticks:{
+            color:secondaryColor
+          }
+        }
+
+      }
+
+    }
+
+  };
+
+  // =========================
+  // HAIRLINE PLUGIN
+  // =========================
+
+  const crosshairPlugin = {
+    id:"crosshairLine",
+
+    afterDraw: chart => {
+
+      if(chart.tooltip?._active?.length){
+
+        const ctx = chart.ctx;
+
+        const x = chart.tooltip._active[0].element.x;
+
+        const topY = chart.scales.y.top;
+        const bottomY = chart.scales.y.bottom;
+
+        ctx.save();
+
+        ctx.beginPath();
+        ctx.moveTo(x, topY);
+        ctx.lineTo(x, bottomY);
+
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = "rgba(255,255,255,0.35)";
+
+        ctx.stroke();
+
+        ctx.restore();
+      }
+    }
+  };
+
+  let chart = new Chart(
+    canvas,
+    {
+      ...chartConfig,
+      plugins:[crosshairPlugin]
+    }
+  );
+
+  selector.addEventListener("change",()=>{
+
+    chart.destroy();
+
+    chartConfig.type = selector.value;
+
+    chart = new Chart(
+      canvas,
+      {
+        ...chartConfig,
+        plugins:[crosshairPlugin]
+      }
+    );
+
+  });
+
+  chartIndex++;
+}
+
+/* =========================
+RCA ENGINE
+========================= */
+
+function runRAC(data){
+
+  let insights = [];
+
+  insights.push({
+
+    title:"🧠 RAC ENGINE",
+
+    cause:"Dashboard operational with dual KPI analytics",
+
+    action:"GeoAI + RCA layer ready for next integration"
+
+  });
+
+  insights.push({
+
+    title:"📊 Smart Overlay",
+
+    cause:"Dual KPI overlay enabled on all charts",
+
+    action:"Compare capacity, throughput, accessibility & user trends"
+
+  });
+
+  return insights;
+}
+
+function showRAC(insights){
+
+  const container =
+    document.getElementById("rac-results");
+
+  container.innerHTML = "";
+
+  insights.forEach(i=>{
+
+    container.innerHTML += `
+
+      <div class="rac-card">
+
+        <strong>${i.title}</strong><br><br>
+
+        <b>Cause:</b> ${i.cause}<br><br>
+
+        <b>Action:</b> ${i.action}
+
+      </div>
+
+    `;
+
+  });
+}
+
+
