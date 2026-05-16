@@ -20,15 +20,11 @@ LIBRARIES
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
 
-<!-- =====================================
+=====================================
 STYLE
-===================================== -->
+===================================== 
 
 <style>
-
-/* =========================
-   RESET
-========================= */
 
 *{
   margin:0;
@@ -37,12 +33,25 @@ STYLE
 }
 
 body{
-  font-family:Arial,sans-serif;
+
+  font-family:
+    "Segoe UI",
+    sans-serif;
+
   background:
-    linear-gradient(rgba(5,10,25,0.82), rgba(5,10,25,0.9)),
-    url("../assets/Hero-4.jpg") center/cover no-repeat fixed;
+    linear-gradient(
+      rgba(2,6,23,0.92),
+      rgba(2,6,23,0.94)
+    ),
+    url("assets/Hero-4.jpg");
+
+  background-size:cover;
+  background-position:center;
 
   color:white;
+
+  min-height:100vh;
+
   overflow-x:hidden;
 }
 
@@ -50,9 +59,14 @@ body{
    MAIN LAYOUT
 ========================= */
 
-.main-container{
+.dashboard-layout{
+
   display:flex;
-  min-height:100vh;
+
+  gap:20px;
+
+  padding:20px;
+
 }
 
 /* =========================
@@ -60,206 +74,78 @@ body{
 ========================= */
 
 .sidebar{
-  width:260px;
-  background:#0f172a;
-  padding:20px;
-  position:fixed;
-  top:0;
-  left:0;
-  height:100vh;
-  overflow-y:auto;
-  border-right:1px solid rgba(255,255,255,0.05);
-  z-index:100;
+
+  width:280px;
+
+  background:
+    rgba(2,6,23,0.92);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius:24px;
+
+  padding:22px;
+
+  backdrop-filter:blur(14px);
+
+  position:sticky;
+
+  top:20px;
+
+  height:fit-content;
+
+  box-shadow:
+    0 0 30px rgba(0,0,0,0.45);
+
 }
 
 .sidebar h2{
-  margin-bottom:25px;
+
   color:#60a5fa;
+
+  margin-bottom:24px;
+
+  font-size:34px;
+
 }
 
+/* =========================
+   CONTROLS
+========================= */
+
 .sidebar label{
+
   display:block;
-  margin:15px 0 6px;
-  font-size:13px;
+
+  margin-top:18px;
+
+  margin-bottom:8px;
+
   color:#cbd5e1;
+
+  font-size:14px;
+
 }
 
 .sidebar select,
 .sidebar input{
+
   width:100%;
+
   padding:12px;
-  border:none;
-  border-radius:10px;
-  background:#1e293b;
-  color:white;
-}
 
-.export-btn{
-  margin-top:20px;
-  width:100%;
-}
-
-/* =========================
-   CONTENT
-========================= */
-
-.content{
-  margin-left:260px;
-  width:calc(100% - 260px);
-  padding:25px;
-}
-
-/* =========================
-   HERO
-========================= */
-
-.hero-panel{
-  margin-bottom:25px;
-}
-
-.hero-panel h1{
-  font-size:42px;
-  margin-bottom:20px;
-}
-
-.top-controls{
-  display:flex;
-  gap:15px;
-  flex-wrap:wrap;
-}
-
-.top-controls input{
-  padding:10px;
-  border-radius:10px;
-  border:none;
-  background:#1e293b;
-  color:white;
-}
-
-/* =========================
-   FILTERS
-========================= */
-
-.filters-grid{
-  display:grid;
-  grid-template-columns:
-    repeat(auto-fit,minmax(180px,1fr));
-
-  gap:15px;
-  margin-bottom:25px;
-}
-
-.filters-grid select{
-  width:100%;
-  min-height:120px;
-  background:#111827;
-  color:white;
-  border:none;
   border-radius:12px;
-  padding:10px;
-}
 
-/* =========================
-   KPI GRID
-========================= */
-
-.kpi-grid{
-  display:grid;
-
-  grid-template-columns:
-    repeat(auto-fit,minmax(180px,1fr));
-
-  gap:18px;
-
-  margin-bottom:30px;
-}
-
-.kpi-card{
-  background:#111827;
-  padding:20px;
-  border-radius:18px;
-  border:1px solid rgba(255,255,255,0.05);
-
-  transition:0.2s;
-}
-
-.kpi-card:hover{
-  transform:translateY(-3px);
-}
-
-.kpi-card h3{
-  font-size:14px;
-  color:#94a3b8;
-  margin-bottom:10px;
-}
-
-.kpi-card p{
-  font-size:28px;
-  color:#60a5fa;
-  font-weight:bold;
-}
-
-/* =========================
-   CHARTS
-========================= */
-
-.charts-grid{
-  display:grid;
-
-  grid-template-columns:
-    repeat(auto-fit,minmax(520px,1fr));
-
-  gap:22px;
-}
-
-.chart-box{
-  background:#111827;
-  padding:18px;
-  border-radius:18px;
-
-  border:1px solid rgba(255,255,255,0.05);
-
-  min-height:420px;
-
-  transition:0.2s;
-}
-
-.chart-box:hover{
-  transform:translateY(-3px);
-}
-
-.chart-box select{
-  margin-bottom:15px;
-
-  padding:8px 12px;
-
-  background:#1e293b;
-  color:white;
   border:none;
-  border-radius:10px;
-}
 
-.chart-box canvas{
-  width:100% !important;
-  height:320px !important;
-  display:block;
-}
+  background:
+    rgba(30,41,59,0.85);
 
-/* =========================
-   RCA
-========================= */
+  color:white;
 
-#rac-results{
-  margin-top:35px;
-}
+  font-size:14px;
 
-.rac-card{
-  background:#111827;
-  padding:20px;
-  border-radius:16px;
-  margin-bottom:15px;
-
-  border-left:4px solid #3b82f6;
 }
 
 /* =========================
@@ -267,133 +153,98 @@ body{
 ========================= */
 
 button{
-  background:#2563eb;
-  color:white;
+
   border:none;
-  padding:12px 18px;
-  border-radius:10px;
+
   cursor:pointer;
-}
-
-button:hover{
-  background:#1d4ed8;
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media(max-width:900px){
-
-  .sidebar{
-    position:relative;
-    width:100%;
-    height:auto;
-  }
-
-  .content{
-    margin-left:0;
-    width:100%;
-  }
-
-  .charts-grid{
-    grid-template-columns:1fr;
-  }
 
 }
-  /* =========================
-   CHART HEADER
-========================= */
 
-.chart-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:10px;
-}
+.export-btn{
 
-.kpi-title-group{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-}
+  width:100%;
 
-.kpi-main{
-  color:#ffffff;
-  font-weight:700;
+  margin-top:20px;
+
+  padding:14px;
+
+  border-radius:14px;
+
+  background:#2563eb;
+
+  color:white;
+
   font-size:15px;
+
+  font-weight:600;
+
+  transition:0.3s;
+
 }
 
-.kpi-secondary{
-  color:#38bdf8;
-  font-size:12px;
+.export-btn:hover{
+
+  transform:translateY(-2px);
+
+  background:#1d4ed8;
+
 }
+  <div class="network-panel">
+
+  <button class="network-btn">
+    All Network
+  </button>
+
+  <button class="network-btn">
+    5G
+  </button>
+
+  <button class="network-btn">
+    4G
+  </button>
+
+  <button class="network-btn">
+    3G
+  </button>
+
+</div>
 
 /* =========================
-   CHART BOX
-========================= */
-
-.chart-box{
-  background:
-    rgba(10,15,35,0.92);
-
-  border:
-    1px solid rgba(255,255,255,0.08);
-
-  border-radius:18px;
-
-  padding:16px;
-
-  min-height:420px;
-
-  box-shadow:
-    0 0 25px rgba(0,0,0,0.35);
-
-  backdrop-filter:blur(8px);
-}
-
-.chart-box canvas{
-  width:100% !important;
-  height:320px !important;
-}
-
-/* =========================
-   CHART SELECTOR
-========================= */
-
-.chart-selector{
-  margin-bottom:12px;
-}
-
-/* =========================
-   TELECOM NAV
+   TELECOM PANEL
 ========================= */
 
 .network-panel{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
 
-  margin-top:20px;
+  margin-top:28px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:12px;
+
 }
 
 .network-btn{
 
   background:
-    rgba(15,23,42,0.9);
+    rgba(15,23,42,0.92);
 
   border:
-    1px solid #ef4444;
+    1px solid rgba(239,68,68,0.7);
 
   color:white;
 
-  padding:12px;
+  padding:14px;
 
-  border-radius:12px;
+  border-radius:14px;
 
-  cursor:pointer;
+  font-size:14px;
+
+  font-weight:600;
 
   transition:0.3s;
+
 }
 
 .network-btn:hover{
@@ -401,6 +252,415 @@ button:hover{
   background:#ef4444;
 
   transform:translateY(-2px);
+
+  box-shadow:
+    0 0 15px rgba(239,68,68,0.45);
+
+}
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+.main-content{
+
+  flex:1;
+
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.dashboard-header{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:24px;
+
+  gap:20px;
+
+}
+
+.dashboard-title{
+
+  font-size:52px;
+
+  font-weight:800;
+
+  color:white;
+
+}
+
+.timeline-panel{
+
+  display:flex;
+
+  gap:14px;
+
+  align-items:center;
+
+  background:
+    rgba(15,23,42,0.92);
+
+  padding:14px 18px;
+
+  border-radius:18px;
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+}
+
+.timeline-chip{
+
+  padding:10px 16px;
+
+  border-radius:12px;
+
+  background:
+    rgba(37,99,235,0.18);
+
+  color:#93c5fd;
+
+  font-size:13px;
+
+}
+  <div class="dashboard-header">
+
+  <h1 class="dashboard-title">
+    🚀 AutomationPark Dashboard
+  </h1>
+
+  <div class="timeline-panel">
+
+    <div class="timeline-chip">
+      Daily
+    </div>
+
+    <div class="timeline-chip">
+      RCA Ready
+    </div>
+
+    <div class="timeline-chip">
+      GeoAI Enabled
+    </div>
+
+  </div>
+
+</div>
+
+/* =========================
+   FILTERS
+========================= */
+
+#filters{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(auto-fill,minmax(180px,1fr));
+
+  gap:14px;
+
+  margin-bottom:24px;
+
+}
+
+.filter-box{
+
+  background:
+    rgba(15,23,42,0.9);
+
+  padding:14px;
+
+  border-radius:16px;
+
+  border:
+    1px solid rgba(255,255,255,0.05);
+
+}
+
+.filter-box label{
+
+  display:block;
+
+  margin-bottom:10px;
+
+  color:#cbd5e1;
+
+  font-size:13px;
+
+}
+
+.filter-box select{
+
+  width:100%;
+
+  min-height:120px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:
+    rgba(2,6,23,0.92);
+
+  color:white;
+
+  padding:10px;
+
+}
+
+/* =========================
+   KPI GRID
+========================= */
+
+.kpi-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+  gap:18px;
+
+  margin-bottom:28px;
+
+}
+
+.kpi-card{
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(15,23,42,0.95),
+      rgba(30,41,59,0.92)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.06);
+
+  border-radius:22px;
+
+  padding:24px;
+
+  transition:0.3s;
+
+  box-shadow:
+    0 0 20px rgba(0,0,0,0.25);
+
+}
+
+.kpi-card:hover{
+
+  transform:translateY(-4px);
+
+  box-shadow:
+    0 0 20px rgba(37,99,235,0.28);
+
+}
+
+.kpi-card h3{
+
+  color:#94a3b8;
+
+  font-size:15px;
+
+  margin-bottom:14px;
+
+}
+
+.kpi-card p{
+
+  font-size:42px;
+
+  font-weight:800;
+
+  color:#60a5fa;
+
+}
+
+/* =========================
+   CHART GRID
+========================= */
+
+.charts-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0,1fr));
+
+  gap:24px;
+
+}
+
+/* =========================
+   CHART BOX
+========================= */
+
+.chart-box{
+
+  background:
+    rgba(10,15,35,0.92);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius:24px;
+
+  padding:18px;
+
+  min-height:480px;
+
+  position:relative;
+
+  backdrop-filter:blur(8px);
+
+  box-shadow:
+    0 0 25px rgba(0,0,0,0.35);
+
+}
+
+.chart-box canvas{
+
+  width:100% !important;
+
+  height:360px !important;
+
+}
+
+/* =========================
+   CHART HEADER
+========================= */
+
+.chart-header{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:14px;
+
+}
+
+.kpi-title-group{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:5px;
+
+}
+
+.kpi-main{
+
+  font-size:16px;
+
+  font-weight:700;
+
+  color:white;
+
+}
+
+.kpi-secondary{
+
+  font-size:12px;
+
+  color:#38bdf8;
+
+}
+
+/* =========================
+   CHART SELECTOR
+========================= */
+
+.chart-selector{
+
+  margin-bottom:12px;
+
+  padding:10px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:
+    rgba(30,41,59,0.9);
+
+  color:white;
+
+}
+
+/* =========================
+   RAC PANEL
+========================= */
+
+#rac-results{
+
+  margin-top:30px;
+
+  display:grid;
+
+  gap:16px;
+
+}
+
+.rac-card{
+
+  background:
+    rgba(15,23,42,0.92);
+
+  border:
+    1px solid rgba(56,189,248,0.15);
+
+  border-radius:18px;
+
+  padding:18px;
+
+  color:#e2e8f0;
+
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:1400px){
+
+  .charts-grid{
+
+    grid-template-columns:1fr;
+
+  }
+
+}
+
+@media(max-width:1000px){
+
+  .dashboard-layout{
+
+    flex-direction:column;
+
+  }
+
+  .sidebar{
+
+    width:100%;
+
+    position:relative;
+
+    top:0;
+
+  }
 
 }
 
