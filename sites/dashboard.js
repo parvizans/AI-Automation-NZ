@@ -78,6 +78,9 @@ function buildFilters(data){
       const wrapper =
         document.createElement("div");
 
+      wrapper.className =
+        "filter-box";
+
       const label =
         document.createElement("label");
 
@@ -90,7 +93,6 @@ function buildFilters(data){
 
       select.dataset.key = key;
 
-      // ALL OPTION
       const allOption =
         document.createElement("option");
 
@@ -227,79 +229,35 @@ function detectKPIType(name){
   const kpi =
     name.toLowerCase();
 
-  // PERCENTAGE KPIs
   if(
     kpi.includes("rate") ||
     kpi.includes("success") ||
     kpi.includes("availability") ||
     kpi.includes("retain") ||
-    kpi.includes("drop") ||
-    kpi.includes("access") ||
-    kpi.includes("cssr") ||
-    kpi.includes("sr")
+    kpi.includes("drop")
   ){
     return "percentage";
   }
 
-  // RADIO KPIs
   if(
     kpi.includes("rsrp") ||
     kpi.includes("rsrq") ||
-    kpi.includes("sinr") ||
-    kpi.includes("cqi") ||
-    kpi.includes("ta")
+    kpi.includes("sinr")
   ){
     return "radio";
-  }
-
-  // COUNTER KPIs
-  if(
-    kpi.includes("traffic") ||
-    kpi.includes("volume") ||
-    kpi.includes("throughput") ||
-    kpi.includes("users") ||
-    kpi.includes("attempt") ||
-    kpi.includes("paging")
-  ){
-    return "counter";
   }
 
   return "generic";
 
 }
 
-function calculateKPIValue(type, values){
-
-  values =
-    values.filter(v =>
-      typeof v === "number" &&
-      !isNaN(v)
-    );
-
-  if(values.length === 0) return 0;
-
-  if(type === "counter"){
-
-    return values
-      .reduce((a,b)=>a+b,0)
-      .toLocaleString();
-
-  }
-
-  return (
-    values.reduce((a,b)=>a+b,0)
-    / values.length
-  ).toFixed(2);
-
-}
-
 function createKPI(name, values){
 
-  const type =
-    detectKPIType(name);
-
-  const result =
-    calculateKPIValue(type, values);
+  const avg =
+    (
+      values.reduce((a,b)=>a+b,0)
+      / values.length
+    ).toFixed(2);
 
   const card =
     document.createElement("div");
@@ -309,7 +267,7 @@ function createKPI(name, values){
 
   card.innerHTML = `
     <h3>${name}</h3>
-    <p>${result}</p>
+    <p>${avg}</p>
   `;
 
   document
@@ -324,57 +282,61 @@ function createKPI(name, values){
 
 function createChart(name, values, data){
 
-  const type =
-    detectKPIType(name);
-
-  // CONTAINER
   const container =
     document.createElement("div");
 
   container.className =
     "chart-box";
 
-  container.style.height =
-    "420px";
+  /* HEADER */
+  const header =
+    document.createElement("div");
 
-  container.style.padding =
-    "15px";
+  header.className =
+    "chart-header";
 
-  container.style.background =
-    "rgba(10,15,35,0.92)";
+  header.innerHTML = `
+    <div class="kpi-title-group">
+      <span class="kpi-main">
+        KPI1: ${name}
+      </span>
 
-  container.style.border =
-    "1px solid rgba(255,255,255,0.08)";
+      <span class="kpi-secondary">
+        KPI2: Future Overlay
+      </span>
+    </div>
+  `;
 
-  container.style.borderRadius =
-    "18px";
+  container.appendChild(header);
 
-  // SELECTOR
+  /* SELECTOR */
   const selector =
     document.createElement("select");
 
+  selector.className =
+    "chart-selector";
+
   selector.innerHTML = `
-    <option value="line">line</option>
-    <option value="bar">bar</option>
-    <option value="doughnut">doughnut</option>
-    <option value="pie">pie</option>
-    <option value="scatter">scatter</option>
+    <option value="line">Line</option>
+    <option value="bar">Bar</option>
+    <option value="doughnut">Doughnut</option>
+    <option value="pie">Pie</option>
+    <option value="scatter">Scatter</option>
   `;
 
   container.appendChild(selector);
 
-  // CANVAS
+  /* CANVAS */
   const canvas =
     document.createElement("canvas");
 
   container.appendChild(canvas);
 
-  // APPEND
   document
     .querySelector(".charts-grid")
     .appendChild(container);
 
-  // LABELS
+  /* LABELS */
   const labels =
     data
       .slice(-values.length)
@@ -392,19 +354,7 @@ function createChart(name, values, data){
           ||
 
           keys.find(k =>
-            k.toLowerCase().includes("time")
-          )
-
-          ||
-
-          keys.find(k =>
             k.toLowerCase().includes("month")
-          )
-
-          ||
-
-          keys.find(k =>
-            typeof row[k] === "string"
           )
 
           ||
@@ -415,33 +365,7 @@ function createChart(name, values, data){
 
       });
 
-  // Y AXIS
-  let yAxis = {};
-
-  if(type === "percentage"){
-
-    yAxis = {
-      min:0,
-      max:100
-    };
-
-  }
-
-  else if(type === "radio"){
-
-    yAxis = {
-
-      suggestedMin:
-        Math.min(...values) - 5,
-
-      suggestedMax:
-        Math.max(...values) + 5
-
-    };
-
-  }
-
-  // CHART CONFIG
+  /* CHART */
   const chartConfig = {
 
     type: selector.value,
@@ -459,7 +383,7 @@ function createChart(name, values, data){
         backgroundColor:
           colors[
             chartIndex % colors.length
-          ] + "33",
+          ] + "22",
 
         borderColor:
           colors[
@@ -470,7 +394,7 @@ function createChart(name, values, data){
 
         tension:0.35,
 
-        pointRadius:3,
+        pointRadius:2,
 
         pointHoverRadius:6,
 
@@ -486,8 +410,6 @@ function createChart(name, values, data){
 
       maintainAspectRatio:false,
 
-      animation:true,
-
       interaction:{
         mode:"index",
         intersect:false
@@ -496,6 +418,7 @@ function createChart(name, values, data){
       plugins:{
 
         legend:{
+          position:"top",
           labels:{
             color:"#e2e8f0"
           }
@@ -525,9 +448,7 @@ function createChart(name, values, data){
 
           grid:{
             color:"rgba(255,255,255,0.05)"
-          },
-
-          ...yAxis
+          }
 
         }
 
@@ -537,38 +458,24 @@ function createChart(name, values, data){
 
   };
 
-  // INITIAL CHART
   let chart =
     new Chart(
       canvas.getContext("2d"),
       chartConfig
     );
 
-  // CHART SWITCHER
+  /* CHART SWITCHER */
+
   selector.addEventListener("change",()=>{
 
-    if(chart){
-      chart.destroy();
-    }
-
-    container
-      .querySelector("canvas")
-      .remove();
-
-    const freshCanvas =
-      document.createElement("canvas");
-
-    freshCanvas.style.height =
-      "320px";
-
-    container.appendChild(freshCanvas);
+    chart.destroy();
 
     chartConfig.type =
       selector.value;
 
     chart =
       new Chart(
-        freshCanvas.getContext("2d"),
+        canvas.getContext("2d"),
         chartConfig
       );
 
@@ -590,9 +497,9 @@ function runRAC(data){
 
     title:"🧠 RAC ENGINE",
 
-    cause:"Dashboard loaded successfully",
+    cause:"Dashboard operational",
 
-    action:"Charts & KPIs operational"
+    action:"AI RCA ready"
 
   });
 
