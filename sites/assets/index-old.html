@@ -1,1 +1,543 @@
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 
+  <title>AutomationPark | AI Telecom Tools & Network Automation Platform</title>
+
+  <meta name="description" content="AutomationPark is an AI-powered telecom platform delivering RAN insights, RCA analysis, 5G optimization tools, and network automation solutions for engineers and operators.">
+
+  <meta name="keywords" content="Telecom AI, 5G tools, RCA telecom, network optimization, automation platform">
+
+  <meta name="robots" content="index, follow">
+
+  <!-- 🔥 THIS WAS MISSING -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body id="top">
+
+ <header class="navbar">
+
+<div class="nav-container">
+
+<div class="logo">
+  <span class="brand-text">AutomationPark</span>
+</div>
+
+<div id="menu-toggle">
+  ☰
+</div>
+
+<nav class="menu">
+
+<ul>
+
+<li><a href="#home">Home</a></li>
+  
+<li><a href="#">Tools</a></li>
+
+<li><a href="#knowledge">Knowledge Base</a></li>
+
+<li><a href="#rca">RCA Analyzer</a></li>
+
+<li><a href="#contact">Contact</a></li>
+
+<li><a href="#products">Products</a></li>
+
+<li><a href="#">Subscribe</a></li> <!-- 🔥 here -->
+
+</ul>
+
+</nav>
+
+</div>
+
+</header>
+  <main>
+
+ <!-- HERO removed -->
+
+<!-- 👉 NEW HERO GOES HERE -->
+
+  <section id="home" class="hero">
+  
+
+  <canvas id="stars"></canvas>   <!-- 👈 ADD THIS LINE HERE -->
+
+  <div class="hero-content">
+    
+    <h1>Telecom AI & Automation Platform</h1>
+    <p>
+      Build, analyze and optimize networks with AI-powered tools, insights and engineering intelligence.
+    </p>
+
+    <div class="hero-buttons">
+      <a href="#tools" class="btn primary">Explore Tools</a>
+      <a href="#insights" class="btn secondary">Read Insights</a>
+    </div>
+  </div>
+
+</section>
+    <section id="insights" class="section">
+</section>
+    
+</header>
+
+
+
+<section id="tools">
+
+<!-✅ YOU ADD Tools section here-->
+
+    <section id="tools" class="section">
+  <h2>Tools</h2>
+
+ <div class="tool-card">
+   
+   <section id="throughput">
+   <h3>5G Throughput Calculator (Pro)</h3>
+  <p>Your existing tool content here...</p>
+</section>
+   
+   <p class="tool-guide">
+Simulate real-world 5G throughput based on SINR, bandwidth, and radio conditions.
+</p>
+
+  <!-- Criteria 1 -->
+  <div class="form-row">
+    <input id="sinr" value="20">
+    <label>SINR (dB)</label>
+  </div>
+
+  <!-- Criteria 3 -->
+  <div class="form-row">
+    <input id="bandwidth" value="100">
+    <label>Bandwidth (MHz)</label>
+  </div>
+
+  <!-- Criteria 4 -->
+  <div class="form-row">
+    <input id="mimo" value="4">
+    <label>MIMO Layers</label>
+  </div>
+
+ 
+
+  <!-- Criteria 7 -->
+  <div class="form-row">
+    <input id="bler" value="10">
+    <label>BLER (%)</label>
+  </div>
+
+  <!-- Criteria 8 -->
+  <div class="form-row">
+    <input id="overhead" value="15">
+    <label>Overhead (%)</label>
+  </div>
+
+  <!-- Criteria 9 -->
+  <div class="form-row">
+  <select id="mode">
+      <option value="auto">Auto Mode</option>
+      <option value="manual">Manual Mode</option>
+    </select>
+    <label>Calculation Mode</label>
+  </div>
+    <!-- Criteria 5 -->
+  <div class="form-row">
+    <select id="scs">
+      <option>15</option>
+      <option selected>30</option>
+      <option>60</option>
+    </select>
+    <label>Subcarrier Spacing (kHz)</label>
+  </div>
+   
+ <!-- Criteria 2 -->
+<div class="form-row">
+  <select id="freqBand">
+    <option value="700">700 MHz (n28)</option>
+    <option value="850">850 MHz</option>
+    <option value="900">900 MHz</option>
+    <option value="1800">1800 MHz (n3)</option>
+    <option value="2100">2100 MHz (n1)</option>
+    <option value="2600" selected>2600 MHz (n7)</option>
+    <option value="3500">3500 MHz (n78)</option>
+    <option value="24000">24 GHz</option>
+    <option value="28000">28 GHz</option>
+  </select>
+ <label>Frequency Band</label>
+</div>
+   
+  <!-- Criteria 6 -->
+  <div class="form-row">
+    <select id="duplex">
+      <option value="1">FDD</option>
+      <option value="0.75">TDD (4DL:1UL)</option>
+      <option value="0.6">TDD (3DL:2UL)</option>
+    </select>
+    <label>Duplex Mode</label>
+  </div>
+
+  <!-- BUTTON AT THE END -->
+  <button onclick="calculate5G()" class="btn primary big-btn">
+    Calculate
+  </button>
+
+  <p id="result">Result: -- Mbps</p>
+
+</div>     <!-- END throughput tool -->
+<!-- ✅ ADD LINK BUDGET HERE -->
+<!-- ✅ LINK BUDGET TOOL (FIXED CLEAN) -->
+<div class="tool-card lb-card">
+  
+  <section id="linkbudget">
+  <h3>📡 5G Link Budget Calculator</h3>
+</section>
+
+  <p class="tool-guide">
+Estimate coverage and required sites based on RF parameters and deployment scenario.
+</p>
+
+ <div class="tool-grid-2">
+
+    <label>Tx Power (W)</label>
+    <input type="number" id="lb_power" value="100">
+
+    <label>Frequency (MHz)</label>
+    <input type="number" id="lb_freq" value="3500">
+
+    <label>BS Antenna Gain (dBi)</label>
+    <input type="number" id="lb_gain" value="17">
+
+    <label>Cable Loss (dB)</label>
+    <input type="number" id="lb_cable" value="0">
+
+    <label>Body Loss (dB)</label>
+    <input type="number" id="lb_body" value="3">
+
+    <label>Building Loss (dB)</label>
+    <input type="number" id="lb_building" value="12">
+
+    <label>Interference Margin (dB)</label>
+    <input type="number" id="lb_interference" value="2">
+
+    <label>Fading Margin (dB)</label>
+    <input type="number" id="lb_fading" value="8">
+
+    <label>Propagation Model</label>
+    <select id="lb_model">
+      <option value="120">Rural</option>
+      <option value="135">Suburban</option>
+      <option value="150">Urban</option>
+    </select>
+
+    <label>Cell Edge Throughput (Mbps)</label>
+    <input type="number" id="lb_throughput" value="25">
+
+    <label>Total Area (sqkm)</label>
+    <input type="number" id="lb_area" value="50">
+
+  </div>
+
+  <button onclick="calculateLinkBudget()" class="btn primary">
+    Calculate
+  </button>
+
+  <h2 id="lb_distance">Distance: --</h2>
+  <h3 id="lb_pathloss">Path Loss: --</h3>
+  <h3 id="lb_budget">Link Budget: --</h3>
+  <h3 id="lb_sites">Sites Required: --</h3>
+
+</div>
+
+<div class="tool-card">
+
+  <section id="capacity">
+  <h3>📊 5G Coverage & Capacity Planner</h3>
+</section>
+
+ 
+
+  <div class="tool-grid">
+
+    <label>Total Area (sqkm)</label>
+    <input type="number" id="cc_area" value="50">
+
+    <label>Bandwidth (MHz)</label>
+    <input type="number" id="cc_bw" value="100">
+
+    <label>MIMO Layers</label>
+    <input type="number" id="cc_mimo" value="4">
+
+    <label>Users in Area</label>
+    <input type="number" id="cc_users" value="500">
+
+    <label>Target Throughput per User (Mbps)</label>
+    <input type="number" id="cc_user_tput" value="10">
+
+  </div>
+
+  <button onclick="calculateCoverage()" class="btn primary">
+    Calculate
+  </button>
+
+  <h3 id="cc_sites">Sites Required: --</h3>
+  <h3 id="cc_capacity">Capacity per Site: --</h3>
+  <h3 id="cc_risk">Congestion Risk: --</h3>
+
+</div>
+      <section id="vision" class="section">
+  <h2>🚀 Platform Vision</h2>
+
+  <p class="vision-text">
+    We simplify telecom engineering, project delivery, and change management through intelligent automation.
+  </p>
+
+  <p class="vision-sub">
+    AutomationPark brings all critical tools into one platform — enabling engineers, project managers, and decision-makers to design, optimize, and deliver with confidence.
+  </p>
+
+  <h3 class="vision-highlight">
+    One platform. Smarter decisions. Faster execution.
+  </h3>
+
+  <div class="vision-grid">
+
+    <div class="vision-card">
+      <h4>📡 Telecom Engineering</h4>
+      <p>Planning, optimization, and performance analysis tools.</p>
+    </div>
+
+    <div class="vision-card">
+      <h4>🧠 AI & Automation</h4>
+      <p>Smart recommendations and intelligent RCA engines.</p>
+    </div>
+
+    <div class="vision-card">
+      <h4>📊 Project Management</h4>
+      <p>Resource planning, budgeting, and delivery optimization.</p>
+    </div>
+
+    <div class="vision-card">
+      <h4>🔁 Change Management</h4>
+      <p>Risk analysis, pre-check tools, and CAB automation.</p>
+    </div>
+
+    <div class="vision-card">
+      <h4>🌐 IoT Platform (Future)</h4>
+      <p>Scalable tools for connected devices and smart networks.</p>
+    </div>
+
+  </div>
+</section>
+
+<section id="knowledge" class="section">
+  <h2>Knowledge Base</h2>
+  <p>Structured telecom learning and engineering references.</p>
+</section>
+
+<section id="rca" class="section">
+  <h2>RCA Analyzer</h2>
+  <p>AI-powered root cause analysis for network performance issues.</p>
+</section>
+
+
+<section id="subscribe" class="section">
+  <h2>Subscribe</h2>
+  <p>Stay updated with latest telecom insights and tools.</p>
+</section
+
+    <!-- AUTOMATION -->
+    <section id="automation" class="section">
+      <div class="wrap">
+        <div class="card">
+          <h2>Business Automation</h2>
+          <p class="muted">
+            Smart workflows for car dealers, trades, hospitality & small businesses.
+          </p>
+
+          <div class="three">
+            <div class="item">
+              <h3>Booking & Enquiry Systems</h3>
+              <p>Automated forms, instant notifications, CRM integration.</p>
+            </div>
+
+            <div class="item">
+              <h3>Follow-up Automation</h3>
+              <p>Email, WhatsApp & SMS follow-ups that close deals faster.</p>
+            </div>
+
+            <div class="item">
+              <h3>AI Chatbots</h3>
+              <p>Lead capture bots for websites & social media.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CAREER -->
+    <section id="career" class="section">
+      <div class="wrap">
+        <div class="card">
+          <h2>Career Acceleration Services</h2>
+          <p class="muted">
+            Get hired faster. Stand out confidently.
+          </p>
+
+          <div class="three">
+            <div class="item">
+              <h3>Professional CV Writing</h3>
+              <p>ATS-optimized, industry-tailored resumes.</p>
+            </div>
+
+            <div class="item">
+              <h3>Custom Cover Letters</h3>
+              <p>Job-matched letters aligned with job descriptions.</p>
+            </div>
+
+            <div class="item">
+              <h3>Interview & Screening Prep</h3>
+              <p>Mock Q&A, behavioural answers, first-call preparation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+      <!-- MID IMAGE -->
+<section class="image-break">
+  <div class="wrap">
+    <img src="assets/mid.jpg" alt="Automationpark Services" class="mid-image">
+  </div>
+</section>
+
+    <!-- PRICING -->
+    <section id="pricing" class="section">
+      <div class="wrap">
+        <div class="card">
+          <h2>Pricing</h2>
+
+          <div class="pricing">
+
+            <div class="price">
+              <h3>Automation Starter</h3>
+              <div class="amt">$300 NZD</div>
+              <ul>
+                <li>Booking or enquiry system</li>
+                <li>Google Sheets CRM</li>
+                <li>Email notifications</li>
+              </ul>
+            </div>
+
+            <div class="price featured">
+              <h3>Automation Complete To Pro-MultiPage</h3>
+              <div class="amt">$500-$1000 NZD</div>
+              <ul>
+                <li>Full automation setup</li>
+                <li>Follow-up workflows</li>
+                <li>Dashboard & analytics</li>
+              </ul>
+            </div>
+
+            <div class="price">
+              <h3>Career Package</h3>
+              <div class="amt">$250 NZD</div>
+              <ul>
+                <li>Professional CV rewrite</li>
+                <li>Custom cover letter</li>
+                <li>Interview Q&A guide</li>
+                <li>30-min coaching call</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+  <h2>Contact</h2>
+  <p>Get in touch for collaboration or consulting.</p>
+</section>
+      
+          <div class="row">
+            <a class="btn primary"
+              href="https://wa.me/64220100700"
+              target="_blank">WhatsApp</a>
+
+            <a class="btn"
+              href="mailto:parvizans@gmail.com">Email</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="wrap small muted">
+      © <span id="y"></span> Automationpark — AI Automation & Career Services
+    </div>
+  </footer>
+
+  <!-- Language Script -->
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+
+    function switchLang(lang) {
+      alert("Language support coming soon: " + lang);
+    }
+  </script>
+  <script src="script.js"></script>
+ <h2>🚀 Our Tools</h2>
+
+<div class="product-grid">
+
+<section id="products" class="section">
+
+
+  <div class="product-grid">
+
+    <a href="#throughput" class="product-card">
+      <div class="product-img" style="background-image:url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31')"></div>
+      <h3>5G Throughput Calculator</h3>
+      <p>AI-powered throughput estimation based on RF conditions.</p>
+    </a>
+
+    <a href="#linkbudget" class="product-card">
+      <div class="product-img" style="background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475')"></div>
+      <h3>Link Budget Tool</h3>
+      <p>Plan coverage and signal performance intelligently.</p>
+    </a>
+
+    <a href="#capacity" class="product-card">
+      <div class="product-img" style="background-image:url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5')"></div>
+      <h3>Capacity Planner</h3>
+      <p>Optimize users, bandwidth and network capacity.</p>
+    </a>
+
+    <a href="https://automationpark.tech/timesheet.html" class="product-card">
+      <div class="product-img" style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d')"></div>
+      <h3>Smart Timesheet</h3>
+      <p>Automated reporting and workforce tracking system.</p>
+    </a>
+
+  </div>
+  
+<script>
+    
+const toggle = document.getElementById("menu-toggle");
+const menu = document.querySelector(".menu");
+
+toggle.addEventListener("click", () => {
+  menu.classList.toggle("active");
+});
+ 
+
+</script>
+</section>
+</body>
+</html>
