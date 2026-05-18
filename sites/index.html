@@ -1,289 +1,392 @@
-export default function AutomationParkV2() {
-  const products = [
-    {
-      title: 'GeoAI Platform',
-      desc: 'Telecom spatial intelligence with RF sector visualization and KPI heat analysis.',
-      glow: 'from-cyan-500/30 to-blue-500/10'
-    },
-    {
-      title: 'RCA Engine',
-      desc: 'AI-driven root cause analysis for congestion, interference and optimization.',
-      glow: 'from-orange-500/30 to-red-500/10'
-    },
-    {
-      title: 'Dashboard Studio',
-      desc: 'PowerBI-style analytics dashboards with telecom KPI intelligence.',
-      glow: 'from-violet-500/30 to-purple-500/10'
-    },
-    {
-      title: 'RF Intelligence',
-      desc: 'Layering strategy, sector analytics and advanced network optimization.',
-      glow: 'from-emerald-500/30 to-teal-500/10'
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>AutomationPark | AI Telecom Intelligence</title>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
     }
-  ];
 
-  const stats = [
-    { value: '5G', label: 'Network Intelligence' },
-    { value: 'AI', label: 'RCA Automation' },
-    { value: 'Geo', label: 'Spatial Analytics' },
-    { value: '24/7', label: 'Operations Vision' }
-  ];
+    body{
+      font-family:Arial,sans-serif;
+      background:#020617;
+      color:white;
+      overflow-x:hidden;
+    }
 
-  return (
-    <div className="min-h-screen bg-[#020617] text-white overflow-hidden relative">
-      {/* BACKGROUND */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_top,rgba(56,189,248,0.15),transparent_35%)]" />
-        <div className="absolute bottom-0 right-0 w-full h-full bg-[radial-gradient(circle_at_bottom_right,rgba(139,92,246,0.15),transparent_35%)]" />
+    /* NAVBAR */
 
-        {/* GRID */}
-        <div className="absolute inset-0 opacity-10">
-          <div
-            className="w-full h-full"
-            style={{
-              backgroundImage:
-                'linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)',
-              backgroundSize: '50px 50px'
-            }}
-          />
-        </div>
+    .navbar{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:80px;
 
-        {/* FLOATING GLOWS */}
-        <div className="absolute top-20 left-20 w-72 h-72 bg-cyan-500/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-violet-500/20 rounded-full blur-3xl animate-pulse" />
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+
+      padding:0 60px;
+
+      background:rgba(2,6,23,0.85);
+      backdrop-filter:blur(14px);
+
+      border-bottom:1px solid rgba(255,255,255,0.08);
+
+      z-index:999;
+    }
+
+    .logo{
+      font-size:30px;
+      font-weight:bold;
+      color:#38bdf8;
+    }
+
+    .menu{
+      display:flex;
+      gap:30px;
+    }
+
+    .menu a{
+      color:white;
+      text-decoration:none;
+      transition:0.3s;
+    }
+
+    .menu a:hover{
+      color:#38bdf8;
+    }
+
+    /* HERO */
+
+    .hero{
+      min-height:100vh;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      text-align:center;
+      padding:120px 30px 80px;
+
+      position:relative;
+
+      background:
+      radial-gradient(circle at top,
+      rgba(56,189,248,0.18),
+      transparent 30%),
+
+      radial-gradient(circle at bottom right,
+      rgba(139,92,246,0.18),
+      transparent 30%),
+
+      #020617;
+    }
+
+    .hero-content{
+      max-width:1100px;
+      z-index:2;
+    }
+
+    .hero h1{
+      font-size:80px;
+      line-height:1.1;
+      margin-bottom:30px;
+    }
+
+    .hero h1 span{
+      background:linear-gradient(
+        90deg,
+        #38bdf8,
+        #3b82f6,
+        #8b5cf6
+      );
+
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+
+    .hero p{
+      font-size:22px;
+      color:#cbd5e1;
+      line-height:1.8;
+
+      max-width:850px;
+      margin:auto;
+    }
+
+    .buttons{
+      margin-top:50px;
+
+      display:flex;
+      justify-content:center;
+      gap:20px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      padding:18px 35px;
+      border-radius:16px;
+      border:none;
+      cursor:pointer;
+
+      font-size:16px;
+      font-weight:bold;
+
+      transition:0.3s;
+    }
+
+    .btn-primary{
+      background:linear-gradient(
+        90deg,
+        #06b6d4,
+        #2563eb
+      );
+
+      color:white;
+
+      box-shadow:
+      0 0 30px rgba(56,189,248,0.35);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-4px);
+    }
+
+    .btn-secondary{
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.1);
+      color:white;
+      backdrop-filter:blur(12px);
+    }
+
+    .btn-secondary:hover{
+      background:rgba(255,255,255,0.12);
+    }
+
+    /* PRODUCTS */
+
+    .section{
+      padding:120px 60px;
+    }
+
+    .section-title{
+      text-align:center;
+      margin-bottom:70px;
+    }
+
+    .section-title h2{
+      font-size:56px;
+      margin-bottom:20px;
+    }
+
+    .section-title p{
+      color:#94a3b8;
+      max-width:800px;
+      margin:auto;
+      line-height:1.8;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:30px;
+    }
+
+    .card{
+      background:rgba(255,255,255,0.05);
+
+      border:1px solid rgba(255,255,255,0.08);
+
+      border-radius:30px;
+
+      padding:35px;
+
+      backdrop-filter:blur(18px);
+
+      transition:0.4s;
+    }
+
+    .card:hover{
+      transform:translateY(-10px);
+
+      border-color:#38bdf8;
+
+      box-shadow:
+      0 0 40px rgba(56,189,248,0.2);
+    }
+
+    .card h3{
+      font-size:28px;
+      margin-bottom:20px;
+      color:#38bdf8;
+    }
+
+    .card p{
+      color:#cbd5e1;
+      line-height:1.8;
+    }
+
+    /* FOOTER */
+
+    footer{
+      padding:50px;
+      text-align:center;
+      border-top:1px solid rgba(255,255,255,0.08);
+      color:#64748b;
+    }
+
+    @media(max-width:768px){
+
+      .hero h1{
+        font-size:52px;
+      }
+
+      .navbar{
+        padding:0 20px;
+      }
+
+      .menu{
+        display:none;
+      }
+
+      .section{
+        padding:100px 25px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+
+  <nav class="navbar">
+
+    <div class="logo">
+      AUTOMATIONPARK
+    </div>
+
+    <div class="menu">
+      <a href="#">Platform</a>
+      <a href="#">GeoAI</a>
+      <a href="#">RCA</a>
+      <a href="#">Products</a>
+      <a href="#">Contact</a>
+    </div>
+
+  </nav>
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="hero-content">
+
+      <h1>
+        Building The Future Of
+        <span>Telecom Intelligence</span>
+      </h1>
+
+      <p>
+        AutomationPark combines GeoAI, telecom analytics,
+        RCA intelligence and dashboard automation into one
+        futuristic operations platform.
+      </p>
+
+      <div class="buttons">
+
+        <button class="btn btn-primary">
+          Launch Platform
+        </button>
+
+        <button class="btn btn-secondary">
+          Explore GeoAI
+        </button>
+
       </div>
 
-      {/* NAVBAR */}
-      <nav className="relative z-20 flex items-center justify-between px-8 lg:px-16 py-6 border-b border-white/10 backdrop-blur-xl bg-white/5">
-        <div>
-          <h1 className="text-3xl font-black tracking-wide bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-            AUTOMATIONPARK
-          </h1>
-          <p className="text-xs text-slate-400 mt-1 tracking-[0.3em]">
-            AI TELECOM INTELLIGENCE
-          </p>
-        </div>
-
-        <div className="hidden md:flex items-center gap-8 text-sm text-slate-300">
-          <a href="#" className="hover:text-cyan-400 transition">Platform</a>
-          <a href="#" className="hover:text-cyan-400 transition">GeoAI</a>
-          <a href="#" className="hover:text-cyan-400 transition">RCA Engine</a>
-          <a href="#" className="hover:text-cyan-400 transition">Products</a>
-          <a href="#" className="hover:text-cyan-400 transition">Contact</a>
-        </div>
-      </nav>
-
-      {/* HERO */}
-      <section className="relative z-10 px-8 lg:px-16 pt-24 pb-20">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* LEFT */}
-          <div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-sm mb-8">
-              <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-              AI Operations Platform
-            </div>
-
-            <h1 className="text-5xl md:text-7xl font-black leading-tight">
-              Building The Future Of
-              <span className="block mt-4 bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500 bg-clip-text text-transparent">
-                Telecom Intelligence
-              </span>
-            </h1>
-
-            <p className="mt-8 text-slate-300 text-lg leading-relaxed max-w-2xl">
-              AutomationPark combines GeoAI, telecom analytics, KPI intelligence,
-              RCA automation and network visualization into one futuristic operations platform.
-            </p>
-
-            <div className="flex flex-wrap gap-4 mt-10">
-              <button className="px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:scale-105 transition-all duration-300 font-semibold shadow-[0_0_30px_rgba(56,189,248,0.35)]">
-                Launch Platform
-              </button>
-
-              <button className="px-8 py-4 rounded-2xl border border-white/15 bg-white/5 hover:bg-white/10 transition-all duration-300 backdrop-blur-xl">
-                Explore GeoAI
-              </button>
-            </div>
-          </div>
-
-          {/* RIGHT */}
-          <div className="relative">
-            <div className="relative rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-2xl p-6 shadow-2xl overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 to-violet-500/10" />
-
-              {/* TOP PANEL */}
-              <div className="relative flex items-center justify-between mb-6">
-                <div>
-                  <h3 className="text-xl font-bold">GeoAI Network Vision</h3>
-                  <p className="text-sm text-slate-400 mt-1">Live Telecom Intelligence</p>
-                </div>
-
-                <div className="px-4 py-2 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 text-sm">
-                  System Online
-                </div>
-              </div>
-
-              {/* FAKE MAP */}
-              <div className="relative h-[380px] rounded-3xl overflow-hidden border border-white/10 bg-[#07111f]">
-                <div className="absolute inset-0 opacity-20">
-                  <div
-                    className="w-full h-full"
-                    style={{
-                      backgroundImage:
-                        'linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)',
-                      backgroundSize: '40px 40px'
-                    }}
-                  />
-                </div>
-
-                {/* NETWORK NODES */}
-                <div className="absolute top-16 left-20 w-4 h-4 rounded-full bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,1)]" />
-                <div className="absolute top-32 right-28 w-4 h-4 rounded-full bg-emerald-400 shadow-[0_0_20px_rgba(74,222,128,1)]" />
-                <div className="absolute bottom-20 left-40 w-4 h-4 rounded-full bg-orange-400 shadow-[0_0_20px_rgba(251,146,60,1)]" />
-                <div className="absolute bottom-28 right-16 w-4 h-4 rounded-full bg-violet-400 shadow-[0_0_20px_rgba(167,139,250,1)]" />
-
-                {/* CONNECTION LINES */}
-                <div className="absolute top-[76px] left-[95px] w-[230px] h-[2px] bg-gradient-to-r from-cyan-400 to-emerald-400 rotate-[18deg] opacity-60" />
-                <div className="absolute top-[180px] left-[160px] w-[250px] h-[2px] bg-gradient-to-r from-orange-400 to-violet-400 -rotate-[14deg] opacity-60" />
-
-                {/* FLOATING KPI CARDS */}
-                <div className="absolute top-8 right-8 p-4 rounded-2xl bg-black/40 border border-white/10 backdrop-blur-xl">
-                  <div className="text-xs text-slate-400">Average SINR</div>
-                  <div className="text-2xl font-bold text-cyan-400 mt-1">18.2 dB</div>
-                </div>
-
-                <div className="absolute bottom-8 left-8 p-4 rounded-2xl bg-black/40 border border-white/10 backdrop-blur-xl">
-                  <div className="text-xs text-slate-400">Network Health</div>
-                  <div className="text-2xl font-bold text-emerald-400 mt-1">97%</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* STATS */}
-      <section className="relative z-10 px-8 lg:px-16 py-10">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {stats.map((item, index) => (
-            <div
-              key={index}
-              className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-8 hover:-translate-y-2 transition-all duration-300"
-            >
-              <div className="text-4xl font-black text-cyan-400">
-                {item.value}
-              </div>
-              <div className="mt-3 text-slate-400 text-sm tracking-wide">
-                {item.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* PRODUCTS */}
-      <section className="relative z-10 px-8 lg:px-16 py-24">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-300 text-sm mb-6">
-            Platform Modules
-          </div>
-
-          <h2 className="text-5xl font-black">
-            AI Telecom Products
-          </h2>
-
-          <p className="text-slate-400 mt-6 max-w-3xl mx-auto text-lg">
-            A complete ecosystem for telecom analytics, GeoAI operations,
-            RCA intelligence and network optimization.
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8">
-          {products.map((product, index) => (
-            <div
-              key={index}
-              className="group relative rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden hover:-translate-y-3 transition-all duration-500"
-            >
-              <div className={`absolute inset-0 bg-gradient-to-br ${product.glow} opacity-0 group-hover:opacity-100 transition duration-500`} />
-
-              <div className="relative p-8">
-                <div className="w-16 h-16 rounded-2xl bg-white/10 border border-white/10 flex items-center justify-center text-2xl mb-8 backdrop-blur-xl">
-                  ⚡
-                </div>
-
-                <h3 className="text-2xl font-bold mb-4">
-                  {product.title}
-                </h3>
-
-                <p className="text-slate-400 leading-relaxed">
-                  {product.desc}
-                </p>
-
-                <button className="mt-8 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 transition text-sm">
-                  Explore Module
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* RCA SECTION */}
-      <section className="relative z-10 px-8 lg:px-16 py-24">
-        <div className="rounded-[3rem] border border-white/10 bg-white/5 backdrop-blur-2xl overflow-hidden">
-          <div className="grid lg:grid-cols-2 gap-10 p-10 lg:p-16 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-red-500/30 bg-red-500/10 text-red-300 text-sm mb-8">
-                AI RCA Engine
-              </div>
-
-              <h2 className="text-5xl font-black leading-tight">
-                Intelligent Root Cause Analysis
-              </h2>
-
-              <p className="mt-8 text-slate-300 text-lg leading-relaxed">
-                AutomationPark analyzes telecom KPIs, RF behavior, congestion patterns,
-                interference and mobility events to identify operational anomalies automatically.
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              <div className="rounded-2xl border border-red-500/20 bg-red-500/10 p-6">
-                <div className="text-red-400 font-bold text-lg">High Utilization Detected</div>
-                <div className="text-slate-300 mt-2">Possible congestion on LTE1800 sector.</div>
-              </div>
-
-              <div className="rounded-2xl border border-orange-500/20 bg-orange-500/10 p-6">
-                <div className="text-orange-400 font-bold text-lg">Low SINR / Interference</div>
-                <div className="text-slate-300 mt-2">Neighbor overlap and overshooting suspected.</div>
-              </div>
-
-              <div className="rounded-2xl border border-cyan-500/20 bg-cyan-500/10 p-6">
-                <div className="text-cyan-400 font-bold text-lg">AI Recommendation</div>
-                <div className="text-slate-300 mt-2">Adjust tilt by 2° and rebalance traffic layer thresholds.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="relative z-10 px-8 lg:px-16 py-12 border-t border-white/10">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-          <div>
-            <h3 className="text-2xl font-black bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-              AUTOMATIONPARK
-            </h3>
-            <p className="text-slate-500 mt-2 text-sm">
-              AI Telecom Intelligence Platform
-            </p>
-          </div>
-
-          <div className="text-slate-500 text-sm text-center lg:text-right">
-            GeoAI • RCA • RF Intelligence • Dashboard Analytics
-          </div>
-        </div>
-      </footer>
     </div>
-  );
-}
+
+  </section>
+
+  <!-- PRODUCTS -->
+
+  <section class="section">
+
+    <div class="section-title">
+
+      <h2>AI Telecom Products</h2>
+
+      <p>
+        A modern telecom intelligence ecosystem combining
+        dashboards, GeoAI, RCA automation and network analytics.
+      </p>
+
+    </div>
+
+    <div class="cards">
+
+      <div class="card">
+        <h3>GeoAI Platform</h3>
+
+        <p>
+          Telecom spatial intelligence with KPI-aware
+          RF visualization and sector analysis.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>RCA Engine</h3>
+
+        <p>
+          AI-powered root cause analysis for congestion,
+          interference and optimization.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Dashboard Studio</h3>
+
+        <p>
+          PowerBI-style analytics dashboards with
+          telecom KPI intelligence.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>RF Intelligence</h3>
+
+        <p>
+          Advanced network optimization,
+          GeoAI analysis and telecom automation.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    🚀 AutomationPark | AI Telecom Intelligence Platform
+
+  </footer>
+
+</body>
+
+</html>
