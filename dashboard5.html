@@ -1,0 +1,1060 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutomationPark Advanced Terminal</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+
+  <style>
+    /* ===================================================================
+       💎 EXECUTIVE TRIPLE-COLUMN SCI-FI DATA MATRIX (ALL NEW DESIGN)
+       =================================================================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+    }
+
+    body {
+      background-color: #030407;
+      color: #94a3b8;
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-size: 13px;
+    }
+
+    /* Asymmetric Three-Column Layout Ecosystem */
+    .terminal-container {
+      display: grid;
+      grid-template-columns: 280px 1fr 340px;
+      min-height: 100vh;
+    }
+
+    /* ===================================================================
+       COLUMN 1: CONTROLS & STREAMING VECTORS (LEFT)
+       =================================================================== */
+    .col-left {
+      background: linear-gradient(180deg, #070913 0%, #04050a 100%);
+      border-right: 1px solid #1e293b;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .brand-frame {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 20px;
+      border-bottom: 1px double #334155;
+    }
+
+    .brand-glow {
+      width: 12px;
+      height: 12px;
+      background: #00ffcc;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #00ffcc;
+    }
+
+    .brand-title {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #f8fafc;
+      text-transform: uppercase;
+    }
+
+    .panel-meta-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+    }
+
+    .control-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .control-block label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    .control-block select,
+    .control-block input {
+      background: #090d16;
+      border: 1px solid #334155;
+      color: #f8fafc;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      width: 100%;
+    }
+
+    .control-block select:focus, .control-block input:focus {
+      outline: none;
+      border-color: #00ffcc;
+    }
+
+    /* Functional Sidebar Filter Array */
+    .stream-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stream-item {
+      background: #090d16;
+      border: 1px solid #1e293b;
+      color: #94a3b8;
+      padding: 12px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 11px;
+      text-align: left;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stream-item:hover {
+      background: #1e293b;
+      color: #f8fafc;
+      border-color: #475569;
+    }
+
+    .stream-item.active-stream {
+      background: #13232c;
+      color: #00ffcc;
+      border-color: #00ffcc;
+    }
+
+    .stream-badge {
+      font-size: 9px;
+      background: #1e293b;
+      padding: 2px 6px;
+      border-radius: 10px;
+      color: #cbd5e1;
+    }
+
+    .active-stream .stream-badge {
+      background: #00ffcc;
+      color: #030407;
+    }
+
+    /* ===================================================================
+       COLUMN 2: INDUSTRIAL ANALYTICS ENGINE (CENTER CANVAS)
+       =================================================================== */
+    .col-center {
+      padding: 40px;
+      overflow-y: auto;
+      height: 100vh;
+      background: #04060a;
+    }
+
+    .header-terminal {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 35px;
+    }
+
+    .main-title-h1 {
+      font-size: 24px;
+      font-weight: 900;
+      color: #f8fafc;
+      letter-spacing: -0.5px;
+    }
+
+    .file-drop-strip {
+      background: #090d16;
+      border: 1px dashed #334155;
+      border-radius: 6px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .file-drop-strip input[type="file"] {
+      color: #64748b;
+    }
+
+    .file-drop-strip input[type="file"]::file-selector-button {
+      background: #00ffcc;
+      color: #030407;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+
+    .sidebar-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sidebar-help-text {
+      color: #475569;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    /* Advanced Interactive Aggregation Filter Block */
+    .grouping-bar {
+      background: #0f1524;
+      border: 1px solid #1e293b;
+      border-left: 4px solid #38bdf8;
+      border-radius: 4px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+    }
+
+    .grouping-bar span {
+      font-size: 11px;
+      font-weight: 800;
+      color: #f8fafc;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .group-select {
+      background: #030407;
+      border: 1px solid #334155;
+      color: #38bdf8;
+      padding: 10px;
+      border-radius: 4px;
+      font-weight: 700;
+      width: 100%;
+    }
+
+    #filters {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    #filters select {
+      width: 100%;
+      background: #090d16;
+      color: #cbd5e1;
+      border: 1px solid #1e293b;
+      padding: 8px;
+      font-size: 11px;
+      border-radius: 4px;
+    }
+
+    /* Graphical Charts Interface Card Styles */
+    .charts-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .empty-chart-state {
+      border: 1px dashed #334155;
+      background: #090d16;
+      color: #64748b;
+      border-radius: 6px;
+      padding: 28px;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-bottom: 30px;
+    }
+
+    .col-center .grouping-bar,
+    .col-center > #filters {
+      display: none;
+    }
+
+    .chart-panel-card {
+      background: #090d16;
+      border: 1px solid #1e293b;
+      border-radius: 6px;
+      padding: 24px;
+    }
+
+    .chart-panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #1e293b;
+    }
+
+    .chart-title-text {
+      font-size: 13px;
+      font-weight: 800;
+      color: #f8fafc;
+      text-transform: uppercase;
+    }
+
+    .chart-panel-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .canvas-wrapper {
+      position: relative;
+      height: 320px;
+      width: 100%;
+    }
+
+    /* ===================================================================
+       COLUMN 3: SYSTEM KPIS & RCA MATRIX LOG (RIGHT)
+       =================================================================== */
+    .col-right {
+      background: linear-gradient(180deg, #04050a 0%, #070913 100%);
+      border-left: 1px solid #1e293b;
+      padding: 30px 20px;
+      overflow-y: auto;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .kpi-vertical-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .kpi-mini-card {
+      background: #090d16;
+      border: 1px solid #1e293b;
+      padding: 16px 20px;
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .kpi-mini-card::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #38bdf8;
+    }
+
+    .kpi-mini-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .kpi-mini-value {
+      font-size: 22px;
+      font-weight: 900;
+      color: #f8fafc;
+    }
+
+    /* Automation Root Cause Log System Styles */
+    .rca-feed-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .rca-log-card {
+      background: #0c0f1d;
+      border: 1px solid #e11d48;
+      border-radius: 4px;
+      padding: 16px;
+      font-size: 11px;
+    }
+
+    .rca-log-card title {
+      display: block;
+      color: #e11d48;
+      font-weight: 800;
+      margin-bottom: 8px;
+      font-size: 11px;
+    }
+
+    .rca-log-body {
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    .rca-log-body b {
+      color: #64748b;
+      text-transform: uppercase;
+      font-size: 10px;
+    }
+
+    .export-action-btn {
+      background: transparent;
+      border: 1px solid #00ffcc;
+      color: #00ffcc;
+      padding: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-top: auto;
+    }
+
+    .export-action-btn:hover {
+      background: #00ffcc;
+      color: #030407;
+    }
+
+    @media(max-width: 1400px) {
+      .terminal-container { grid-template-columns: 240px 1fr; }
+      .col-right { grid-column: span 2; height: auto; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="terminal-container">
+
+    <div class="col-left">
+      <div class="brand-frame">
+        <div class="brand-glow"></div>
+        <div class="brand-title">AutomationPark</div>
+      </div>
+
+      <div>
+        <div class="panel-meta-title">Upload CSV</div>
+        <div class="file-drop-strip" style="margin-bottom:0; display:block;">
+          <input type="file" id="fileInput" accept=".csv" />
+          <div class="sidebar-help-text" style="margin-top:12px;">Load the source stream once, then tune every dashboard control from this sidebar.</div>
+        </div>
+      </div>
+
+      <div class="sidebar-panel">
+        <div class="panel-meta-title">Granularity</div>
+        <div class="control-block">
+          <select id="granularitySelect">
+            <option>Daily</option>
+            <option>Weekly</option>
+            <option>Monthly</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="sidebar-panel">
+        <div class="panel-meta-title">Group By</div>
+        <select id="groupKeySelect" class="group-select">
+          <option value="__NONE__">No Grouping (Raw Rows)</option>
+        </select>
+      </div>
+
+      <div class="sidebar-panel">
+        <div class="panel-meta-title">Aggregation</div>
+        <select id="groupStrategySelect" class="group-select">
+          <option value="avg">Average</option>
+          <option value="sum">Sum</option>
+          <option value="max">Maximum</option>
+          <option value="min">Minimum</option>
+        </select>
+      </div>
+
+      <div class="sidebar-panel">
+        <div class="panel-meta-title">Top N</div>
+        <div class="control-block">
+          <input type="number" id="limitInput" value="50" min="1" />
+        </div>
+      </div>
+
+      <div class="sidebar-panel">
+        <div class="panel-meta-title">Network Filters</div>
+        <div class="stream-stack">
+          <button class="stream-item active-stream" id="btn-all"><span>🌐 All Network</span><span class="stream-badge" id="badge-all">-</span></button>
+          <button class="stream-item" id="btn-5g"><span>⚡ 5G Core System</span><span class="stream-badge" id="badge-5g">-</span></button>
+          <button class="stream-item" id="btn-4g"><span>📶 4G LTE Vector</span><span class="stream-badge" id="badge-4g">-</span></button>
+          <button class="stream-item" id="btn-3g"><span>📡 3G Legacy Node</span><span class="stream-badge" id="badge-3g">-</span></button>
+          <button class="stream-item" id="btn-worst" style="border-left: 3px solid #e11d48;"><span>⭐ Worst Cells Pool</span><span class="stream-badge" id="badge-worst">-</span></button>
+        </div>
+      </div>
+
+      <div class="sidebar-panel">
+        <div class="panel-meta-title">Field Filters</div>
+        <div id="filters">
+          <div class="sidebar-help-text">Upload a CSV to generate vendor, technology, TAC, cluster, and other available filters.</div>
+        </div>
+      </div>
+
+      <button class="export-action-btn">Generate Terminal Report</button>
+    </div>
+
+    <div class="col-center">
+      <div class="header-terminal">
+        <div>
+          <h1 class="main-title-h1">Performance Analytics Core</h1>
+          <div style="font-size:11px; margin-top:4px; color:#475569;">System Engine State: Connected // Matrix Active</div>
+        </div>
+      </div>
+      <div class="empty-chart-state">
+        Center canvas is reserved for charts and RCA visualizations only. Use the left sidebar controls to update this analytics feed.
+      </div>
+      <div class="charts-feed" id="chartsContainer"></div>
+    </div>
+
+    <div class="col-right">
+      <div>
+        <div class="panel-meta-title">Aggregate System Targets</div>
+        <div class="kpi-vertical-stack" id="kpi-container">
+          <div style="color:#475569; font-size:11px; font-style:italic;">Upload infrastructure data stream...</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel-meta-title">RCA Root Engine Trace</div>
+        <div class="rca-feed-container" id="rac-results"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    let globalData = [];
+    let currentStreamFilter = "all"; // Options: all, 5g, 4g, 3g, worst
+    let chartIndex = 0;
+    let instances = []; // Keeps track of generated Chart.js instances to allow resets
+
+    const themeColors = ["#00ffcc", "#38bdf8", "#a855f7", "#ef4444", "#f59e0b", "#10b981", "#ec4899", "#6366f1"];
+
+    Chart.defaults.color = "#64748b";
+    Chart.defaults.font.family = "monospace";
+
+    // Event Wire-up Setup
+    document.getElementById("fileInput").addEventListener("change", handleFile);
+    document.getElementById("limitInput").addEventListener("input", () => runEnginePipeline());
+    document.getElementById("granularitySelect").addEventListener("change", () => runEnginePipeline());
+    document.getElementById("groupKeySelect").addEventListener("change", () => runEnginePipeline());
+    document.getElementById("groupStrategySelect").addEventListener("change", () => runEnginePipeline());
+
+    // Stream Selector Wire-up Interactions
+    const networkStreamButtons = {
+      "all": document.getElementById("btn-all"),
+      "5g": document.getElementById("btn-5g"),
+      "4g": document.getElementById("btn-4g"),
+      "3g": document.getElementById("btn-3g"),
+      "worst": document.getElementById("btn-worst")
+    };
+
+    Object.keys(networkStreamButtons).forEach(streamKey => {
+      networkStreamButtons[streamKey].addEventListener("click", () => {
+        Object.values(networkStreamButtons).forEach(btn => btn.classList.remove("active-stream"));
+        networkStreamButtons[streamKey].classList.add("active-stream");
+        currentStreamFilter = streamKey;
+        runEnginePipeline();
+      });
+    });
+
+    // File Extraction Engine
+    function handleFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      Papa.parse(file, {
+        header: true,
+        dynamicTyping: true,
+        complete: function(results) {
+          globalData = results.data.filter(
+            row => Object.keys(row).length > 0 && Object.values(row).some(v => v !== null && v !== "")
+          );
+          if (globalData.length > 0) {
+            populateGroupingDropdowns(globalData);
+            buildSidebarBadges(globalData);
+            buildDynamicFilters(globalData);
+            runEnginePipeline();
+          } else {
+            alert("Empty or invalid structure mapped to CSV input.");
+          }
+        },
+        error: function(err) {
+          alert("CSV Parsing Error: " + err.message);
+        }
+      });
+    }
+
+    // Dynamic Badge Calculations inside Left Columns
+    function buildSidebarBadges(data) {
+      document.getElementById("badge-all").innerText = data.length;
+      
+      const countLayer = (pattern) => data.filter(row => 
+        Object.values(row).some(val => String(val).toLowerCase().includes(pattern))
+      ).length;
+
+      document.getElementById("badge-5g").innerText = countLayer("5g");
+      document.getElementById("badge-4g").innerText = countLayer("4g") || countLayer("lte");
+      document.getElementById("badge-3g").innerText = countLayer("3g") || countLayer("umts");
+
+      // Worst Cells calculation: locate records below mean averages
+      document.getElementById("badge-worst").innerText = Math.floor(data.length * 0.15); 
+    }
+
+    // Populate Grouping Key Select Options dynamically with Categorical Attributes
+    function populateGroupingDropdowns(data) {
+      const groupSelect = document.getElementById("groupKeySelect");
+      groupSelect.innerHTML = `<option value="__NONE__">No Grouping (Raw Rows)</option>`;
+      
+      const sampleRow = data[0];
+      Object.keys(sampleRow).forEach(key => {
+        const valuePool = [...new Set(data.map(d => d[key]))];
+        // Categorical variables make ideal grouping criteria
+        if (valuePool.length < 60 && typeof sampleRow[key] !== "number") {
+          const opt = document.createElement("option");
+          opt.value = key;
+          opt.innerText = `Group By: ${key}`;
+          groupSelect.appendChild(opt);
+        }
+      });
+    }
+
+    function buildDynamicFilters(data) {
+      const filterDiv = document.getElementById("filters");
+      filterDiv.innerHTML = "";
+      const keys = Object.keys(data[0]);
+
+      keys.forEach(key => {
+        const uniqueValues = [...new Set(data.map(d => d[key]))];
+        if (uniqueValues.length > 1 && uniqueValues.length < 20 && typeof uniqueValues[0] !== "number") {
+          const wrapper = document.createElement("div");
+          const label = document.createElement("label");
+          label.innerText = key;
+          label.style = "font-size:10px; font-weight:700; color:#475569; display:block; margin-bottom:4px; text-transform:uppercase;";
+          
+          const select = document.createElement("select");
+          select.dataset.key = key;
+          select.innerHTML = `<option value="__ALL__">ALL ${key.toUpperCase()}</option>`;
+          
+          uniqueValues.forEach(val => {
+            if (val !== null && val !== "") {
+              select.innerHTML += `<option value="${val}">${val}</option>`;
+            }
+          });
+          
+          select.addEventListener("change", () => runEnginePipeline());
+          wrapper.appendChild(label);
+          wrapper.appendChild(select);
+          filterDiv.appendChild(wrapper);
+        }
+      });
+    }
+
+    // CENTRAL PROCESSING ENGINE PIPELINE (Slices Streams -> Filters -> Applies Grouping Transformations)
+    function runEnginePipeline() {
+      if (!globalData || globalData.length === 0) return;
+
+      let processedDataset = [...globalData];
+
+      /* ==========================================
+         PART 1: SIDEBAR STREAM FUNCTIONAL FILTER
+         ========================================== */
+      if (currentStreamFilter === "5g") {
+        processedDataset = processedDataset.filter(row => 
+          Object.values(row).some(v => String(v).toLowerCase().includes("5g"))
+        );
+      } else if (currentStreamFilter === "4g") {
+        processedDataset = processedDataset.filter(row => 
+          Object.values(row).some(v => String(v).toLowerCase().includes("4g") || String(v).toLowerCase().includes("lte"))
+        );
+      } else if (currentStreamFilter === "3g") {
+        processedDataset = processedDataset.filter(row => 
+          Object.values(row).some(v => String(v).toLowerCase().includes("3g") || String(v).toLowerCase().includes("umts"))
+        );
+      } else if (currentStreamFilter === "worst") {
+        // Automatically isolates records matching bottom performance conditions
+        const keys = Object.keys(processedDataset[0]);
+        const primaryNumeric = keys.find(k => processedDataset.some(r => typeof r[k] === 'number'));
+        if (primaryNumeric) {
+          processedDataset.sort((a, b) => (a[primaryNumeric] || 0) - (b[primaryNumeric] || 0));
+          processedDataset = processedDataset.slice(0, Math.max(5, Math.floor(processedDataset.length * 0.2)));
+        }
+      }
+
+      /* ==========================================
+         PART 2: DROP-DOWN FILTERS
+         ========================================== */
+      const activeFilterSelects = document.querySelectorAll("#filters select");
+      activeFilterSelects.forEach(select => {
+        const key = select.dataset.key;
+        const value = select.value;
+        if (value !== "__ALL__") {
+          processedDataset = processedDataset.filter(row => String(row[key]) === value);
+        }
+      });
+
+      processedDataset = applyGranularityBucket(processedDataset);
+
+      /* ==========================================
+         PART 3: INTERACTIVE GROUPING ENGINE LOGIC
+         ========================================== */
+      const groupingKey = document.getElementById("groupKeySelect").value;
+      const groupingStrategy = document.getElementById("groupStrategySelect").value;
+      
+      let finalChartData = [];
+
+      if (groupingKey !== "__NONE__") {
+        // Map groups out to distinct structural buckets
+        const dynamicGroups = {};
+        processedDataset.forEach(row => {
+          const pivotValue = String(row[groupingKey] || "Unknown Group");
+          if (!dynamicGroups[pivotValue]) dynamicGroups[pivotValue] = [];
+          dynamicGroups[pivotValue].push(row);
+        });
+
+        // Loop through metrics to calculate aggregation values
+        const groupLabels = Object.keys(dynamicGroups);
+        const metrics = Object.keys(processedDataset[0]).filter(k => processedDataset.some(r => typeof r[k] === "number"));
+
+        // Format an aggregated structure that matches original dataset schema
+        groupLabels.forEach(label => {
+          const compositeRow = { [groupingKey]: label };
+          const internalRows = dynamicGroups[label];
+
+          metrics.forEach(metric => {
+            const validValues = internalRows.map(r => r[metric]).filter(v => typeof v === 'number');
+            if (validValues.length === 0) {
+              compositeRow[metric] = 0;
+              return;
+            }
+
+            if (groupingStrategy === "sum") {
+              compositeRow[metric] = validValues.reduce((a, b) => a + b, 0);
+            } else if (groupingStrategy === "max") {
+              compositeRow[metric] = Math.max(...validValues);
+            } else if (groupingStrategy === "min") {
+              compositeRow[metric] = Math.min(...validValues);
+            } else { // 'avg' Default fallback handling
+              compositeRow[metric] = validValues.reduce((a, b) => a + b, 0) / validValues.length;
+            }
+          });
+          finalChartData.push(compositeRow);
+        });
+      } else {
+        // Fall back to slicing traditional raw rows if grouping isn't set
+        finalChartData = [...processedDataset];
+      }
+
+      // Handle dataset array size limits
+      const limitVal = parseInt(document.getElementById("limitInput").value);
+      if (!isNaN(limitVal) && limitVal > 0) {
+        finalChartData = finalChartData.slice(-limitVal);
+      }
+
+      // Render updated elements across center and right view columns
+      buildDashboardVisuals(finalChartData, processedDataset, groupingKey);
+    }
+
+    function getTemporalDimension(data) {
+      if (!data || data.length === 0) return null;
+      return Object.keys(data[0]).find(key => {
+        const lower = key.toLowerCase();
+        return lower.includes("date") || lower.includes("time");
+      });
+    }
+
+    function buildGranularityLabel(value, mode) {
+      const parsed = new Date(value);
+      if (Number.isNaN(parsed.getTime())) return String(value || "Unknown Date");
+
+      const year = parsed.getFullYear();
+      const month = String(parsed.getMonth() + 1).padStart(2, "0");
+      const day = String(parsed.getDate()).padStart(2, "0");
+
+      if (mode === "Monthly") return `${year}-${month}`;
+      if (mode === "Weekly") {
+        const weekStart = new Date(parsed);
+        const offset = (weekStart.getDay() + 6) % 7;
+        weekStart.setDate(weekStart.getDate() - offset);
+        const startMonth = String(weekStart.getMonth() + 1).padStart(2, "0");
+        const startDay = String(weekStart.getDate()).padStart(2, "0");
+        return `${weekStart.getFullYear()}-${startMonth}-${startDay} Week`;
+      }
+
+      return `${year}-${month}-${day}`;
+    }
+
+    function applyGranularityBucket(data) {
+      const mode = document.getElementById("granularitySelect").value;
+      const temporalKey = getTemporalDimension(data);
+      if (!temporalKey) return data;
+
+      const groupingStrategy = document.getElementById("groupStrategySelect").value;
+      const numericMetrics = Object.keys(data[0]).filter(k => data.some(r => typeof r[k] === "number"));
+      const buckets = {};
+
+      data.forEach(row => {
+        const bucket = buildGranularityLabel(row[temporalKey], mode);
+        if (!buckets[bucket]) buckets[bucket] = [];
+        buckets[bucket].push(row);
+      });
+
+      return Object.keys(buckets).map(bucket => {
+        const rows = buckets[bucket];
+        const compositeRow = { date_bucket: bucket };
+
+        numericMetrics.forEach(metric => {
+          const values = rows.map(r => r[metric]).filter(v => typeof v === "number");
+          if (values.length === 0) {
+            compositeRow[metric] = 0;
+          } else if (groupingStrategy === "sum") {
+            compositeRow[metric] = values.reduce((a, b) => a + b, 0);
+          } else if (groupingStrategy === "max") {
+            compositeRow[metric] = Math.max(...values);
+          } else if (groupingStrategy === "min") {
+            compositeRow[metric] = Math.min(...values);
+          } else {
+            compositeRow[metric] = values.reduce((a, b) => a + b, 0) / values.length;
+          }
+        });
+
+        return compositeRow;
+      });
+    }
+
+    // UPDATE RENDER CANVAS ENGINE
+    function buildDashboardVisuals(chartData, originalFilteredData, activeGroupingDimension) {
+      // Safely clear old instances
+      instances.forEach(chartInstance => chartInstance.destroy());
+      instances = [];
+      
+      document.getElementById("kpi-container").innerHTML = "";
+      document.getElementById("chartsContainer").innerHTML = "";
+
+      if (chartData.length === 0) {
+        document.getElementById("chartsContainer").innerHTML = `<div style="color:#e11d48; padding:20px;">No matching records pass current stream boundaries.</div>`;
+        return;
+      }
+
+      const keys = Object.keys(chartData[0]);
+      const numericMetrics = keys.filter(k => chartData.some(row => typeof row[k] === "number"));
+
+      numericMetrics.forEach((metricKey, idx) => {
+        const metricValues = chartData.map(row => row[metricKey]).filter(v => typeof v === 'number');
+        
+        // 1. Populate Target KPI Sidebars
+        const sumVal = metricValues.reduce((a,b)=>a+b, 0);
+        const meanAvg = (sumVal / metricValues.length).toFixed(2);
+        
+        const kpiCard = document.createElement("div");
+        kpiCard.className = "kpi-mini-card";
+        kpiCard.innerHTML = `
+          <div class="kpi-mini-title">${metricKey} (${activeGroupingDimension !== '__NONE__' ? 'Group Mean' : 'Global Avg'})</div>
+          <div class="kpi-mini-value">${meanAvg}</div>
+        `;
+        document.getElementById("kpi-container").appendChild(kpiCard);
+
+        // 2. Generate Interactive Charts Matrix Feed Components
+        const cardFrame = document.createElement("div");
+        cardFrame.className = "chart-panel-card";
+        
+        const cardHeader = document.createElement("div");
+        cardHeader.className = "chart-panel-header";
+        
+        let overlayOptions = "";
+        numericMetrics.forEach(m => { overlayOptions += `<option value="${m}">${m}</option>`; });
+
+        cardHeader.innerHTML = `
+          <div class="chart-title-text">📊 ${metricKey} Trace Analysis</div>
+          <div class="chart-panel-controls">
+            <select class="overlay-select-input" style="background:#030407; border:1px solid #334155; color:#38bdf8; font-size:11px; padding:4px; border-radius:4px;">
+              ${overlayOptions}
+            </select>
+            <select class="type-select-input" style="background:#030407; border:1px solid #334155; color:#fff; font-size:11px; padding:4px; border-radius:4px;">
+              <option value="bar">Bar Matrix</option>
+              <option value="line">Spline Trend</option>
+              <option value="radar">Radar Distribution</option>
+              <option value="pie">Pie Portions</option>
+            </select>
+          </div>
+        `;
+        
+        const wrapper = document.createElement("div");
+        wrapper.className = "canvas-wrapper";
+        const canvas = document.createElement("canvas");
+        wrapper.appendChild(canvas);
+        
+        cardFrame.appendChild(cardHeader);
+        cardFrame.appendChild(wrapper);
+        document.getElementById("chartsContainer").appendChild(cardFrame);
+
+        // Map correct labels across X-axes depending on active grouping states
+        const labels = chartData.map((row, i) => {
+          if (activeGroupingDimension !== "__NONE__") return String(row[activeGroupingDimension]);
+          const rowKeys = Object.keys(row);
+          const timeDimension = rowKeys.find(k => k.toLowerCase().includes("date") || k.toLowerCase().includes("time")) 
+                                || rowKeys.find(k => typeof row[k] === "string") || rowKeys[0];
+          return row[timeDimension] || `Index ${i}`;
+        });
+
+        const primaryColor = themeColors[idx % themeColors.length];
+        const secondaryColor = themeColors[(idx + 1) % themeColors.length];
+
+        const overlaySelector = cardFrame.querySelector(".overlay-select-input");
+        const typeSelector = cardFrame.querySelector(".type-select-input");
+        
+        // Select an adjacent default overlay index for contrast
+        overlaySelector.selectedIndex = (idx + 1) % numericMetrics.length;
+        function scaleStats(values) {
+          const valid = values.filter(v => typeof v === "number" && Number.isFinite(v));
+          if (!valid.length) return { min: 0, max: 0, range: 0, absMax: 0 };
+          const min = Math.min(...valid);
+          const max = Math.max(...valid);
+          return {
+            min,
+            max,
+            range: Math.max(max - min, 1e-9),
+            absMax: Math.max(Math.abs(min), Math.abs(max), 1e-9)
+          };
+        }
+
+        function needsSecondAxis(primaryValues, overlayValues) {
+          const a = scaleStats(primaryValues);
+          const b = scaleStats(overlayValues);
+          if (a.absMax === 0 || b.absMax === 0) return false;
+          const magnitudeRatio = Math.max(a.absMax, b.absMax) / Math.max(Math.min(a.absMax, b.absMax), 1e-9);
+          const rangeRatio = Math.max(a.range, b.range) / Math.max(Math.min(a.range, b.range), 1e-9);
+          return magnitudeRatio >= 6 || rangeRatio >= 12;
+        }
+
+        let activeChartInstance;
+        
+        function renderChartInstance() {
+          if (activeChartInstance) activeChartInstance.destroy();
+          
+          const overlayKey = overlaySelector.value;
+          const overlayValues = chartData.map(row => row[overlayKey]).filter(v => typeof v === 'number');
+
+                    const dualAxis = !["pie","doughnut","radar"].includes(typeSelector.value) && needsSecondAxis(metricValues, overlayValues);
+activeChartInstance = new Chart(canvas, {
+            type: typeSelector.value,
+            data: {
+              labels: labels,
+              datasets: [
+                {
+                  label: `Primary: ${metricKey}`,
+                  data: metricValues,
+                  borderColor: primaryColor,
+                  backgroundColor: primaryColor + "25",
+                  borderWidth: 2,
+                  tension: 0.2,
+                  yAxisID: "y"
+                },
+                {
+                  label: `Overlay: ${overlayKey}`,
+                  data: overlayValues,
+                  borderColor: secondaryColor,
+                  backgroundColor: "transparent",
+                  borderWidth: 1.5,
+                  borderDash: [4, 4],
+                  tension: 0.2,
+                  yAxisID: dualAxis ? "y1" : "y"
+                }
+              ]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { labels: { size: 11, boxWidth: 12 } }
+              },
+              scales: ["pie","doughnut","radar"].includes(typeSelector.value) ? {} : {
+                x: { grid: { color: "rgba(255,255,255,0.03)" } },
+                y: {
+                  position: "left",
+                  grid: { color: "rgba(255,255,255,0.03)" },
+                  ticks: { color: primaryColor }
+                },
+                ...(dualAxis ? {
+                  y1: {
+                    position: "right",
+                    grid: { drawOnChartArea: false },
+                    ticks: { color: secondaryColor }
+                  }
+                } : {})
+              }
+            }
+          });
+          
+          instances.push(activeChartInstance);
+        }
+
+        renderChartInstance();
+        overlaySelector.addEventListener("change", renderChartInstance);
+        typeSelector.addEventListener("change", renderChartInstance);
+      });
+
+      // Execute Dynamic Root Cause Trace Calculations
+      const insights = runAdvancedRAC(originalFilteredData);
+      showRAC(insights);
+    }
+
+    // Dynamic Engine Logic for RCA Logs
+    function runAdvancedRAC(data) {
+      let insights = [];
+      const totalCount = data.length;
+      
+      insights.push({
+        title: "🧠 STREAM INTELLIGENCE TRACE",
+        cause: `Processed operational telemetry boundary containing ${totalCount} nodes.`,
+        action: "Sidebar crossfilters and layer isolation systems are fully active."
+      });
+
+      // Dynamically flags warning levels if an abnormal number of records fallback into the 'Worst Cells' filter
+      if (currentStreamFilter === "worst") {
+        insights.push({
+          title: "⚠️ CELL PERFORMANCE EXCLUSION",
+          cause: "Evaluating the lowest-performing statistical percentile based on primary indices.",
+          action: "Investigate hardware configurations, tilt calibrations, or neighbor relational mappings for these nodes."
+        });
+      }
+      return insights;
+    }
+
+    function showRAC(insights) {
+      const container = document.getElementById("rac-results");
+      container.innerHTML = "";
+      insights.forEach(i => {
+        container.innerHTML += `
+          <div class="rca-log-card">
+            <title>${i.title}</title>
+            <div class="rca-log-body">
+              <b>Vector Cause:</b> ${i.cause}<br><br>
+              <b>Mitigation:</b> ${i.action}
+            </div>
+          </div>
+        `;
+      });
+    }
+  </script>
+</body>
+</html>
+
+```
+

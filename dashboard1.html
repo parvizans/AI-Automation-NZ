@@ -1,0 +1,1282 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutomationPark Dashboard</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #0d1b2a 0%, #1a1a3e 25%, #2d1b4e 50%, #1a1a3e 75%, #0d1b2a 100%);
+      background-attachment: fixed;
+      color: #e0e0e0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated background orbs */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 20s infinite ease-in-out;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -20%;
+      left: -5%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 25s infinite ease-in-out reverse;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(30px); }
+    }
+
+    .dashboard-layout {
+      display: flex;
+      gap: 40px;
+      padding: 40px;
+      max-width: 2200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       🎨 SIDEBAR - PREMIUM GLASSMORPHISM DARK
+       ═══════════════════════════════════════════════════════════════════ */
+
+    .sidebar {
+      width: 300px;
+      background: linear-gradient(180deg, rgba(20, 13, 45, 0.9) 0%, rgba(15, 10, 35, 0.95) 100%);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      border: 1.5px solid rgba(147, 112, 219, 0.25);
+      border-radius: 36px;
+      padding: 40px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      box-shadow: 0 8px 60px rgba(0, 0, 0, 0.7),
+                  inset 0 1px 2px rgba(255, 255, 255, 0.08),
+                  inset 0 -1px 2px rgba(0, 0, 0, 0.5);
+      height: fit-content;
+      position: sticky;
+      top: 40px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .sidebar:hover {
+      border-color: rgba(147, 112, 219, 0.5);
+      box-shadow: 0 16px 80px rgba(147, 112, 219, 0.2),
+                  inset 0 1px 2px rgba(255, 255, 255, 0.12);
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-logo-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #9370db 0%, #6366f1 100%);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 8px 24px rgba(147, 112, 219, 0.4);
+    }
+
+    .sidebar-logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #c084fc 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .sidebar h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #e9d5ff;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sidebar-section {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sidebar-divider {
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, rgba(147, 112, 219, 0.3), transparent);
+      margin: 8px 0 12px 0;
+    }
+
+    .sidebar label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #c4b5fd;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .sidebar select,
+    .sidebar input[type="number"],
+    .sidebar input[type="file"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid rgba(147, 112, 219, 0.3);
+      border-radius: 12px;
+      background: rgba(10, 5, 25, 0.9);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .sidebar select:hover,
+    .sidebar input[type="number"]:hover,
+    .sidebar input[type="file"]:hover {
+      border-color: rgba(147, 112, 219, 0.6);
+      background: rgba(20, 10, 40, 0.95);
+      box-shadow: 0 4px 16px rgba(147, 112, 219, 0.15);
+    }
+
+    .sidebar select:focus,
+    .sidebar input[type="number"]:focus,
+    .sidebar input[type="file"]:focus {
+      outline: none;
+      border-color: #a78bfa;
+      background: rgba(25, 15, 50, 0.95);
+      box-shadow: 0 0 20px rgba(147, 112, 219, 0.4);
+    }
+
+    .export-btn {
+      width: 100%;
+      padding: 14px 16px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #a78bfa 0%, #9370db 100%);
+      color: #0d1b2a;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(167, 139, 250, 0.4);
+    }
+
+    .export-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 32px rgba(167, 139, 250, 0.6);
+    }
+
+    .export-btn:active {
+      transform: translateY(-1px);
+    }
+
+    /* Network Panel */
+    .network-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+      padding-top: 24px;
+      border-top: 1.5px solid rgba(147, 112, 219, 0.2);
+    }
+
+    .network-btn {
+      padding: 12px 14px;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .network-all {
+      background: linear-gradient(135deg, #a78bfa 0%, #9370db 100%);
+      box-shadow: 0 6px 16px rgba(167, 139, 250, 0.4);
+    }
+
+    .network-5g {
+      background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+      box-shadow: 0 6px 16px rgba(236, 72, 153, 0.4);
+    }
+
+    .network-4g {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+    }
+
+    .network-3g {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+      box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+    }
+
+    .network-btn:hover {
+      transform: translateY(-4px);
+      filter: brightness(1.15);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       📊 MAIN CONTENT
+       ═══════════════════════════════════════════════════════════════════ */
+
+    .main-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .dashboard-title {
+      font-size: 52px;
+      font-weight: 900;
+      background: linear-gradient(90deg, #ffffff 0%, #a78bfa 40%, #9370db 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1.5px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .dashboard-title-icon {
+      font-size: 48px;
+    }
+
+    .timeline-panel {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .timeline-chip {
+      padding: 11px 20px;
+      border-radius: 14px;
+      background: rgba(167, 139, 250, 0.15);
+      color: #c4b5fd;
+      font-size: 12px;
+      font-weight: 600;
+      border: 1.5px solid rgba(167, 139, 250, 0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Top Controls */
+    .top-controls {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 44px;
+      background: rgba(30, 20, 60, 0.5);
+      backdrop-filter: blur(20px);
+      padding: 20px;
+      border-radius: 18px;
+      border: 1.5px solid rgba(147, 112, 219, 0.2);
+    }
+
+    .top-controls input {
+      padding: 12px 16px;
+      border: 1.5px solid rgba(147, 112, 219, 0.3);
+      border-radius: 12px;
+      background: rgba(10, 5, 25, 0.9);
+      color: white;
+      font-size: 13px;
+      transition: all 0.3s ease;
+      min-width: 200px;
+    }
+
+    .top-controls input:focus {
+      outline: none;
+      border-color: #a78bfa;
+      box-shadow: 0 0 20px rgba(167, 139, 250, 0.3);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       🎯 FILTERS
+       ═══════════════════════════════════════════════════════════════════ */
+
+    #filters {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 18px;
+      margin-bottom: 48px;
+    }
+
+    #filters > div {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #filters label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #c4b5fd;
+      margin-bottom: 8px;
+    }
+
+    #filters select {
+      width: 100%;
+      min-height: 130px;
+      border: 1.5px solid rgba(147, 112, 219, 0.3);
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(20, 13, 45, 0.9) 0%, rgba(15, 10, 35, 0.95) 100%);
+      backdrop-filter: blur(15px);
+      color: white;
+      padding: 12px;
+      font-size: 13px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    #filters select:hover {
+      border-color: rgba(147, 112, 219, 0.6);
+      background: linear-gradient(135deg, rgba(30, 20, 60, 0.95) 0%, rgba(20, 15, 50, 0.95) 100%);
+      box-shadow: 0 6px 20px rgba(147, 112, 219, 0.15);
+    }
+
+    #filters select:focus {
+      outline: none;
+      border-color: #a78bfa;
+      box-shadow: 0 0 20px rgba(167, 139, 250, 0.4);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       💎 KPI GRID - PREMIUM ANIMATED CARDS
+       ═══════════════════════════════════════════════════════════════════ */
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+      margin-bottom: 52px;
+    }
+
+    .kpi-card {
+      background: linear-gradient(135deg, rgba(30, 20, 60, 0.95) 0%, rgba(20, 13, 45, 0.95) 100%);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1.5px solid rgba(147, 112, 219, 0.3);
+      border-radius: 24px;
+      padding: 40px 32px;
+      box-shadow: 0 12px 60px rgba(0, 0, 0, 0.6),
+                  inset 0 1px 2px rgba(255, 255, 255, 0.08),
+                  0 0 60px rgba(147, 112, 219, 0.05);
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(167, 139, 250, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .kpi-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(167, 139, 250, 0.6), transparent);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .kpi-card:hover {
+      transform: translateY(-16px) scale(1.03);
+      border-color: rgba(167, 139, 250, 0.7);
+      box-shadow: 0 24px 80px rgba(147, 112, 219, 0.35),
+                  inset 0 1px 2px rgba(255, 255, 255, 0.12),
+                  0 0 80px rgba(147, 112, 219, 0.15);
+    }
+
+    .kpi-card:hover::before {
+      opacity: 1;
+    }
+
+    .kpi-card:hover::after {
+      opacity: 1;
+    }
+
+    .kpi-card h3 {
+      color: #c4b5fd;
+      margin-bottom: 20px;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+    }
+
+    .kpi-card p {
+      font-size: 56px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #a78bfa 0%, #9370db 50%, #6366f1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      margin-bottom: 16px;
+      letter-spacing: -2px;
+    }
+
+    .kpi-card-subtext {
+      font-size: 12px;
+      color: #a5b4fc;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       📈 CHARTS
+       ═══════════════════════════════════════════════════════════════════ */
+
+    #chartsContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(560px, 1fr));
+      gap: 36px;
+      margin-bottom: 52px;
+    }
+
+    .chart-card {
+      background: linear-gradient(135deg, rgba(30, 20, 60, 0.95) 0%, rgba(20, 13, 45, 0.95) 100%);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      border: 1.5px solid rgba(147, 112, 219, 0.3);
+      border-radius: 24px;
+      padding: 36px;
+      min-height: 520px;
+      box-shadow: 0 12px 60px rgba(0, 0, 0, 0.6),
+                  inset 0 1px 2px rgba(255, 255, 255, 0.08),
+                  0 0 60px rgba(147, 112, 219, 0.05);
+      transition: all 0.4s ease;
+    }
+
+    .chart-card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(167, 139, 250, 0.6);
+      box-shadow: 0 16px 80px rgba(147, 112, 219, 0.25),
+                  inset 0 1px 2px rgba(255, 255, 255, 0.12);
+    }
+
+    .chart-card canvas {
+      width: 100% !important;
+      height: 350px !important;
+    }
+
+    .chart-header {
+      margin-bottom: 28px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .chart-header > div:last-child {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    .kpi-main {
+      font-size: 17px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .kpi-secondary {
+      font-size: 12px;
+      color: #c4b5fd;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    .chart-selector {
+      padding: 10px 12px;
+      border: 1.5px solid rgba(147, 112, 219, 0.3);
+      border-radius: 10px;
+      background: rgba(10, 5, 25, 0.9);
+      color: white;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .chart-selector:hover {
+      border-color: rgba(167, 139, 250, 0.6);
+      background: rgba(20, 10, 40, 0.95);
+      box-shadow: 0 4px 12px rgba(147, 112, 219, 0.15);
+    }
+
+    .chart-selector:focus {
+      outline: none;
+      border-color: #a78bfa;
+      box-shadow: 0 0 16px rgba(167, 139, 250, 0.4);
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       🧠 RCA RESULTS
+       ═══════════════════════════════════════════════════════════════════ */
+
+    #rac-results {
+      margin-top: 52px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 32px;
+      margin-bottom: 20px;
+    }
+
+    .rac-card {
+      background: linear-gradient(135deg, rgba(30, 20, 60, 0.95) 0%, rgba(20, 13, 45, 0.95) 100%);
+      backdrop-filter: blur(30px);
+      border: 1.5px solid rgba(147, 112, 219, 0.3);
+      border-radius: 24px;
+      padding: 36px;
+      color: #e0e7ff;
+      box-shadow: 0 12px 60px rgba(0, 0, 0, 0.6),
+                  inset 0 1px 2px rgba(255, 255, 255, 0.08),
+                  0 0 60px rgba(147, 112, 219, 0.05);
+      transition: all 0.4s ease;
+      line-height: 1.8;
+    }
+
+    .rac-card:hover {
+      border-color: rgba(167, 139, 250, 0.6);
+      transform: translateY(-10px);
+      box-shadow: 0 16px 80px rgba(147, 112, 219, 0.25),
+                  inset 0 1px 2px rgba(255, 255, 255, 0.12);
+    }
+
+    .rac-card strong {
+      color: #a78bfa;
+      font-size: 17px;
+      display: block;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    .rac-card b {
+      color: #c4b5fd;
+      font-weight: 600;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       📱 RESPONSIVE DESIGN
+       ═══════════════════════════════════════════════════════════════════ */
+
+    @media (max-width: 1600px) {
+      #chartsContainer {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 1200px) {
+      .dashboard-layout {
+        flex-direction: column;
+        gap: 32px;
+        padding: 32px;
+      }
+
+      .sidebar {
+        width: 100%;
+        position: static;
+      }
+
+      .dashboard-title {
+        font-size: 40px;
+      }
+
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      #chartsContainer {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-layout {
+        padding: 20px;
+        gap: 20px;
+      }
+
+      .sidebar {
+        padding: 28px 20px;
+        gap: 24px;
+      }
+
+      .dashboard-title {
+        font-size: 32px;
+      }
+
+      .kpi-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .chart-card {
+        min-height: 400px;
+        padding: 24px;
+      }
+
+      .chart-card canvas {
+        height: 280px !important;
+      }
+
+      #filters {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .top-controls {
+        flex-direction: column;
+      }
+
+      .top-controls input {
+        min-width: auto;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .dashboard-layout {
+        padding: 16px;
+      }
+
+      .sidebar {
+        width: 100%;
+        padding: 20px 16px;
+      }
+
+      .kpi-card {
+        padding: 24px 16px;
+      }
+
+      .kpi-card p {
+        font-size: 42px;
+      }
+
+      .dashboard-title {
+        font-size: 24px;
+      }
+
+      .network-btn {
+        font-size: 10px;
+        padding: 10px 12px;
+      }
+    }
+  
+    /* Codex function patch: keeps each dashboard theme, only styles newly moved sidebar controls. */
+    .sidebar input[type="file"],
+    .sidebar input[type="date"] {
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.55);
+      color: inherit;
+      font: inherit;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="dashboard-layout">
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         🎨 SIDEBAR
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">⚡</div>
+        <div class="sidebar-logo-text">AP</div>
+      </div>
+
+      <div class="sidebar-section">
+        <h2>🧠 Control Panel</h2>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-section">
+                <label>Upload CSV</label>
+        <input type="file" id="fileInput" accept=".csv" />
+<label>📊 Granularity</label>
+        <select id="granularitySelect">
+          <option>Daily</option>
+          <option>Weekly</option>
+          <option>Monthly</option>
+        </select>
+        <label>Group By</label>
+        <select id="groupKeySelect">
+          <option value="__NONE__">No Grouping (Raw Rows)</option>
+        </select>
+
+        <label>Aggregation</label>
+        <select id="groupStrategySelect">
+          <option value="avg">Average</option>
+          <option value="sum">Sum</option>
+          <option value="max">Maximum</option>
+          <option value="min">Minimum</option>
+        </select>
+
+        <label>Top N</label>
+        <input type="number" id="limitInput" value="50" min="1" />
+
+        <label>Date From</label>
+        <input type="date" id="startDateInput" />
+
+        <label>Date To</label>
+        <input type="date" id="endDateInput" />
+      </div>
+
+      <div class="sidebar-section">
+        <label>🔧 Smoothing</label>
+        <select id="smoothingSelect">
+          <option>ON</option>
+          <option>OFF</option>
+        </select>
+      </div>
+<button class="export-btn">📥 Export Report</button>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="network-panel">
+        <button class="network-btn network-all">🌐 All Network</button>
+        <button class="network-btn network-5g">⚡ 5G Ultra</button>
+        <button class="network-btn network-4g">📶 4G LTE</button>
+        <button class="network-btn network-3g">📡 3G Legacy</button>
+        <button class="network-btn" style="background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%); box-shadow: 0 6px 16px rgba(251, 191, 36, 0.4);">⭐ Worst Cells</button>
+        <button class="network-btn" style="background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); box-shadow: 0 6px 16px rgba(236, 72, 153, 0.4);">🧠 RCA Engine</button>
+        <button class="network-btn" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); box-shadow: 0 6px 16px rgba(6, 182, 212, 0.4);">🔗 GeoAI Link</button>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════
+         📊 MAIN CONTENT
+         ═══════════════════════════════════════════════════════════════════ -->
+    <div class="main-content">
+      <div class="dashboard-header">
+        <h1 class="dashboard-title"><span class="dashboard-title-icon">🚀</span>AutomationPark Dashboard</h1>
+        <div class="timeline-panel">
+          <div class="timeline-chip">⏱ Daily</div>
+          <div class="timeline-chip">✅ RCA Ready</div>
+          <div class="timeline-chip">🤖 GeoAI Enabled</div>
+        </div>
+      </div>
+<div id="filters"></div>
+
+      <div class="kpi-grid"></div>
+
+      <div id="chartsContainer"></div>
+
+      <div id="rac-results"></div>
+    </div>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script>
+(function(){
+  let globalData = [];
+  let currentStreamFilter = "all";
+  let chartIndex = 0;
+  let chartInstances = [];
+
+  const themeColors = ["#3b82f6","#10b981","#f59e0b","#ef4444","#8b5cf6","#06b6d4","#f97316","#14b8a6","#ec4899","#22c55e"];
+
+  function byId(id){ return document.getElementById(id); }
+  function firstSelector(selectors){
+    for (const selector of selectors) {
+      const el = document.querySelector(selector);
+      if (el) return el;
+    }
+    return null;
+  }
+  function escapeHTML(value){
+    return String(value ?? "").replace(/[&<>"']/g, ch => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[ch]));
+  }
+  function numericKeys(data){
+    if (!data || !data.length) return [];
+    return Object.keys(data[0]).filter(key => data.some(row => typeof row[key] === "number" && Number.isFinite(row[key])));
+  }
+  function findTemporalKey(data){
+    if (!data || !data.length) return null;
+    const keys = Object.keys(data[0]);
+    return keys.find(k => /date|time|day|month|week/i.test(k)) || null;
+  }
+  function parseDateValue(value){
+    if (value === null || value === undefined || value === "") return null;
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+  function aggregateValues(values, strategy){
+    const valid = values.filter(v => typeof v === "number" && Number.isFinite(v));
+    if (!valid.length) return 0;
+    if (strategy === "sum") return valid.reduce((a,b) => a + b, 0);
+    if (strategy === "max") return Math.max(...valid);
+    if (strategy === "min") return Math.min(...valid);
+    return valid.reduce((a,b) => a + b, 0) / valid.length;
+  }
+  function buildGranularityLabel(value, mode){
+    const parsed = parseDateValue(value);
+    if (!parsed) return String(value || "Unknown Date");
+    const year = parsed.getFullYear();
+    const month = String(parsed.getMonth() + 1).padStart(2, "0");
+    const day = String(parsed.getDate()).padStart(2, "0");
+    const normalized = String(mode || "Daily").toLowerCase();
+    if (normalized.includes("month")) return `${year}-${month}`;
+    if (normalized.includes("week")) {
+      const weekStart = new Date(parsed);
+      const offset = (weekStart.getDay() + 6) % 7;
+      weekStart.setDate(weekStart.getDate() - offset);
+      return `${weekStart.getFullYear()}-${String(weekStart.getMonth() + 1).padStart(2, "0")}-${String(weekStart.getDate()).padStart(2, "0")} Week`;
+    }
+    if (normalized.includes("year")) return `${year}`;
+    if (normalized.includes("hour")) return `${year}-${month}-${day} ${String(parsed.getHours()).padStart(2, "0")}:00`;
+    return `${year}-${month}-${day}`;
+  }
+
+  function wireEvents(){
+    if (byId("fileInput")) byId("fileInput").addEventListener("change", handleFile);
+    ["limitInput","granularitySelect","groupKeySelect","groupStrategySelect","startDateInput","endDateInput"].forEach(id => {
+      if (byId(id)) {
+        const evt = id === "limitInput" ? "input" : "change";
+        byId(id).addEventListener(evt, runEnginePipeline);
+      }
+    });
+
+    const streamButtons = [
+      ["all", byId("btn-all") || document.querySelector(".network-all") || document.querySelector("#tab-all")],
+      ["5g", byId("btn-5g") || document.querySelector(".network-5g") || document.querySelector("#tab-5g")],
+      ["4g", byId("btn-4g") || document.querySelector(".network-4g") || document.querySelector("#tab-4g")],
+      ["3g", byId("btn-3g") || document.querySelector(".network-3g") || document.querySelector("#tab-3g")],
+      ["worst", byId("btn-worst") || document.querySelector("#tab-worst") || Array.from(document.querySelectorAll(".network-btn,.stream-item")).find(btn => /worst|critical/i.test(btn.textContent))]
+    ];
+
+    streamButtons.forEach(([key, btn]) => {
+      if (!btn) return;
+      btn.addEventListener("click", evt => {
+        evt.preventDefault();
+        document.querySelectorAll(".network-btn,.stream-item").forEach(b => b.classList.remove("active","active-stream"));
+        btn.classList.add(btn.classList.contains("stream-item") ? "active-stream" : "active");
+        currentStreamFilter = key;
+        runEnginePipeline();
+      });
+    });
+  }
+
+  function handleFile(event){
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    Papa.parse(file, {
+      header: true,
+      dynamicTyping: true,
+      skipEmptyLines: true,
+      complete: results => {
+        globalData = (results.data || []).filter(row => Object.keys(row).length > 0 && Object.values(row).some(v => v !== null && v !== ""));
+        if (!globalData.length) {
+          alert("No valid data found in CSV.");
+          return;
+        }
+        populateGroupingDropdowns(globalData);
+        buildDynamicFilters(globalData);
+        updateBadges(globalData);
+        runEnginePipeline();
+      },
+      error: err => alert("CSV parsing error: " + err.message)
+    });
+  }
+
+  function populateGroupingDropdowns(data){
+    const groupSelect = byId("groupKeySelect");
+    if (!groupSelect || !data.length) return;
+    groupSelect.innerHTML = `<option value="__NONE__">No Grouping (Raw Rows)</option>`;
+    const sample = data[0];
+    Object.keys(sample).forEach(key => {
+      const values = [...new Set(data.map(row => row[key]).filter(v => v !== null && v !== ""))];
+      if (values.length > 1 && values.length <= 80 && typeof sample[key] !== "number") {
+        const opt = document.createElement("option");
+        opt.value = key;
+        opt.textContent = key;
+        groupSelect.appendChild(opt);
+      }
+    });
+  }
+
+  function buildDynamicFilters(data){
+    const filterDiv = byId("filters");
+    if (!filterDiv || !data.length) return;
+    filterDiv.innerHTML = "";
+    Object.keys(data[0]).forEach(key => {
+      const values = [...new Set(data.map(row => row[key]).filter(v => v !== null && v !== ""))];
+      if (values.length > 1 && values.length < 25 && typeof values[0] !== "number") {
+        const wrapper = document.createElement("div");
+        const label = document.createElement("label");
+        label.textContent = key;
+        const select = document.createElement("select");
+        select.dataset.key = key;
+        select.innerHTML = `<option value="__ALL__">ALL ${escapeHTML(key).toUpperCase()}</option>`;
+        values.forEach(value => {
+          const opt = document.createElement("option");
+          opt.value = String(value);
+          opt.textContent = String(value);
+          select.appendChild(opt);
+        });
+        select.addEventListener("change", runEnginePipeline);
+        wrapper.appendChild(label);
+        wrapper.appendChild(select);
+        filterDiv.appendChild(wrapper);
+      }
+    });
+  }
+
+  function updateBadges(data){
+    const countMatch = pattern => data.filter(row => Object.values(row).some(v => String(v).toLowerCase().includes(pattern))).length;
+    if (byId("badge-all")) byId("badge-all").textContent = data.length;
+    if (byId("badge-5g")) byId("badge-5g").textContent = countMatch("5g");
+    if (byId("badge-4g")) byId("badge-4g").textContent = countMatch("4g") || countMatch("lte");
+    if (byId("badge-3g")) byId("badge-3g").textContent = countMatch("3g") || countMatch("umts");
+    if (byId("badge-worst")) byId("badge-worst").textContent = Math.max(1, Math.floor(data.length * 0.15));
+  }
+
+  function runEnginePipeline(){
+    if (!globalData.length) return;
+    let processed = [...globalData];
+
+    if (currentStreamFilter === "5g") {
+      processed = processed.filter(row => Object.values(row).some(v => String(v).toLowerCase().includes("5g")));
+    } else if (currentStreamFilter === "4g") {
+      processed = processed.filter(row => Object.values(row).some(v => /4g|lte/i.test(String(v))));
+    } else if (currentStreamFilter === "3g") {
+      processed = processed.filter(row => Object.values(row).some(v => /3g|umts/i.test(String(v))));
+    } else if (currentStreamFilter === "worst") {
+      const metric = numericKeys(processed)[0];
+      if (metric) processed = processed.sort((a,b) => (a[metric] || 0) - (b[metric] || 0)).slice(0, Math.max(5, Math.floor(processed.length * 0.2)));
+    }
+
+    document.querySelectorAll("#filters select").forEach(select => {
+      if (!select.dataset.key || select.value === "__ALL__") return;
+      processed = processed.filter(row => String(row[select.dataset.key]) === select.value);
+    });
+
+    const temporalKey = findTemporalKey(processed);
+    const start = byId("startDateInput") && byId("startDateInput").value ? new Date(byId("startDateInput").value) : null;
+    const end = byId("endDateInput") && byId("endDateInput").value ? new Date(byId("endDateInput").value + "T23:59:59") : null;
+    if (temporalKey && (start || end)) {
+      processed = processed.filter(row => {
+        const d = parseDateValue(row[temporalKey]);
+        if (!d) return false;
+        if (start && d < start) return false;
+        if (end && d > end) return false;
+        return true;
+      });
+    }
+
+    const groupedByDate = applyGranularity(processed);
+    const groupKey = byId("groupKeySelect") ? byId("groupKeySelect").value : "__NONE__";
+    let finalData = groupKey && groupKey !== "__NONE__" ? aggregateBy(groupedByDate, groupKey) : groupedByDate;
+    const limit = byId("limitInput") ? parseInt(byId("limitInput").value, 10) : 50;
+    if (!Number.isNaN(limit) && limit > 0) finalData = finalData.slice(-limit);
+    renderDashboard(finalData, processed, groupKey);
+  }
+
+  function applyGranularity(data){
+    if (!data.length) return data;
+    const mode = byId("granularitySelect") ? byId("granularitySelect").value : "Daily";
+    const temporalKey = findTemporalKey(data);
+    if (!temporalKey) return data;
+    const metrics = numericKeys(data);
+    const strategy = byId("groupStrategySelect") ? byId("groupStrategySelect").value : "avg";
+    const buckets = {};
+    data.forEach(row => {
+      const bucket = buildGranularityLabel(row[temporalKey], mode);
+      if (!buckets[bucket]) buckets[bucket] = [];
+      buckets[bucket].push(row);
+    });
+    return Object.keys(buckets).map(bucket => {
+      const rows = buckets[bucket];
+      const composite = { date_bucket: bucket };
+      metrics.forEach(metric => composite[metric] = aggregateValues(rows.map(r => r[metric]), strategy));
+      return composite;
+    });
+  }
+
+  function aggregateBy(data, groupKey){
+    if (!data.length) return data;
+    const strategy = byId("groupStrategySelect") ? byId("groupStrategySelect").value : "avg";
+    const metrics = numericKeys(data);
+    const groups = {};
+    data.forEach(row => {
+      const label = String(row[groupKey] ?? "Unknown");
+      if (!groups[label]) groups[label] = [];
+      groups[label].push(row);
+    });
+    return Object.keys(groups).map(label => {
+      const rows = groups[label];
+      const composite = { [groupKey]: label };
+      metrics.forEach(metric => composite[metric] = aggregateValues(rows.map(r => r[metric]), strategy));
+      return composite;
+    });
+  }
+
+  function renderDashboard(chartData, sourceData, groupKey){
+    chartInstances.forEach(chart => chart.destroy());
+    chartInstances = [];
+    chartIndex = 0;
+    const kpiContainer = firstSelector([".kpi-grid", "#kpi-container"]);
+    const chartContainer = byId("chartsContainer");
+    let racContainer = byId("rac-results");
+    if (!racContainer && chartContainer) {
+      racContainer = document.createElement("div");
+      racContainer.id = "rac-results";
+      chartContainer.after(racContainer);
+    }
+    if (kpiContainer) kpiContainer.innerHTML = "";
+    if (chartContainer) chartContainer.innerHTML = "";
+    if (!chartData.length) {
+      if (chartContainer) chartContainer.innerHTML = `<div style="padding:20px;color:#ef4444;">No matching records for current filters.</div>`;
+      if (racContainer) racContainer.innerHTML = "";
+      return;
+    }
+
+    const metrics = numericKeys(chartData);
+    metrics.slice(0, 8).forEach(metric => {
+      const values = chartData.map(row => row[metric]).filter(v => typeof v === "number" && Number.isFinite(v));
+      if (!values.length) return;
+      createKpi(kpiContainer, metric, aggregateValues(values, "avg"));
+      createChart(chartContainer, chartData, metric, metrics, groupKey);
+    });
+    showRac(racContainer, sourceData);
+  }
+
+  function createKpi(container, name, value){
+    if (!container) return;
+    const card = document.createElement("div");
+    card.className = container.id === "kpi-container" ? "kpi-mini-card" : "kpi-card";
+    card.innerHTML = `<h3>${escapeHTML(name)}</h3><p>${Number(value).toFixed(2)}</p><div class="kpi-card-subtext">Live KPI Analytics</div>`;
+    container.appendChild(card);
+  }
+
+  function chartLabels(data, groupKey){
+    return data.map((row, index) => {
+      if (groupKey && groupKey !== "__NONE__" && row[groupKey] !== undefined) return String(row[groupKey]);
+      const key = Object.keys(row).find(k => /date|time|bucket/i.test(k)) || Object.keys(row).find(k => typeof row[k] === "string") || Object.keys(row)[0];
+      return row[key] ?? `Row ${index + 1}`;
+    });
+  }
+
+  function scaleStats(values){
+    const valid = values.filter(v => typeof v === "number" && Number.isFinite(v));
+    if (!valid.length) return { min: 0, max: 0, range: 0, absMax: 0 };
+    const min = Math.min(...valid);
+    const max = Math.max(...valid);
+    return { min, max, range: Math.max(max - min, 1e-9), absMax: Math.max(Math.abs(min), Math.abs(max), 1e-9) };
+  }
+
+  function needsSecondAxis(primaryValues, overlayValues){
+    const a = scaleStats(primaryValues);
+    const b = scaleStats(overlayValues);
+    if (a.absMax === 0 || b.absMax === 0) return false;
+    const magnitudeRatio = Math.max(a.absMax, b.absMax) / Math.max(Math.min(a.absMax, b.absMax), 1e-9);
+    const rangeRatio = Math.max(a.range, b.range) / Math.max(Math.min(a.range, b.range), 1e-9);
+    return magnitudeRatio >= 6 || rangeRatio >= 12;
+  }
+
+  function createChart(container, data, metric, metrics, groupKey){
+    if (!container) return;
+    const card = document.createElement("div");
+    card.className = "chart-card";
+    const header = document.createElement("div");
+    header.className = "chart-header";
+    header.innerHTML = `
+      <div><div class="kpi-main">${escapeHTML(metric)}</div></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <select class="chart-selector overlay-select">${metrics.map(m => `<option value="${escapeHTML(m)}">${escapeHTML(m)}</option>`).join("")}</select>
+        <select class="chart-selector chart-type-select">
+          <option value="line">Line</option>
+          <option value="bar">Bar</option>
+          <option value="radar">Radar</option>
+          <option value="scatter">Scatter</option>
+          <option value="doughnut">Doughnut</option>
+          <option value="pie">Pie</option>
+        </select>
+      </div>`;
+    const canvas = document.createElement("canvas");
+    card.appendChild(header);
+    card.appendChild(canvas);
+    container.appendChild(card);
+
+    const typeSelect = card.querySelector(".chart-type-select");
+    const overlaySelect = card.querySelector(".overlay-select");
+    overlaySelect.selectedIndex = Math.min(chartIndex + 1, metrics.length - 1);
+    let instance = null;
+    const render = () => {
+      if (instance) instance.destroy();
+      const overlay = overlaySelect.value;
+      const primary = themeColors[chartIndex % themeColors.length];
+      const secondary = themeColors[(chartIndex + 2) % themeColors.length];
+      const chartType = typeSelect.value;
+      const primaryValues = data.map(row => row[metric]).filter(v => typeof v === "number");
+      const overlayValues = data.map(row => row[overlay]).filter(v => typeof v === "number");
+      const dualAxis = !["pie","doughnut","radar"].includes(chartType) && needsSecondAxis(primaryValues, overlayValues);
+      const axisScales = ["pie","doughnut","radar"].includes(chartType) ? {} : {
+        x: { grid: { color: "rgba(148,163,184,0.12)" } },
+        y: { position: "left", grid: { color: "rgba(148,163,184,0.12)" }, ticks: { color: primary } },
+        ...(dualAxis ? {
+          y1: {
+            position: "right",
+            grid: { drawOnChartArea: false },
+            ticks: { color: secondary }
+          }
+        } : {})
+      };
+      instance = new Chart(canvas, {
+        type: chartType,
+        data: {
+          labels: chartLabels(data, groupKey),
+          datasets: [
+            {
+              label: metric,
+              data: primaryValues,
+              borderColor: primary,
+              backgroundColor: primary + "40",
+              borderWidth: 2,
+              tension: 0.35,
+              yAxisID: "y"
+            },
+            {
+              label: overlay,
+              data: overlayValues,
+              borderColor: secondary,
+              backgroundColor: secondary + "26",
+              borderWidth: 2,
+              borderDash: [4,4],
+              tension: 0.35,
+              yAxisID: dualAxis ? "y1" : "y"
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: { legend: { labels: { usePointStyle: true } } },
+          scales: axisScales
+        }
+      });
+      chartInstances.push(instance);
+    };
+    render();
+    typeSelect.addEventListener("change", render);
+    overlaySelect.addEventListener("change", render);
+    chartIndex++;
+  }
+
+  function showRac(container, data){
+    if (!container) return;
+    const metrics = numericKeys(data);
+    const metric = metrics[0];
+    let warning = "No numeric KPI metric found for RCA scoring.";
+    if (metric) {
+      const values = data.map(row => row[metric]).filter(v => typeof v === "number");
+      const avg = aggregateValues(values, "avg");
+      warning = `${metric} baseline average is ${avg.toFixed(2)} across ${data.length} filtered rows.`;
+    }
+    container.innerHTML = `
+      <div class="rac-card rca-card rca-log-card">
+        <h3>RCA Summary</h3>
+        <p><b>Filtered Rows:</b> ${data.length}</p>
+        <p><b>Assessment:</b> ${escapeHTML(warning)}</p>
+        <p><b>Recommendation:</b> Review worst cells, vendor splits, and date buckets after each aggregation change.</p>
+      </div>`;
+  }
+
+  document.addEventListener("DOMContentLoaded", wireEvents);
+  if (document.readyState !== "loading") wireEvents();
+})();
+</script>
+
+</body>
+
+</html>
+

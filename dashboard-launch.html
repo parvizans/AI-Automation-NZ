@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutomationPark | Dashboard Launch Deck</title>
+  <style>
+    :root {
+      --bg: #071016;
+      --panel: rgba(8, 18, 24, 0.88);
+      --line: rgba(136, 166, 180, 0.22);
+      --text: #eef8fb;
+      --muted: #9eb3bd;
+      --cyan: #22d3d8;
+      --green: #39d98a;
+      --amber: #f5b84b;
+      --rose: #f15b88;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: "Segoe UI", Arial, sans-serif;
+      background:
+        linear-gradient(90deg, rgba(57, 217, 138, 0.035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(34, 211, 216, 0.03) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(7, 16, 22, 0.76), #071016),
+        url("../../assets/geomap-preview.png") center / cover fixed no-repeat;
+      background-size: 72px 72px, 72px 72px, auto, cover;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    header {
+      padding: 34px clamp(20px, 5vw, 72px) 24px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      background: rgba(7, 16, 22, 0.82);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      font-weight: 900;
+      font-size: 22px;
+    }
+
+    .mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      color: #031013;
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(8, 18, 24, 0.72);
+      font-weight: 800;
+    }
+
+    .btn.primary {
+      color: #031013;
+      border: 0;
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+    }
+
+    main {
+      padding: 78px clamp(20px, 5vw, 72px);
+    }
+
+    .hero {
+      max-width: 980px;
+      margin-bottom: 34px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 8px 12px;
+      border: 1px solid rgba(34, 211, 216, 0.42);
+      border-radius: 8px;
+      color: var(--cyan);
+      background: rgba(7, 16, 22, 0.62);
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 980px;
+      margin: 18px 0 16px;
+      font-size: clamp(44px, 7vw, 96px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .dash-card {
+      min-height: 246px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(180deg, rgba(34, 211, 216, 0.08), transparent 42%),
+        rgba(8, 18, 24, 0.86);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .dash-card:hover,
+    .dash-card.master {
+      transform: translateY(-4px);
+      border-color: rgba(34, 211, 216, 0.72);
+    }
+
+    .dash-card.master {
+      background:
+        linear-gradient(180deg, rgba(245, 184, 75, 0.16), transparent 48%),
+        rgba(8, 18, 24, 0.92);
+    }
+
+    .dash-card span {
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .dash-card h2 {
+      margin: 18px 0 10px;
+      font-size: 28px;
+    }
+
+    .dash-card p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .launch {
+      width: fit-content;
+      color: #031013;
+      background: linear-gradient(135deg, var(--cyan), var(--green));
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 900;
+    }
+
+    footer {
+      padding: 28px clamp(20px, 5vw, 72px);
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      background: rgba(7, 16, 22, 0.86);
+    }
+
+    @media (max-width: 1180px) {
+      .dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 720px) {
+      header { align-items: flex-start; flex-direction: column; }
+      .dashboard-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a class="brand" href="../../index.html"><span class="mark">AP</span><span>AutomationPark</span></a>
+    <nav class="top-actions">
+      <a class="btn" href="../../index.html">Platform Home</a>
+      <a class="btn" href="../CSS-htmls/index-old.html">AutomationPark Website</a>
+      <a class="btn primary" href="dashboard5.html">Open Master</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <span class="eyebrow">Dashboard Launch Deck</span>
+      <h1>Choose Your KPI Cockpit</h1>
+      <p>
+        Ten visual dashboards connected to the AutomationPark dashboard engine.
+        Upload CSV data, tune granularity, group KPIs, aggregate metrics, and review RCA-ready charts.
+      </p>
+    </section>
+
+    <section class="dashboard-grid">
+      <a class="dash-card" href="dashboard1.html"><span>DashB-1</span><div><h2>Skywalker</h2><p>Premium KPI overview and executive analytics view.</p></div><b class="launch">Launch</b></a>
+      <a class="dash-card" href="dashboard2.html"><span>DashB-2</span><div><h2>Kenobi</h2><p>Balanced operations dashboard for daily network review.</p></div><b class="launch">Launch</b></a>
+      <a class="dash-card" href="dashboard3.html"><span>DashB-3</span><div><h2>Vader</h2><p>High-contrast command view for critical KPI inspection.</p></div><b class="launch">Launch</b></a>
+      <a class="dash-card" href="dashboard4.html"><span>DashB-4</span><div><h2>Ahsoka</h2><p>Fast visual triage for grouped and filtered performance streams.</p></div><b class="launch">Launch</b></a>
+      <a class="dash-card master" href="dashboard5.html"><span>DashB-5 Master</span><div><h2>Yoda</h2><p>Master template with sidebar controls and RCA-ready analytics.</p></div><b class="launch">Launch</b></a>
+      <a class="dash-card" href="dashboard6%20.html"><span>DashB-6</span><div><h2>Leia</h2><p>Structured monitoring cockpit for operations reporting.</p></div><b class="launch">Launch</b></a>
+      <a class="dash-card" href="dashboard7.html"><span>DashB-7</span><div><h2>Mando</h2><p>Matte tactical UI for repeated engineering workflows.</p></div><b class="launch">Launch</b></a>
+      <a class="dash-card" href="dashboard8.html"><span>DashB-8</span><div><h2>Rey</h2><p>Modern KPI surface for trend checks and aggregation review.</p></div><b class="launch">Launch</b></a>
+      <a class="dash-card" href="dashboard9.html"><span>DashB-9</span><div><h2>Maul</h2><p>Cyber command layout for dense network diagnostics.</p></div><b class="launch">Launch</b></a>
+      <a class="dash-card" href="dashboard10.html"><span>DashB-10</span><div><h2>Grogu</h2><p>Compact control room for fast CSV-driven chart exploration.</p></div><b class="launch">Launch</b></a>
+    </section>
+  </main>
+
+  <footer>
+    AutomationPark Dashboard Launch Deck. Beta command surface for telecom KPI analytics.
+  </footer>
+</body>
+</html>
