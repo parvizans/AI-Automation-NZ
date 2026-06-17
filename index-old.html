@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AutomationPark is a telecom engineering platform for GeoAI, KPI dashboards, RF planning, RCA, and network automation tools.">
+  <title>AutomationPark | Telecom Tools & Network Automation Platform</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body id="top">
+  <header class="navbar">
+    <div class="nav-container">
+      <a class="logo" href="#top" aria-label="AutomationPark home">
+        <span class="logo-mark">AP</span>
+        <span class="brand-text">AutomationPark</span>
+      </a>
+
+      <button id="menu-toggle" class="menu-toggle" aria-label="Open navigation">Menu</button>
+
+      <nav id="nav-menu" class="menu" aria-label="Primary navigation">
+        <ul>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#tools">Tools</a></li>
+          <li><a href="#dashboards">Dashboards</a></li>
+        <li><a href="#mission">Mission</a></li>
+        <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <canvas id="stars" aria-hidden="true"></canvas>
+      <div class="hero-content">
+        <p class="eyebrow">Telecom GIS + Analytics + AI Automation</p>
+        <h1>Engineering Tools For Smarter Network Decisions</h1>
+        <p class="hero-copy">
+          AutomationPark brings RF planning, capacity analysis, KPI intelligence, and
+          AI-ready troubleshooting into one focused workspace for telecom teams.
+        </p>
+        <div class="hero-buttons">
+          <a href="#tools" class="btn primary">Open Tools</a>
+          <a href="#products" class="btn secondary">View Products</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="products" class="section products-section">
+      <div class="section-heading">
+        <p class="eyebrow">Product Surface</p>
+        <h2>Platform Modules</h2>
+        <p>Keep the workflow simple: choose the product, open the tool, and make the engineering decision faster.</p>
+      </div>
+
+      <div class="product-grid">
+        <a href="#throughput" class="product-card">
+          <div class="product-media media-throughput"></div>
+          <div class="product-content">
+            <span>RF Calculator</span>
+            <h3>5G Throughput Calculator</h3>
+            <p>Estimate throughput from SINR, bandwidth, MIMO, BLER, overhead, and deployment mode.</p>
+          </div>
+        </a>
+
+        <a href="#linkbudget" class="product-card">
+          <div class="product-media media-link"></div>
+          <div class="product-content">
+            <span>Planning Tool</span>
+            <h3>Link Budget Tool</h3>
+            <p>Model propagation, losses, path loss, distance, and site count for coverage planning.</p>
+          </div>
+        </a>
+
+        <a href="#capacity" class="product-card">
+          <div class="product-media media-capacity"></div>
+          <div class="product-content">
+            <span>Capacity Model</span>
+            <h3>Coverage & Capacity Planner</h3>
+            <p>Estimate site requirements, capacity per site, and congestion risk from demand inputs.</p>
+          </div>
+        </a>
+
+        <a href="https://automationpark.tech/timesheet.html" class="product-card">
+          <div class="product-media media-timesheet"></div>
+          <div class="product-content">
+            <span>Operations</span>
+            <h3>Smart Timesheet</h3>
+            <p>Structured reporting and workforce tracking for field and delivery operations.</p>
+          </div>
+        </a>
+
+        <a href="../../index.html" class="product-card">
+          <div class="product-media media-platform"></div>
+          <div class="product-content">
+            <span>GeoAI</span>
+            <h3>AutomationPark Platform</h3>
+            <p>Launch the main GeoAI and analytics experience for network visualization and dashboards.</p>
+          </div>
+        </a>
+
+        <a href="../../backup/DashBoards/dashboard5.html" class="product-card">
+          <div class="product-media media-dashboard"></div>
+          <div class="product-content">
+            <span>KPI Studio</span>
+            <h3>Dashboard Engine</h3>
+            <p>Multi-KPI telecom reporting with grouping, aggregation, granularity, and RCA-ready charts.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section id="tools" class="section tools-section">
+      <div class="section-heading">
+        <p class="eyebrow">Calculator Console</p>
+        <h2>Engineering Tools</h2>
+        <p>Built like a scientific calculator: dense, focused, and made for repeated engineering use.</p>
+      </div>
+
+      <div class="tools-grid">
+        <article id="throughput" class="tool-card">
+          <div class="tool-header">
+            <span class="tool-index">01</span>
+            <div>
+              <h3>5G Throughput Calculator</h3>
+              <p>Simulate max 5G throughput from RF, bandwidth, radio, and deployment conditions.</p>
+            </div>
+          </div>
+
+          <div class="tool-form two-col">
+            <label>SINR (dB)<input id="sinr" value="20"></label>
+            <label>Bandwidth (MHz)<input id="bandwidth" value="100"></label>
+            <label>MIMO Layers<input id="mimo" value="4"></label>
+            <label>BLER (%)<input id="bler" value="10"></label>
+            <label>Overhead (%)<input id="overhead" value="15"></label>
+            <label>Auto Mode<select id="mode"><option value="auto">Calculation Mode</option></select></label>
+            <label>SCS<select id="scs"><option value="15">15 kHz</option><option value="30">30 kHz</option><option value="60">60 kHz</option><option value="120">120 kHz</option></select></label>
+            <label>Frequency Band<select id="freqBand"><option value="700">700 MHz</option><option value="1800">1800 MHz</option><option value="3500" selected>3500 MHz</option><option value="26000">26 GHz</option></select></label>
+            <label>Duplex<select id="duplex"><option value="1">FDD</option><option value="0.75" selected>TDD</option></select></label>
+          </div>
+
+          <button onclick="calculate5G()" class="btn primary tool-action">Calculate</button>
+          <p id="result" class="tool-result">Result: -- Mbps</p>
+        </article>
+
+        <article id="linkbudget" class="tool-card featured-tool">
+          <div class="tool-header">
+            <span class="tool-index">02</span>
+            <div>
+              <h3>5G Link Budget Calculator</h3>
+              <p>Estimate link budget, path loss, cell radius, and required sites from RF inputs.</p>
+            </div>
+          </div>
+
+          <div class="tool-form two-col">
+            <label>Tx Power (W)<input type="number" id="lb_power" value="100"></label>
+            <label>Frequency (MHz)<input type="number" id="lb_freq" value="3500"></label>
+            <label>BS Antenna Gain (dBi)<input type="number" id="lb_gain" value="17"></label>
+            <label>Cable Loss (dB)<input type="number" id="lb_cable" value="0"></label>
+            <label>Body Loss (dB)<input type="number" id="lb_body" value="3"></label>
+            <label>Building Loss (dB)<input type="number" id="lb_building" value="12"></label>
+            <label>Interference Margin (dB)<input type="number" id="lb_interference" value="2"></label>
+            <label>Fading Margin (dB)<input type="number" id="lb_fading" value="8"></label>
+            <label>Propagation Model<select id="lb_model"><option value="120">Rural</option><option value="135">Suburban</option><option value="150" selected>Urban</option></select></label>
+            <label>Cell Edge Throughput (Mbps)<input type="number" id="lb_throughput" value="25"></label>
+            <label>Total Area (sqkm)<input type="number" id="lb_area" value="50"></label>
+          </div>
+
+          <button onclick="calculateLinkBudget()" class="btn primary tool-action">Calculate</button>
+          <div class="result-stack">
+            <h3 id="lb_distance">Distance: --</h3>
+            <h3 id="lb_pathloss">Path Loss: --</h3>
+            <h3 id="lb_budget">Link Budget: --</h3>
+            <h3 id="lb_sites">Sites Required: --</h3>
+          </div>
+        </article>
+
+        <article id="capacity" class="tool-card">
+          <div class="tool-header">
+            <span class="tool-index">03</span>
+            <div>
+              <h3>Coverage & Capacity Planner</h3>
+              <p>Balance coverage and demand to estimate sites, site capacity, and congestion risk.</p>
+            </div>
+          </div>
+
+          <div class="tool-form two-col">
+            <label>Total Area (sqkm)<input type="number" id="cc_area" value="50"></label>
+            <label>Bandwidth (MHz)<input type="number" id="cc_bw" value="100"></label>
+            <label>MIMO Layers<input type="number" id="cc_mimo" value="4"></label>
+            <label>Users in Area<input type="number" id="cc_users" value="500"></label>
+            <label>Target Throughput per User (Mbps)<input type="number" id="cc_user_tput" value="10"></label>
+          </div>
+
+          <button onclick="calculateCoverage()" class="btn primary tool-action">Calculate</button>
+          <div class="result-stack">
+            <h3 id="cc_sites">Sites Required: --</h3>
+            <h3 id="cc_capacity">Capacity per Site: --</h3>
+            <h3 id="cc_risk">Congestion Risk: --</h3>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="dashboards" class="section dashboard-fleet">
+      <div class="section-heading">
+        <p class="eyebrow">KPI Command Center</p>
+        <h2>Dashboard Launch Deck</h2>
+        <p>
+          Ten dashboard cockpits connected to the working HTML dashboard files.
+          Use the cards as quick launch buttons for different UI themes and KPI workflows.
+        </p>
+      </div>
+
+      <div class="fleet-grid">
+        <a class="fleet-card" href="../DashBoards/dashboard1.html"><span>01</span><h3>Skywalker</h3><p>Premium KPI overview and executive analytics view.</p></a>
+        <a class="fleet-card" href="../DashBoards/dashboard2.html"><span>02</span><h3>Kenobi</h3><p>Balanced operations dashboard for daily network review.</p></a>
+        <a class="fleet-card" href="../DashBoards/dashboard3.html"><span>03</span><h3>Vader</h3><p>High-contrast command view for critical KPI inspection.</p></a>
+        <a class="fleet-card" href="../DashBoards/dashboard4.html"><span>04</span><h3>Ahsoka</h3><p>Fast visual triage for grouped and filtered performance streams.</p></a>
+        <a class="fleet-card master" href="../DashBoards/dashboard5.html"><span>05</span><h3>Yoda</h3><p>Master template with sidebar controls and RCA-ready analytics.</p></a>
+        <a class="fleet-card" href="../DashBoards/dashboard6%20.html"><span>06</span><h3>Leia</h3><p>Structured monitoring cockpit for operations reporting.</p></a>
+        <a class="fleet-card" href="../DashBoards/dashboard7.html"><span>07</span><h3>Mando</h3><p>Matte tactical UI for repeated engineering workflows.</p></a>
+        <a class="fleet-card" href="../DashBoards/dashboard8.html"><span>08</span><h3>Rey</h3><p>Modern KPI surface for trend checks and aggregation review.</p></a>
+        <a class="fleet-card" href="../DashBoards/dashboard9.html"><span>09</span><h3>Maul</h3><p>Cyber command layout for dense network diagnostics.</p></a>
+        <a class="fleet-card" href="../DashBoards/dashboard10.html"><span>10</span><h3>Grogu</h3><p>Compact control room for fast CSV-driven chart exploration.</p></a>
+      </div>
+
+      <a class="btn primary fleet-launch-all" href="../DashBoards/dashboard-launch.html">Open Full Dashboard Launcher</a>
+    </section>
+
+    <section id="mission" class="section mission-section">
+      <div class="section-heading">
+        <p class="eyebrow">Why AutomationPark Exists</p>
+        <h2>From Visualization To Intelligence To Automation</h2>
+        <p>
+          The mission is to reduce manual engineering effort and give network teams a single source of truth
+          for planning, optimization, operations, and reporting.
+        </p>
+      </div>
+
+      <div class="mission-grid">
+        <div class="mission-card">
+          <span>01</span>
+          <h3>GeoAI Foundation</h3>
+          <p>Interactive network maps, RF shells, LTE/5G cell mapping, NCell relationships, and dynamic filters.</p>
+        </div>
+        <div class="mission-card">
+          <span>02</span>
+          <h3>Network Intelligence</h3>
+          <p>Worst-cell analytics, neighbor recommendations, coverage gaps, ANR optimization, and capacity risks.</p>
+        </div>
+        <div class="mission-card">
+          <span>03</span>
+          <h3>Analytics Engine</h3>
+          <p>Reusable KPI dashboards, aggregation, granularity, RCA summaries, and automated reporting foundations.</p>
+        </div>
+        <div class="mission-card">
+          <span>04</span>
+          <h3>AI Operations</h3>
+          <p>AI-powered RCA, automated engineering recommendations, forecasting, and self-service network reporting.</p>
+        </div>
+        <div class="mission-card">
+          <span>05</span>
+          <h3>Digital Twin Vision</h3>
+          <p>A practical environment for simulation, monitoring, planning, and intelligent decision support.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contact" class="footer">
+    <div>
+      <h2>AutomationPark</h2>
+      <p>Telecom tools, GeoAI intelligence, KPI analytics, RCA, and automation foundations.</p>
+    </div>
+    <div class="footer-actions">
+      <a class="btn primary" href="mailto:automationpark@outlook.com">Contact</a>
+      <a class="btn secondary" href="#products">Products</a>
+    </div>
+    <p class="copyright">© <span id="y"></span> AutomationPark. Beta platform build.</p>
+  </footer>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
