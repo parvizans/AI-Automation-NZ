@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AutomationPark Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+
+  font-family:"Segoe UI",sans-serif;
+
+  background:
+    linear-gradient(
+      rgba(2,6,23,0.90),
+      rgba(2,6,23,0.96)
+    ),
+    url("assets/Hero-4.jpg");
+
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+
+  color:white;
+
+  min-height:100vh;
+
+  overflow-x:hidden;
+}
+
+.dashboard-layout{
+  display:flex;
+  gap:24px;
+  padding:20px;
+}
+
+.main-content{
+  flex:1;
+}
+
+/* =========================
+SIDEBAR
+========================= */
+
+.sidebar{
+
+  width:280px;
+
+  background:
+    rgba(2,6,23,0.92);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius:28px;
+
+  padding:22px;
+
+  height:fit-content;
+
+  position:sticky;
+  top:20px;
+
+  backdrop-filter:blur(14px);
+
+  box-shadow:
+    0 0 35px rgba(0,0,0,0.55);
+
+}
+
+.sidebar h2{
+
+  color:#7dd3fc;
+
+  margin-bottom:25px;
+
+  font-size:30px;
+
+}
+
+.sidebar label{
+
+  display:block;
+
+  margin-top:18px;
+  margin-bottom:8px;
+
+  color:#cbd5e1;
+
+  font-size:14px;
+
+}
+
+.sidebar select,
+.sidebar input{
+
+  width:100%;
+
+  padding:12px;
+
+  border:none;
+
+  border-radius:14px;
+
+  background:
+    rgba(30,41,59,0.9);
+
+  color:white;
+
+}
+
+.export-btn{
+
+  width:100%;
+
+  margin-top:22px;
+
+  padding:14px;
+
+  border:none;
+
+  border-radius:16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #38bdf8
+    );
+
+  color:white;
+
+  font-size:15px;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+}
+
+/* =========================
+NETWORK BUTTONS
+========================= */
+
+.network-panel{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:14px;
+
+  margin-top:30px;
+
+}
+
+.network-btn{
+
+  padding:16px;
+
+  border:none;
+
+  border-radius:18px;
+
+  color:white;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+}
+
+.network-all{
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #38bdf8
+    );
+
+}
+
+.network-5g{
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #ec4899
+    );
+
+}
+
+.network-4g{
+
+  background:
+    linear-gradient(
+      135deg,
+      #059669,
+      #10b981
+    );
+
+}
+
+.network-3g{
+
+  background:
+    linear-gradient(
+      135deg,
+      #ea580c,
+      #f59e0b
+    );
+
+}
+
+/* =========================
+HEADER
+========================= */
+
+.dashboard-header{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  align-items:center;
+
+  margin-bottom:25px;
+
+  gap:20px;
+
+  flex-wrap:wrap;
+
+}
+
+.dashboard-title{
+
+  font-size:52px;
+
+  font-weight:800;
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffffff,
+      #60a5fa,
+      #38bdf8
+    );
+
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+
+}
+
+.timeline-panel{
+
+  display:flex;
+
+  gap:12px;
+
+  flex-wrap:wrap;
+
+}
+
+.timeline-chip{
+
+  padding:10px 16px;
+
+  border-radius:12px;
+
+  background:
+    rgba(37,99,235,0.18);
+
+  color:#93c5fd;
+
+  font-size:13px;
+
+}
+
+/* =========================
+TOP CONTROLS
+========================= */
+
+.top-controls{
+
+  display:flex;
+
+  gap:15px;
+
+  flex-wrap:wrap;
+
+  margin-bottom:25px;
+
+}
+
+.top-controls input{
+
+  padding:12px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:
+    rgba(30,41,59,0.92);
+
+  color:white;
+
+}
+
+/* =========================
+FILTERS
+========================= */
+
+.filters-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(auto-fill,minmax(180px,1fr));
+
+  gap:15px;
+
+  margin-bottom:25px;
+
+}
+
+.filters-grid select{
+
+  width:100%;
+
+  min-height:120px;
+
+  border:none;
+
+  border-radius:14px;
+
+  background:
+    rgba(15,23,42,0.92);
+
+  color:white;
+
+  padding:10px;
+
+}
+
+/* =========================
+KPI GRID
+========================= */
+
+.kpi-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(auto-fit,minmax(220px,1fr));
+
+  gap:18px;
+
+  margin-bottom:28px;
+
+}
+
+.kpi-card{
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(15,23,42,0.95),
+      rgba(30,41,59,0.92)
+    );
+
+  border:
+    1px solid rgba(255,255,255,0.06);
+
+  border-radius:24px;
+
+  padding:24px;
+
+}
+
+.kpi-card h3{
+
+  color:#94a3b8;
+
+  font-size:15px;
+
+  margin-bottom:14px;
+
+}
+
+.kpi-card p{
+
+  font-size:42px;
+
+  font-weight:800;
+
+  color:#60a5fa;
+
+}
+
+/* =========================
+CHARTS
+========================= */
+
+.charts-grid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:24px;
+
+}
+
+.chart-box{
+
+  background:
+    rgba(8,15,35,0.95);
+
+  border:
+    1px solid rgba(255,255,255,0.08);
+
+  border-radius:28px;
+
+  padding:20px;
+
+  min-height:520px;
+
+}
+
+.chart-box canvas{
+
+  width:100% !important;
+
+  height:380px !important;
+
+}
+
+.chart-header{
+
+  margin-bottom:14px;
+
+}
+
+.kpi-main{
+
+  font-size:18px;
+
+  font-weight:800;
+
+}
+
+.kpi-secondary{
+
+  font-size:12px;
+
+  color:#38bdf8;
+
+}
+
+.chart-selector{
+
+  margin-bottom:14px;
+
+  padding:10px 14px;
+
+  border:none;
+
+  border-radius:12px;
+
+  background:
+    rgba(30,41,59,0.9);
+
+  color:white;
+
+}
+
+#rac-results{
+
+  margin-top:30px;
+
+  display:grid;
+
+  gap:16px;
+
+}
+
+.rac-card{
+
+  background:
+    rgba(15,23,42,0.92);
+
+  border:
+    1px solid rgba(56,189,248,0.15);
+
+  border-radius:18px;
+
+  padding:18px;
+
+  color:#e2e8f0;
+
+}
+
+@media(max-width:1400px){
+
+  .charts-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="dashboard-layout">
+
+<div class="sidebar">
+
+<h2>🧠 Control</h2>
+
+<label>Granularity</label>
+
+<select>
+<option>Daily</option>
+<option>Weekly</option>
+<option>Monthly</option>
+</select>
+
+<label>Smoothing</label>
+
+<select>
+<option>ON</option>
+<option>OFF</option>
+</select>
+
+<label>Top Sites</label>
+
+<input type="number" value="50">
+
+<button class="export-btn">
+Export Report
+</button>
+
+<div class="network-panel">
+
+<button class="network-btn network-all">
+🌐 All Network
+</button>
+
+<button class="network-btn network-5g">
+⚡ 5G Ultra
+</button>
+
+<button class="network-btn network-4g">
+📶 4G LTE
+</button>
+
+<button class="network-btn network-3g">
+📡 3G Legacy
+</button>
+
+</div>
+
+</div>
+
+<div class="main-content">
+
+<div class="dashboard-header">
+
+<h1 class="dashboard-title">
+🚀 AutomationPark Dashboard
+</h1>
+
+<div class="timeline-panel">
+
+<div class="timeline-chip">
+Daily
+</div>
+
+<div class="timeline-chip">
+RCA Ready
+</div>
+
+<div class="timeline-chip">
+GeoAI Enabled
+</div>
+
+</div>
+
+</div>
+
+<div class="top-controls">
+
+<input
+type="file"
+id="fileInput"
+>
+
+<input
+type="number"
+id="limitInput"
+value="50"
+placeholder="Points Limit"
+>
+
+</div>
+
+<div id="filters" class="filters-grid"></div>
+
+<div class="kpi-grid"></div>
+
+<div class="charts-grid"></div>
+
+<div id="rac-results"></div>
+
+</div>
+
+</div>
+
+<script src="dashboard.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,964 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutomationPark Dashboard</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1"></script>
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════════════
+       🔥 ULTRA-BOLD CYBER-TELEMETRY THEME
+       ═══════════════════════════════════════════════════════════════════ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'SF Mono', SFProIcons, "Helvetica Neue", Arial, sans-serif;
+      background-color: #05070B;
+      color: #A3AED0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .dashboard-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       ⚡️ HIGH-CONTRAST SIDEBAR CONTROL MATRIX
+       ═══════════════════════════════════════════════════════════════════ */
+    .sidebar {
+      width: 320px;
+      background-color: #0A0E17;
+      border-right: 2px solid #1E293B;
+      padding: 35px 25px;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 25px;
+      border-bottom: 2px dashed #1E293B;
+      margin-bottom: 30px;
+    }
+
+    .sidebar-logo-icon {
+      font-size: 22px;
+      color: #00F2FE;
+      text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+    }
+
+    .sidebar-logo-text {
+      font-size: 16px;
+      font-weight: 800;
+      color: #FFFFFF;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .sidebar h2 {
+      font-size: 11px;
+      font-weight: 800;
+      color: #4A5568;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+    }
+
+    .sidebar-section {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 35px;
+    }
+
+    .sidebar label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #718096;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .sidebar select,
+    .sidebar input[type="number"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #1E293B;
+      border-radius: 6px;
+      background-color: #05070B;
+      color: #FFFFFF;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar select:focus,
+    .sidebar input[type="number"]:focus {
+      outline: none;
+      border-color: #00F2FE;
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);
+    }
+
+    .export-btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #00F2FE 0%, #4FACFE 100%);
+      color: #05070B;
+      font-weight: 800;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-top: auto;
+      box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+    }
+
+    .export-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 242, 254, 0.4);
+    }
+
+    .network-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .network-btn {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #1E293B;
+      border-radius: 6px;
+      background: #0D1321;
+      color: #A3AED0;
+      font-weight: 600;
+      font-size: 12px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .network-btn:hover {
+      background: #1E293B;
+      color: #FFFFFF;
+      border-color: #4A5568;
+    }
+
+    .network-all { border-left: 4px solid #00F2FE; color: #FFFFFF; font-weight: 700; }
+    .network-5g { border-left: 4px solid #9D4EDD; }
+    .network-4g { border-left: 4px solid #00B4D8; }
+    .network-3g { border-left: 4px solid #FFB703; }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       🚀 MAIN TERMINAL AND CONTROLS
+       ═══════════════════════════════════════════════════════════════════ */
+    .main-content {
+      flex: 1;
+      padding: 45px;
+      max-width: 1800px;
+      margin: 0 auto;
+      width: calc(100% - 320px);
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .dashboard-title {
+      font-size: 28px;
+      font-weight: 900;
+      color: #FFFFFF;
+      text-transform: uppercase;
+      letter-spacing: -0.5px;
+    }
+
+    .timeline-panel {
+      display: flex;
+      gap: 10px;
+    }
+
+    .timeline-chip {
+      padding: 8px 16px;
+      border-radius: 20px;
+      background: #111827;
+      color: #00F2FE;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      border: 1px solid rgba(0, 242, 254, 0.2);
+    }
+
+    .top-controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 40px;
+      background: #0A0E17;
+      padding: 20px 25px;
+      border-radius: 8px;
+      border: 2px solid #1E293B;
+    }
+
+    .top-controls input[type="file"] {
+      color: #718096;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .top-controls input[type="file"]::-webkit-file-upload-button {
+      background: #00F2FE;
+      border: none;
+      color: #05070B;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-right: 15px;
+    }
+
+    .top-controls input[type="number"] {
+      padding: 10px;
+      border: 2px solid #1E293B;
+      border-radius: 6px;
+      background: #05070B;
+      color: #FFFFFF;
+      font-weight: 700;
+      width: 100px;
+      text-align: center;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       🎛 MULTI-SELECT FILTER GRID (NEW HIGH-IMPACT DESIGN)
+       ═══════════════════════════════════════════════════════════════════ */
+    #filters {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    #filters > div {
+      background: #0A0E17;
+      border: 2px solid #1E293B;
+      padding: 15px;
+      border-radius: 8px;
+    }
+
+    #filters label {
+      font-size: 11px;
+      font-weight: 800;
+      color: #4A5568;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      display: block;
+      letter-spacing: 1px;
+    }
+
+    #filters select {
+      width: 100%;
+      height: 90px; /* Enhanced view window for multiple selection comfort */
+      border: 1px solid #2D3748;
+      border-radius: 4px;
+      background: #05070B;
+      color: #00F2FE;
+      padding: 10px;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       📈 HIGH-DENSITY KPI & CANVAS BLOCKS
+       ═══════════════════════════════════════════════════════════════════ */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .kpi-card {
+      background: #0A0E17;
+      border-top: 4px solid #00F2FE;
+      border-left: 2px solid #1E293B;
+      border-right: 2px solid #1E293B;
+      border-bottom: 2px solid #1E293B;
+      border-radius: 0 0 8px 8px;
+      padding: 25px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .kpi-card h3 {
+      color: #718096;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+    }
+
+    .kpi-card p {
+      font-size: 38px;
+      font-weight: 900;
+      color: #FFFFFF;
+      line-height: 1;
+    }
+
+    .kpi-card-subtext {
+      font-size: 11px;
+      color: #4A5568;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    #chartsContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .chart-card {
+      background: #0A0E17;
+      border: 2px solid #1E293B;
+      border-radius: 8px;
+      padding: 30px;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      border-bottom: 1px solid #1E293B;
+      padding-bottom: 15px;
+    }
+
+    .kpi-main {
+      font-size: 15px;
+      font-weight: 800;
+      color: #FFFFFF;
+      text-transform: uppercase;
+    }
+
+    .kpi-secondary {
+      font-size: 10px;
+      color: #718096;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .chart-selector {
+      padding: 8px 12px;
+      border: 1px solid #2D3748;
+      border-radius: 4px;
+      background: #05070B;
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .chart-card canvas {
+      width: 100% !important;
+      height: 350px !important;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       🧠 RCA ENGINE LOG MATRIX
+       ═══════════════════════════════════════════════════════════════════ */
+    #rac-results {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 25px;
+    }
+
+    .rac-card {
+      background: #0A0E17;
+      border: 2px solid #FF0055;
+      border-radius: 8px;
+      padding: 25px;
+      font-size: 13px;
+      line-height: 1.7;
+      position: relative;
+    }
+
+    .rac-card strong {
+      color: #FF0055;
+      font-size: 14px;
+      font-weight: 800;
+      display: block;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .rac-card b {
+      color: #FFFFFF;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 11px;
+    }
+
+    @media (max-width: 1200px) {
+      .dashboard-layout { flex-direction: column; }
+      .sidebar { width: 100%; height: auto; position: relative; }
+      .main-content { width: 100%; padding: 25px; }
+    }
+  
+    /* Codex function patch: keeps each dashboard theme, only styles newly moved sidebar controls. */
+    .sidebar input[type="file"],
+    .sidebar input[type="date"] {
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 12px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      background: rgba(15, 23, 42, 0.55);
+      color: inherit;
+      font: inherit;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="dashboard-layout">
+
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">⚡</div>
+        <div class="sidebar-logo-text">AUTOMATIONPARK</div>
+      </div>
+
+      <div class="sidebar-section">
+        <h2>System Engine Options</h2>
+        
+        <label>Group Records By</label>
+        <select id="groupBySelect">
+          <option value="__NONE__">NO AGGREGATION (RAW ROWS)</option>
+        </select>
+        
+        <div style="margin-top: 15px;"></div>
+        <label>Aggregation Function</label>
+        <select id="aggFunctionSelect">
+          <option value="AVERAGE">AVERAGE (MEAN)</option>
+          <option value="SUM">SUM TOTAL</option>
+          <option value="MIN">MINIMUM</option>
+          <option value="MAX">MAXIMUM</option>
+        </select>
+
+        <div style="margin-top: 15px;"></div>
+                <label>Upload CSV</label>
+        <input type="file" id="fileInput" accept=".csv" />
+<label>Granularity</label>
+        <select id="granularitySelect">
+          <option>Daily</option>
+          <option>Weekly</option>
+          <option>Monthly</option>
+        </select>
+        <label>Group By</label>
+        <select id="groupKeySelect">
+          <option value="__NONE__">No Grouping (Raw Rows)</option>
+        </select>
+
+        <label>Aggregation</label>
+        <select id="groupStrategySelect">
+          <option value="avg">Average</option>
+          <option value="sum">Sum</option>
+          <option value="max">Maximum</option>
+          <option value="min">Minimum</option>
+        </select>
+
+        <label>Top N</label>
+        <input type="number" id="limitInput" value="50" min="1" />
+
+        <label>Date From</label>
+        <input type="date" id="startDateInput" />
+
+        <label>Date To</label>
+        <input type="date" id="endDateInput" />
+        <div style="margin-top: 15px;"></div>
+        <label>Smoothing Filter</label>
+        <select id="smoothingSelect">
+          <option>ON</option>
+          <option>OFF</option>
+        </select>
+        <div style="margin-top: 15px;"></div>
+</div>
+
+      <div class="sidebar-section">
+        <h2>Network Streams</h2>
+        <div class="network-panel">
+          <button class="network-btn network-all">🎛 ALL METRICS MATRIX</button>
+          <button class="network-btn network-5g">⚡ 5G SYSTEM CORE</button>
+          <button class="network-btn network-4g">📶 4G LTE NODE LAYER</button>
+          <button class="network-btn network-3g">📡 3G LEGACY NETS</button>
+          <button class="network-btn" style="border-left: 4px solid #FF0055;">⚠️ WORST CELL VECTORS</button>
+          <button class="network-btn" style="border-left: 4px solid #00FF66;">🧠 DEEP RCA ENGINES</button>
+        </div>
+      </div>
+
+      <button class="export-btn" onclick="window.print()">📥 Run System Export</button>
+    </div>
+
+    <div class="main-content">
+      <div class="dashboard-header">
+        <h1 class="dashboard-title">Live Diagnostics Terminal</h1>
+        <div class="timeline-panel">
+          <div class="timeline-chip">SYS: ONLINE</div>
+          <div class="timeline-chip">RCA: REFRESHED</div>
+        </div>
+      </div>
+<div id="filters"></div>
+      <div class="kpi-grid"></div>
+      <div id="chartsContainer"></div>
+      <div id="rac-results"></div>
+    </div>
+
+  </div>
+
+  <script>
+(function(){
+  let globalData = [];
+  let currentStreamFilter = "all";
+  let chartIndex = 0;
+  let chartInstances = [];
+
+  const themeColors = ["#3b82f6","#10b981","#f59e0b","#ef4444","#8b5cf6","#06b6d4","#f97316","#14b8a6","#ec4899","#22c55e"];
+
+  function byId(id){ return document.getElementById(id); }
+  function firstSelector(selectors){
+    for (const selector of selectors) {
+      const el = document.querySelector(selector);
+      if (el) return el;
+    }
+    return null;
+  }
+  function escapeHTML(value){
+    return String(value ?? "").replace(/[&<>"']/g, ch => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[ch]));
+  }
+  function numericKeys(data){
+    if (!data || !data.length) return [];
+    return Object.keys(data[0]).filter(key => data.some(row => typeof row[key] === "number" && Number.isFinite(row[key])));
+  }
+  function findTemporalKey(data){
+    if (!data || !data.length) return null;
+    const keys = Object.keys(data[0]);
+    return keys.find(k => /date|time|day|month|week/i.test(k)) || null;
+  }
+  function parseDateValue(value){
+    if (value === null || value === undefined || value === "") return null;
+    const parsed = new Date(value);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+  function aggregateValues(values, strategy){
+    const valid = values.filter(v => typeof v === "number" && Number.isFinite(v));
+    if (!valid.length) return 0;
+    if (strategy === "sum") return valid.reduce((a,b) => a + b, 0);
+    if (strategy === "max") return Math.max(...valid);
+    if (strategy === "min") return Math.min(...valid);
+    return valid.reduce((a,b) => a + b, 0) / valid.length;
+  }
+  function buildGranularityLabel(value, mode){
+    const parsed = parseDateValue(value);
+    if (!parsed) return String(value || "Unknown Date");
+    const year = parsed.getFullYear();
+    const month = String(parsed.getMonth() + 1).padStart(2, "0");
+    const day = String(parsed.getDate()).padStart(2, "0");
+    const normalized = String(mode || "Daily").toLowerCase();
+    if (normalized.includes("month")) return `${year}-${month}`;
+    if (normalized.includes("week")) {
+      const weekStart = new Date(parsed);
+      const offset = (weekStart.getDay() + 6) % 7;
+      weekStart.setDate(weekStart.getDate() - offset);
+      return `${weekStart.getFullYear()}-${String(weekStart.getMonth() + 1).padStart(2, "0")}-${String(weekStart.getDate()).padStart(2, "0")} Week`;
+    }
+    if (normalized.includes("year")) return `${year}`;
+    if (normalized.includes("hour")) return `${year}-${month}-${day} ${String(parsed.getHours()).padStart(2, "0")}:00`;
+    return `${year}-${month}-${day}`;
+  }
+
+  function wireEvents(){
+    if (byId("fileInput")) byId("fileInput").addEventListener("change", handleFile);
+    ["limitInput","granularitySelect","groupKeySelect","groupStrategySelect","startDateInput","endDateInput"].forEach(id => {
+      if (byId(id)) {
+        const evt = id === "limitInput" ? "input" : "change";
+        byId(id).addEventListener(evt, runEnginePipeline);
+      }
+    });
+
+    const streamButtons = [
+      ["all", byId("btn-all") || document.querySelector(".network-all") || document.querySelector("#tab-all")],
+      ["5g", byId("btn-5g") || document.querySelector(".network-5g") || document.querySelector("#tab-5g")],
+      ["4g", byId("btn-4g") || document.querySelector(".network-4g") || document.querySelector("#tab-4g")],
+      ["3g", byId("btn-3g") || document.querySelector(".network-3g") || document.querySelector("#tab-3g")],
+      ["worst", byId("btn-worst") || document.querySelector("#tab-worst") || Array.from(document.querySelectorAll(".network-btn,.stream-item")).find(btn => /worst|critical/i.test(btn.textContent))]
+    ];
+
+    streamButtons.forEach(([key, btn]) => {
+      if (!btn) return;
+      btn.addEventListener("click", evt => {
+        evt.preventDefault();
+        document.querySelectorAll(".network-btn,.stream-item").forEach(b => b.classList.remove("active","active-stream"));
+        btn.classList.add(btn.classList.contains("stream-item") ? "active-stream" : "active");
+        currentStreamFilter = key;
+        runEnginePipeline();
+      });
+    });
+  }
+
+  function handleFile(event){
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    Papa.parse(file, {
+      header: true,
+      dynamicTyping: true,
+      skipEmptyLines: true,
+      complete: results => {
+        globalData = (results.data || []).filter(row => Object.keys(row).length > 0 && Object.values(row).some(v => v !== null && v !== ""));
+        if (!globalData.length) {
+          alert("No valid data found in CSV.");
+          return;
+        }
+        populateGroupingDropdowns(globalData);
+        buildDynamicFilters(globalData);
+        updateBadges(globalData);
+        runEnginePipeline();
+      },
+      error: err => alert("CSV parsing error: " + err.message)
+    });
+  }
+
+  function populateGroupingDropdowns(data){
+    const groupSelect = byId("groupKeySelect");
+    if (!groupSelect || !data.length) return;
+    groupSelect.innerHTML = `<option value="__NONE__">No Grouping (Raw Rows)</option>`;
+    const sample = data[0];
+    Object.keys(sample).forEach(key => {
+      const values = [...new Set(data.map(row => row[key]).filter(v => v !== null && v !== ""))];
+      if (values.length > 1 && values.length <= 80 && typeof sample[key] !== "number") {
+        const opt = document.createElement("option");
+        opt.value = key;
+        opt.textContent = key;
+        groupSelect.appendChild(opt);
+      }
+    });
+  }
+
+  function buildDynamicFilters(data){
+    const filterDiv = byId("filters");
+    if (!filterDiv || !data.length) return;
+    filterDiv.innerHTML = "";
+    Object.keys(data[0]).forEach(key => {
+      const values = [...new Set(data.map(row => row[key]).filter(v => v !== null && v !== ""))];
+      if (values.length > 1 && values.length < 25 && typeof values[0] !== "number") {
+        const wrapper = document.createElement("div");
+        const label = document.createElement("label");
+        label.textContent = key;
+        const select = document.createElement("select");
+        select.dataset.key = key;
+        select.innerHTML = `<option value="__ALL__">ALL ${escapeHTML(key).toUpperCase()}</option>`;
+        values.forEach(value => {
+          const opt = document.createElement("option");
+          opt.value = String(value);
+          opt.textContent = String(value);
+          select.appendChild(opt);
+        });
+        select.addEventListener("change", runEnginePipeline);
+        wrapper.appendChild(label);
+        wrapper.appendChild(select);
+        filterDiv.appendChild(wrapper);
+      }
+    });
+  }
+
+  function updateBadges(data){
+    const countMatch = pattern => data.filter(row => Object.values(row).some(v => String(v).toLowerCase().includes(pattern))).length;
+    if (byId("badge-all")) byId("badge-all").textContent = data.length;
+    if (byId("badge-5g")) byId("badge-5g").textContent = countMatch("5g");
+    if (byId("badge-4g")) byId("badge-4g").textContent = countMatch("4g") || countMatch("lte");
+    if (byId("badge-3g")) byId("badge-3g").textContent = countMatch("3g") || countMatch("umts");
+    if (byId("badge-worst")) byId("badge-worst").textContent = Math.max(1, Math.floor(data.length * 0.15));
+  }
+
+  function runEnginePipeline(){
+    if (!globalData.length) return;
+    let processed = [...globalData];
+
+    if (currentStreamFilter === "5g") {
+      processed = processed.filter(row => Object.values(row).some(v => String(v).toLowerCase().includes("5g")));
+    } else if (currentStreamFilter === "4g") {
+      processed = processed.filter(row => Object.values(row).some(v => /4g|lte/i.test(String(v))));
+    } else if (currentStreamFilter === "3g") {
+      processed = processed.filter(row => Object.values(row).some(v => /3g|umts/i.test(String(v))));
+    } else if (currentStreamFilter === "worst") {
+      const metric = numericKeys(processed)[0];
+      if (metric) processed = processed.sort((a,b) => (a[metric] || 0) - (b[metric] || 0)).slice(0, Math.max(5, Math.floor(processed.length * 0.2)));
+    }
+
+    document.querySelectorAll("#filters select").forEach(select => {
+      if (!select.dataset.key || select.value === "__ALL__") return;
+      processed = processed.filter(row => String(row[select.dataset.key]) === select.value);
+    });
+
+    const temporalKey = findTemporalKey(processed);
+    const start = byId("startDateInput") && byId("startDateInput").value ? new Date(byId("startDateInput").value) : null;
+    const end = byId("endDateInput") && byId("endDateInput").value ? new Date(byId("endDateInput").value + "T23:59:59") : null;
+    if (temporalKey && (start || end)) {
+      processed = processed.filter(row => {
+        const d = parseDateValue(row[temporalKey]);
+        if (!d) return false;
+        if (start && d < start) return false;
+        if (end && d > end) return false;
+        return true;
+      });
+    }
+
+    const groupedByDate = applyGranularity(processed);
+    const groupKey = byId("groupKeySelect") ? byId("groupKeySelect").value : "__NONE__";
+    let finalData = groupKey && groupKey !== "__NONE__" ? aggregateBy(groupedByDate, groupKey) : groupedByDate;
+    const limit = byId("limitInput") ? parseInt(byId("limitInput").value, 10) : 50;
+    if (!Number.isNaN(limit) && limit > 0) finalData = finalData.slice(-limit);
+    renderDashboard(finalData, processed, groupKey);
+  }
+
+  function applyGranularity(data){
+    if (!data.length) return data;
+    const mode = byId("granularitySelect") ? byId("granularitySelect").value : "Daily";
+    const temporalKey = findTemporalKey(data);
+    if (!temporalKey) return data;
+    const metrics = numericKeys(data);
+    const strategy = byId("groupStrategySelect") ? byId("groupStrategySelect").value : "avg";
+    const buckets = {};
+    data.forEach(row => {
+      const bucket = buildGranularityLabel(row[temporalKey], mode);
+      if (!buckets[bucket]) buckets[bucket] = [];
+      buckets[bucket].push(row);
+    });
+    return Object.keys(buckets).map(bucket => {
+      const rows = buckets[bucket];
+      const composite = { date_bucket: bucket };
+      metrics.forEach(metric => composite[metric] = aggregateValues(rows.map(r => r[metric]), strategy));
+      return composite;
+    });
+  }
+
+  function aggregateBy(data, groupKey){
+    if (!data.length) return data;
+    const strategy = byId("groupStrategySelect") ? byId("groupStrategySelect").value : "avg";
+    const metrics = numericKeys(data);
+    const groups = {};
+    data.forEach(row => {
+      const label = String(row[groupKey] ?? "Unknown");
+      if (!groups[label]) groups[label] = [];
+      groups[label].push(row);
+    });
+    return Object.keys(groups).map(label => {
+      const rows = groups[label];
+      const composite = { [groupKey]: label };
+      metrics.forEach(metric => composite[metric] = aggregateValues(rows.map(r => r[metric]), strategy));
+      return composite;
+    });
+  }
+
+  function renderDashboard(chartData, sourceData, groupKey){
+    chartInstances.forEach(chart => chart.destroy());
+    chartInstances = [];
+    chartIndex = 0;
+    const kpiContainer = firstSelector([".kpi-grid", "#kpi-container"]);
+    const chartContainer = byId("chartsContainer");
+    let racContainer = byId("rac-results");
+    if (!racContainer && chartContainer) {
+      racContainer = document.createElement("div");
+      racContainer.id = "rac-results";
+      chartContainer.after(racContainer);
+    }
+    if (kpiContainer) kpiContainer.innerHTML = "";
+    if (chartContainer) chartContainer.innerHTML = "";
+    if (!chartData.length) {
+      if (chartContainer) chartContainer.innerHTML = `<div style="padding:20px;color:#ef4444;">No matching records for current filters.</div>`;
+      if (racContainer) racContainer.innerHTML = "";
+      return;
+    }
+
+    const metrics = numericKeys(chartData);
+    metrics.slice(0, 8).forEach(metric => {
+      const values = chartData.map(row => row[metric]).filter(v => typeof v === "number" && Number.isFinite(v));
+      if (!values.length) return;
+      createKpi(kpiContainer, metric, aggregateValues(values, "avg"));
+      createChart(chartContainer, chartData, metric, metrics, groupKey);
+    });
+    showRac(racContainer, sourceData);
+  }
+
+  function createKpi(container, name, value){
+    if (!container) return;
+    const card = document.createElement("div");
+    card.className = container.id === "kpi-container" ? "kpi-mini-card" : "kpi-card";
+    card.innerHTML = `<h3>${escapeHTML(name)}</h3><p>${Number(value).toFixed(2)}</p><div class="kpi-card-subtext">Live KPI Analytics</div>`;
+    container.appendChild(card);
+  }
+
+  function chartLabels(data, groupKey){
+    return data.map((row, index) => {
+      if (groupKey && groupKey !== "__NONE__" && row[groupKey] !== undefined) return String(row[groupKey]);
+      const key = Object.keys(row).find(k => /date|time|bucket/i.test(k)) || Object.keys(row).find(k => typeof row[k] === "string") || Object.keys(row)[0];
+      return row[key] ?? `Row ${index + 1}`;
+    });
+  }
+
+  function scaleStats(values){
+    const valid = values.filter(v => typeof v === "number" && Number.isFinite(v));
+    if (!valid.length) return { min: 0, max: 0, range: 0, absMax: 0 };
+    const min = Math.min(...valid);
+    const max = Math.max(...valid);
+    return { min, max, range: Math.max(max - min, 1e-9), absMax: Math.max(Math.abs(min), Math.abs(max), 1e-9) };
+  }
+
+  function needsSecondAxis(primaryValues, overlayValues){
+    const a = scaleStats(primaryValues);
+    const b = scaleStats(overlayValues);
+    if (a.absMax === 0 || b.absMax === 0) return false;
+    const magnitudeRatio = Math.max(a.absMax, b.absMax) / Math.max(Math.min(a.absMax, b.absMax), 1e-9);
+    const rangeRatio = Math.max(a.range, b.range) / Math.max(Math.min(a.range, b.range), 1e-9);
+    return magnitudeRatio >= 6 || rangeRatio >= 12;
+  }
+
+  function createChart(container, data, metric, metrics, groupKey){
+    if (!container) return;
+    const card = document.createElement("div");
+    card.className = "chart-card";
+    const header = document.createElement("div");
+    header.className = "chart-header";
+    header.innerHTML = `
+      <div><div class="kpi-main">${escapeHTML(metric)}</div></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <select class="chart-selector overlay-select">${metrics.map(m => `<option value="${escapeHTML(m)}">${escapeHTML(m)}</option>`).join("")}</select>
+        <select class="chart-selector chart-type-select">
+          <option value="line">Line</option>
+          <option value="bar">Bar</option>
+          <option value="radar">Radar</option>
+          <option value="scatter">Scatter</option>
+          <option value="doughnut">Doughnut</option>
+          <option value="pie">Pie</option>
+        </select>
+      </div>`;
+    const canvas = document.createElement("canvas");
+    card.appendChild(header);
+    card.appendChild(canvas);
+    container.appendChild(card);
+
+    const typeSelect = card.querySelector(".chart-type-select");
+    const overlaySelect = card.querySelector(".overlay-select");
+    overlaySelect.selectedIndex = Math.min(chartIndex + 1, metrics.length - 1);
+    let instance = null;
+    const render = () => {
+      if (instance) instance.destroy();
+      const overlay = overlaySelect.value;
+      const primary = themeColors[chartIndex % themeColors.length];
+      const secondary = themeColors[(chartIndex + 2) % themeColors.length];
+      const chartType = typeSelect.value;
+      const primaryValues = data.map(row => row[metric]).filter(v => typeof v === "number");
+      const overlayValues = data.map(row => row[overlay]).filter(v => typeof v === "number");
+      const dualAxis = !["pie","doughnut","radar"].includes(chartType) && needsSecondAxis(primaryValues, overlayValues);
+      const axisScales = ["pie","doughnut","radar"].includes(chartType) ? {} : {
+        x: { grid: { color: "rgba(148,163,184,0.12)" } },
+        y: { position: "left", grid: { color: "rgba(148,163,184,0.12)" }, ticks: { color: primary } },
+        ...(dualAxis ? {
+          y1: {
+            position: "right",
+            grid: { drawOnChartArea: false },
+            ticks: { color: secondary }
+          }
+        } : {})
+      };
+      instance = new Chart(canvas, {
+        type: chartType,
+        data: {
+          labels: chartLabels(data, groupKey),
+          datasets: [
+            {
+              label: metric,
+              data: primaryValues,
+              borderColor: primary,
+              backgroundColor: primary + "40",
+              borderWidth: 2,
+              tension: 0.35,
+              yAxisID: "y"
+            },
+            {
+              label: overlay,
+              data: overlayValues,
+              borderColor: secondary,
+              backgroundColor: secondary + "26",
+              borderWidth: 2,
+              borderDash: [4,4],
+              tension: 0.35,
+              yAxisID: dualAxis ? "y1" : "y"
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: "index", intersect: false },
+          plugins: { legend: { labels: { usePointStyle: true } } },
+          scales: axisScales
+        }
+      });
+      chartInstances.push(instance);
+    };
+    render();
+    typeSelect.addEventListener("change", render);
+    overlaySelect.addEventListener("change", render);
+    chartIndex++;
+  }
+
+  function showRac(container, data){
+    if (!container) return;
+    const metrics = numericKeys(data);
+    const metric = metrics[0];
+    let warning = "No numeric KPI metric found for RCA scoring.";
+    if (metric) {
+      const values = data.map(row => row[metric]).filter(v => typeof v === "number");
+      const avg = aggregateValues(values, "avg");
+      warning = `${metric} baseline average is ${avg.toFixed(2)} across ${data.length} filtered rows.`;
+    }
+    container.innerHTML = `
+      <div class="rac-card rca-card rca-log-card">
+        <h3>RCA Summary</h3>
+        <p><b>Filtered Rows:</b> ${data.length}</p>
+        <p><b>Assessment:</b> ${escapeHTML(warning)}</p>
+        <p><b>Recommendation:</b> Review worst cells, vendor splits, and date buckets after each aggregation change.</p>
+      </div>`;
+  }
+
+  document.addEventListener("DOMContentLoaded", wireEvents);
+  if (document.readyState !== "loading") wireEvents();
+})();
+</script>
+</body>
+</html>
+
