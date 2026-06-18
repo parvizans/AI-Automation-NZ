@@ -260,12 +260,12 @@ a {
   border-bottom: 1px solid var(--line);
 }
 
-.media-throughput { background-image: linear-gradient(rgba(7,16,22,.25), rgba(7,16,22,.75)), url("../../assets/dashB-6.png"); }
-.media-link { background-image: linear-gradient(rgba(7,16,22,.15), rgba(7,16,22,.72)), url("../../assets/GeoMap-V2_map-issue-full_functionalVerion_to merge-with-newMap.png"); }
-.media-capacity { background-image: linear-gradient(rgba(7,16,22,.18), rgba(7,16,22,.76)), url("../../assets/dashboard-preview.png"); }
-.media-timesheet { background-image: linear-gradient(135deg, rgba(34,211,216,.38), rgba(7,16,22,.82)), url("../../assets/Screenshot 2026-05-28 170641.png"); }
-.media-platform { background-image: linear-gradient(rgba(7,16,22,.18), rgba(7,16,22,.76)), url("../../assets/geomap-preview.png"); }
-.media-dashboard { background-image: linear-gradient(rgba(7,16,22,.2), rgba(7,16,22,.78)), url("../../assets/dashB-5.png"); }
+.media-throughput { background-image: linear-gradient(rgba(7,16,22,.25), rgba(7,16,22,.75)), url("assets/dashB-6.png"); }
+.media-link { background-image: linear-gradient(rgba(7,16,22,.15), rgba(7,16,22,.72)), url("assets/GeoMap-V2_map-issue-full_functionalVerion_to merge-with-newMap.png"); }
+.media-capacity { background-image: linear-gradient(rgba(7,16,22,.18), rgba(7,16,22,.76)), url("assets/dashboard-preview.png"); }
+.media-timesheet { background-image: linear-gradient(135deg, rgba(34,211,216,.38), rgba(7,16,22,.82)), url("assets/Screenshot 2026-05-28 170641.png"); }
+.media-platform { background-image: linear-gradient(rgba(7,16,22,.18), rgba(7,16,22,.76)), url("assets/geomap-preview.png"); }
+.media-dashboard { background-image: linear-gradient(rgba(7,16,22,.2), rgba(7,16,22,.78)), url("assets/dashB-5.png"); }
 
 .product-content {
   padding: 24px;
