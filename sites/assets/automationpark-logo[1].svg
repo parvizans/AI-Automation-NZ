@@ -1,0 +1,58 @@
+<svg width="940" height="220" viewBox="0 0 940 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">automationpark.tech logo</title>
+  <desc id="desc">AutomationPark technology logo with AP mark, telecom network nodes, and wordmark.</desc>
+  <defs>
+    <linearGradient id="markGradient" x1="22" y1="20" x2="178" y2="182" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22D3D8"/>
+      <stop offset="0.58" stop-color="#39D98A"/>
+      <stop offset="1" stop-color="#F5B84B"/>
+    </linearGradient>
+    <linearGradient id="textGradient" x1="235" y1="58" x2="780" y2="154" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EEF8FB"/>
+      <stop offset="0.56" stop-color="#A7F3D0"/>
+      <stop offset="1" stop-color="#22D3D8"/>
+    </linearGradient>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.13 0 0 0 0 0.83 0 0 0 0 0.85 0 0 0 0.38 0"/>
+      <feBlend in="SourceGraphic" mode="normal"/>
+    </filter>
+  </defs>
+
+  <rect width="940" height="220" rx="28" fill="#071016"/>
+  <path d="M0 164H940" stroke="#22D3D8" stroke-opacity="0.08"/>
+  <path d="M238 32H900" stroke="#39D98A" stroke-opacity="0.10"/>
+  <path d="M238 188H900" stroke="#F5B84B" stroke-opacity="0.10"/>
+
+  <g filter="url(#softGlow)">
+    <rect x="42" y="34" width="150" height="150" rx="24" fill="#081923" stroke="url(#markGradient)" stroke-width="3"/>
+    <path d="M72 145L116 72L160 145" stroke="url(#markGradient)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M94 123H139" stroke="#EEF8FB" stroke-opacity="0.92" stroke-width="9" stroke-linecap="round"/>
+    <path d="M163 76V145" stroke="#22D3D8" stroke-width="11" stroke-linecap="round"/>
+    <path d="M160 76H175C188 76 195 84 195 96C195 108 188 116 175 116H160" stroke="#39D98A" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <g opacity="0.9">
+    <circle cx="78" cy="54" r="5" fill="#22D3D8"/>
+    <circle cx="174" cy="54" r="5" fill="#39D98A"/>
+    <circle cx="178" cy="168" r="5" fill="#F5B84B"/>
+    <circle cx="58" cy="166" r="5" fill="#F15B88"/>
+    <path d="M78 54L174 54L178 168L58 166L78 54Z" stroke="#EEF8FB" stroke-opacity="0.20" stroke-width="2"/>
+    <path d="M78 54L178 168M174 54L58 166" stroke="#22D3D8" stroke-opacity="0.22" stroke-width="2"/>
+  </g>
+
+  <g>
+    <text x="238" y="102" fill="url(#textGradient)" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="54" font-weight="900" letter-spacing="-1.5">
+      automationpark
+    </text>
+    <text x="668" y="102" fill="#39D98A" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="54" font-weight="900" letter-spacing="-1.5">
+      .tech
+    </text>
+    <text x="242" y="144" fill="#9FB4BE" font-family="Segoe UI, Inter, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="2.5">
+      TELECOM GIS  /  KPI INTELLIGENCE  /  AUTOMATION
+    </text>
+    <path d="M242 164H636" stroke="#22D3D8" stroke-width="3" stroke-linecap="round"/>
+    <path d="M655 164H734" stroke="#39D98A" stroke-width="3" stroke-linecap="round"/>
+    <path d="M753 164H818" stroke="#F5B84B" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>
