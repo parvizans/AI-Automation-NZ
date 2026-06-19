@@ -1,0 +1,30 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">AutomationPark AP mark</title>
+  <desc id="desc">Square AP logo mark with network nodes for AutomationPark.</desc>
+  <defs>
+    <linearGradient id="g" x1="70" y1="58" x2="438" y2="444" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#22D3D8"/>
+      <stop offset="0.58" stop-color="#39D98A"/>
+      <stop offset="1" stop-color="#F5B84B"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="15" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.13 0 0 0 0 0.83 0 0 0 0 0.85 0 0 0 0.42 0"/>
+      <feBlend in="SourceGraphic" mode="normal"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="96" fill="#071016"/>
+  <g filter="url(#glow)">
+    <rect x="70" y="70" width="372" height="372" rx="68" fill="#081923" stroke="url(#g)" stroke-width="8"/>
+    <path d="M138 354L254 150L370 354" stroke="url(#g)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M192 292H308" stroke="#EEF8FB" stroke-opacity="0.94" stroke-width="26" stroke-linecap="round"/>
+    <path d="M374 158V354" stroke="#22D3D8" stroke-width="32" stroke-linecap="round"/>
+    <path d="M368 158H407C440 158 458 179 458 209C458 239 440 260 407 260H368" stroke="#39D98A" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <circle cx="128" cy="126" r="12" fill="#22D3D8"/>
+  <circle cx="404" cy="126" r="12" fill="#39D98A"/>
+  <circle cx="410" cy="406" r="12" fill="#F5B84B"/>
+  <circle cx="112" cy="398" r="12" fill="#F15B88"/>
+  <path d="M128 126L404 126L410 406L112 398L128 126Z" stroke="#EEF8FB" stroke-opacity="0.18" stroke-width="5"/>
+  <path d="M128 126L410 406M404 126L112 398" stroke="#22D3D8" stroke-opacity="0.22" stroke-width="5"/>
+</svg>
