@@ -594,6 +594,42 @@ div[data-testid="stTextInput"] input {
     letter-spacing: 0.2px;
 }
 
+.ap-selection-meta {
+    margin: 12px 0 8px 0;
+    color: #CBD5E1 !important;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.ap-selection-preview {
+    max-height: 58px;
+    overflow: hidden;
+    margin: 8px 0 14px 0;
+    padding: 8px 9px;
+    border-radius: 10px;
+    background: rgba(15,23,42,0.55);
+    border: 1px solid rgba(148,163,184,0.14);
+    color: #CBD5E1 !important;
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.ap-selection-export {
+    background: linear-gradient(135deg, rgba(245,184,75,0.20), rgba(120,53,15,0.10));
+    border: 1px solid rgba(245,184,75,0.42);
+    border-left: 4px solid #F5B84B;
+    border-radius: 12px;
+    padding: 12px;
+    margin: 16px 0 12px 0;
+    font-size: 12px;
+    line-height: 1.5;
+    color: #F8FAFC !important;
+}
+
+.ap-selection-export b {
+    color: #F8FAFC !important;
+}
+
 section[data-testid="stSidebar"] {
     box-shadow: inset -1px 0 0 rgba(34,211,216,0.10);
 }
@@ -1392,6 +1428,83 @@ def build_shell_cache(df):
 
         })
     return pd.DataFrame(shell_polygons)
+
+
+def build_visual_ncell_overlay(cell_df, source_cell, target_cells):
+    if not source_cell or not target_cells or cell_df.empty:
+        return pd.DataFrame()
+
+    wanted_cells = {str(source_cell)}
+    wanted_cells.update(str(cell) for cell in target_cells if cell)
+
+    small_df = cell_df[
+        cell_df["CELL_NAME"].astype(str).isin(wanted_cells)
+    ].drop_duplicates(subset=["CELL_NAME"])
+
+    if small_df.empty:
+        return pd.DataFrame()
+
+    lookup = {str(row["CELL_NAME"]): row for _, row in small_df.iterrows()}
+
+    def tip_point(row):
+        cell_name = str(row.get("CELL_NAME", ""))
+        lat = float(row.get("LATITUDE", 0))
+        lon = float(row.get("LONGITUDE", 0))
+
+        if "-A" in cell_name:
+            az = 0
+        elif "-B" in cell_name:
+            az = 120
+        elif "-C" in cell_name:
+            az = 240
+        else:
+            az = float(row.get("AZIMUTH", 0) or 0)
+
+        if "L07" in cell_name:
+            radius = 0.0020
+        elif "L18" in cell_name:
+            radius = 0.0016
+        elif "N35" in cell_name:
+            radius = 0.0012
+        else:
+            radius = 0.0015
+
+        return [
+            lon + radius * np.sin(np.radians(az)),
+            lat + radius * np.cos(np.radians(az)),
+        ]
+
+    source_key = str(source_cell)
+    if source_key not in lookup:
+        return pd.DataFrame()
+
+    source_tip = tip_point(lookup[source_key])
+    selected_link = st.session_state.get("selected_ncell_link") or {}
+    rows = []
+
+    for target_cell in target_cells:
+        target_key = str(target_cell)
+        if not target_key or target_key == source_key or target_key not in lookup:
+            continue
+
+        relation_type = get_relation_type(source_key, target_key, cell_df)
+        is_selected_link = (
+            selected_link.get("source") == source_key
+            and selected_link.get("target") == target_key
+        )
+
+        rows.append({
+            "path": [source_tip, tip_point(lookup[target_key])],
+            "color": [245, 184, 75, 245] if is_selected_link else [255, 38, 38, 235],
+            "hit_color": [0, 0, 0, 0],
+            "line_width": 7 if is_selected_link else 5,
+            "source": source_key,
+            "target": target_key,
+            "relation_type": relation_type,
+            "tooltip_text": f"{source_key} <--> {target_key} {relation_type} NCell",
+        })
+
+    return pd.DataFrame(rows)
 # ==========================================
 # ONE-WAY NCELL DETECTION
 # ==========================================
@@ -2274,15 +2387,21 @@ selected_cells_df = df[
     df["CELL_NAME"].astype(str).str.upper().isin(selected_cell_keys)
 ].copy()
 
-st.sidebar.caption(
-    f"Source: {st.session_state.ncell_source_cell or '-'} | Targets: {len(selected_cells_df)}"
-)
+st.sidebar.markdown(f"""
+<div class="ap-selection-meta">
+Source: {st.session_state.ncell_source_cell or '-'} | Targets: {len(selected_cells_df)}
+</div>
+""", unsafe_allow_html=True)
 
 if st.session_state.selected_cells:
     selected_preview = ", ".join(st.session_state.selected_cells[:8])
     if len(st.session_state.selected_cells) > 8:
         selected_preview += ", ..."
-    st.sidebar.caption(selected_preview)
+    st.sidebar.markdown(f"""
+<div class="ap-selection-preview">
+{selected_preview}
+</div>
+""", unsafe_allow_html=True)
 
 ncell_export_df = build_ncell_export(
     st.session_state.ncell_source_cell,
@@ -2295,17 +2414,7 @@ if not ncell_export_df.empty:
     ncell_export_csv = ncell_export_df.to_csv(index=False)
 
     st.sidebar.markdown("""
-<div style="
-background:linear-gradient(135deg, rgba(245,184,75,0.20), rgba(120,53,15,0.10));
-border:1px solid rgba(245,184,75,0.42);
-border-left:4px solid #F5B84B;
-border-radius:12px;
-padding:10px;
-margin-top:10px;
-margin-bottom:8px;
-font-size:13px;
-color:white;
-">
+<div class="ap-selection-export">
 <b>Export Ready</b><br>
 NCell relation list is ready for CSV export.
 </div>
@@ -3250,6 +3359,41 @@ else:
             )
         )
 
+visual_ncell_overlay_df = build_visual_ncell_overlay(
+    df,
+    st.session_state.ncell_source_cell,
+    st.session_state.selected_cells,
+)
+
+if not visual_ncell_overlay_df.empty:
+    layers.append(
+        pdk.Layer(
+            "PathLayer",
+            visual_ncell_overlay_df,
+            id="visual-ncell-builder-hitbox-final",
+            get_path="path",
+            get_color="hit_color",
+            opacity=0,
+            width_scale=1,
+            width_min_pixels=20 if st.session_state.get("los_select_mode") else 12,
+            pickable=st.session_state.get("los_select_mode"),
+        )
+    )
+
+    layers.append(
+        pdk.Layer(
+            "PathLayer",
+            visual_ncell_overlay_df,
+            id="visual-ncell-builder-lines-final",
+            get_path="path",
+            get_color="color",
+            get_width="line_width",
+            width_scale=1,
+            width_min_pixels=4,
+            pickable=True,
+        )
+    )
+
 # =====================================================
 # RENDER ENGINE (CALLBACK APPROACH)
 # =====================================================
@@ -3302,6 +3446,16 @@ def on_map_click():
             and selected_objects["visual-ncell-builder-lines"]
         ):
             line_obj = selected_objects["visual-ncell-builder-lines"][0]
+        elif (
+            "visual-ncell-builder-hitbox-final" in selected_objects
+            and selected_objects["visual-ncell-builder-hitbox-final"]
+        ):
+            line_obj = selected_objects["visual-ncell-builder-hitbox-final"][0]
+        elif (
+            "visual-ncell-builder-lines-final" in selected_objects
+            and selected_objects["visual-ncell-builder-lines-final"]
+        ):
+            line_obj = selected_objects["visual-ncell-builder-lines-final"][0]
 
         if line_obj:
             st.session_state.selected_ncell_link = build_link_profile(
